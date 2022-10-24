@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\obj\Release\net6.0-windows\
+C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\obj\Release\net6.0-windows\
 YuLauncher
 none
 false
 TRACE;RELEASE;NET;NET6_0;NETCOREAPP
-C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
-11986125077
+C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
+3-185321925
 
-4601546453
+62029003432
 197-1547754556
-Core\Window\MainWindow.xaml;
+Core\Window\MainWindow.xaml;Core\Window\Pages\MainPage.xaml;Core\Window\Pages\SettingPage.xaml;
 
 True
 
