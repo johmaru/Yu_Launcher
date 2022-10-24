@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\obj\Debug\net6.0-windows\
+C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\obj\Release\net6.0-windows\
 YuLauncher
 none
 false
-TRACE;DEBUG;NET;NET6_0;NETCOREAPP
+TRACE;RELEASE;NET;NET6_0;NETCOREAPP
 C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
 11986125077
 
