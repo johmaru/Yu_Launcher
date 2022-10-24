@@ -1,15 +1,23 @@
-﻿<mah:MetroWindow
-    Height="450"
+﻿<Controls:MetroWindow
+    Height="{Binding Source={x:Static properties:Settings.Default}, Path=Window_H}"
     Title="MainWindow"
-    Width="800"
+    Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}"
     mc:Ignorable="d"
     x:Class="YuLauncher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:YuLauncher"
-    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:properties="clr-namespace:YuLauncher.Properties"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pages="clr-namespace:YuLauncher.Core.Pages"
+    ResizeMode="CanMinimize">
 
-    <Grid />
-</mah:MetroWindow>
+    <Grid x:Name="Grid" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
+
+        <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+    </Grid>
+
+
+</Controls:MetroWindow>

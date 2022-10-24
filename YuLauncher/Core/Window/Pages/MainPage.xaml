@@ -1,0 +1,14 @@
+﻿<Page x:Class="YuLauncher.Core.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:YuLauncher.Core.Pages"
+      xmlns:properties="clr-namespace:YuLauncher.Properties"
+      mc:Ignorable="d" 
+      d:DesignHeight="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" d:DesignWidth="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
+
+    <Grid Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
+        <Button x:Name="SettingBTN" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="50" Height="30" Margin="10,60,740,310" Content="設定" Click="SettingBTN_OnClick"/>
+    </Grid>
+</Page>
