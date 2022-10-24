@@ -24,6 +24,8 @@ namespace YuLauncher
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
+        
     }
 }
