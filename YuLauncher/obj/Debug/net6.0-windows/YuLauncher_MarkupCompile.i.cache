@@ -1,5 +1,5 @@
 ﻿YuLauncher
-
+1.0.0.0
 
 winexe
 C#
@@ -12,7 +12,7 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
 11986125077
 
-3-879684672
+5-1235688470
 197-1547754556
 Core\Window\MainWindow.xaml;
 
