@@ -4,12 +4,20 @@
 winexe
 C#
 .cs
+<<<<<<< HEAD
 C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\obj\Debug\net6.0-windows\
+=======
+C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\obj\Debug\net6.0-windows\
+>>>>>>> bbcd3deaed7b59434ab976a4f4136290826ee992
 YuLauncher
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
+<<<<<<< HEAD
 C:\Users\Administrator\source\repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
+=======
+C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
+>>>>>>> bbcd3deaed7b59434ab976a4f4136290826ee992
 11986125077
 
 4601546453

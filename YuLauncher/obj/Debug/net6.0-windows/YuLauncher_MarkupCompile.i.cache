@@ -12,9 +12,17 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Administrator\Source\Repos\johmaru\Yu_Launcher\YuLauncher\App.xaml
 11986125077
 
+<<<<<<< HEAD
 6245542655
 197-1547754556
 Core\Window\MainWindow.xaml;
 
 False
+=======
+5-1235688470
+197-1547754556
+Core\Window\MainWindow.xaml;
+
+True
+>>>>>>> bbcd3deaed7b59434ab976a4f4136290826ee992
 
