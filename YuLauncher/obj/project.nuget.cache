@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Wi1l5nXYvjayPu5kW157FAb8i94ZBlQwD/Aqco6NzB1MDfDFtqpHALDGcE/lXcYGkdKTVbE4gpXzsRrSh+xJtw==",
+  "dgSpecHash": "pzbCul6h40RS1WjcJI/s/URvC0iXdWhgiMoD2P5Ysc0w/WUrJPHfSHI34RWL74CyXlMIsmiLhlm+CA5OpW4MgQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Source\\Repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
+  "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\controlzex\\4.4.0\\controlzex.4.4.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\mahapps.metro\\2.4.9\\mahapps.metro.2.4.9.nupkg.sha512",
