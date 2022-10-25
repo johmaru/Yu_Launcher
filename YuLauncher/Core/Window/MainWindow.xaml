@@ -1,7 +1,7 @@
 ﻿<Controls:MetroWindow
-    Height="{Binding Source={x:Static properties:Settings.Default}, Path=Window_H}"
+    Height="400"
     Title="MainWindow"
-    Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}"
+    Width="800"
     mc:Ignorable="d"
     x:Class="YuLauncher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
