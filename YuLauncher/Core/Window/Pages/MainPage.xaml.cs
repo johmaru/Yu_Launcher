@@ -31,5 +31,7 @@ namespace YuLauncher.Core.Pages
         {
             NavigationService.Navigate(new SettingPage());
         }
+
+       
     }
 }

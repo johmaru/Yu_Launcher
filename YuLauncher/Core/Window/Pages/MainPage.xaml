@@ -7,8 +7,18 @@
       xmlns:properties="clr-namespace:YuLauncher.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" d:DesignWidth="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
-
-    <Grid Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal"
+                    ZIndex="4">
+        <Viewbox Stretch="Uniform" StretchDirection="Both">
         <Button x:Name="SettingBTN" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="50" Height="30" Margin="10,60,740,310" Content="設定" Click="SettingBTN_OnClick"/>
+        </Viewbox>
+            </StackPanel>
     </Grid>
 </Page>

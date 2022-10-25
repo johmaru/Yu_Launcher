@@ -26,7 +26,14 @@ namespace YuLauncher
         {
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            
         }
 
+        private void MetroWindow_DpiChanged(object sender, DpiChangedEventArgs e)
+        {
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+
+        
     }
 }

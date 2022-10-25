@@ -19,7 +19,7 @@ namespace YuLauncher.Core.Pages
     /// <summary>
     /// SettingPage.xaml の相互作用ロジック
     /// </summary>
-    public partial class SettingPage : UserControl
+    public partial class SettingPage : Page
     {
         public SettingPage()
         {

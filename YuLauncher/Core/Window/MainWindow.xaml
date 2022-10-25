@@ -11,12 +11,20 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pages="clr-namespace:YuLauncher.Core.Pages"
-    ResizeMode="CanMinimize">
-
-    <Grid x:Name="Grid" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
-
-        <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+    xmlns:pages="clr-namespace:YuLauncher.Core.Pages" DpiChanged="MetroWindow_DpiChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal"
+                    ZIndex="4">
+            <Viewbox Stretch="Uniform" StretchDirection="Both">
+            <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+            </Viewbox>
+            </StackPanel>
     </Grid>
 
 
