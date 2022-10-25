@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Pages;
+using YuLauncher.Properties;
 
 namespace YuLauncher
 {
@@ -26,6 +27,11 @@ namespace YuLauncher
         {
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            if (Settings.Default.FullScreen == true)
+            {
+                this.WindowStyle = WindowStyle.None;
+                this.WindowState = WindowState.Maximized;
+            }
             
         }
 

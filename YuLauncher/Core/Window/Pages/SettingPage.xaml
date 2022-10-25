@@ -12,11 +12,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel
+        <StackPanel HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     Orientation="Horizontal"
-                    ZIndex="4" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label Content="フルスクリーンON/OFF" Height="30" Width="120" Margin="0,-300,0,0"/>
-
+                    ZIndex="4">
+            <Label Content="フルスクリーン" Width="80" Height="30"/>
+            <CheckBox x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick"/>
         </StackPanel>
-    </Grid>
+        </Grid>
 </Page>
