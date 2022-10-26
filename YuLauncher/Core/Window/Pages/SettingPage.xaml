@@ -18,11 +18,11 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" MinHeight="30" />
-            <RowDefinition Height="44*" />
-            <RowDefinition Height="51*"/>
-            <RowDefinition Height="119*"/>
-            <RowDefinition Height="86*"/>
-            <RowDefinition Height="70*"/>
+            <RowDefinition Height="22*" />
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="73*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
         <StackPanel
                     Orientation="Horizontal"
@@ -34,7 +34,7 @@
         <StackPanel Grid.Row="1">
             <Label Content="解像度変更" Height="30"/>
         </StackPanel>
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="2" Height="24" VerticalAlignment="Top">
             <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1920" HorizontalAlignment="Left"/>
         </StackPanel>
     </Grid>
