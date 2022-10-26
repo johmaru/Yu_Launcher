@@ -1,23 +1,41 @@
-﻿<Page x:Class="YuLauncher.Core.Pages.SettingPage"
+﻿<Page xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"  x:Class="YuLauncher.Core.Pages.SettingPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:properties="clr-namespace:YuLauncher.Properties"
              xmlns:local="clr-namespace:YuLauncher.Core.Pages"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
+             Style="{DynamicResource MahApps.Styles.Page}"
              d:DesignHeight="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" d:DesignWidth="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="155*"/>
+            <ColumnDefinition Width="245*"/>
+            <ColumnDefinition Width="247*"/>
+            <ColumnDefinition Width="153*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" MinHeight="30" />
+            <RowDefinition Height="44*" />
+            <RowDefinition Height="51*"/>
+            <RowDefinition Height="119*"/>
+            <RowDefinition Height="86*"/>
+            <RowDefinition Height="70*"/>
         </Grid.RowDefinitions>
-        <StackPanel HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
+        <StackPanel
                     Orientation="Horizontal"
-                    ZIndex="4">
+                    ZIndex="4" Grid.ColumnSpan="4">
             <Label Content="フルスクリーン" Width="80" Height="30"/>
-            <CheckBox x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick"/>
+            <CheckBox x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick"></CheckBox>
         </StackPanel>
-        </Grid>
+
+        <StackPanel Grid.Row="1">
+            <Label Content="解像度変更" Height="30"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+            <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1920" HorizontalAlignment="Left"/>
+        </StackPanel>
+    </Grid>
 </Page>
