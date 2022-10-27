@@ -31,6 +31,14 @@ namespace YuLauncher
             {
                 this.WindowStyle = WindowStyle.None;
                 this.WindowState = WindowState.Maximized;
+                this.ResizeMode = ResizeMode.NoResize;
+            }
+
+            else
+            {
+                this.WindowStyle = WindowStyle.SingleBorderWindow;
+                this.WindowState = WindowState.Normal;
+                this.ResizeMode = ResizeMode.CanResize;
             }
             
         }

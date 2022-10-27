@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Pages;
+using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Pages
 {
@@ -25,6 +26,7 @@ namespace YuLauncher.Core.Pages
         public MainPage()
         {
             InitializeComponent();
+           
         }
 
         private void SettingBTN_OnClick(object sender, RoutedEventArgs e)
