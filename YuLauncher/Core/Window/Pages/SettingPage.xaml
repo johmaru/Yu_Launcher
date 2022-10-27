@@ -9,9 +9,11 @@
              mc:Ignorable="d" 
              Style="{DynamicResource MahApps.Styles.Page}"
              d:DesignHeight="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" d:DesignWidth="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
+    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="155*"/>
+            <ColumnDefinition Width="77*"/>
+            <ColumnDefinition Width="78*"/>
             <ColumnDefinition Width="245*"/>
             <ColumnDefinition Width="247*"/>
             <ColumnDefinition Width="153*"/>
@@ -20,22 +22,29 @@
             <RowDefinition Height="Auto" MinHeight="30" />
             <RowDefinition Height="22*" />
             <RowDefinition Height="12*"/>
-            <RowDefinition Height="73*"/>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="60*"/>
             <RowDefinition Height="43*"/>
-            <RowDefinition Height="35*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel
                     Orientation="Horizontal"
-                    ZIndex="4" Grid.ColumnSpan="4">
+                    ZIndex="4" Grid.ColumnSpan="5">
             <Label Content="フルスクリーン" Width="80" Height="30"/>
             <CheckBox x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick"></CheckBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="30" Width="70">
             <Label Content="解像度変更" Height="30"/>
         </StackPanel>
-        <StackPanel Grid.Row="2" Height="24" VerticalAlignment="Top">
+        <StackPanel Grid.Row="2" Height="24" VerticalAlignment="Center" Grid.Column="0" Margin="8,0,9,0">
             <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1920" HorizontalAlignment="Left"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="9,0,9,0">
+            <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1080" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Height="30" Width="50">
+            <Button Style="{DynamicResource MahApps.Styles.Button.Flat}" Height="30" Width="50" Content="保存"/>
         </StackPanel>
     </Grid>
 </Page>
