@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pzbCul6h40RS1WjcJI/s/URvC0iXdWhgiMoD2P5Ysc0w/WUrJPHfSHI34RWL74CyXlMIsmiLhlm+CA5OpW4MgQ==",
+  "dgSpecHash": "/ZPX7fzsFZNaN1wYT28+BDHe9+oBvi1rXVDpqiG3ORLFE30UhfmV3rmBQF+gwbqk5i/MS2uBQAWAuNIApU49oA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Administrator\\.nuget\\packages\\controlzex\\4.4.0\\controlzex.4.4.0.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\mahapps.metro\\2.4.9\\mahapps.metro.2.4.9.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\johma\\Source\\Repos\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
