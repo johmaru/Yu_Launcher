@@ -11,7 +11,7 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pages="clr-namespace:YuLauncher.Core.Pages" DpiChanged="MetroWindow_DpiChanged">
+    xmlns:pages="clr-namespace:YuLauncher.Core.Pages" DpiChanged="MetroWindow_DpiChanged" Loaded="MetroWindow_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

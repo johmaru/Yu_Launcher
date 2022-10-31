@@ -42,12 +42,27 @@ namespace YuLauncher
             }
             
         }
+        //RecoverWindowSizeはまだ使うか未定.というのもWindow_WとWindow_Hはゲームスクリーンの解像度の値にする予定
+        //MainWindow用のSettingの値を作成する可能性が微レ存
+        void RecoverWindowSize()
+        {
+            var settings = Settings.Default;
+            if (settings.Window_W > 0 &&
+                settings.Window_W <= SystemParameters.WorkArea.Width)
+            { Width = settings.Window_W; }
 
+            if (settings.Window_H > 0 &&
+                settings.Window_H <= SystemParameters.WorkArea.Height)
+            { Height = settings.Window_H; }
+        }
         private void MetroWindow_DpiChanged(object sender, DpiChangedEventArgs e)
         {
             this.SizeToContent = SizeToContent.WidthAndHeight;
         }
 
-        
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
