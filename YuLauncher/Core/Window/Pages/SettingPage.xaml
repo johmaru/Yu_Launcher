@@ -38,13 +38,13 @@
             <Label Content="解像度変更" Height="30"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Height="24" VerticalAlignment="Center" Grid.Column="0" Margin="8,0,9,0">
-            <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1920" HorizontalAlignment="Left"/>
+            <TextBox x:Name="TXTRES1" mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1920" HorizontalAlignment="Left" Loaded="TXTRES1_Loaded"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="2" Margin="9,0,9,0">
-            <TextBox mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1080" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="TXTRES2" mah:TextBoxHelper.ClearTextButton="True" Width="60" Height="20" Text="1080" HorizontalAlignment="Stretch" Loaded="TXTRES2_Loaded"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Height="30" Width="50">
-            <Button Style="{DynamicResource MahApps.Styles.Button.Flat}" Height="30" Width="50" Content="保存"/>
+            <Button Style="{DynamicResource MahApps.Styles.Button.Flat}" Height="30" Width="50" Content="保存" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

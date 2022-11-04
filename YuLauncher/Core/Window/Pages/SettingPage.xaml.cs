@@ -27,6 +27,15 @@ namespace YuLauncher.Core.Pages
             InitializeComponent();
         }
 
+        void WindowSizeSave()
+        {
+            var settings = Settings.Default;
+            double HD = Convert.ToDouble(TXTRES1.Text);
+            double WD = Convert.ToDouble(TXTRES2.Text);
+            settings.Window_W = WD;
+            settings.Window_H = HD;
+            settings.Save();
+        }
         private void FullScBTN()
         {
             string MessageTXT = "変更を適用するには再起動する必要があります、再起動しますか？";
@@ -75,6 +84,29 @@ namespace YuLauncher.Core.Pages
         private void FullSc_OnClick(object sender, RoutedEventArgs e)
         {
             FullScBTN();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            WindowSizeSave();
+        }
+
+        private void TXTRES1_Loaded(object sender, RoutedEventArgs e)
+        {
+            Double txt1 = Settings.Default.Window_H;
+
+            String txt1ST = txt1.ToString();
+
+            TXTRES1.Text = txt1ST;
+        }
+
+        private void TXTRES2_Loaded(object sender, RoutedEventArgs e)
+        {
+            double txt2 = Settings.Default.Window_W;
+
+            String txt2ST = txt2.ToString();
+
+            TXTRES2.Text = txt2ST;
         }
     }
 }
