@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Pages;
 using YuLauncher.Properties;
@@ -55,14 +56,31 @@ namespace YuLauncher
                 settings.Window_H <= SystemParameters.WorkArea.Height)
             { Height = settings.Window_H; }
         }
+        //バグる
+       // private void DoEvents()
+       // {
+      //     DispatcherFrame frame = new DispatcherFrame();
+       //     var callback = new DispatcherOperationCallback(obj =>
+      //      {
+       //         ((DispatcherFrame)obj).Continue = false;
+       //       });
+     //       Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
+     //       Dispatcher.PushFrame(frame);
+     //   }
+
         private void MetroWindow_DpiChanged(object sender, DpiChangedEventArgs e)
         {
-            this.SizeToContent = SizeToContent.WidthAndHeight;
+          
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void MetroWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+          
         }
     }
 }

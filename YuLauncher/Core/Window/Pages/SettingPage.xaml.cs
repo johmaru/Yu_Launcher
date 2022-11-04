@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using YuLauncher.Properties;
 
@@ -55,7 +56,19 @@ namespace YuLauncher.Core.Pages
                     break;
             }
         }
-
+       //えっぎいバグ起こる
+        /* private void DoEvents()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            var callback = new DispatcherOperationCallback(obj =>
+            {
+                ((DispatcherFrame)obj).Continue = false;
+                return null;
+            });
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
+            Dispatcher.PushFrame(frame);
+        }
+       */
 
         private void FullSc_OnChecked(object sender, RoutedEventArgs e)
         {
@@ -107,6 +120,11 @@ namespace YuLauncher.Core.Pages
             String txt2ST = txt2.ToString();
 
             TXTRES2.Text = txt2ST;
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            
         }
     }
 }

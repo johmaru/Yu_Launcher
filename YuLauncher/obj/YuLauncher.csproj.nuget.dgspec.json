@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj": {}
+    "C:\\Users\\johma\\source\\repos\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj": {
+    "C:\\Users\\johma\\source\\repos\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
+        "projectUniqueName": "C:\\Users\\johma\\source\\repos\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
         "projectName": "YuLauncher",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\johmaru\\Yu_Launcher\\YuLauncher\\obj\\",
+        "projectPath": "C:\\Users\\johma\\source\\repos\\Yu_Launcher\\YuLauncher\\YuLauncher.csproj",
+        "packagesPath": "C:\\Users\\johma\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\johma\\source\\repos\\Yu_Launcher\\YuLauncher\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\johma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
