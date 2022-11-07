@@ -126,5 +126,32 @@ namespace YuLauncher.Core.Pages
         {
             
         }
+
+        private void FCBTN_Click(object sender, RoutedEventArgs e)
+        {
+            string MessageTXT = "終了して変更内容を保存しますか？";
+            string capTXT = "警告";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+            MessageBoxResult result = MessageBox.Show(MessageTXT, capTXT, button, icon);
+
+            switch (result)
+            {
+
+                case MessageBoxResult.Yes:
+                    var settings = Settings.Default;
+                    double HD = Convert.ToDouble(TXTRES1.Text);
+                    double WD = Convert.ToDouble(TXTRES2.Text);
+                    settings.Window_W = WD;
+                    settings.Window_H = HD;
+                    settings.Save();
+
+                    Application.Current.Shutdown();
+                    break;
+
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
     }
 }

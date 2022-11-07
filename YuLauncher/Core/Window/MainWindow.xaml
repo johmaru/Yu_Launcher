@@ -18,9 +18,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                   
-                    ZIndex="4" ClipToBounds="True">
+                    VerticalAlignment="Stretch">
          
             <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
            
