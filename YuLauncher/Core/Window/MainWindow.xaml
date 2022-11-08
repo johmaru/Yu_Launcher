@@ -1,7 +1,7 @@
 ﻿<Controls:MetroWindow
-    Height="{Binding Source={x:Static properties:Settings.Default}, Path=Window_H}"
+    Height="400"
     Title="MainWindow"
-    Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}"
+    Width="800"
     mc:Ignorable="d"
     x:Class="YuLauncher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,12 +11,18 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pages="clr-namespace:YuLauncher.Core.Pages"
-    ResizeMode="CanMinimize">
-
-    <Grid x:Name="Grid" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
-
-        <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+    xmlns:pages="clr-namespace:YuLauncher.Core.Pages" DpiChanged="MetroWindow_DpiChanged" Loaded="MetroWindow_Loaded" SizeChanged="MetroWindow_SizeChanged" MinWidth="800" MinHeight="400" SizeToContent="WidthAndHeight">
+    <Grid Height="400" MinWidth="800" MinHeight="400" ClipToBounds="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+         
+            <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+           
+            </Grid>
     </Grid>
 
 

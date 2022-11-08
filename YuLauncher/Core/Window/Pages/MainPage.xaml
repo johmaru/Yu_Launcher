@@ -7,8 +7,16 @@
       xmlns:properties="clr-namespace:YuLauncher.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" d:DesignWidth="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
-
-    <Grid Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}">
-        <Button x:Name="SettingBTN" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="50" Height="30" Margin="10,60,740,310" Content="設定" Click="SettingBTN_OnClick"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="SettingBTN" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="設定" Click="SettingBTN_OnClick"/>
+        </Grid>
     </Grid>
 </Page>

@@ -10,30 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
-using YuLauncher.Core.Pages;
-using YuLauncher.Properties;
 
-namespace YuLauncher.Core.Pages
+namespace YuLauncher.Game.Window
 {
     /// <summary>
-    /// MainPage.xaml の相互作用ロジック
+    /// GameWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainPage : Page
+    public partial class GameWindow : MetroWindow
     {
-        public MainPage()
+        public GameWindow()
         {
             InitializeComponent();
-           
         }
-
-        private void SettingBTN_OnClick(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new SettingPage());
-        }
-
-       
     }
 }

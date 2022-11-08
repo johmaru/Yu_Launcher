@@ -46,5 +46,17 @@ namespace YuLauncher.Properties {
                 this["Window_H"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FullScreen {
+            get {
+                return ((bool)(this["FullScreen"]));
+            }
+            set {
+                this["FullScreen"] = value;
+            }
+        }
     }
 }
