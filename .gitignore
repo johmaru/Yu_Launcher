@@ -351,3 +351,4 @@ MigrationBackup/
 */YuLauncher/bin/
 */YuLauncher/obj/
 *.vs
+*.vs/
