@@ -28,19 +28,6 @@ namespace YuLauncher
         {
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            if (Settings.Default.FullScreen == true)
-            {
-                this.WindowStyle = WindowStyle.None;
-                this.WindowState = WindowState.Maximized;
-                this.ResizeMode = ResizeMode.NoResize;
-            }
-
-            else
-            {
-                this.WindowStyle = WindowStyle.SingleBorderWindow;
-                this.WindowState = WindowState.Normal;
-                this.ResizeMode = ResizeMode.CanResize;
-            }
             
         }
         //RecoverWindowSizeはまだ使うか未定.というのもWindow_WとWindow_Hはゲームスクリーンの解像度の値にする予定

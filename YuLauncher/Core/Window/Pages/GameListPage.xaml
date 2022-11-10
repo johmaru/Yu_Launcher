@@ -14,9 +14,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Button Grid.Column="0" x:Name="August_myth" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="あいミスR(WebRender)" Click="August_myth_Click"/>
         </Grid>
+        <Grid Grid.Row="1">
+        <Button Grid.Column="0" x:Name="backbtn" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="戻る" Click="backbtn_Click"/>
+    </Grid>
     </Grid>
 </Page>

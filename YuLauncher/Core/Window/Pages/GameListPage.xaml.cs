@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YuLauncher.Game;
+using YuLauncher.Game.Window;
 
 namespace YuLauncher.Core.Window.Pages
 {
@@ -20,6 +22,7 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class GameListPage : Page
     {
+       
         public GameListPage()
         {
             InitializeComponent();
@@ -27,7 +30,13 @@ namespace YuLauncher.Core.Window.Pages
 
         private void August_myth_Click(object sender, RoutedEventArgs e)
         {
+          var gamewindow = new GameWindow(August_myth.Name);
+           gamewindow.Show();
+        }
 
+        private void backbtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }

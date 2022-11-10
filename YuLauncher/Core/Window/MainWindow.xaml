@@ -15,7 +15,6 @@
     <Grid Height="400" MinWidth="800" MinHeight="400" ClipToBounds="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">

@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,6 +25,10 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Game\Window\Pages\" />
     </ItemGroup>
 
 </Project>
