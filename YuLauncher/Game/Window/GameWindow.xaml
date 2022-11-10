@@ -6,8 +6,14 @@
         xmlns:local="clr-namespace:YuLauncher.Game.Window"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        xmlns:properties="clr-namespace:YuLauncher.Properties"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+
+    <DockPanel Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
+            <wv2:WebView2 Name="webView"
+                  Source=""
+   />
+        </DockPanel>
+    
 </Controls:MetroWindow>

@@ -88,7 +88,7 @@ namespace YuLauncher.Core.Pages
             {
                 FullSc.IsChecked = true;
             }
-            else
+            if (Settings.Default.FullScreen == false)
             {
                 FullSc.IsChecked = false;
             }
