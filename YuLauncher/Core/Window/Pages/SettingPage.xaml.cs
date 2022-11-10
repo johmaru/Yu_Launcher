@@ -122,10 +122,7 @@ namespace YuLauncher.Core.Pages
             TXTRES2.Text = txt2ST;
         }
 
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            
-        }
+       
 
         private void FCBTN_Click(object sender, RoutedEventArgs e)
         {

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Pages;
+using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Pages
@@ -34,6 +35,9 @@ namespace YuLauncher.Core.Pages
             NavigationService.Navigate(new SettingPage());
         }
 
-       
+        private void StartBTN_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new GameListPage());
+        }
     }
 }
