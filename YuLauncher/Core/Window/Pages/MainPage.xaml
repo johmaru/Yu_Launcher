@@ -10,9 +10,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
+            <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Button Grid.Column="0" x:Name="StartBTN" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="ゲーム一覧" Click="StartBTN_Click"/>
+        </Grid>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
