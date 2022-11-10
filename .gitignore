@@ -348,6 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-*/YuLauncher/bin/
-*/YuLauncher/obj/
-*.vs
+
+/YuLauncher/bin/
+/YuLauncher/obj/
+/.vs/
