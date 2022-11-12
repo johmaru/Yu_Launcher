@@ -1,6 +1,6 @@
 ﻿<Controls:MetroWindow
     Height="400"
-    Title="MainWindow"
+    Title="YuLancher"
     Width="800"
     mc:Ignorable="d"
     x:Class="YuLauncher.MainWindow"

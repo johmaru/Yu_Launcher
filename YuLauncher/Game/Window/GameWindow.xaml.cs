@@ -27,6 +27,7 @@ namespace YuLauncher.Game.Window
             if (strData == "August_myth")
             {
                 webView.Source = new Uri("https://games.dmm.com/detail/imys/");
+                this.Title = "あいりすミスティリア!R";
             }
             else
             {
