@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="フルスクリーン" FontSize="18" VerticalAlignment="Top"/>
-            <CheckBox Grid.Column="1" x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick" VerticalAlignment="Top"/>
+            <CheckBox Grid.Column="1" x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" VerticalAlignment="Top"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
