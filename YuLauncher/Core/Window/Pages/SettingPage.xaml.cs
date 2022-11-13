@@ -96,6 +96,14 @@ namespace YuLauncher.Core.Pages
             }
         }
 
+<<<<<<< HEAD
+=======
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            WindowSizeSave();
+        }
+
+>>>>>>> 31de9ca6809e975986c22a68f5c6ef693f92817a
         private void TXTRES1_Loaded(object sender, RoutedEventArgs e)
         {
             Double txt1 = Settings.Default.Window_H;
@@ -138,6 +146,7 @@ namespace YuLauncher.Core.Pages
                     break;
 
                 case MessageBoxResult.No:
+                    NavigationService.GoBack();
                     break;
             }
         }
