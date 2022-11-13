@@ -137,6 +137,7 @@ namespace YuLauncher.Core.Pages
                     NavigationService.GoBack();
                     break;
 
+
                 case MessageBoxResult.No:
                     break;
             }
