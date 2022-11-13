@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Window.Pages;
+using YuLauncher.Properties;
 
 namespace YuLauncher.Game.Window
 {
@@ -27,6 +28,7 @@ namespace YuLauncher.Game.Window
             if (strData == "August_myth")
             {
                 webView.Source = new Uri("https://games.dmm.com/detail/imys/");
+                this.Title = "あいりすミスティリア!R";
             }
             else
             {
@@ -45,6 +47,41 @@ namespace YuLauncher.Game.Window
             else
             {
                 return;
+            }
+
+
+        }
+
+        private void webView_Initialized(object sender, EventArgs e)
+        {
+            if (Settings.Default.FullScreen == true)
+            {
+                var gamewd = SystemParameters.PrimaryScreenWidth;
+                var gameht = SystemParameters.PrimaryScreenHeight;
+
+                webView.Height = gameht;
+
+                webView.Width = gamewd;
+
+                gamedock.Width = gamewd;
+
+                gamedock.Height = gameht;
+            }
+
+            if (Settings.Default.FullScreen == false)
+            {
+                webView.Height = Settings.Default.Window_H;
+
+                webView.Width = Settings.Default.Window_W;
+
+                gamedock.Height = Settings.Default.Window_H;
+
+                gamedock.Width = Settings.Default.Window_W;
+            }
+
+            else
+            {
+              
             }
         }
     }

@@ -10,9 +10,9 @@
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
 
-    <DockPanel Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
+    <DockPanel x:Name="gamedock" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
             <wv2:WebView2 Name="webView"
-                  Source=""
+                  Source="" Initialized="webView_Initialized"
    />
         </DockPanel>
     

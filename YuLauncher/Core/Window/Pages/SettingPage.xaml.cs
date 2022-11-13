@@ -37,6 +37,7 @@ namespace YuLauncher.Core.Pages
             settings.Window_H = HD;
             settings.Save();
         }
+        /*
         private void FullScBTN()
         {
             string MessageTXT = "変更を適用するには再起動する必要があります、再起動しますか？";
@@ -56,7 +57,8 @@ namespace YuLauncher.Core.Pages
                     break;
             }
         }
-       //えっぎいバグ起こる
+        */
+        //えっぎいバグ起こる
         /* private void DoEvents()
         {
             DispatcherFrame frame = new DispatcherFrame();
@@ -92,16 +94,6 @@ namespace YuLauncher.Core.Pages
             {
                 FullSc.IsChecked = false;
             }
-        }
-
-        private void FullSc_OnClick(object sender, RoutedEventArgs e)
-        {
-            FullScBTN();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            WindowSizeSave();
         }
 
         private void TXTRES1_Loaded(object sender, RoutedEventArgs e)
@@ -142,9 +134,9 @@ namespace YuLauncher.Core.Pages
                     settings.Window_W = WD;
                     settings.Window_H = HD;
                     settings.Save();
-
-                    Application.Current.Shutdown();
+                    NavigationService.GoBack();
                     break;
+
 
                 case MessageBoxResult.No:
                     break;

@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="フルスクリーン" FontSize="18" VerticalAlignment="Top"/>
-            <CheckBox Grid.Column="1" x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" Click="FullSc_OnClick" VerticalAlignment="Top"/>
+            <CheckBox Grid.Column="1" x:Name="FullSc" Content="ON/OFF" IsChecked="False" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked" Loaded="FullSc_OnLoaded" VerticalAlignment="Top"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -39,7 +39,6 @@
             <TextBlock Grid.Column="0" Text="解像度変更" Height="30" FontSize="18"/>
             <TextBox Grid.Column="1" x:Name="TXTRES1" mah:TextBoxHelper.ClearTextButton="True" Text="1920" Loaded="TXTRES1_Loaded"/>
             <TextBox Grid.Column="2" x:Name="TXTRES2" mah:TextBoxHelper.ClearTextButton="True" Text="1080" Loaded="TXTRES2_Loaded"/>
-            <Button Grid.Column="3" Style="{DynamicResource MahApps.Styles.Button.Flat}" Content="保存" Click="Button_Click"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
