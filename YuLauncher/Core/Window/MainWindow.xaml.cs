@@ -15,7 +15,9 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using YuLauncher.Core.Pages;
+using YuLauncher.Game.Window;
 using YuLauncher.Properties;
+using YuLauncher.Core.Window.Pages;
 
 namespace YuLauncher
 {
@@ -29,6 +31,8 @@ namespace YuLauncher
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             
+
+
         }
         //RecoverWindowSizeはまだ使うか未定.というのもWindow_WとWindow_Hはゲームスクリーンの解像度の値にする予定
         //MainWindow用のSettingの値を作成する可能性が微レ存
@@ -43,33 +47,15 @@ namespace YuLauncher
                 settings.Window_H <= SystemParameters.WorkArea.Height)
             { Height = settings.Window_H; }
         }
-        //バグる
-       // private void DoEvents()
-       // {
-      //     DispatcherFrame frame = new DispatcherFrame();
-       //     var callback = new DispatcherOperationCallback(obj =>
-      //      {
-       //         ((DispatcherFrame)obj).Continue = false;
-       //       });
-     //       Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
-     //       Dispatcher.PushFrame(frame);
-     //   }
 
-        private void MetroWindow_DpiChanged(object sender, DpiChangedEventArgs e)
+        private void GameListPage_OnAugstClick(object sender, EventArgs e)
         {
-          
+            this.Close();
         }
 
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        public void MWClose()
         {
-
+            this.Close();
         }
-
-        private void MetroWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-          
-        }
-
-     
     }
 }

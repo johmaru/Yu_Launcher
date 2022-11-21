@@ -83,5 +83,17 @@ namespace YuLauncher.Properties {
                 this["WindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LauncherComp {
+            get {
+                return ((bool)(this["LauncherComp"]));
+            }
+            set {
+                this["LauncherComp"] = value;
+            }
+        }
     }
 }
