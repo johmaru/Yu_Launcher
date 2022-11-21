@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 using YuLauncher.Game;
 using YuLauncher.Game.Window;
+using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Window.Pages
 {
@@ -28,6 +30,7 @@ namespace YuLauncher.Core.Window.Pages
             InitializeComponent();
         }
 
+       
         private void August_myth_Click(object sender, RoutedEventArgs e)
         {
           var gamewindow = new GameWindow(August_myth.Name);

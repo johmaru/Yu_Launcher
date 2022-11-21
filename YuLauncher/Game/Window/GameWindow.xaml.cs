@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using Microsoft.Web.WebView2.Core.Raw;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 
@@ -83,6 +84,22 @@ namespace YuLauncher.Game.Window
             {
               
             }
+        }
+
+        private void WikiBTN(object sender, RoutedEventArgs e)
+        {
+            switch (this.Title)
+            {
+                case "あいりすミスティリア!R":
+                    var wikiwindow = new GameWindowAssistant(this.Title);
+                    wikiwindow.Show();
+                    break;
+            }
+        }
+
+        private void GameWindow1_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
