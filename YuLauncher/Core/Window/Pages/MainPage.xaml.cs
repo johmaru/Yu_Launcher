@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Data.SQLite;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
+using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MahApps.Metro.Controls;
-using YuLauncher.Core.Pages;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace YuLauncher.Core.Pages
 {
@@ -24,11 +21,30 @@ namespace YuLauncher.Core.Pages
     /// </summary>
     public partial class MainPage : Page
     {
+        internal class LoginHistory
+        {
+            //Json中身
+            [JsonPropertyName("LatestLogin")]
+            public string? logindate { get; set; }
+
+            [JsonPropertyName("No")] public long? number { get; set; }
+        }
         public MainPage()
         {
             InitializeComponent();
-           
+
+            //JsonのシリアライズはMainWindowでやってるからデシリアライズだけ
+
+            var jsonString = File.ReadAllText(@"LoginHistory.Json");
+
+            LoginHistory loghist = JsonSerializer.Deserialize<LoginHistory>(jsonString);
+
+            //ラベルに最終ログイン時間を表示
+
+            LatestLogin.Content = loghist.logindate;
         }
+
+       
 
         private void SettingBTN_OnClick(object sender, RoutedEventArgs e)
         {
@@ -38,6 +54,10 @@ namespace YuLauncher.Core.Pages
         private void StartBTN_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new GameListPage());
+        }
+
+        private void LoginHistoryBTN_OnClick(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
