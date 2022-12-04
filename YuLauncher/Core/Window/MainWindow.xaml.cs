@@ -98,7 +98,7 @@ public partial class MainWindow : MetroWindow
 
         if (Directory.Exists("Data/LoginData"))
         {
-            FileInfo logdataInfo = new FileInfo($"Data/LoginData/{Year},{Month},{Day}");
+            FileInfo logdataInfo = new FileInfo($"Data/LoginData/{Year}{Month}{Day}");
 
             FileStream fs = logdataInfo.Create();
 
@@ -117,6 +117,8 @@ public partial class MainWindow : MetroWindow
         }
 
         //ここからログイン履歴が見れる機能を追加
+
+
 
 
     }
