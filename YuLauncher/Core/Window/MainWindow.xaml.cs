@@ -110,6 +110,7 @@ public partial class MainWindow : MetroWindow
 
             FileInfo logdataInfo = new FileInfo($"Data/LoginData/{Year}{Month}{Day}");
 
+
             FileStream fs = logdataInfo.Create();
 
             fs.Close();
