@@ -9,9 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Data\**" />
       <Compile Remove="Game\Window\Pages\**" />
+      <EmbeddedResource Remove="Data\**" />
       <EmbeddedResource Remove="Game\Window\Pages\**" />
+      <None Remove="Data\**" />
       <None Remove="Game\Window\Pages\**" />
+      <Page Remove="Data\**" />
       <Page Remove="Game\Window\Pages\**" />
     </ItemGroup>
 
@@ -36,10 +40,6 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\" />
     </ItemGroup>
 
 </Project>

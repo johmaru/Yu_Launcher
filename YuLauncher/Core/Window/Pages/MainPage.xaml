@@ -2,33 +2,39 @@
     d:DesignHeight="{Binding Source={x:Static properties:Settings.Default}, Path=Window_H}"
     d:DesignWidth="{Binding Source={x:Static properties:Settings.Default}, Path=Window_W}"
     mc:Ignorable="d"
-    x:Class="YuLauncher.Core.Pages.MainPage"
+    x:Class="YuLauncher.Core.Window.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:YuLauncher.Core.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:YuLauncher.Properties"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Button
                 Click="StartBTN_Click"
                 Content="ゲーム一覧"
                 Grid.Column="0"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
-                x:Name="StartBTN" />
+                x:Name="StartBTN"/>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+
+
             <Button
                 Click="SettingBTN_OnClick"
                 Content="設定"
@@ -36,14 +42,18 @@
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                 x:Name="SettingBTN" />
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <Button
                 Click="LoginHistoryBTN_OnClick"
                 Content="ログイン履歴"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </Grid>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3" Grid.Column="0">
             <Label x:Name="LatestLogin" />
         </Grid>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Label x:Name="TodaysLogin"/>
+        </Grid>
+
     </Grid>
 </Page>
