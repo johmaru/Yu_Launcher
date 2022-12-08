@@ -26,35 +26,35 @@ namespace YuLauncher.Game.Window
         public GameWindow(string strData)
         {
             InitializeComponent();
-            if (strData == "August_myth")
+            if (strData == "あいミスR(WebRender)")
             {
                 webView.Source = new Uri("https://games.dmm.com/detail/imys/");
                 this.Title = "あいりすミスティリア!R";
             }
-            else if (strData == "Minasigo")
+            else if (strData == "ミナシゴノシゴト(WebRender)")
             {
                 webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/minashigo_x/");
                 this.Title = "ミナシゴノシゴトR";
             }
-            else if (strData == "Ayarabu")
+            else if (strData == "あやかしランブル(WebRender)")
             {
                 webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/ayarabux/");
                 this.Title = "あやかしランブル!X";
             }
 
-            else if (strData == "Sengoku_KoiHime")
+            else if (strData == "戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)")
             {
                 webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/oenshinshix/");
                 this.Title = "戦国†恋姫オンラインX〜奥宴新史〜";
             }
 
-            else if (strData == "DeepOne")
+            else if (strData == "DeepOne 虚無と夢幻のフラグメントR(WebRender)")
             {
                 webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/deeponer/");
                 this.Title = "DeepOne 虚無と夢幻のフラグメントR";
             }
 
-            else if (strData == "MesiGirl")
+            else if (strData == "救世少女メシアガールXおかわり (WebRender)")
             {
                 webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/");
                 this.Title = "救世少女メシアガールXおかわり";

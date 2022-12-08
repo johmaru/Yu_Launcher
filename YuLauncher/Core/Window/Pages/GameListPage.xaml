@@ -29,32 +29,40 @@
 
 
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
-            <Button Grid.Column="0" x:Name="August_myth" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="あいミスR(WebRender)" Click="August_myth_Click"/>
+            <Button Grid.Column="0" x:Name="GameListBTN1" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="あいミスR(WebRender)" Click="August_myth_Click"/>
         </Grid>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0">
-            <Button Grid.Column="0" x:Name="Minasigo" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="ミナシゴノシゴト(WebRender)" Click="Minasigo_OnClick"/>
+            <Button Grid.Column="0" x:Name="GameListBTN2" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="ミナシゴノシゴト(WebRender)" Click="Minasigo_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
-            <Button Grid.Column="0" x:Name="Ayarabu" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="あやかしランブル(WebRender)" Click="Ayarabu_OnClick"/>
+            <Button Grid.Column="0" x:Name="GameListBTN3" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="あやかしランブル(WebRender)" Click="Ayarabu_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0">
-            <Button Grid.Column="0" x:Name="Sengoku_KoiHime" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)" Click="Sengoku_KoiHime_OnClick"/>
+            <Button Grid.Column="0" x:Name="GameListBTN4" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)" Click="Sengoku_KoiHime_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0">
-            <Button Grid.Column="0" x:Name="DeepOne" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="DeepOne 虚無と夢幻のフラグメントR(WebRender)" Click="DeepOne_OnClick"/>
+            <Button Grid.Column="0" x:Name="GameListBTN5" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="DeepOne 虚無と夢幻のフラグメントR(WebRender)" Click="DeepOne_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0">
-            <Button Grid.Column="0" x:Name="MesiGirl" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="救世少女メシアガールXおかわり (WebRender)" Click="MesiGirl_OnClick"/>
+            <Button Grid.Column="0" x:Name="GameListBTN6" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="救世少女メシアガールXおかわり (WebRender)" Click="MesiGirl_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="0">
             <Button Grid.Column="0" x:Name="backbtn" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="戻る" Click="backbtn_Click"/>
         </Grid>
 
+        <Grid Grid.Row="7" Grid.Column="0">
+            <Button Grid.Column="0" x:Name="BackPage" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="前のページ" Background="Blue" Click="BackPage_OnClick"/>
         </Grid>
+
+        <Grid Grid.Row="7" Grid.Column="1">
+            <Button Grid.Column="0" x:Name="NextPage" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="次のページ" Background="Blue" Click="NextPage_OnClick"/>
+        </Grid>
+
+    </Grid>
 </Page>

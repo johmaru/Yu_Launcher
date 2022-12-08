@@ -114,7 +114,7 @@ namespace YuLauncher.Core.Window.Pages
 
         private void Fav_GameList_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("機能は実装されていません");
         }
     }
 }
