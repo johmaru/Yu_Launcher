@@ -60,6 +60,77 @@ namespace YuLauncher.Game.Window
                 this.Title = "救世少女メシアガールXおかわり";
             }
 
+            else if (strData == "千年戦争アイギスR(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/aigis/");
+                this.Title = "千年戦争アイギスR";
+            }
+
+            else if (strData == "戦国百花伝R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/hyakkadenr/");
+                this.Title = "戦国百花伝R";
+            }
+
+            else if (strData == "対魔忍RPGX(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/taimanin_rpgx/");
+                this.Title = "対魔忍RPGX";
+            }
+
+            else if (strData == "神姫PROJECT R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/kamipror/");
+                this.Title = "神姫PROJECT R";
+            }
+
+            else if (strData == "モンスター娘TD〜ボクは絶海の孤島でモン娘たちに溺愛されて困っています〜X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/monmusutdx/");
+                this.Title = "モンスター娘TD";
+            }
+
+            else if (strData == "ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/MistTrainGirlsX/");
+                this.Title = "ミストトレインガールズX";
+            }
+
+            else if (strData == "オトギフロンティア R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/otogi_f_r/");
+                this.Title = "オトギフロンティア R";
+            }
+
+            else if (strData == "アイ・アム・マジカミDX(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/magicami_dx/");
+                this.Title = "アイ・アム・マジカミDX";
+            }
+
+            else if (strData == "れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/legeclox/");
+                this.Title = "レジェンド・クローバー〜 X";
+            }
+            
+            else if (strData == "FLOWER KNIGHT GIRL X(WebRender)")
+            {
+                webView.Source = new Uri("https://games.dmm.co.jp/detail/flower-x/");
+                this.Title = "花騎士X";
+            }
+
+            else if (strData == "エンジェリックリンクR(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/angelicr/");
+                this.Title = "エンクリR";
+            }
+
+            else if (strData == "天啓パラドクスX(WebRender)")
+            {
+                webView.Source = new Uri("https://games.dmm.co.jp/detail/tenkeiprdx_x/");
+                this.Title = "天啓パラドクスX";
+            }
 
 
             if (Properties.Settings.Default.FullScreen == true)
