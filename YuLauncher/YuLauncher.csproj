@@ -5,11 +5,26 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <Configurations>Debug;Release;kireinaRelease</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Data\**" />
+      <Compile Remove="Game\Window\Pages\**" />
+      <EmbeddedResource Remove="Data\**" />
+      <EmbeddedResource Remove="Game\Window\Pages\**" />
+      <None Remove="Data\**" />
+      <None Remove="Game\Window\Pages\**" />
+      <Page Remove="Data\**" />
+      <Page Remove="Game\Window\Pages\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EntityFramework" Version="6.4.4" />
       <PackageReference Include="MahApps.Metro" Version="2.4.9" />
       <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,10 +40,6 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Game\Window\Pages\" />
     </ItemGroup>
 
 </Project>

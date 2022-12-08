@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Core\Window\Pages\GameHistoryPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Core\Window\Pages\GameListPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Core\Window\Pages\GameHistoryPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Core\Window\Pages\GameListPage.xaml">
       <SubType>Designer</SubType>
     </Page>

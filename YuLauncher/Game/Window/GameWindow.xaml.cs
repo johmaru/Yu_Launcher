@@ -26,15 +26,113 @@ namespace YuLauncher.Game.Window
         public GameWindow(string strData)
         {
             InitializeComponent();
-            if (strData == "August_myth")
+            if (strData == "あいミスR(WebRender)")
             {
                 webView.Source = new Uri("https://games.dmm.com/detail/imys/");
                 this.Title = "あいりすミスティリア!R";
             }
-            else
+            else if (strData == "ミナシゴノシゴト(WebRender)")
             {
-                return;
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/minashigo_x/");
+                this.Title = "ミナシゴノシゴトR";
             }
+            else if (strData == "あやかしランブル(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/ayarabux/");
+                this.Title = "あやかしランブル!X";
+            }
+
+            else if (strData == "戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/oenshinshix/");
+                this.Title = "戦国†恋姫オンラインX〜奥宴新史〜";
+            }
+
+            else if (strData == "DeepOne 虚無と夢幻のフラグメントR(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/deeponer/");
+                this.Title = "DeepOne 虚無と夢幻のフラグメントR";
+            }
+
+            else if (strData == "救世少女メシアガールXおかわり (WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/");
+                this.Title = "救世少女メシアガールXおかわり";
+            }
+
+            else if (strData == "千年戦争アイギスR(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/aigis/");
+                this.Title = "千年戦争アイギスR";
+            }
+
+            else if (strData == "戦国百花伝R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/hyakkadenr/");
+                this.Title = "戦国百花伝R";
+            }
+
+            else if (strData == "対魔忍RPGX(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/taimanin_rpgx/");
+                this.Title = "対魔忍RPGX";
+            }
+
+            else if (strData == "神姫PROJECT R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/kamipror/");
+                this.Title = "神姫PROJECT R";
+            }
+
+            else if (strData == "モンスター娘TD〜ボクは絶海の孤島でモン娘たちに溺愛されて困っています〜X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/monmusutdx/");
+                this.Title = "モンスター娘TD";
+            }
+
+            else if (strData == "ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/MistTrainGirlsX/");
+                this.Title = "ミストトレインガールズX";
+            }
+
+            else if (strData == "オトギフロンティア R(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/otogi_f_r/");
+                this.Title = "オトギフロンティア R";
+            }
+
+            else if (strData == "アイ・アム・マジカミDX(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/magicami_dx/");
+                this.Title = "アイ・アム・マジカミDX";
+            }
+
+            else if (strData == "れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/legeclox/");
+                this.Title = "レジェンド・クローバー〜 X";
+            }
+            
+            else if (strData == "FLOWER KNIGHT GIRL X(WebRender)")
+            {
+                webView.Source = new Uri("https://games.dmm.co.jp/detail/flower-x/");
+                this.Title = "花騎士X";
+            }
+
+            else if (strData == "エンジェリックリンクR(WebRender)")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/angelicr/");
+                this.Title = "エンクリR";
+            }
+
+            else if (strData == "天啓パラドクスX(WebRender)")
+            {
+                webView.Source = new Uri("https://games.dmm.co.jp/detail/tenkeiprdx_x/");
+                this.Title = "天啓パラドクスX";
+            }
+
+
             if (Properties.Settings.Default.FullScreen == true)
             {
                 this.WindowStyle = WindowStyle.None;
@@ -88,13 +186,8 @@ namespace YuLauncher.Game.Window
 
         private void WikiBTN(object sender, RoutedEventArgs e)
         {
-            switch (this.Title)
-            {
-                case "あいりすミスティリア!R":
-                    var wikiwindow = new GameWindowAssistant(this.Title);
-                    wikiwindow.Show();
-                    break;
-            }
+            var wikiwindow = new GameWindowAssistant(this.Title);
+            wikiwindow.Show();
         }
 
         private void GameWindow1_Loaded(object sender, RoutedEventArgs e)
