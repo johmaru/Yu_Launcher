@@ -31,10 +31,37 @@ namespace YuLauncher.Game.Window
                 webView.Source = new Uri("https://games.dmm.com/detail/imys/");
                 this.Title = "あいりすミスティリア!R";
             }
-            else
+            else if (strData == "Minasigo")
             {
-                return;
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/minashigo_x/");
+                this.Title = "ミナシゴノシゴトR";
             }
+            else if (strData == "Ayarabu")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/ayarabux/");
+                this.Title = "あやかしランブル!X";
+            }
+
+            else if (strData == "Sengoku_KoiHime")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/oenshinshix/");
+                this.Title = "戦国†恋姫オンラインX〜奥宴新史〜";
+            }
+
+            else if (strData == "DeepOne")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/deeponer/");
+                this.Title = "DeepOne 虚無と夢幻のフラグメントR";
+            }
+
+            else if (strData == "MesiGirl")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/");
+                this.Title = "救世少女メシアガールXおかわり";
+            }
+
+
+
             if (Properties.Settings.Default.FullScreen == true)
             {
                 this.WindowStyle = WindowStyle.None;
@@ -88,13 +115,8 @@ namespace YuLauncher.Game.Window
 
         private void WikiBTN(object sender, RoutedEventArgs e)
         {
-            switch (this.Title)
-            {
-                case "あいりすミスティリア!R":
-                    var wikiwindow = new GameWindowAssistant(this.Title);
-                    wikiwindow.Show();
-                    break;
-            }
+            var wikiwindow = new GameWindowAssistant(this.Title);
+            wikiwindow.Show();
         }
 
         private void GameWindow1_Loaded(object sender, RoutedEventArgs e)

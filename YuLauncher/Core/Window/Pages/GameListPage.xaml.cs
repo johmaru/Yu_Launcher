@@ -41,5 +41,35 @@ namespace YuLauncher.Core.Window.Pages
         {
             NavigationService.GoBack();
         }
+
+        private void Minasigo_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gamewindow = new GameWindow(Minasigo.Name);
+            gamewindow.Show();
+        }
+
+        private void Ayarabu_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gamewindow = new GameWindow(Ayarabu.Name);
+            gamewindow.Show();
+        }
+
+        private void Sengoku_KoiHime_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gamewindow = new GameWindow(Sengoku_KoiHime.Name);
+            gamewindow.Show();
+        }
+
+        private void DeepOne_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gamewindow = new GameWindow(DeepOne.Name);
+            gamewindow.Show();
+        }
+
+        private void MesiGirl_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gamewindow = new GameWindow(MesiGirl.Name);
+            gamewindow.Show();
+        }
     }
 }

@@ -48,12 +48,19 @@
                 Content="ログイン履歴"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="0">
+        <Grid Grid.Row="4" Grid.Column="0">
             <Label x:Name="LatestLogin" />
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="1">
+        <Grid Grid.Row="4" Grid.Column="1">
             <Label x:Name="TodaysLogin"/>
         </Grid>
 
-    </Grid>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Button
+                x:Name="Fav_GameList"
+                Click="Fav_GameList_OnClick"
+                Content="お気に入りゲーム"
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+        </Grid>
+        </Grid>
 </Page>

@@ -111,5 +111,10 @@ namespace YuLauncher.Core.Window.Pages
         {
             NavigationService.Navigate(new GameHistoryPage());
         }
+
+        private void Fav_GameList_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
