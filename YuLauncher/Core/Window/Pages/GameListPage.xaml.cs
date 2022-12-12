@@ -72,6 +72,7 @@ namespace YuLauncher.Core.Window.Pages
             gamewindow.Show();
         }
 
+        //ページが戻ったときの処理
         private void BackPage_OnClick(object sender, RoutedEventArgs e)
         {
             if (GameListBTN1.Content.ToString() == "あいミスR(WebRender)")
@@ -110,6 +111,7 @@ namespace YuLauncher.Core.Window.Pages
             }
         }
 
+        //次のページの処理
         private void NextPage_OnClick(object sender, RoutedEventArgs e)
         {
 
@@ -144,5 +146,7 @@ namespace YuLauncher.Core.Window.Pages
             }
             
         }
+
+        //こっから3ページ目予定
     }
 }
