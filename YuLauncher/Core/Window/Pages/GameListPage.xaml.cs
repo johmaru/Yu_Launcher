@@ -72,6 +72,7 @@ namespace YuLauncher.Core.Window.Pages
             gamewindow.Show();
         }
 
+        //ページが戻ったときの処理
         private void BackPage_OnClick(object sender, RoutedEventArgs e)
         {
             if (GameListBTN1.Content.ToString() == "あいミスR(WebRender)")
@@ -108,8 +109,24 @@ namespace YuLauncher.Core.Window.Pages
 
                 GameListBTN6.Content = "ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)";
             }
+
+            else if (GameListBTN1.Content.ToString() == "アライアンスセージ")
+            {
+                GameListBTN1.Content = "オトギフロンティア R(WebRender)";
+
+                GameListBTN2.Content = "アイ・アム・マジカミDX(WebRender)";
+
+                GameListBTN3.Content = "れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)";
+
+                GameListBTN4.Content = "FLOWER KNIGHT GIRL X(WebRender)";
+
+                GameListBTN5.Content = "エンジェリックリンクR(WebRender)";
+
+                GameListBTN6.Content = "天啓パラドクスX(WebRender)";
+            }
         }
 
+        //次のページの処理
         private void NextPage_OnClick(object sender, RoutedEventArgs e)
         {
 
@@ -142,7 +159,24 @@ namespace YuLauncher.Core.Window.Pages
 
                 GameListBTN6.Content = "天啓パラドクスX(WebRender)";
             }
+
+            else if (GameListBTN1.Content.ToString() == "オトギフロンティア R(WebRender)")
+            {
+                GameListBTN1.Content = "アライアンスセージ";
+
+                GameListBTN2.Content = "プリンセスエンパイア R";
+
+                GameListBTN3.Content = "";
+
+                GameListBTN4.Content = "";
+
+                GameListBTN5.Content = "";
+
+                GameListBTN6.Content = "";
+            }
             
         }
+
+        
     }
 }

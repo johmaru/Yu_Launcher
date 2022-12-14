@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -130,6 +131,18 @@ namespace YuLauncher.Game.Window
             {
                 webView.Source = new Uri("https://games.dmm.co.jp/detail/tenkeiprdx_x/");
                 this.Title = "天啓パラドクスX";
+            }
+
+            else if (strData == "アライアンスセージ")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/alliancesagesr/");
+                this.Title = "アライアンスセージ";
+            }
+
+            else if (strData == "プリンセスエンパイア R")
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/princessempirer/");
+                this.Title = "プリンセスエンパイア R";
             }
 
 

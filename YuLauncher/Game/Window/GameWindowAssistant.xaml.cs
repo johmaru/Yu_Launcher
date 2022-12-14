@@ -129,6 +129,17 @@ namespace YuLauncher.Game.Window
                 webView.Source = new Uri("https://tenkei-paradox.wikiru.jp/");
             }
 
+            else if (strData == "アライアンスセージ")
+            {
+                this.Title = "アライアンスセージ WIKI";
+                webView.Source = new Uri("https://alliancesages.wikiru.jp/");
+            }
+
+            else if (strData == "プリンセスエンパイア R")
+            {
+                MessageBox.Show("現在このゲームのWIKIは在りません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
        
