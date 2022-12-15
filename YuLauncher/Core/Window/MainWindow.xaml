@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow
+﻿<Controls:MetroWindow x:Name="metowin"
     Height="400"
     Title="YuLancher"
     Width="800"
