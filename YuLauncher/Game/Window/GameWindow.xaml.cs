@@ -44,7 +44,7 @@ namespace YuLauncher.Game.Window
 
             if (strData == "あいミスR(WebRender)")
                 {
-                    webView.Source = new Uri("https://games.dmm.com/detail/imys/");
+                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/imys_r/");
                     this.Title = "あいりすミスティリア!R";
                 }
                 else if (strData == "ミナシゴノシゴト(WebRender)")
