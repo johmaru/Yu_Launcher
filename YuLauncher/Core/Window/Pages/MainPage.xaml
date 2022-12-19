@@ -24,7 +24,7 @@
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Button
                 Click="StartBTN_Click"
-                Content="ゲーム一覧"
+                Content="ゲーム一覧(R18)"
                 Grid.Column="0"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                 x:Name="StartBTN"/>
