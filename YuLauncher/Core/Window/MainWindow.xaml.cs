@@ -110,9 +110,9 @@ public partial class MainWindow : MetroWindow
 
         long num = ++loginstrek;
 
+       
 
-
-        }
+    }
 
     //RecoverWindowSizeはまだ使うか未定.というのもWindow_WとWindow_Hはゲームスクリーンの解像度の値にする予定
     //MainWindow用のSettingの値を作成する可能性が微レ存

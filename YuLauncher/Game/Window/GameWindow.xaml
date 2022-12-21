@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         xmlns:properties="clr-namespace:YuLauncher.Properties"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Loaded="GameWindow1_Loaded">
+        Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Loaded="GameWindow1_Loaded" Closing="GameWindow1_Closing" WindowStyle="None">
 
 
     <DockPanel x:Name="gamedock" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
