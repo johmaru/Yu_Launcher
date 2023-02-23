@@ -19,17 +19,27 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="2">
+            <Button
+                Click="GameListBTN_OnClick"
+                Content="ゲーム一覧"
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                x:Name="GameListBTN"
+                />
+        </Grid>
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Button
                 Click="StartBTN_Click"
                 Content="ゲーム一覧(R18)"
-                Grid.Column="0"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                 x:Name="StartBTN"/>
         </Grid>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -42,25 +52,28 @@
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                 x:Name="SettingBTN" />
         </Grid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
             <Button
                 Click="LoginHistoryBTN_OnClick"
                 Content="ログイン履歴"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="0">
-            <Label x:Name="LatestLogin" />
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="1">
-            <Label x:Name="TodaysLogin"/>
-        </Grid>
 
-        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0">
             <Button
                 x:Name="Fav_GameList"
                 Click="Fav_GameList_OnClick"
                 Content="お気に入りゲーム"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </Grid>
+
+        
+        <Grid Grid.Row="5" Grid.Column="0">
+            <Label x:Name="LatestLogin" />
         </Grid>
+        <Grid Grid.Row="5" Grid.Column="1">
+            <Label x:Name="TodaysLogin"/>
+        </Grid>
+
+    </Grid>
 </Page>

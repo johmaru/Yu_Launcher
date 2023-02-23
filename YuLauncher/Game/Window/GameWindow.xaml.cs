@@ -13,9 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Core.Raw;
+using Microsoft.Web.WebView2.WinForms;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
+using Microsoft.Web.WebView2.Wpf;
+using WebView2 = Microsoft.Web.WebView2.WinForms.WebView2;
 
 namespace YuLauncher.Game.Window
 {
@@ -43,8 +47,8 @@ namespace YuLauncher.Game.Window
             }
 
             if (strData == "あいミスR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/imys_r/");
+            {
+                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/imys_r/");
                     this.Title = "あいりすミスティリア!R";
                 }
                 else if (strData == "ミナシゴノシゴト(WebRender)")
@@ -161,7 +165,7 @@ namespace YuLauncher.Game.Window
                 }
 
 
-                
+            
             
         }
 
@@ -210,7 +214,7 @@ namespace YuLauncher.Game.Window
 
         private void GameWindow1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            webView.Stop();
+            
         }
     }
 }

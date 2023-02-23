@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Window.Pages
@@ -13,6 +16,11 @@ namespace YuLauncher.Core.Window.Pages
         public SettingPage()
         {
             InitializeComponent();
+
+            if (Settings.Default.Nikke_File_Loc != null)
+            {
+                N_FileTxT.Content = Settings.Default.Nikke_File_Loc;
+            }
         }
 
         void WindowSizeSave()
@@ -127,6 +135,31 @@ namespace YuLauncher.Core.Window.Pages
 
                 case MessageBoxResult.No:
                     break;
+            }
+        }
+
+        private void NIKKE_Loc_Setting_OnClick(object sender, RoutedEventArgs e)
+        {
+            using (var gameFolderLoc = new CommonOpenFileDialog()
+                   {
+                       Title = "ゲームフォルダーを選択してください",
+
+                       InitialDirectory = @"C:/",
+
+                       IsFolderPicker = true,
+                   })
+            {
+
+                if (gameFolderLoc.ShowDialog() != CommonFileDialogResult.Ok)
+                {
+                    return;
+                }
+
+                N_FileTxT.Content = gameFolderLoc.FileName;
+
+                Settings.Default.Nikke_File_Loc = gameFolderLoc.FileName;
+
+                Settings.Default.Save();
             }
         }
     }

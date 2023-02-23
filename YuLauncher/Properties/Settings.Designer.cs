@@ -179,5 +179,17 @@ namespace YuLauncher.Properties {
                 this["TodaysYesNo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Nikke_File_Loc {
+            get {
+                return ((string)(this["Nikke_File_Loc"]));
+            }
+            set {
+                this["Nikke_File_Loc"] = value;
+            }
+        }
     }
 }

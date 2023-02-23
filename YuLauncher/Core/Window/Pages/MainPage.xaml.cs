@@ -36,6 +36,8 @@ namespace YuLauncher.Core.Window.Pages
                 AllowTrailingCommas = true,
             };
 
+            
+
             /*JsonのシリアライズはMainWindowでやってるからデシリアライズだけ
 
             var jsonString = File.ReadAllText(@"LoginHistory.Json");
@@ -115,6 +117,11 @@ namespace YuLauncher.Core.Window.Pages
         private void Fav_GameList_OnClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("機能は実装されていません");
+        }
+
+        private void GameListBTN_OnClick(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new GameListPageClient());
         }
     }
 }

@@ -11,11 +11,13 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30">
-            </RowDefinition>
+            <RowDefinition Height="30"/>
+            
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="130*"/>
             <RowDefinition Height="20*"/>
+
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -39,11 +41,25 @@
             <TextBox Grid.Column="1" x:Name="TXTRES1" mah:TextBoxHelper.ClearTextButton="True" Text="1920" Loaded="TXTRES1_Loaded"/>
             <TextBox Grid.Column="2" x:Name="TXTRES2" mah:TextBoxHelper.ClearTextButton="True" Text="1080" Loaded="TXTRES2_Loaded"/>
         </Grid>
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="4">
             <Button x:Name="FCBTN" Style="{DynamicResource MahApps.Styles.Button.Flat}" Content="終了" Click="FCBTN_Click"/>
         </Grid>
-    </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="NIKKEファイルロケーション" Height="30" FontSize="18"/>
+            <Button Grid.Column="1"
+                    x:Name="NIKKE_Loc_Setting"
+                    Click="NIKKE_Loc_Setting_OnClick"
+                    Content="設定"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                    />
+            <Label Grid.Column="2" Name="N_FileTxT"></Label>
+        </Grid>
+        </Grid>
 </Page>

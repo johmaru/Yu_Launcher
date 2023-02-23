@@ -8,6 +8,9 @@
     <Compile Update="Core\Window\Pages\GameListPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Core\Window\Pages\GameListPageClient.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Core\Window\Pages\MainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -26,6 +29,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Core\Window\Pages\GameListPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Core\Window\Pages\GameListPageClient.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Core\Window\Pages\MainPage.xaml">
