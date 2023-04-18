@@ -1,31 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Core.Raw;
-using Microsoft.Web.WebView2.WinForms;
-using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
-using Microsoft.Web.WebView2.Wpf;
-using WebView2 = Microsoft.Web.WebView2.WinForms.WebView2;
 
 namespace YuLauncher.Game.Window
 {
-    /// <summary>
-    /// GameWindow.xaml の相互作用ロジック
-    /// </summary>
+
     public partial class GameWindow : MetroWindow
     {
         public GameWindow(string strData)
@@ -45,128 +27,53 @@ namespace YuLauncher.Game.Window
                     GameWindow1.WindowState = WindowState.Normal;
                     break;
             }
+           
+            //ゲームの情報をLookupで保管
+            
 
-            if (strData == "あいミスR(WebRender)")
+            List<(string GameName, string URL, string Name)> _r18GameList = new List<(string GameName, string URL, string Name)>
             {
-                webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/imys_r/");
-                    this.Title = "あいりすミスティリア!R";
-                }
-                else if (strData == "ミナシゴノシゴト(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/minashigo_x/");
-                    this.Title = "ミナシゴノシゴトR";
-                }
-                else if (strData == "あやかしランブル(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/ayarabux/");
-                    this.Title = "あやかしランブル!X";
-                }
+                ("あいミスR(WebRender)", "https://pc-play.games.dmm.co.jp/play/imys_r/", "あいりすミスティリア!R"),
+                ("ミナシゴノシゴト(WebRender)", "https://pc-play.games.dmm.co.jp/play/minashigo_x/", "ミナシゴノシゴトR"),
+                ("あやかしランブル(WebRender)", "https://pc-play.games.dmm.co.jp/play/ayarabux/", "あやかしランブル!X"),
+                ("戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)", "https://pc-play.games.dmm.co.jp/play/oenshinshix/", "戦国†恋姫オンラインX〜奥宴新史〜"),
+                ("DeepOne 虚無と夢幻のフラグメントR(WebRender)", "https://pc-play.games.dmm.co.jp/play/deeponer/", "DeepOne 虚無と夢幻のフラグメントR"),
+                ("救世少女メシアガールXおかわり (WebRender)", "https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/", "救世少女メシアガールXおかわり"),
+                ("千年戦争アイギスR(WebRender)", "https://pc-play.games.dmm.co.jp/play/aigis/", "千年戦争アイギスR"),
+                ("戦国百花伝R(WebRender)", "https://pc-play.games.dmm.co.jp/play/hyakkadenr/", "戦国百花伝R"),
+                ("対魔忍RPGX(WebRender)", "https://pc-play.games.dmm.co.jp/play/taimanin_rpgx/", "対魔忍RPGX"),
+                ("神姫PROJECT R(WebRender)", "https://pc-play.games.dmm.co.jp/play/kamipror/", "神姫PROJECT R"),
+                ("モンスター娘TD〜ボクは絶海の孤島でモン娘たちに溺愛されて困っています〜X(WebRender)", "https://pc-play.games.dmm.co.jp/play/monmusutdx/", "モンスター娘TD"),
+                ("ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)", "https://pc-play.games.dmm.co.jp/play/MistTrainGirlsX/", "ミストトレインガールズX"),
+                ("オトギフロンティア R(WebRender)", "https://pc-play.games.dmm.co.jp/play/otogi_f_r/", "オトギフロンティアR"),
+                ("アイ・アム・マジカミDX(WebRender)", "https://pc-play.games.dmm.co.jp/play/magicami_dx/", "アイ・アム・マジカミDX"),
+                ("れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)","https://pc-play.games.dmm.co.jp/play/legeclox/","レジェンド・クローバー〜X")
+                ,("FLOWER KNIGHT GIRL X(WebRender)","https://games.dmm.co.jp/detail/flower-x/","花騎士X")
+                ,("エンジェリックリンクR(WebRender)","https://pc-play.games.dmm.co.jp/play/angelicr/","エンクリR")
+                ,("天啓パラドクスX(WebRender)","https://games.dmm.co.jp/detail/tenkeiprdx_x/","テンパラX")
+                ,("アライアンスセージ","https://pc-play.games.dmm.co.jp/play/alliancesagesr/","アライアンスセージ")
+                ,("プリンセスエンパイア R","https://pc-play.games.dmm.co.jp/play/princessempirer/","プリンセスエンパイア R")
+            };
+            //strDataから受け取った値とLookup内のGameNameが一致するURLとName要素をWebViewに送信する
 
-                else if (strData == "戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/oenshinshix/");
-                    this.Title = "戦国†恋姫オンラインX〜奥宴新史〜";
-                }
+            string url = _r18GameList.FirstOrDefault(x => x.GameName == strData).URL;
 
-                else if (strData == "DeepOne 虚無と夢幻のフラグメントR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/deeponer/");
-                    this.Title = "DeepOne 虚無と夢幻のフラグメントR";
-                }
+            /*
+             こっちはかなり沼ったので補足すると、まず _r18GameList内に有るStrDataと等しいGameName要素をWhere拡張子を使って調べる
+            .SelectでWhereを使って調べたGameName内の要素であるNameを取り出す もしWhereで調べて一致したものがない場合はNullが保証されている
+            .FirstOrDefault();でGameName内にあるName要素が複数ある場合でも最初に該当した要素を取り出すように設定している
+            */
+            var name = _r18GameList.Where(g => g.GameName == strData)
 
-                else if (strData == "救世少女メシアガールXおかわり (WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/");
-                    this.Title = "救世少女メシアガールXおかわり";
-                }
+                .Select(g => g.Name)
 
-                else if (strData == "千年戦争アイギスR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/aigis/");
-                    this.Title = "千年戦争アイギスR";
-                }
+                .FirstOrDefault();
 
-                else if (strData == "戦国百花伝R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/hyakkadenr/");
-                    this.Title = "戦国百花伝R";
-                }
+            //WebView本体
 
-                else if (strData == "対魔忍RPGX(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/taimanin_rpgx/");
-                    this.Title = "対魔忍RPGX";
-                }
+            webView.Source = new Uri(url);
 
-                else if (strData == "神姫PROJECT R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/kamipror/");
-                    this.Title = "神姫PROJECT R";
-                }
-
-                else if (strData == "モンスター娘TD〜ボクは絶海の孤島でモン娘たちに溺愛されて困っています〜X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/monmusutdx/");
-                    this.Title = "モンスター娘TD";
-                }
-
-                else if (strData == "ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/MistTrainGirlsX/");
-                    this.Title = "ミストトレインガールズX";
-                }
-
-                else if (strData == "オトギフロンティア R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/otogi_f_r/");
-                    this.Title = "オトギフロンティア R";
-                }
-
-                else if (strData == "アイ・アム・マジカミDX(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/magicami_dx/");
-                    this.Title = "アイ・アム・マジカミDX";
-                }
-
-                else if (strData == "れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/legeclox/");
-                    this.Title = "レジェンド・クローバー〜 X";
-                }
-
-                else if (strData == "FLOWER KNIGHT GIRL X(WebRender)")
-                {
-                    webView.Source = new Uri("https://games.dmm.co.jp/detail/flower-x/");
-                    this.Title = "花騎士X";
-                }
-
-                else if (strData == "エンジェリックリンクR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/angelicr/");
-                    this.Title = "エンクリR";
-                }
-
-                else if (strData == "天啓パラドクスX(WebRender)")
-                {
-                    webView.Source = new Uri("https://games.dmm.co.jp/detail/tenkeiprdx_x/");
-                    this.Title = "天啓パラドクスX";
-                }
-
-                else if (strData == "アライアンスセージ")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/alliancesagesr/");
-                    this.Title = "アライアンスセージ";
-                }
-
-                else if (strData == "プリンセスエンパイア R")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/princessempirer/");
-                    this.Title = "プリンセスエンパイア R";
-                }
-
-
-            
-            
+            this.Title = name;
         }
 
         private void webView_Initialized(object sender, EventArgs e)
