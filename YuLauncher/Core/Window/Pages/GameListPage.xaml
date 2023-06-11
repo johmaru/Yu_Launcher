@@ -43,7 +43,13 @@
                 Click="August_myth_Click"
                 Content="あいミスR(WebRender)"
                 DataContext="あいミスR"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="よく遊ぶゲームに登録します" Click="MenuItem_OnClick"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                </Button>
         </Grid>
 
         <Grid

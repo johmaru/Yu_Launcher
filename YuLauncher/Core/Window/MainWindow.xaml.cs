@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -24,11 +25,17 @@ public partial class MainWindow : MetroWindow
        public string? logindate { get; set; }
     }
     */
-    
 
+    private readonly string config = "Config";
     public MainWindow()
     {
         InitializeComponent();
+
+        var root = System.AppDomain.CurrentDomain.BaseDirectory;
+
+
+        var configPath = root + config;
+        
 
         this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
@@ -110,7 +117,45 @@ public partial class MainWindow : MetroWindow
 
         long num = ++loginstrek;
 
-       
+        try
+        {
+            if (Directory.Exists(configPath) == true)
+            {
+                return;
+            }
+
+            else
+            {
+                Directory.CreateDirectory(configPath);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        try
+        {
+            if (File.Exists(configPath + "Favorite.txt") == true)
+            {
+                return;
+            }
+
+            else
+            {
+                string textPath = "./Favorite.txt";
+
+                var textfilePath = configPath + textPath;
+
+                using (FileStream fs = File.Create(textfilePath)) ;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
     }
 

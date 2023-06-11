@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,6 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class GameListPage : Page
     {
-       
         public GameListPage()
         {
             InitializeComponent();
@@ -182,7 +182,31 @@ namespace YuLauncher.Core.Window.Pages
             }
             
         }
+        public void FavBTN_ClickEvent(object sender, RoutedEventArgs e)
+        {
+        }
 
-        
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = System.AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN1.Content);
+            }
+
+            MessageBox.Show(GameListBTN1.Content + "をお気に入りのゲームに追加しました");
+        }
     }
 }
