@@ -35,6 +35,7 @@ namespace YuLauncher.Core.Window.Pages
         {
           var gamewindow = new GameWindow(GameListBTN1.Content.ToString());
            gamewindow.Show();
+           Application.Current.MainWindow.Hide();
         }
 
         private void backbtn_Click(object sender, RoutedEventArgs e)
@@ -46,30 +47,35 @@ namespace YuLauncher.Core.Window.Pages
         {
             var gamewindow = new GameWindow(GameListBTN2.Content.ToString());
             gamewindow.Show();
+            
         }
 
         private void Ayarabu_OnClick(object sender, RoutedEventArgs e)
         {
             var gamewindow = new GameWindow(GameListBTN3.Content.ToString());
             gamewindow.Show();
+            
         }
 
         private void Sengoku_KoiHime_OnClick(object sender, RoutedEventArgs e)
         {
             var gamewindow = new GameWindow(GameListBTN4.Content.ToString());
             gamewindow.Show();
+           
         }
 
         private void DeepOne_OnClick(object sender, RoutedEventArgs e)
         {
             var gamewindow = new GameWindow(GameListBTN5.Content.ToString());
             gamewindow.Show();
+          
         }
 
         private void MesiGirl_OnClick(object sender, RoutedEventArgs e)
         {
             var gamewindow = new GameWindow(GameListBTN6.Content.ToString());
             gamewindow.Show();
+         
         }
 
         //ページが戻ったときの処理

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using MahApps.Metro.Controls;
+using Microsoft.Web.WebView2.Wpf;
 using YuLauncher.Properties;
 
 namespace YuLauncher.Game.Window
@@ -13,6 +14,7 @@ namespace YuLauncher.Game.Window
         public GameWindow(string strData)
         {
             InitializeComponent();
+
 
             switch (Settings.Default.FullScreen)
             {
@@ -69,9 +71,17 @@ namespace YuLauncher.Game.Window
 
                 .FirstOrDefault();
 
+            string gameTag = name + "TAG"; ;
+
+            var gameView = new WebView2();
+
+            gameView.Tag = gameTag;
+
             //WebView本体
 
-            webView.Source = new Uri(url);
+           // webView.Tag = gameTag;
+
+         webView.Source = new Uri(url);
 
             this.Title = name;
         }
@@ -86,10 +96,6 @@ namespace YuLauncher.Game.Window
                 webView.Height = gameht;
 
                 webView.Width = gamewd;
-
-                gamedock.Width = gamewd;
-
-                gamedock.Height = gameht;
             }
 
             if (Settings.Default.FullScreen == false)
@@ -97,10 +103,6 @@ namespace YuLauncher.Game.Window
                 webView.Height = Settings.Default.Window_H;
 
                 webView.Width = Settings.Default.Window_W;
-
-                gamedock.Height = Settings.Default.Window_H;
-
-                gamedock.Width = Settings.Default.Window_W;
             }
 
             else
@@ -121,7 +123,7 @@ namespace YuLauncher.Game.Window
 
         private void GameWindow1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+            Application.Current.MainWindow.Show();
         }
     }
 }

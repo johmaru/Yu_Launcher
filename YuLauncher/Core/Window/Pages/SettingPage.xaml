@@ -21,6 +21,7 @@
 
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="130*" />
             <RowDefinition Height="20*" />
 
@@ -73,7 +74,7 @@
                 Loaded="TXTRES2_Loaded"
                 Text="1080" />
         </Grid>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
             <Button
                 x:Name="FCBTN"
                 Click="FCBTN_Click"
@@ -100,6 +101,7 @@
                 Content="設定"
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
             <Label Name="N_FileTxT" Grid.Column="2" />
+
         </Grid>
     </Grid>
 </Page>
