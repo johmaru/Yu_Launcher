@@ -46,7 +46,7 @@
                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
                 <Button.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="よく遊ぶゲームに登録します" Click="MenuItem_OnClick"/>
+                        <MenuItem x:Name="GameButtonCtx1" Header="" Click="MenuItem_OnClick" Loaded="GameButtonCtx1_Loaded"/>
                     </ContextMenu>
                 </Button.ContextMenu>
                 </Button>
@@ -61,7 +61,13 @@
                 Grid.Column="0"
                 Click="Minasigo_OnClick"
                 Content="ミナシゴノシゴト(WebRender)"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="GameButtonCtx2" Header="" Click="GameButtonCtx2_OnClick" Loaded="GameButtonCtx2_OnLoaded"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                </Button>
         </Grid>
 
         <Grid
@@ -73,7 +79,13 @@
                 Grid.Column="0"
                 Click="Ayarabu_OnClick"
                 Content="あやかしランブル(WebRender)"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" >
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="GameButtonCtx3" Header="" Click="GameButtonCtx3_OnClick" Loaded="GameButtonCtx3_OnLoaded"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                </Button>
         </Grid>
 
         <Grid
@@ -85,7 +97,13 @@
                 Grid.Column="0"
                 Click="Sengoku_KoiHime_OnClick"
                 Content="戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" >
+            <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="GameButtonCtx4" Header="" Click="GameButtonCtx4_OnClick" Loaded="GameButtonCtx4_OnLoaded"/>
+                    </ContextMenu>
+            </Button.ContextMenu>
+            </Button>
         </Grid>
 
         <Grid
@@ -97,7 +115,13 @@
                 Grid.Column="0"
                 Click="DeepOne_OnClick"
                 Content="DeepOne 虚無と夢幻のフラグメントR(WebRender)"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" >
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="GameButtonCtx5" Header="" Click="GameButtonCtx5_OnClick" Loaded="GameButtonCtx5_OnLoaded"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                </Button>
         </Grid>
 
         <Grid
@@ -110,7 +134,13 @@
                 Click="MesiGirl_OnClick"
                 Content="救世少女メシアガールXおかわり (WebRender)"
                 DataContext="救世少女メシアガールXおかわり"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="GameButtonCtx6" Header="" Click="GameButtonCtx6_OnClick" Loaded="GameButtonCtx6_OnLoaded"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                </Button>
         </Grid>
 
         <Grid

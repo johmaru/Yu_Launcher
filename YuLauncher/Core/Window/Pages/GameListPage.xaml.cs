@@ -188,7 +188,7 @@ namespace YuLauncher.Core.Window.Pages
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            var rootPath = System.AppDomain.CurrentDomain.BaseDirectory;
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
 
             string config = "config";
 
@@ -208,5 +208,151 @@ namespace YuLauncher.Core.Window.Pages
 
             MessageBox.Show(GameListBTN1.Content + "をお気に入りのゲームに追加しました");
         }
+
+        private void GameButtonCtx1_Loaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx1.Header = GameListBTN1.Content + "をお気に入りに登録します";
+        }
+
+        private void GameButtonCtx2_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN2.Content);
+            }
+
+            MessageBox.Show(GameListBTN2.Content + "をお気に入りのゲームに追加しました");
+        }
+
+        private void GameButtonCtx2_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx2.Header = GameListBTN2.Content + "をお気に入りに登録します";
+        }
+
+        private void GameButtonCtx3_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN3.Content);
+            }
+
+            MessageBox.Show(GameListBTN3.Content + "をお気に入りのゲームに追加しました");
+        }
+
+        private void GameButtonCtx3_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx3.Header = GameListBTN3.Content + "をお気に入り登録します";
+        }
+
+        private void GameButtonCtx4_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN4.Content);
+            }
+
+            MessageBox.Show(GameListBTN4.Content + "をお気に入りのゲームに追加しました");
+        }
+
+        private void GameButtonCtx4_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx4.Header = GameListBTN4.Content + "をお気に入り登録します";
+        }
+
+        private void GameButtonCtx5_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN5.Content);
+            }
+
+            MessageBox.Show(GameListBTN5.Content + "をお気に入りのゲームに追加しました");
+        }
+
+        private void GameButtonCtx5_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx5.Header = GameListBTN5.Content + "をお気に入りに登録します";
+        }
+
+
+        private void GameButtonCtx6_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string config = "config";
+
+            var dirPath = rootPath + config;
+
+            string textPath = "./Favorite.txt";
+
+            var textDir = dirPath + textPath;
+
+            //これ書かないとなぜかJIS使えない
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (StreamWriter writer = new StreamWriter(textDir, true, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine(GameListBTN6.Content);
+            }
+
+            MessageBox.Show(GameListBTN6.Content + "をお気に入りのゲームに追加しました");
+        }
+
+        private void GameButtonCtx6_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GameButtonCtx6.Header = GameListBTN6.Content + "をお気に入りに登録します";
+        }
     }
-}
+    }
