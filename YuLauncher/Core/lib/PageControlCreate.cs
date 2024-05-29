@@ -37,12 +37,14 @@ public class PageControlCreate : Page
                     if (FileControl.ExistGameFile(gameButtonName))
                     {
                         FileControl.DeleteGame(gameButtonName);
+                        LoggerController.LogWarn($"delete file: {gameButtonName}");
                         Console.WriteLine("delete file");
                         OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
                     }
                     else
                     {
                         Console.WriteLine("file not found");
+                        LoggerController.LogError("file not found");
                     }
                 };
                 contextMenu.Items.Add(menu2);

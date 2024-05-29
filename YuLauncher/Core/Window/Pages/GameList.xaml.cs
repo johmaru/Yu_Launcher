@@ -24,6 +24,7 @@ public partial class GameList : Page
         mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
         PageControlCreate.OnDeleteFileMenuClicked += GameList_OnDeleteFileMenuClicked;
         GameControl();
+        LoggerController.LogInfo("GameList Page Loaded");
     }
 
     private void GameControl()
@@ -31,12 +32,14 @@ public partial class GameList : Page
         if (!FileControl.ExistGameDirectory(FileControl.Main.Directory))
         {
             Directory.CreateDirectory(FileControl.Main.Directory);
+            LoggerController.LogInfo("Create Game Directory");
         }
     }
     
     private void GameList_OnDeleteFileMenuClicked(object sender, EventArgs e)
     {
         Panel.Children.Clear();
+        LoggerController.LogInfo("GameList Page Reloaded");
         string[] files = FileControl.GetGameList();
         foreach (var file in files)
         {
@@ -79,11 +82,11 @@ public partial class GameList : Page
             string extension = Path.GetExtension(file);
             string path = File.ReadAllText(file);
             Panel.Children.Add(_gameButton.GameButtonShow(name, path, extension));
+            
+            // 拡張子の表示Panelを追加予定
+        
+            //ファイルのアイコンを取得して表示する予定
         }
-        
-        // 拡張子の表示Panelを追加予定
-        
-        //ファイルのアイコンを取得して表示する予定
     }
     
     private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)

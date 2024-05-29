@@ -23,13 +23,14 @@ namespace YuLauncher
     {
        public MainWindow? MainWindowInstance { get; set;}
        private DateTime _startTime;
-       private TomlControl _tomlControl = new();
+       private readonly TomlControl _tomlControl = new();
        public LanguageUpdater? LanguageUpdater { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         { 
             FirstLunch();
             LanguageCheck();
            await Initialize();
+           LoggerController.LogInfo("Application Start");
         }
         
         private async Task Initialize()
@@ -38,9 +39,7 @@ namespace YuLauncher
                   MainWindowInstance =　await Dispatcher.InvokeAsync(() => new MainWindow());
                  MainWindowInstance.Show();
                  _startTime = DateTime.Now;
-                 LoggingMiddleware.LogAsync($"MainLogger{_startTime:s}", LoggingMiddleware.LongFileFormat, LogLevel.Trace, LogLevel.Fatal);
-                 Logger log1 = LogManager.GetCurrentClassLogger();
-                 LoggingMiddleware.GetInstance("MainLogger", ref log1);
+                 LoggerController.LogInfo("App Initialize Complete");
         }
         
         private void FirstLunch()
@@ -55,6 +54,7 @@ namespace YuLauncher
                 {
                     TomlControl.CreateGameListToml("./gameList.toml");
                 }
+                LoggerController.LogInfo("First Lunch Check Complete");
         }
 
         private void LanguageCheck()
@@ -69,12 +69,13 @@ namespace YuLauncher
                     LanguageUpdater.UpdateLanguage("ja-JP");
                      break;
            }
+           LoggerController.LogInfo("Language Check Complete");
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
             if (MainWindowInstance != null) MainWindowInstance.Close();
-            LoggingMiddleware.CloseLogger();
+            LoggerController.LogInfo("Application Exit");
             base.OnExit(e);
         }
     }

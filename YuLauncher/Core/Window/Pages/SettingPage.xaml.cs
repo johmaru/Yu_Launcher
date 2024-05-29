@@ -14,20 +14,23 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class SettingPage : Page
     {
-        ManualTomlSettings _manualTomlSettings = new();
-        TomlControl _tomlControl = new();
+        private readonly ManualTomlSettings _manualTomlSettings = new();
+        private readonly TomlControl _tomlControl = new();
         public SettingPage()
         {
             InitializeComponent();
             ControlInitialize();
+            LoggerController.LogInfo("SettingPage Initialized");
         }
 
         private void ControlInitialize()
         {
             TxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Height");
             TxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Width");
+            
             MenuTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Height");
             MenuTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Width");
+            
             GameTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Height");
             GameTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Width");
         }
@@ -36,8 +39,10 @@ namespace YuLauncher.Core.Window.Pages
         {
             _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Width", TxtResWidth.Text);
             _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Height", TxtResHeight.Text);
+            
             _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Width", MenuTxtResWidth.Text);
             _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Height", MenuTxtResHeight.Text);
+            
             _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Width", TxtResWidth.Text);
             _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Height", TxtResHeight.Text);
         }
@@ -48,11 +53,13 @@ namespace YuLauncher.Core.Window.Pages
             {
                         _tomlControl.EditToml("./settings.toml", "Language", "en");
                         LanguageUpdater.UpdateLanguage("en-US");
+                        LoggerController.LogInfo("Language Changed to English");
             }
             else if (LanguageCombo.SelectedItem.Equals(JpnItemCombo))
             {
                         _tomlControl.EditToml("./settings.toml", "Language", "ja");
                         LanguageUpdater.UpdateLanguage("ja-JP");
+                        LoggerController.LogInfo("Language Changed to Japanese");
             }
         }
 

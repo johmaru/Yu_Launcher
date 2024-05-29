@@ -18,7 +18,7 @@ public partial class MainWindow : FluentWindow
 {
     public delegate void BackBtnClickHandler(object sender, RoutedEventArgs e);
     public event BackBtnClickHandler? OnBackBtnClick;
-    private TomlControl _tomlControl = new();
+    private readonly TomlControl _tomlControl = new();
     public MainWindow()
     {
         InitializeComponent();
@@ -26,6 +26,7 @@ public partial class MainWindow : FluentWindow
         WindowSizeInitialize();
         BackBtn.Click += BackBtn_OnClick;
         ApplicationThemeManager.Apply(this);
+        LoggerController.LogInfo("MainWindow Initialized");
     }
     
     private void Initialize()

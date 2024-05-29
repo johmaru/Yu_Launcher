@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -20,6 +21,7 @@ namespace YuLauncher.Core.Window.Pages
 
             InitializeControl();
             
+            LoggerController.LogInfo("MainPage Initialized");
         }
 
         private void InitializeControl()

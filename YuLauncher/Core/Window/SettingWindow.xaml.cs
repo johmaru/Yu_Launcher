@@ -11,8 +11,8 @@ namespace YuLauncher.Core.Window;
 
 public partial class SettingWindow : FluentWindow
 {
-   private TomlControl _tomlControl = new();
-   private ManualTomlSettings _manualTomlSettings = new();
+   private readonly TomlControl _tomlControl = new();
+   private readonly ManualTomlSettings _manualTomlSettings = new();
     public SettingWindow()
     {
         InitializeComponent();
@@ -20,6 +20,7 @@ public partial class SettingWindow : FluentWindow
         Initialize();
         Task.CompletedTask.Wait();
         GetResolution();
+        LoggerController.LogInfo("Setting Window Initialized!");
     }
     
     private void Initialize()
@@ -70,6 +71,7 @@ public partial class SettingWindow : FluentWindow
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
        this.Close();
+       LoggerController.LogInfo("Setting Window Closed!");
     }
 
     private void SettingWindow_OnMouseDown(object sender, MouseButtonEventArgs e)

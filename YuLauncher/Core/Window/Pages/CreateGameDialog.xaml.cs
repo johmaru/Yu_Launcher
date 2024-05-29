@@ -16,6 +16,8 @@ public partial class CreateGameDialog : FluentWindow
     public CreateGameDialog()
     {
         InitializeComponent();
+        LoggerController.LogInfo("CreateGameDialog Loaded");
+        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
 
     private void UrlButton_OnClick(object sender, RoutedEventArgs e)
@@ -36,6 +38,7 @@ public partial class CreateGameDialog : FluentWindow
             }
             else
             {
+                LoggerController.LogWarn("User Cancelled File Selection");
                 ErrLabel.Visibility = Visibility.Visible;
                 Timer timer = new Timer(3000);
                 timer.Elapsed += (sender, args) =>
@@ -54,6 +57,7 @@ public partial class CreateGameDialog : FluentWindow
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
         this.Close();
+        LoggerController.LogInfo("CreateGameDialog Closed");
     }
 
     private void CreateGameDialog_OnMouseDown(object sender, MouseButtonEventArgs e)
