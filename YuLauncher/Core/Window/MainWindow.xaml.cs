@@ -1,146 +1,90 @@
 ﻿using System;
-using System.Globalization;
+using System.Drawing;
 using System.IO;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
-using ControlzEx.Standard;
-using MahApps.Metro.Controls;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
+using YuLauncher.Core.lib;
 using YuLauncher.Properties;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Drawing.Color;
 
 namespace YuLauncher.Core.Window;
 
-public partial class MainWindow : MetroWindow
+public partial class MainWindow : FluentWindow
 {
-    //Jsonの中身
-    /*internal class LoginHistory
-    {
-       [JsonPropertyName("LatestLogin")]
-       public string? logindate { get; set; }
-    }
-    */
-    
-
+    public delegate void BackBtnClickHandler(object sender, RoutedEventArgs e);
+    public event BackBtnClickHandler? OnBackBtnClick;
+    private TomlControl _tomlControl = new();
     public MainWindow()
     {
         InitializeComponent();
-
-        this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-        /*Jsonオプション
-
-        var option = new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-
-            WriteIndented = true
-        };
-            
-        Settings.Default.LoginDete = DateTime.Today.ToString("d");
-
-       var loginstrek = Settings.Default.LoginStreek;
-
-       Settings.Default.ProgramLaunchCount = ++Settings.Default.ProgramLaunchCount;
-       Settings.Default.Save();
-
-       //ココらへんからログインストリーク機能追加
-       
-       long num = ++loginstrek;
-
-       var zikan = Settings.Default.LoginDete;
-
-       //アプリケーションが起動した時に起動回数と起動時間をjsonに保存
-
-        var loginhistory = new LoginHistory
-        {
-            logindate = zikan,
-        };
-
-        
-
-        //ここJson関係
-
-        var jsonString = JsonSerializer.Serialize(loginhistory, option);
-        */
-        /*
-        Settings.Default.LoginDete = DateTime.Today.ToString("d");
-
-        var zikan = Settings.Default.LoginDete;
-
-        if (File.Exists("LoginHistory.txt"))
-
-        {
-            
-            StreamWriter writer = new StreamWriter("./a.txt", true);
-            writer.WriteLine(zikan);
-            
-        }
-
-        else { FileStream fs = File.Create("./LoginHistory.txt"); }
-
-        /*いらん
-
-        var JsonStrin = File.ReadAllText(@"LoginHistory.Json");
-
-        LoginHistory loghis = JsonSerializer.Deserialize<LoginHistory>(JsonStrin);
-
-        var filename = loghis.logindate;
-        
-        
-
-        var Year = DateTime.Now.Year;
-
-        var Month = DateTime.Now.Month;
-
-        var Day = DateTime.Now.Day;
-
-       
-        */
-        //ここからログイン履歴が見れる機能を追加
-
-
-
-
-        var loginstrek = Settings.Default.LoginStreek;
-
-        long num = ++loginstrek;
-
-       
-
+        Initialize();
+        WindowSizeInitialize();
+        BackBtn.Click += BackBtn_OnClick;
+        ApplicationThemeManager.Apply(this);
     }
-
-    //RecoverWindowSizeはまだ使うか未定.というのもWindow_WとWindow_Hはゲームスクリーンの解像度の値にする予定
-    //MainWindow用のSettingの値を作成する可能性が微レ存
-    void RecoverWindowSize()
+    
+    private void Initialize()
     {
-        var settings = Settings.Default;
-        if (settings.Window_W > 0 &&
-            settings.Window_W <= SystemParameters.WorkArea.Width)
-        {
-            Width = settings.Window_W;
-        }
-
-        if (settings.Window_H > 0 &&
-            settings.Window_H <= SystemParameters.WorkArea.Height)
-        {
-            Height = settings.Window_H;
-        }
+        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
-
- 
-
-    public void MWClose()
+    
+    private void WindowSizeInitialize()
     {
-        this.Close();
+               var width = _tomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Width");
+               var height = _tomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Height");
+                Console.WriteLine(double.Parse(width));
+               this.Width = double.Parse(width);
+               this.Height = double.Parse(height);
     }
-
     private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
        
+    }
+
+    private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+       this.Close();
+    }
+
+    private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+       if(e.ChangedButton == MouseButton.Left)
+           this.DragMove();
+    }
+
+    private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Maximized;
+        WindowStateIcon.Glyph = "\uE740";
+        
+    }
+
+    private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Normal;
+        WindowStateIcon.Glyph = "\uE73F";
+    }
+
+    private void WindowStateBtn_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            WindowStateIcon.Glyph = "\uE73F";
+        }
+        else if (WindowState == WindowState.Normal)
+        {
+            WindowStateIcon.Glyph = "\uE740";
+        }
+    }
+
+    private void BackBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        OnBackBtnClick?.Invoke(sender, e);
     }
 }

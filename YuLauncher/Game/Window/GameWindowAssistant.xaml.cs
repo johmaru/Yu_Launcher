@@ -11,14 +11,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 
 namespace YuLauncher.Game.Window
 {
     /// <summary>
     /// GameWindowAssistant.xaml の相互作用ロジック
     /// </summary>
-    public partial class GameWindowAssistant : MetroWindow
+    public partial class GameWindowAssistant : System.Windows.Window
     {
         public GameWindowAssistant(string strData)
         {

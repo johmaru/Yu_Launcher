@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="GameList" xml:space="preserve">
+        <value>ゲーム一覧</value>
+    </data>
+    <data name="GameList18" xml:space="preserve">
+        <value>ゲーム一覧(R18)</value>
+    </data>
+    <data name="SimpleSetting" xml:space="preserve">
+        <value>設定</value>
+    </data>
+    <data name="LoginHistory" xml:space="preserve">
+        <value>ログイン履歴</value>
+    </data>
+    <data name="FavoriteGame" xml:space="preserve">
+        <value>お気に入りゲーム</value>
+    </data>
+    <data name="SimpleExit" xml:space="preserve">
+        <value>終了</value>
+    </data>
+    <data name="SimpleFullScreen" xml:space="preserve">
+        <value>フルスクリーン</value>
+    </data>
+    <data name="SimpleResChange" xml:space="preserve">
+        <value>解像度変更
+</value>
+    </data>
+    <data name="SimpleLanguage" xml:space="preserve">
+        <value>言語</value>
+    </data>
+    <data name="SimpleEnglish" xml:space="preserve">
+        <value>英語
+</value>
+    </data>
+    <data name="SimpleJapanese" xml:space="preserve">
+        <value>日本語
+</value>
+    </data>
+    <data name="SimpleSave" xml:space="preserve">
+        <value>セーブ</value>
+    </data>
+    <data name="SettingResChange" xml:space="preserve">
+        <value>設定画面の解像度変更</value>
+    </data>
+    <data name="MainWindowResChange" xml:space="preserve">
+        <value>メニューの解像度変更</value>
+    </data>
+    <data name="GameWindowResChange" xml:space="preserve">
+        <value>ゲーム画面の解像度変更</value>
+    </data>
+    <data name="NameInput" xml:space="preserve">
+        <value>名前を入力してください</value>
+    </data>
+    <data name="ErrPickPath" xml:space="preserve">
+        <value>ファイルパスを選択してください</value>
+    </data>
+    <data name="AddGame" xml:space="preserve">
+        <value>追加</value>
+    </data>
+    <data name="DeleteGame" xml:space="preserve">
+        <value>削除</value>
+    </data>
+</root>

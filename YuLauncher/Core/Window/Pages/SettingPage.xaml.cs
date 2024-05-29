@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
+using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Window.Pages
@@ -10,124 +14,87 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class SettingPage : Page
     {
+        ManualTomlSettings _manualTomlSettings = new();
+        TomlControl _tomlControl = new();
         public SettingPage()
         {
             InitializeComponent();
+            ControlInitialize();
         }
 
-        void WindowSizeSave()
+        private void ControlInitialize()
         {
-            var settings = Settings.Default;
-            double HD = Convert.ToDouble(TXTRES1.Text);
-            double WD = Convert.ToDouble(TXTRES2.Text);
-            settings.Window_W = WD;
-            settings.Window_H = HD;
-            settings.Save();
+            TxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Height");
+            TxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Width");
+            MenuTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Height");
+            MenuTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Width");
+            GameTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Height");
+            GameTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Width");
         }
-        /*
-        private void FullScBTN()
+        
+        private void WindowResChanged()
         {
-            string MessageTXT = "変更を適用するには再起動する必要があります、再起動しますか？";
-            string capTXT = "警告";
-            MessageBoxButton button = MessageBoxButton.YesNo;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result = MessageBox.Show(MessageTXT, capTXT, button, icon);
+            _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Width", TxtResWidth.Text);
+            _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Height", TxtResHeight.Text);
+            _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Width", MenuTxtResWidth.Text);
+            _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Height", MenuTxtResHeight.Text);
+            _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Width", TxtResWidth.Text);
+            _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Height", TxtResHeight.Text);
+        }
 
-            switch (result)
+        private void SelectLanguage()
+        {
+            if (LanguageCombo.SelectedItem.Equals(EngItemCombo))
             {
-
-                case MessageBoxResult.Yes:
-                    Application.Current.Shutdown();
-                    break;
-
-                case MessageBoxResult.No:
-                    break;
+                        _tomlControl.EditToml("./settings.toml", "Language", "en");
+                        LanguageUpdater.UpdateLanguage("en-US");
             }
-        }
-        */
-        //えっぎいバグ起こる
-        /* private void DoEvents()
-        {
-            DispatcherFrame frame = new DispatcherFrame();
-            var callback = new DispatcherOperationCallback(obj =>
+            else if (LanguageCombo.SelectedItem.Equals(JpnItemCombo))
             {
-                ((DispatcherFrame)obj).Continue = false;
-                return null;
-            });
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
-            Dispatcher.PushFrame(frame);
-        }
-       */
-
-        private void FullSc_OnChecked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.FullScreen = true;
-            Settings.Default.Save();
-        }
-
-        private void FullSc_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.FullScreen = false;
-            Settings.Default.Save();
+                        _tomlControl.EditToml("./settings.toml", "Language", "ja");
+                        LanguageUpdater.UpdateLanguage("ja-JP");
+            }
         }
 
         private void FullSc_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.Default.FullScreen == true)
+            if (_tomlControl.GetTomlString("./settings.toml", "FullScreen") == "true")
             {
                 FullSc.IsChecked = true;
             }
-            if (Settings.Default.FullScreen == false)
+            else if (_tomlControl.GetTomlString("./settings.toml", "FullScreen") == "false")
             {
                 FullSc.IsChecked = false;
             }
         }
 
-        private void TXTRES1_Loaded(object sender, RoutedEventArgs e)
+        private void FullSc_OnChecked(object sender, RoutedEventArgs e)
         {
-            Double txt1 = Settings.Default.Window_H;
-
-            String txt1ST = txt1.ToString();
-
-            TXTRES1.Text = txt1ST;
+            _tomlControl.EditToml("./settings.toml", "FullScreen", "true");
         }
 
-        private void TXTRES2_Loaded(object sender, RoutedEventArgs e)
+        private void FullSc_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            double txt2 = Settings.Default.Window_W;
-
-            String txt2ST = txt2.ToString();
-
-            TXTRES2.Text = txt2ST;
+            _tomlControl.EditToml("./settings.toml", "FullScreen", "false");
         }
 
-       
-
-        private void FCBTN_Click(object sender, RoutedEventArgs e)
+        private void SaveBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            string MessageTXT = "終了して変更内容を保存しますか？";
-            string capTXT = "警告";
-            MessageBoxButton button = MessageBoxButton.YesNo;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result = MessageBox.Show(MessageTXT, capTXT, button, icon);
+            SelectLanguage();
+            WindowResChanged();
+        }
 
-            switch (result)
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            switch (_tomlControl.GetTomlString("./settings.toml", "Language"))
             {
-
-                case MessageBoxResult.Yes:
-                    var settings = Settings.Default;
-                    double HD = Convert.ToDouble(TXTRES1.Text);
-                    double WD = Convert.ToDouble(TXTRES2.Text);
-                    settings.Window_W = WD;
-                    settings.Window_H = HD;
-                    settings.Save();
-                    NavigationService.GoBack();
+                case "en":
+                    LanguageCombo.SelectedItem = EngItemCombo;
                     break;
-
-
-                case MessageBoxResult.No:
+                case "ja":
+                    LanguageCombo.SelectedItem = JpnItemCombo;
                     break;
             }
         }
     }
-}
+    }

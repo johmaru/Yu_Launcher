@@ -1,20 +1,19 @@
-﻿<Controls:MetroWindow x:Name="GameWindow1" x:Class="YuLauncher.Game.Window.GameWindow"
+﻿<Window x:Name="GameWindow1" x:Class="YuLauncher.Game.Window.GameWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YuLauncher.Game.Window"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         xmlns:properties="clr-namespace:YuLauncher.Properties"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Loaded="GameWindow1_Loaded" Closing="GameWindow1_Closing" WindowStyle="None">
+        Title="GameWindow" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="None">
 
 
     <DockPanel x:Name="gamedock" Height="{Binding Source={x:Static properties:Settings.Default},Path=Window_H}" Width="{Binding Source={x:Static properties:Settings.Default},Path=Window_W}">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="機能">
-                <MenuItem Header="Wiki" Click="WikiBTN"/>
+                <MenuItem Header="Wiki"/>
             </MenuItem>
             <MenuItem Header="アプリケーション">
                 <MenuItem Header="設定"/>
@@ -22,8 +21,7 @@
         </Menu>
         
         <wv2:WebView2 Name="webView"
-                      Source="" Initialized="webView_Initialized"
         />
         </DockPanel>
     
-</Controls:MetroWindow>
+</Window>
