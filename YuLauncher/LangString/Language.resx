@@ -75,4 +75,10 @@
     <data name="DeleteGame" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="SelectFileLabel" xml:space="preserve">
+        <value>Select File</value>
+    </data>
+    <data name="SelectFileErrorMessage" xml:space="preserve">
+        <value>Please select a file (have you selected a file with no extension?)</value>
+    </data>
 </root>

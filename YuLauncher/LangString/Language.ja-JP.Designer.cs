@@ -150,6 +150,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ファイルを選択してください(拡張子がないファイルを選択していませんか？).
+        /// </summary>
+        public static string SelectFileErrorMessage {
+            get {
+                return ResourceManager.GetString("SelectFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ファイルを選択.
+        /// </summary>
+        public static string SelectFileLabel {
+            get {
+                return ResourceManager.GetString("SelectFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 設定画面の解像度変更.
         /// </summary>
         public static string SettingResChange {

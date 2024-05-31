@@ -8,7 +8,7 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:LocalizeDictionary.DesignCulture="ja-JP"
         lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
-        lex:ResxLocalizationProvider.DefaultDictionary="LangString"
+        lex:ResxLocalizationProvider.DefaultDictionary="Language" 
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         MouseDown="CreateGameDialog_OnMouseDown"
@@ -22,7 +22,7 @@
             </ui:Button>
             <TextBox x:Name="Label" Text="{lex:Loc NameInput}"/>
             <StackPanel Orientation="Horizontal">
-                <ui:Button x:Name="UrlButton" Content="Pick Game File" Click="UrlButton_OnClick"/>
+                <ui:Button x:Name="UrlButton" Content="{lex:Loc SelectFileLabel}" Click="UrlButton_OnClick"/>
                 <Label x:Name="ErrLabel" VerticalContentAlignment="Center" Visibility="Hidden" Content="{lex:Loc ErrPickPath}" Foreground="Red"/>
             </StackPanel>
         </StackPanel>

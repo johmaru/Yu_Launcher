@@ -78,4 +78,10 @@
     <data name="DeleteGame" xml:space="preserve">
         <value>削除</value>
     </data>
+    <data name="SelectFileLabel" xml:space="preserve">
+        <value>ファイルを選択</value>
+    </data>
+    <data name="SelectFileErrorMessage" xml:space="preserve">
+        <value>ファイルを選択してください(拡張子がないファイルを選択していませんか？)</value>
+    </data>
 </root>

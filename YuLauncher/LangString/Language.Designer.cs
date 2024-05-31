@@ -150,6 +150,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select a file (have you selected a file with no extension?).
+        /// </summary>
+        public static string SelectFileErrorMessage {
+            get {
+                return ResourceManager.GetString("SelectFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select File.
+        /// </summary>
+        public static string SelectFileLabel {
+            get {
+                return ResourceManager.GetString("SelectFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SettingPage Resolution Change.
         /// </summary>
         public static string SettingResChange {

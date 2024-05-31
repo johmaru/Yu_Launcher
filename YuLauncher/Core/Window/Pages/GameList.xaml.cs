@@ -22,7 +22,8 @@ public partial class GameList : Page
         InitializeComponent();
         MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
         mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        PageControlCreate.OnDeleteFileMenuClicked += GameList_OnDeleteFileMenuClicked;
+        PageControlCreate.OnDeleteFileMenuClicked += GameList_OnFileUpdate;
+        CreateGameDialog.OnClose += GameList_OnFileUpdate;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
     }
@@ -36,7 +37,7 @@ public partial class GameList : Page
         }
     }
     
-    private void GameList_OnDeleteFileMenuClicked(object sender, EventArgs e)
+    private void GameList_OnFileUpdate(object sender, EventArgs e)
     {
         Panel.Children.Clear();
         LoggerController.LogInfo("GameList Page Reloaded");
@@ -46,7 +47,15 @@ public partial class GameList : Page
             string name = Path.GetFileNameWithoutExtension(file);
             string extension = Path.GetExtension(file);
             string path = File.ReadAllText(file);
-            Panel.Children.Add(_gameButton.GameButtonShow(name, path, extension));
+            try
+            {
+                Panel.Children.Add(_gameButton.GameButtonShow(name, path, extension));
+            }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine("An I/O error occurred: " + ex.Message);
+                throw;
+            }
         }
     }
 
