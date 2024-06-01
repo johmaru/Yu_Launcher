@@ -69,6 +69,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 作成.
+        /// </summary>
+        public static string CreateButton {
+            get {
+                return ResourceManager.GetString("CreateButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 削除.
         /// </summary>
         public static string DeleteGame {
@@ -155,6 +164,15 @@ namespace YuLauncher.LangString {
         public static string NameInput {
             get {
                 return ResourceManager.GetString("NameInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 何も選択されていません.
+        /// </summary>
+        public static string NotSelectFileError {
+            get {
+                return ResourceManager.GetString("NotSelectFileError", resourceCulture);
             }
         }
         

@@ -87,4 +87,10 @@
     <data name="ExtensionLabel" xml:space="preserve">
         <value>拡張子: </value>
     </data>
+    <data name="NotSelectFileError" xml:space="preserve">
+        <value>何も選択されていません</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>作成</value>
+    </data>
 </root>

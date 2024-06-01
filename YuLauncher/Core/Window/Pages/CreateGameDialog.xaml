@@ -23,8 +23,10 @@
             <TextBox x:Name="Label" Text="{lex:Loc NameInput}"/>
             <StackPanel Orientation="Horizontal">
                 <ui:Button x:Name="UrlButton" Content="{lex:Loc SelectFileLabel}" Click="UrlButton_OnClick"/>
-                <Label x:Name="ErrLabel" VerticalContentAlignment="Center" Visibility="Hidden" Content="{lex:Loc ErrPickPath}" Foreground="Red"/>
+                <Label x:Name="PathLabel" VerticalAlignment="Center" Content=""/>
             </StackPanel>
+            <Label x:Name="ErrLabel" VerticalContentAlignment="Center" Visibility="Hidden" Content="{lex:Loc ErrPickPath}" Foreground="Red"/>
+            <ui:Button x:Name="CreateButton" HorizontalAlignment="Right" Content="{lex:Loc CreateButton}" Click="CreateButton_OnClick"/>
         </StackPanel>
     </Grid>
 </ui:FluentWindow>

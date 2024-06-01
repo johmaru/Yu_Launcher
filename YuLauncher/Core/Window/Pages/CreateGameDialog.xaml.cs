@@ -16,6 +16,7 @@ namespace YuLauncher.Core.Window.Pages;
 public partial class CreateGameDialog : FluentWindow
 {
    public static event EventHandler? OnClose;
+   private string _openFileDialog = "";
     public CreateGameDialog()
     {
         InitializeComponent();
@@ -35,32 +36,17 @@ public partial class CreateGameDialog : FluentWindow
                    })
                 if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    var fileExtension = Path.GetExtension(ofd.FileName);
-                    var fileExtensionDotTrim = fileExtension?.TrimStart('.');
-                    if (fileExtensionDotTrim is "")
+                    try
                     {
-                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        _openFileDialog = ofd.FileName;
+                        PathLabel.Content = _openFileDialog;
+                        this.Activate();
                     }
-                    else if (Label.Text == LocalizeControl.GetLocalize<string>("NameInput"))
+                    catch (Exception exception)
                     {
-                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-
-                    else
-                    {
-                        using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
-                        {
-                            string?[] test = new[] { ofd.FileName, fileExtensionDotTrim };
-                            foreach (var t in test)
-                            {
-                                writer.WriteLine(t);
-                            }
-                        }
-
-                        OnClose?.Invoke(this, EventArgs.Empty);
-                        this.Close();
+                        Console.WriteLine(exception);
+                        LoggerController.LogError("An I/O error occurred: " + exception.Message);
+                        throw;
                     }
                 }
                 else
@@ -95,5 +81,49 @@ public partial class CreateGameDialog : FluentWindow
     {
         if (e.ChangedButton == MouseButton.Left)
             this.DragMove();
+    }
+
+    private void CreateButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var fileExtension = Path.GetExtension(_openFileDialog);
+            var fileExtensionDotTrim = fileExtension?.TrimStart('.');
+            if (fileExtensionDotTrim is "")
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (_openFileDialog is "")
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("NotSelectFileError"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Label.Text == LocalizeControl.GetLocalize<string>("NameInput"))
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            else
+            {
+                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                {
+                    string?[] test = new[] { _openFileDialog, fileExtensionDotTrim };
+                    foreach (var t in test)
+                    {
+                        writer.WriteLine(t);
+                    }
+                }
+
+                OnClose?.Invoke(this, EventArgs.Empty);
+                this.Close();
+            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
     }
 }

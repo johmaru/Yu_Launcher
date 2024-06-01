@@ -84,4 +84,10 @@
     <data name="ExtensionLabel" xml:space="preserve">
         <value>Extension: </value>
     </data>
+    <data name="NotSelectFileError" xml:space="preserve">
+        <value>Nothing selected</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>Create</value>
+    </data>
 </root>

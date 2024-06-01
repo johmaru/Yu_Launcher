@@ -56,6 +56,7 @@ public class PageControlCreate : Page
                         else
                         {
                             Console.WriteLine("file not found");
+                            Console.WriteLine(gameButtonName);
                             LoggerController.LogError("file not found");
                         }
                     }
@@ -104,7 +105,7 @@ public class GameButton : Button
     {
         string[] tag = {name, path[0], extension};
         Console.WriteLine(extension);
-        string thisFile = "./Games/" + name + extension;
+        string thisFile = "./Games/" + name + ".txt";
         Button gameButton = new Button()
         {
             Content = name,
