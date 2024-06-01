@@ -108,4 +108,7 @@
     <data name="PleaseURL" xml:space="preserve">
         <value>URLを入力してください</value>
     </data>
+    <data name="NotContainsHttpError" xml:space="preserve">
+        <value>適切なウェブアドレスを入力してください</value>
+    </data>
 </root>

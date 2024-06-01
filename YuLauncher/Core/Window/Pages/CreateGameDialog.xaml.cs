@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -133,13 +134,24 @@ public partial class CreateGameDialog : FluentWindow
         }
         else if (GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem)
         {
-            using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+            if (UrlBlock.Text.Contains( "http://") || UrlBlock.Text.Contains("https://"))
             {
-                string?[] test = new[] { UrlBlock.Text, "web" };
-                foreach (var t in test)
+                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
                 {
-                    writer.WriteLine(t);
+                    string?[] test = new[] { UrlBlock.Text, "web" };
+                    foreach (var t in test)
+                    {
+                        writer.WriteLine(t);
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("NotContainsHttpError"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            {
+                
             }
 
             OnClose?.Invoke(this, EventArgs.Empty);

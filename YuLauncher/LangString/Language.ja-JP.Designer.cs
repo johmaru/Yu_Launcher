@@ -186,6 +186,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 適切なウェブアドレスを入力してください.
+        /// </summary>
+        public static string NotContainsHttpError {
+            get {
+                return ResourceManager.GetString("NotContainsHttpError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 何も選択されていません.
         /// </summary>
         public static string NotSelectFileError {

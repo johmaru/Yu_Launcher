@@ -105,4 +105,7 @@
     <data name="PleaseURL" xml:space="preserve">
         <value>Please input URL</value>
     </data>
+    <data name="NotContainsHttpError" xml:space="preserve">
+        <value>Please enter the appropriate web address</value>
+    </data>
 </root>

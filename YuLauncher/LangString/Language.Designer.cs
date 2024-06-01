@@ -186,6 +186,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter the appropriate web address.
+        /// </summary>
+        public static string NotContainsHttpError {
+            get {
+                return ResourceManager.GetString("NotContainsHttpError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing selected.
         /// </summary>
         public static string NotSelectFileError {
