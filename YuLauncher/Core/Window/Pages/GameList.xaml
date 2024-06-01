@@ -13,11 +13,33 @@
       Loaded="GameList_OnLoaded"
       PreviewMouseRightButtonDown="GameList_OnPreviewMouseRightButtonDown">
     <Grid>
+        
         <ScrollViewer>
-            <StackPanel x:Name="Panel">
-                
-            </StackPanel>
-            
-        </ScrollViewer>
+           
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="10*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid Grid.Column="0" Grid.Row="0">
+                        <StackPanel x:Name="IconPanel">
+                            </StackPanel>
+                    </Grid>
+                    
+                        <Grid Grid.Column="1" Grid.Row="0">
+                        <StackPanel  x:Name="Panel">
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="0">
+                        <StackPanel  x:Name="ExtensionLabel">
+                        </StackPanel>
+                    </Grid>
+                </Grid>    
+            </ScrollViewer>
     </Grid>
 </Page>

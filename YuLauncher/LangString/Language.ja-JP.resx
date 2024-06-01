@@ -84,4 +84,7 @@
     <data name="SelectFileErrorMessage" xml:space="preserve">
         <value>ファイルを選択してください(拡張子がないファイルを選択していませんか？)</value>
     </data>
+    <data name="ExtensionLabel" xml:space="preserve">
+        <value>拡張子: </value>
+    </data>
 </root>

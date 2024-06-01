@@ -81,4 +81,7 @@
     <data name="SelectFileErrorMessage" xml:space="preserve">
         <value>Please select a file (have you selected a file with no extension?)</value>
     </data>
+    <data name="ExtensionLabel" xml:space="preserve">
+        <value>Extension: </value>
+    </data>
 </root>

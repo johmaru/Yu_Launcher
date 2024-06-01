@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
 using YuLauncher.Core.Window.Pages;
 using Button = Wpf.Ui.Controls.Button;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
@@ -24,8 +27,15 @@ public class PageControlCreate : Page
                 };
                 menu.Click += (sender, args) =>
                 {
-                    CreateGameDialog createGameDialog = new CreateGameDialog();
-                    createGameDialog.Show();
+                  try
+                  {
+                      CreateGameDialog createGameDialog = new CreateGameDialog();
+                      createGameDialog.Show();
+                  }
+                  catch (Exception e)
+                  {
+                      LoggerController.LogError(e.Message);
+                  }
                 };
                 contextMenu.Items.Add(menu);
                 MenuItem menu2 = new MenuItem()
@@ -34,17 +44,25 @@ public class PageControlCreate : Page
                 };
                 menu2.Click += (sender, args) =>
                 {
-                    if (FileControl.ExistGameFile(gameButtonName))
+                    try
                     {
-                        FileControl.DeleteGame(gameButtonName);
-                        LoggerController.LogWarn($"delete file: {gameButtonName}");
-                        Console.WriteLine("delete file");
-                        OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                        if (FileControl.ExistGameFile(gameButtonName))
+                        {
+                            FileControl.DeleteGame(gameButtonName);
+                            LoggerController.LogWarn($"delete file: {gameButtonName}");
+                            Console.WriteLine("delete file");
+                            OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            Console.WriteLine("file not found");
+                            LoggerController.LogError("file not found");
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Console.WriteLine("file not found");
-                        LoggerController.LogError("file not found");
+                        LoggerController.LogError(e.Message);
+                        throw;
                     }
                 };
                 contextMenu.Items.Add(menu2);
@@ -58,8 +76,17 @@ public class PageControlCreate : Page
                 };
                 menu.Click += (sender, args) =>
                 {
-                    CreateGameDialog createGameDialog = new CreateGameDialog();
-                    createGameDialog.Show();
+                    try
+                    {
+                        CreateGameDialog createGameDialog = new CreateGameDialog();
+                        createGameDialog.Show();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        LoggerController.LogError(e.Message);
+                        throw;
+                    }
                 };
 
                 contextMenu.Items.Add(menu);
@@ -73,27 +100,37 @@ public class PageControlCreate : Page
 public class GameButton : Button
 {
     public bool IsMouseEntered { get; private set; }
-    public Button GameButtonShow(string name,string path,string extension)
+    public Button GameButtonShow(string name,string[] path,string extension)
     {
-        string[] tag = {name, path, extension};
+        string[] tag = {name, path[0], extension};
+        Console.WriteLine(extension);
         string thisFile = "./Games/" + name + extension;
         Button gameButton = new Button()
         {
             Content = name,
             Tag = tag,
-            Margin = new Thickness(5),
+            Height = ObjectProperty.GameListObjectHeight,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch,
             ContextMenu = PageControlCreate.GameListShowContextMenu(true, thisFile),
         };
         gameButton.Click += (sender, args) => {
-            switch (extension)
+            try
             {
-                case ".exe":
-                    System.Diagnostics.Process.Start(path);
-                    break;
-                case "":
-                    break;
+                switch (extension)
+                {
+                    case "exe":
+                        Process.Start(path[0]);
+                        break;
+                    case "":
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                LoggerController.LogError(e.Message);
+                throw;
             }
         };
         gameButton.MouseEnter += (sender, args) =>

@@ -87,6 +87,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extension: .
+        /// </summary>
+        public static string ExtensionLabel {
+            get {
+                return ResourceManager.GetString("ExtensionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FavGames.
         /// </summary>
         public static string FavoriteGame {

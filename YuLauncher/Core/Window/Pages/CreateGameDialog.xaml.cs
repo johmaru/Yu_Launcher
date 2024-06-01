@@ -25,54 +25,64 @@ public partial class CreateGameDialog : FluentWindow
 
     private void UrlButton_OnClick(object sender, RoutedEventArgs e)
     {
-        using (var ofd = new CommonOpenFileDialog()
+        try
         {
-            Title = LocalizeControl.GetLocalize<string>("SelectFileLabel"),
-            IsFolderPicker = false,
-            RestoreDirectory = true,
-        })
-            if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                var fileExtension = Path.GetExtension(ofd.FileName);
-                if (fileExtension is "")
+            using (var ofd = new CommonOpenFileDialog()
+                   {
+                       Title = LocalizeControl.GetLocalize<string>("SelectFileLabel"),
+                       IsFolderPicker = false,
+                       RestoreDirectory = true,
+                   })
+                if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var fileExtension = Path.GetExtension(ofd.FileName);
+                    var fileExtensionDotTrim = fileExtension?.TrimStart('.');
+                    if (fileExtensionDotTrim is "")
+                    {
+                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else if (Label.Text == LocalizeControl.GetLocalize<string>("NameInput"))
+                    {
+                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    else
+                    {
+                        using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                        {
+                            string?[] test = new[] { ofd.FileName, fileExtensionDotTrim };
+                            foreach (var t in test)
+                            {
+                                writer.WriteLine(t);
+                            }
+                        }
+
+                        OnClose?.Invoke(this, EventArgs.Empty);
+                        this.Close();
+                    }
                 }
-                else if (ofd.FileName == LocalizeControl.GetLocalize<string>("SelectFileLabel"))
-                {
-                    MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                
                 else
                 {
-                    using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                    LoggerController.LogWarn("User Cancelled File Selection");
+                    ErrLabel.Visibility = Visibility.Visible;
+                    Timer timer = new Timer(3000);
+                    timer.Elapsed += (sender, args) =>
                     {
-                        string[] test = new[] {ofd.FileName, fileExtension};
-                        foreach (var t in test)
-                        {
-                            writer.WriteLine(t);
-                        }
-                    }
-                    OnClose?.Invoke(this, EventArgs.Empty);
-                    this.Close();
+                        this.Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Hidden; });
+                        timer.Stop();
+                    };
+                    timer.Start();
+                    this.Activate();
                 }
-            }
-            else
-            {
-                LoggerController.LogWarn("User Cancelled File Selection");
-                ErrLabel.Visibility = Visibility.Visible;
-                Timer timer = new Timer(3000);
-                timer.Elapsed += (sender, args) =>
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        ErrLabel.Visibility = Visibility.Hidden;
-                    });
-                    timer.Stop();
-                };
-                timer.Start();
-                this.Activate();
-            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            LoggerController.LogError("An I/O error occurred: " + exception.Message);
+            throw;
+        }
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
