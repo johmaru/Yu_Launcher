@@ -141,6 +141,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to アプリケーションファイル(exe,text,png etc).
+        /// </summary>
+        public static string GenreApplication {
+            get {
+                return ResourceManager.GetString("GenreApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ウェブサイト(https:/, http:/).
+        /// </summary>
+        public static string GenreWebsite {
+            get {
+                return ResourceManager.GetString("GenreWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ログイン履歴.
         /// </summary>
         public static string LoginHistory {
@@ -177,6 +195,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 種類を選択してください.
+        /// </summary>
+        public static string PleaseSelectGenre {
+            get {
+                return ResourceManager.GetString("PleaseSelectGenre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URLを入力してください.
+        /// </summary>
+        public static string PleaseURL {
+            get {
+                return ResourceManager.GetString("PleaseURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ファイルを選択してください(拡張子がないファイルを選択していませんか？).
         /// </summary>
         public static string SelectFileErrorMessage {
@@ -191,6 +227,15 @@ namespace YuLauncher.LangString {
         public static string SelectFileLabel {
             get {
                 return ResourceManager.GetString("SelectFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ジャンルを選択してください.
+        /// </summary>
+        public static string SelectGenreError {
+            get {
+                return ResourceManager.GetString("SelectGenreError", resourceCulture);
             }
         }
         

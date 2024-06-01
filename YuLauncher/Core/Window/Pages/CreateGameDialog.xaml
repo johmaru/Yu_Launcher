@@ -21,11 +21,19 @@
                 <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="15"/>
             </ui:Button>
             <TextBox x:Name="Label" Text="{lex:Loc NameInput}"/>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel x:Name="Panel1" Orientation="Horizontal">
                 <ui:Button x:Name="UrlButton" Content="{lex:Loc SelectFileLabel}" Click="UrlButton_OnClick"/>
                 <Label x:Name="PathLabel" VerticalAlignment="Center" Content=""/>
+                <ui:TextBox x:Name="UrlBlock" Text="{lex:Loc PleaseURL}" Visibility="Collapsed" HorizontalAlignment="Stretch"/>
             </StackPanel>
-            <Label x:Name="ErrLabel" VerticalContentAlignment="Center" Visibility="Hidden" Content="{lex:Loc ErrPickPath}" Foreground="Red"/>
+            <StackPanel x:Name="SelectButtonPanel" Orientation="Horizontal">
+                <ComboBox x:Name="GenreSelectComboBox" Loaded="GenreSelectComboBox_OnLoaded" SelectionChanged="GenreSelectComboBox_OnSelectionChanged">
+                    <ComboBoxItem x:Name="GenreApplicationComboBoxItem" Content="{lex:Loc GenreApplication}"/>
+                    <ComboBoxItem x:Name="GenreWebSiteComboBoxItem" Content="{lex:Loc GenreWebsite}"/>
+                </ComboBox>
+                <Label x:Name="GenreLabel" VerticalAlignment="Center" Content="{lex:Loc PleaseSelectGenre}" Foreground="Yellow"/>
+            </StackPanel>
+                <Label x:Name="ErrLabel" VerticalContentAlignment="Center" Visibility="Collapsed" Content="{lex:Loc ErrPickPath}" Foreground="Red"/>
             <ui:Button x:Name="CreateButton" HorizontalAlignment="Right" Content="{lex:Loc CreateButton}" Click="CreateButton_OnClick"/>
         </StackPanel>
     </Grid>

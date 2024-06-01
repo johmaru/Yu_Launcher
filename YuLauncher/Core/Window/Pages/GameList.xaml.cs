@@ -51,7 +51,6 @@ public partial class GameList : Page
         {
             string name = Path.GetFileNameWithoutExtension(file);
             string[] path = File.ReadAllLines(file);
-            Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
             try
             {
                 Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
@@ -61,22 +60,37 @@ public partial class GameList : Page
                     Height = ObjectProperty.GameListObjectHeight,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    VerticalContentAlignment = VerticalAlignment.Stretch,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 });
-                using (System.IO.MemoryStream s = new System.IO.MemoryStream())
+                if (path[1] != "web")
                 {
-                    icon?.Save(s);
-                    s.Position = 0;
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                    IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                    using (MemoryStream s = new MemoryStream())
                     {
-                        Source = bitmapFrame,
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                    });
+                        Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                        icon?.Save(s);
+                        s.Position = 0;
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                        IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                        {
+                            Source = bitmapFrame,
+                            Height = ObjectProperty.GameListObjectHeight,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                        });
                     
+                    }
+                }
+                else
+                {
+                    IconPanel.Children.Add(new Image()
+                    {
+                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
+                        Height = ObjectProperty.GameListObjectHeight,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                    });
+                
                 }
             }
             catch (System.IO.IOException ex)
@@ -119,7 +133,6 @@ public partial class GameList : Page
         {
             string name = Path.GetFileNameWithoutExtension(file);
             string[] path = File.ReadAllLines(file);
-            Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
             
             try
             {
@@ -130,22 +143,37 @@ public partial class GameList : Page
                     Height = ObjectProperty.GameListObjectHeight,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    VerticalContentAlignment = VerticalAlignment.Stretch,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 });
-                using (MemoryStream s = new MemoryStream())
+                if (path[1] != "web")
                 {
-                   
-                    icon?.Save(s);
-                    s.Position = 0;
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                    IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                    using (MemoryStream s = new MemoryStream())
                     {
-                        Source = bitmapFrame,
+                        Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                        icon?.Save(s);
+                        s.Position = 0;
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                        IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                        {
+                            Source = bitmapFrame,
+                            Height = ObjectProperty.GameListObjectHeight,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                        });
+                    
+                    }
+                }
+                else
+                {
+                    IconPanel.Children.Add(new Image()
+                    {
+                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
                         Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
                     });
+                
                 }
             }
             catch (Exception ex)

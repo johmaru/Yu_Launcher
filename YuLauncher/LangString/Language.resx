@@ -90,4 +90,19 @@
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>
     </data>
+    <data name="PleaseSelectGenre" xml:space="preserve">
+        <value>Please Select Genre</value>
+    </data>
+    <data name="GenreApplication" xml:space="preserve">
+        <value>ApplicationFile(exe,text,png etc)</value>
+    </data>
+    <data name="GenreWebsite" xml:space="preserve">
+        <value>Website(https:/, http:/)</value>
+    </data>
+    <data name="SelectGenreError" xml:space="preserve">
+        <value>Please Select Genre</value>
+    </data>
+    <data name="PleaseURL" xml:space="preserve">
+        <value>Please input URL</value>
+    </data>
 </root>

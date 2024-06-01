@@ -93,4 +93,19 @@
     <data name="CreateButton" xml:space="preserve">
         <value>作成</value>
     </data>
+    <data name="PleaseSelectGenre" xml:space="preserve">
+        <value>種類を選択してください</value>
+    </data>
+    <data name="GenreApplication" xml:space="preserve">
+        <value>アプリケーションファイル(exe,text,png etc)</value>
+    </data>
+    <data name="GenreWebsite" xml:space="preserve">
+        <value>ウェブサイト(https:/, http:/)</value>
+    </data>
+    <data name="SelectGenreError" xml:space="preserve">
+        <value>ジャンルを選択してください</value>
+    </data>
+    <data name="PleaseURL" xml:space="preserve">
+        <value>URLを入力してください</value>
+    </data>
 </root>

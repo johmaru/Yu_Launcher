@@ -104,7 +104,6 @@ public class GameButton : Button
     public Button GameButtonShow(string name,string[] path,string extension)
     {
         string[] tag = {name, path[0], extension};
-        Console.WriteLine(extension);
         string thisFile = "./Games/" + name + ".txt";
         Button gameButton = new Button()
         {
@@ -121,7 +120,50 @@ public class GameButton : Button
                 switch (extension)
                 {
                     case "exe":
-                        Process.Start(path[0]);
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = path[0], 
+                            RedirectStandardOutput = true, 
+                            RedirectStandardError = true, 
+                            UseShellExecute = false, 
+                        };
+                        Process process = new Process
+                        {
+                            StartInfo = startInfo,
+                        };
+                        process.OutputDataReceived += (sender, e) =>
+                        {
+                           LoggerController.LogDebug("Output: " + e.Data);
+                        };
+                        process.ErrorDataReceived += (sender, e) =>
+                        {
+                            LoggerController.LogWarn("Error: " + e.Data);
+                        };
+                        try
+                        {
+                            process.Start();
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                        process.BeginOutputReadLine();
+                        process.BeginErrorReadLine();
+
+                        process.WaitForExit();
+                        break;
+                    case "web":
+                        ProcessStartInfo websiteInfo = new ProcessStartInfo
+                        {
+                            FileName = path[0],
+                            UseShellExecute = true,
+                        };
+                       Process.Start(websiteInfo);
                         break;
                     case "":
                         break;

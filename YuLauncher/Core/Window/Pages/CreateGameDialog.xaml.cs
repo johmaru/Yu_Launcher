@@ -17,6 +17,7 @@ public partial class CreateGameDialog : FluentWindow
 {
    public static event EventHandler? OnClose;
    private string _openFileDialog = "";
+   private int OpenNum { get; set; }
     public CreateGameDialog()
     {
         InitializeComponent();
@@ -28,12 +29,11 @@ public partial class CreateGameDialog : FluentWindow
     {
         try
         {
-            using (var ofd = new CommonOpenFileDialog()
-                   {
-                       Title = LocalizeControl.GetLocalize<string>("SelectFileLabel"),
-                       IsFolderPicker = false,
-                       RestoreDirectory = true,
-                   })
+            using (var ofd = new CommonOpenFileDialog())
+            {
+                ofd.Title = LocalizeControl.GetLocalize<string>("SelectFileLabel");
+                ofd.IsFolderPicker = false;
+                ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     try
@@ -56,12 +56,15 @@ public partial class CreateGameDialog : FluentWindow
                     Timer timer = new Timer(3000);
                     timer.Elapsed += (sender, args) =>
                     {
-                        this.Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Hidden; });
+                        this.Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
                         timer.Stop();
                     };
                     timer.Start();
                     this.Activate();
                 }
+
+                ;
+            }
         }
         catch (Exception exception)
         {
@@ -85,45 +88,116 @@ public partial class CreateGameDialog : FluentWindow
 
     private void CreateButton_OnClick(object sender, RoutedEventArgs e)
     {
-        try
+        if (GenreSelectComboBox.SelectedItem == GenreApplicationComboBoxItem)
         {
-            var fileExtension = Path.GetExtension(_openFileDialog);
-            var fileExtensionDotTrim = fileExtension?.TrimStart('.');
-            if (fileExtensionDotTrim is "")
+            try
             {
-                MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (_openFileDialog is "")
-            {
-                MessageBox.Show(LocalizeControl.GetLocalize<string>("NotSelectFileError"), "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (Label.Text == LocalizeControl.GetLocalize<string>("NameInput"))
-            {
-                MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            else
-            {
-                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                var fileExtension = Path.GetExtension(_openFileDialog);
+                var fileExtensionDotTrim = fileExtension?.TrimStart('.');
+                if (fileExtensionDotTrim is "")
                 {
-                    string?[] test = new[] { _openFileDialog, fileExtensionDotTrim };
-                    foreach (var t in test)
-                    {
-                        writer.WriteLine(t);
-                    }
+                    MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (_openFileDialog is "")
+                {
+                    MessageBox.Show(LocalizeControl.GetLocalize<string>("NotSelectFileError"), "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (Label.Text == LocalizeControl.GetLocalize<string>("NameInput"))
+                {
+                    MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"), "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
-                OnClose?.Invoke(this, EventArgs.Empty);
-                this.Close();
+                else
+                {
+                    using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                    {
+                        string?[] test = new[] { _openFileDialog, fileExtensionDotTrim };
+                        foreach (var t in test)
+                        {
+                            writer.WriteLine(t);
+                        }
+                    }
+
+                    OnClose?.Invoke(this, EventArgs.Empty);
+                    this.Close();
+                }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+        else if (GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem)
+        {
+            using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+            {
+                string?[] test = new[] { UrlBlock.Text, "web" };
+                foreach (var t in test)
+                {
+                    writer.WriteLine(t);
+                }
+            }
+
+            OnClose?.Invoke(this, EventArgs.Empty);
+            this.Close();
+        }
+        else
+        {
+            MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectGenreError"), "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void GenreSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (OpenNum == 1)
+        {
+            if (GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem)
+            {
+                UrlButton.Visibility = Visibility.Collapsed;
+                PathLabel.Visibility = Visibility.Collapsed;
+                UrlBlock.Visibility = Visibility.Visible;
+            }
+            else if (GenreSelectComboBox.SelectedItem == GenreApplicationComboBoxItem)
+            {
+                UrlButton.Visibility = Visibility.Visible;
+                PathLabel.Visibility = Visibility.Visible;
+                UrlBlock.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                UrlButton.Visibility = Visibility.Collapsed;
+                PathLabel.Visibility = Visibility.Collapsed;
+                UrlBlock.Visibility = Visibility.Collapsed;
+                Label.Visibility = Visibility.Collapsed;
+            }
+        }
+    }
+
+    private void GenreSelectComboBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        GenreSelectComboBox.SelectedIndex = 0;
+        try
+        {
+            LoggerController.LogInfo("GenreSelectComboBox Loaded");
+            GenreLabel.Visibility = Visibility.Visible;
+            Timer timer = new Timer(3000);
+            timer.Elapsed += (sender, args) =>
+            {
+                this.Dispatcher.Invoke(() => { GenreLabel.Visibility = Visibility.Collapsed; });
+                timer.Stop();
+            };
+            timer.Start();
         }
         catch (Exception exception)
         {
             Console.WriteLine(exception);
             throw;
         }
+        OpenNum += 1;
     }
 }

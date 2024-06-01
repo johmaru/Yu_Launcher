@@ -141,6 +141,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ApplicationFile(exe,text,png etc).
+        /// </summary>
+        public static string GenreApplication {
+            get {
+                return ResourceManager.GetString("GenreApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website(https:/, http:/).
+        /// </summary>
+        public static string GenreWebsite {
+            get {
+                return ResourceManager.GetString("GenreWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LoginHistory.
         /// </summary>
         public static string LoginHistory {
@@ -177,6 +195,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please Select Genre.
+        /// </summary>
+        public static string PleaseSelectGenre {
+            get {
+                return ResourceManager.GetString("PleaseSelectGenre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please input URL.
+        /// </summary>
+        public static string PleaseURL {
+            get {
+                return ResourceManager.GetString("PleaseURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a file (have you selected a file with no extension?).
         /// </summary>
         public static string SelectFileErrorMessage {
@@ -191,6 +227,15 @@ namespace YuLauncher.LangString {
         public static string SelectFileLabel {
             get {
                 return ResourceManager.GetString("SelectFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select Genre.
+        /// </summary>
+        public static string SelectGenreError {
+            get {
+                return ResourceManager.GetString("SelectGenreError", resourceCulture);
             }
         }
         
