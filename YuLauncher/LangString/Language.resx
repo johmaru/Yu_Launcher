@@ -108,4 +108,13 @@
     <data name="NotContainsHttpError" xml:space="preserve">
         <value>Please enter the appropriate web address</value>
     </data>
+    <data name="GenreAllComboBoxItem" xml:space="preserve">
+        <value>ALL</value>
+    </data>
+    <data name="GenreExeExtension" xml:space="preserve">
+        <value>EXE Files</value>
+    </data>
+    <data name="GenreWebsiteExtension" xml:space="preserve">
+        <value>Web</value>
+    </data>
 </root>
