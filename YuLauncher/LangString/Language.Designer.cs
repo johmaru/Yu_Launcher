@@ -87,6 +87,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to edit mode.
+        /// </summary>
+        public static string EditModeButton {
+            get {
+                return ResourceManager.GetString("EditModeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Pick FilePath.
         /// </summary>
         public static string ErrPickPath {
@@ -200,6 +209,15 @@ namespace YuLauncher.LangString {
         public static string MainWindowResChange {
             get {
                 return ResourceManager.GetString("MainWindowResChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memo.
+        /// </summary>
+        public static string MemoCtxHeader {
+            get {
+                return ResourceManager.GetString("MemoCtxHeader", resourceCulture);
             }
         }
         

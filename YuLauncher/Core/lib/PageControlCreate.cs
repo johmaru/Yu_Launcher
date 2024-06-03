@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
+using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
 using Button = Wpf.Ui.Controls.Button;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
@@ -21,11 +22,11 @@ public class PageControlCreate : Page
         {
             case true:
             {
-                MenuItem menu = new MenuItem()
+                MenuItem addCtx = new MenuItem()
                 {
                     Header = LocalizeControl.GetLocalize<string>("AddGame"),
                 };
-                menu.Click += (sender, args) =>
+                addCtx.Click += (sender, args) =>
                 {
                   try
                   {
@@ -37,12 +38,13 @@ public class PageControlCreate : Page
                       LoggerController.LogError(e.Message);
                   }
                 };
-                contextMenu.Items.Add(menu);
-                MenuItem menu2 = new MenuItem()
+                contextMenu.Items.Add(addCtx);
+                
+                MenuItem deleteCtx = new MenuItem()
                 {
                     Header = LocalizeControl.GetLocalize<string>("DeleteGame"),
                 };
-                menu2.Click += (sender, args) =>
+                deleteCtx.Click += (sender, args) =>
                 {
                     try
                     {
@@ -66,7 +68,29 @@ public class PageControlCreate : Page
                         throw;
                     }
                 };
-                contextMenu.Items.Add(menu2);
+                contextMenu.Items.Add(deleteCtx);
+                MenuItem memoCtx = new MenuItem()
+                {
+                    Header = LocalizeControl.GetLocalize<string>("MemoCtxHeader")
+                };
+                memoCtx.Click += (sender, args) =>
+                {
+                    if (File.Exists(gameButtonName))
+                    {
+                        string[] memo = File.ReadAllLines(gameButtonName);
+                        try
+                        {
+                            MemoWindow memoWindow = new MemoWindow(gameButtonName,memo);
+                            memoWindow.Show();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                    }
+                };
+                contextMenu.Items.Add(memoCtx);
                 break;
             }
             case false:

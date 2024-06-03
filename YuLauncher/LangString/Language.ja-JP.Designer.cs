@@ -87,6 +87,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to エディットモードにする.
+        /// </summary>
+        public static string EditModeButton {
+            get {
+                return ResourceManager.GetString("EditModeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ファイルパスを選択してください.
         /// </summary>
         public static string ErrPickPath {
@@ -200,6 +209,15 @@ namespace YuLauncher.LangString {
         public static string MainWindowResChange {
             get {
                 return ResourceManager.GetString("MainWindowResChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to メモ.
+        /// </summary>
+        public static string MemoCtxHeader {
+            get {
+                return ResourceManager.GetString("MemoCtxHeader", resourceCulture);
             }
         }
         

@@ -120,4 +120,10 @@
     <data name="GenreWebsiteExtension" xml:space="preserve">
         <value>ウェブ</value>
     </data>
+    <data name="MemoCtxHeader" xml:space="preserve">
+        <value>メモ</value>
+    </data>
+    <data name="EditModeButton" xml:space="preserve">
+        <value>エディットモードにする</value>
+    </data>
 </root>

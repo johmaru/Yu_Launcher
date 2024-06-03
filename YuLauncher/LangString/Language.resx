@@ -117,4 +117,10 @@
     <data name="GenreWebsiteExtension" xml:space="preserve">
         <value>Web</value>
     </data>
+    <data name="MemoCtxHeader" xml:space="preserve">
+        <value>Memo</value>
+    </data>
+    <data name="EditModeButton" xml:space="preserve">
+        <value>Go to edit mode</value>
+    </data>
 </root>
