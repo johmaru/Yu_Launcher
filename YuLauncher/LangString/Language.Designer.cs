@@ -141,6 +141,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ALL.
+        /// </summary>
+        public static string GenreAllComboBoxItem {
+            get {
+                return ResourceManager.GetString("GenreAllComboBoxItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ApplicationFile(exe,text,png etc).
         /// </summary>
         public static string GenreApplication {
@@ -150,11 +159,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EXE Files.
+        /// </summary>
+        public static string GenreExeExtension {
+            get {
+                return ResourceManager.GetString("GenreExeExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Website(https:/, http:/).
         /// </summary>
         public static string GenreWebsite {
             get {
                 return ResourceManager.GetString("GenreWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web.
+        /// </summary>
+        public static string GenreWebsiteExtension {
+            get {
+                return ResourceManager.GetString("GenreWebsiteExtension", resourceCulture);
             }
         }
         

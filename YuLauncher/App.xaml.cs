@@ -83,7 +83,7 @@ namespace YuLauncher
                     }
                     if (version[0] == Version.Alpha && version[1] == Version.Major.ToString(CultureInfo.InvariantCulture))
                     {
-                        LoggerController.LogInfo("Version Check Complete");
+                        LoggerController.LogInfo($"Version Check Complete :{Version.Major}");
                     }
                     else
                     {

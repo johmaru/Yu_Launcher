@@ -10,36 +10,42 @@
       lex:ResxLocalizationProvider.DefaultDictionary="Language"
       xmlns:local="clr-namespace:YuLauncher.Core.Window.Pages"
       mc:Ignorable="d"
-      Loaded="GameList_OnLoaded"
       PreviewMouseRightButtonDown="GameList_OnPreviewMouseRightButtonDown">
     <Grid>
-        
-        <ScrollViewer>
+       <StackPanel Orientation="Vertical">
+           <ComboBox x:Name="GenreComboBox" HorizontalContentAlignment="Center" Width="400" Loaded="GenreComboBox_OnLoaded" SelectionChanged="GenreComboBox_OnSelectionChanged">
+               <ComboBoxItem x:Name="GenreAllComboBoxItem" Content="{lex:Loc GenreAllComboBoxItem}"/>
+               <ComboBoxItem x:Name="GenreExeComboBoxItem" Content="{lex:Loc GenreExeExtension}"/>
+               <ComboBoxItem x:Name="GenreWebsiteComboBoxItem" Content="{lex:Loc GenreWebsiteExtension}"/>
+           </ComboBox>
+           <ScrollViewer>
            
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="80*"/>
-                        <ColumnDefinition Width="10*"/>
-                    </Grid.ColumnDefinitions>
+               <Grid>
+                   <Grid.RowDefinitions>
+                       <RowDefinition Height="*"/>
+                   </Grid.RowDefinitions>
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition Width="10*"/>
+                       <ColumnDefinition Width="80*"/>
+                       <ColumnDefinition Width="10*"/>
+                   </Grid.ColumnDefinitions>
                     
-                    <Grid Grid.Column="0" Grid.Row="0">
-                        <StackPanel x:Name="IconPanel">
-                            </StackPanel>
-                    </Grid>
+                   <Grid Grid.Column="0" Grid.Row="0">
+                       <StackPanel x:Name="IconPanel">
+                       </StackPanel>
+                   </Grid>
                     
-                        <Grid Grid.Column="1" Grid.Row="0">
-                        <StackPanel  x:Name="Panel">
-                        </StackPanel>
-                    </Grid>
-                    <Grid Grid.Column="2" Grid.Row="0">
-                        <StackPanel  x:Name="ExtensionLabel">
-                        </StackPanel>
-                    </Grid>
-                </Grid>    
-            </ScrollViewer>
+                   <Grid Grid.Column="1" Grid.Row="0">
+                       <StackPanel  x:Name="Panel">
+                       </StackPanel>
+                   </Grid>
+                   <Grid Grid.Column="2" Grid.Row="0">
+                       <StackPanel  x:Name="ExtensionLabel">
+                       </StackPanel>
+                   </Grid>
+               </Grid>    
+           </ScrollViewer>
+       </StackPanel>
+       
     </Grid>
 </Page>

@@ -111,4 +111,13 @@
     <data name="NotContainsHttpError" xml:space="preserve">
         <value>適切なウェブアドレスを入力してください</value>
     </data>
+    <data name="GenreAllComboBoxItem" xml:space="preserve">
+        <value>すべて</value>
+    </data>
+    <data name="GenreExeExtension" xml:space="preserve">
+        <value>EXE ファイル</value>
+    </data>
+    <data name="GenreWebsiteExtension" xml:space="preserve">
+        <value>ウェブ</value>
+    </data>
 </root>

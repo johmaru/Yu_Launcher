@@ -141,6 +141,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to すべて.
+        /// </summary>
+        public static string GenreAllComboBoxItem {
+            get {
+                return ResourceManager.GetString("GenreAllComboBoxItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to アプリケーションファイル(exe,text,png etc).
         /// </summary>
         public static string GenreApplication {
@@ -150,11 +159,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EXE ファイル.
+        /// </summary>
+        public static string GenreExeExtension {
+            get {
+                return ResourceManager.GetString("GenreExeExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ウェブサイト(https:/, http:/).
         /// </summary>
         public static string GenreWebsite {
             get {
                 return ResourceManager.GetString("GenreWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ウェブ.
+        /// </summary>
+        public static string GenreWebsiteExtension {
+            get {
+                return ResourceManager.GetString("GenreWebsiteExtension", resourceCulture);
             }
         }
         

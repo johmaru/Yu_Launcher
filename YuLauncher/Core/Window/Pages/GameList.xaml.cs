@@ -47,59 +47,158 @@ public partial class GameList : Page
         IconPanel.Children.Clear();
         LoggerController.LogInfo("GameList Page Reloaded");
         string[] files = FileControl.GetGameList();
-        foreach (var file in files)
+        if (GenreComboBox.SelectedItem == GenreAllComboBoxItem)
         {
-            string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = File.ReadAllLines(file);
-            try
+             foreach (var file in files)
+             {
+                 string name = Path.GetFileNameWithoutExtension(file);
+                 string[] path = File.ReadAllLines(file);
+                 try
+                 {
+                     Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                     ExtensionLabel.Children.Add(new Label
+                     {
+                         Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
+                         Height = ObjectProperty.GameListObjectHeight,
+                         VerticalAlignment = VerticalAlignment.Stretch,
+                         HorizontalAlignment = HorizontalAlignment.Stretch,
+                         VerticalContentAlignment = VerticalAlignment.Stretch,
+                         HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                     });
+                     if (path[1] != "web")
+                     {
+                         using (MemoryStream s = new MemoryStream())
+                         {
+                             Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                             icon?.Save(s);
+                             s.Position = 0;
+                             BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                             IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                             {
+                                 Source = bitmapFrame,
+                                 Height = ObjectProperty.GameListObjectHeight,
+                                 VerticalAlignment = VerticalAlignment.Center,
+                                 HorizontalAlignment = HorizontalAlignment.Center,
+                             });
+                    
+                         }
+                     }
+                     else
+                     {
+                         IconPanel.Children.Add(new Image()
+                         {
+                             Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
+                             Height = ObjectProperty.GameListObjectHeight,
+                             VerticalAlignment = VerticalAlignment.Center,
+                             HorizontalAlignment = HorizontalAlignment.Center,
+                         });
+                
+                     }
+                 }
+                 catch (System.IO.IOException ex)
+                 {
+                     Console.WriteLine("An I/O error occurred: " + ex.Message);
+                     LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                     throw;
+                 }
+                 LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+             }
+        }
+        else if (GenreComboBox.SelectedItem == GenreExeComboBoxItem)
+        {
+            foreach (var file in files)
             {
-                Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                ExtensionLabel.Children.Add(new Label
+                string name = Path.GetFileNameWithoutExtension(file);
+                string[] path = File.ReadAllLines(file);
+            
+                try
                 {
-                    Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
-                    Height = ObjectProperty.GameListObjectHeight,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalContentAlignment = VerticalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                });
-                if (path[1] != "web")
-                {
-                    using (MemoryStream s = new MemoryStream())
+                    if (path[1] == "exe")
                     {
-                        Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
-                        icon?.Save(s);
-                        s.Position = 0;
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                        IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                        Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                        ExtensionLabel.Children.Add(new Label
                         {
-                            Source = bitmapFrame,
+                            Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
+                            Height = ObjectProperty.GameListObjectHeight,
+                            VerticalAlignment = VerticalAlignment.Stretch,
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            VerticalContentAlignment = VerticalAlignment.Stretch,
+                            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        });
+                
+                        using (MemoryStream s = new MemoryStream())
+                        {
+                            Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                            icon?.Save(s);
+                            s.Position = 0;
+                            BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                            IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                            {
+                                Source = bitmapFrame,
+                                Height = ObjectProperty.GameListObjectHeight,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                            });
+                    
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                    throw;
+                }
+                LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+            }
+        }
+        else if (GenreComboBox.SelectedItem == GenreWebsiteComboBoxItem)
+        {
+            foreach (var file in files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file);
+                string[] path = File.ReadAllLines(file);
+            
+                try
+                {
+                    if (path[1] == "web")
+                    {
+                        Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                        ExtensionLabel.Children.Add(new Label
+                        {
+                            Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
+                            Height = ObjectProperty.GameListObjectHeight,
+                            VerticalAlignment = VerticalAlignment.Stretch,
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            VerticalContentAlignment = VerticalAlignment.Stretch,
+                            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        });
+                
+                        IconPanel.Children.Add(new Image()
+                        {
+                            Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
                             Height = ObjectProperty.GameListObjectHeight,
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center,
                         });
-                    
+                    }
+                    else
+                    {
+                        continue;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
-                
+                    Console.WriteLine(ex);
+                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                    throw;
                 }
+                LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
             }
-            catch (System.IO.IOException ex)
-            {
-                Console.WriteLine("An I/O error occurred: " + ex.Message);
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                throw;
-            }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
         }
     }
 
@@ -125,72 +224,41 @@ public partial class GameList : Page
        }
 
     }
-
-    private void GameList_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        string[] files = FileControl.GetGameList();
-        foreach (var file in files)
-        {
-            string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = File.ReadAllLines(file);
-            
-            try
-            {
-                Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                ExtensionLabel.Children.Add(new Label
-                {
-                    Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
-                    Height = ObjectProperty.GameListObjectHeight,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalContentAlignment = VerticalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                });
-                if (path[1] != "web")
-                {
-                    using (MemoryStream s = new MemoryStream())
-                    {
-                        Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
-                        icon?.Save(s);
-                        s.Position = 0;
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                        IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
-                        {
-                            Source = bitmapFrame,
-                            Height = ObjectProperty.GameListObjectHeight,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                        });
-                    
-                    }
-                }
-                else
-                {
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
-                
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                throw;
-            }
-            LoggerController.LogInfo($"InitializeLoading {name} Extension: {path[1]}");
-        }
-    }
     
     private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)
     {
-        if (NavigationService != null && NavigationService.CanGoBack)
+        if (NavigationService is { CanGoBack: true })
         {
             NavigationService.GoBack();
         }
+    }
+
+    private void GenreComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        try
+        {
+            if (Equals(GenreComboBox.SelectedItem, GenreAllComboBoxItem))
+            {
+                GameList_OnFileUpdate(this, e);
+            }
+            else if (Equals(GenreComboBox.SelectedItem, GenreExeComboBoxItem))
+            {
+                GameList_OnFileUpdate(this, e);
+            }
+            else if (Equals(GenreComboBox.SelectedItem, GenreWebsiteComboBoxItem))
+            {
+                GameList_OnFileUpdate(this, e);
+            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
+    }
+
+    private void GenreComboBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        GenreComboBox.SelectedItem = GenreAllComboBoxItem;
     }
 }
