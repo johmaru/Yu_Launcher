@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using Button = Wpf.Ui.Controls.Button;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
 using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace YuLauncher.Core.Window;
@@ -14,26 +15,32 @@ public partial class MemoWindow : FluentWindow
 {
     private readonly string[] _memo;
     private readonly string _filePath;
+    private readonly double _fontSize;
     public MemoWindow(string filePath,string[] memo)
     {
         this._memo = memo;
         this._filePath = filePath;
+        this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
         InitializeComponent();
+        
+        this.Width = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Width"));
+        this.Height = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Height"));
+        
          Panel.Children.Clear();
          MainGrid.Children.Clear();
         Panel.Children.Add(MemoLabel());
     }
 
-    private Label MemoLabel()
+    private TextBlock MemoLabel()
     {
-        Label label = new Label
+        TextBlock text = new TextBlock
         {
-            Content = _memo[2],
+            Text = _memo[2],
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
-            FontSize = 20
+            FontSize = _fontSize
         };
-        return label;
+        return text;
     }
     
     private TextBox MemoTextBox()
@@ -43,7 +50,7 @@ public partial class MemoWindow : FluentWindow
             Text = _memo[2],
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
-            FontSize = 20
+            FontSize = _fontSize
         };
         return textBox;
     }

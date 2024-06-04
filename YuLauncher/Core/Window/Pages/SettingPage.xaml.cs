@@ -33,6 +33,11 @@ namespace YuLauncher.Core.Window.Pages
             
             GameTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Height");
             GameTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Width");
+            
+            MemoTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "MemoResolution", "Height");
+            MemoTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "MemoResolution", "Width");
+            
+            MemoTxtFontSize.Text = TomlControl.GetTomlString("./settings.toml", "MemoFontSize");
         }
         
         private void WindowResChanged()
@@ -45,6 +50,11 @@ namespace YuLauncher.Core.Window.Pages
             
             _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Width", TxtResWidth.Text);
             _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Height", TxtResHeight.Text);
+            
+            _tomlControl.EditTomlList("./settings.toml", "MemoResolution", "Width", TxtResWidth.Text);
+            _tomlControl.EditTomlList("./settings.toml", "MemoResolution", "Height", TxtResHeight.Text);
+            
+            _tomlControl.EditToml("./settings.toml", "MemoFontSize", MemoTxtFontSize.Text);
         }
 
         private void SelectLanguage()
@@ -65,11 +75,11 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FullSc_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (_tomlControl.GetTomlString("./settings.toml", "FullScreen") == "true")
+            if (TomlControl.GetTomlString("./settings.toml", "FullScreen") == "true")
             {
                 FullSc.IsChecked = true;
             }
-            else if (_tomlControl.GetTomlString("./settings.toml", "FullScreen") == "false")
+            else if (TomlControl.GetTomlString("./settings.toml", "FullScreen") == "false")
             {
                 FullSc.IsChecked = false;
             }
@@ -93,7 +103,7 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
         {
-            switch (_tomlControl.GetTomlString("./settings.toml", "Language"))
+            switch (TomlControl.GetTomlString("./settings.toml", "Language"))
             {
                 case "en":
                     LanguageCombo.SelectedItem = EngItemCombo;

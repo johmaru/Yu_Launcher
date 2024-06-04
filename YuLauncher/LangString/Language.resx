@@ -123,4 +123,13 @@
     <data name="EditModeButton" xml:space="preserve">
         <value>Go to edit mode</value>
     </data>
+    <data name="MemoWindowResChange" xml:space="preserve">
+        <value>Memo Resolution Change</value>
+    </data>
+    <data name="SimpleRes" xml:space="preserve">
+        <value>Resolution</value>
+    </data>
+    <data name="SimpleFontSize" xml:space="preserve">
+        <value>Font Size</value>
+    </data>
 </root>

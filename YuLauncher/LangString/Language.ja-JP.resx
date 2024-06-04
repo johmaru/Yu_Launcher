@@ -126,4 +126,14 @@
     <data name="EditModeButton" xml:space="preserve">
         <value>エディットモードにする</value>
     </data>
+    <data name="MemoWindowResChange" xml:space="preserve">
+        <value>メモの解像度変更</value>
+    </data>
+    <data name="SimpleRes" xml:space="preserve">
+        <value>解像度</value>
+    </data>
+    <data name="SimpleFontSize" xml:space="preserve">
+        <value>フォントサイズ
+</value>
+    </data>
 </root>

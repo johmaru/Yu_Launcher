@@ -222,6 +222,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Memo Resolution Change.
+        /// </summary>
+        public static string MemoWindowResChange {
+            get {
+                return ResourceManager.GetString("MemoWindowResChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please input name.
         /// </summary>
         public static string NameInput {
@@ -321,6 +330,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Font Size.
+        /// </summary>
+        public static string SimpleFontSize {
+            get {
+                return ResourceManager.GetString("SimpleFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullScreen.
         /// </summary>
         public static string SimpleFullScreen {
@@ -344,6 +362,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution.
+        /// </summary>
+        public static string SimpleRes {
+            get {
+                return ResourceManager.GetString("SimpleRes", resourceCulture);
             }
         }
         

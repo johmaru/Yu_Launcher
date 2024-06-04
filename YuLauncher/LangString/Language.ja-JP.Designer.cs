@@ -222,6 +222,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to メモの解像度変更.
+        /// </summary>
+        public static string MemoWindowResChange {
+            get {
+                return ResourceManager.GetString("MemoWindowResChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 名前を入力してください.
         /// </summary>
         public static string NameInput {
@@ -322,6 +331,16 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to フォントサイズ
+        ///.
+        /// </summary>
+        public static string SimpleFontSize {
+            get {
+                return ResourceManager.GetString("SimpleFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to フルスクリーン.
         /// </summary>
         public static string SimpleFullScreen {
@@ -346,6 +365,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 解像度.
+        /// </summary>
+        public static string SimpleRes {
+            get {
+                return ResourceManager.GetString("SimpleRes", resourceCulture);
             }
         }
         

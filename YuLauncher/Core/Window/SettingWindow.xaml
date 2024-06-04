@@ -13,7 +13,7 @@
         MouseDown="SettingWindow_OnMouseDown"
         WindowStartupLocation="CenterScreen"
         
-        Title="SettingWindow" d:DesignHeight="450" d:DesignWidth="800">
+        Title="SettingWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

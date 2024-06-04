@@ -37,8 +37,8 @@ public partial class MainWindow : FluentWindow
     
     private void WindowSizeInitialize()
     {
-               var width = _tomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Width");
-               var height = _tomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Height");
+               var width = TomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Width");
+               var height = TomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Height");
                 Console.WriteLine(double.Parse(width));
                this.Width = double.Parse(width);
                this.Height = double.Parse(height);

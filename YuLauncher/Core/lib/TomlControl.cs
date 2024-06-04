@@ -29,7 +29,13 @@ public class TomlControl
             {
                 ["Width"] = 800,
                 ["Height"] = 400
-            }
+            },
+            ["MemoResolution"] =
+            {
+                ["Width"] = 600,
+                ["Height"] = 200
+            },
+            ["MemoFontSize"] = 20
         };
         using (StreamWriter writer = File.CreateText(path))
         {
@@ -121,7 +127,7 @@ public class TomlControl
         }
     }
 
-    public string GetTomlString(string path, string key)
+    public static string GetTomlString(string path, string key)
     {
         try
         {
@@ -138,7 +144,7 @@ public class TomlControl
         }
     }
 
-    public string GetTomlStringList(string path, string key, string list)
+    public static string GetTomlStringList(string path, string key, string list)
     {
         try
         {
@@ -201,3 +207,4 @@ public class ManualTomlSettings
         }
     }
 }
+    

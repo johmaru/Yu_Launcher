@@ -98,7 +98,7 @@ namespace YuLauncher
 
         private void LanguageCheck()
         {
-           var result = _tomlControl.GetTomlString("./settings.toml", "Language");
+           var result = TomlControl.GetTomlString("./settings.toml", "Language");
            switch (result)
            {
                 case "en":

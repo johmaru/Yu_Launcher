@@ -31,7 +31,7 @@ public partial class SettingWindow : FluentWindow
     {
          Task.Run(() =>
         {
-            switch (_tomlControl.GetTomlString("./settings.toml", "Theme"))
+            switch (TomlControl.GetTomlString("./settings.toml", "Theme"))
             {
                 case "Dark":
                     ThemeApply("Dark");
