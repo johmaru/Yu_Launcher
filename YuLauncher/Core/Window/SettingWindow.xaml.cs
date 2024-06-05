@@ -79,4 +79,35 @@ public partial class SettingWindow : FluentWindow
         if (e.ChangedButton == MouseButton.Left)
             this.DragMove();
     }
+
+    private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Maximized;
+        WindowStateIcon.Glyph = "\uE73F";
+    }
+
+    private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Normal;
+        WindowStateIcon.Glyph = "\uE740";
+    }
+
+    private void SettingWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        switch (WindowState)
+        {
+            case WindowState.Maximized:
+                WindowStateIcon.Glyph = "\uE73F";
+                WindowStateBtn.IsChecked = true;
+                break;
+            case WindowState.Normal:
+                WindowStateIcon.Glyph = "\uE740";
+                WindowStateBtn.IsChecked = false;
+                break;
+            case WindowState.Minimized:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 }

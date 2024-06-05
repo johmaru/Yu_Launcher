@@ -62,30 +62,37 @@ public partial class MainWindow : FluentWindow
     private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
     {
         this.WindowState = WindowState.Maximized;
-        WindowStateIcon.Glyph = "\uE740";
+        WindowStateIcon.Glyph = "\uE73F";
         
     }
 
     private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
     {
         this.WindowState = WindowState.Normal;
-        WindowStateIcon.Glyph = "\uE73F";
-    }
-
-    private void WindowStateBtn_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        if (WindowState == WindowState.Maximized)
-        {
-            WindowStateIcon.Glyph = "\uE73F";
-        }
-        else if (WindowState == WindowState.Normal)
-        {
-            WindowStateIcon.Glyph = "\uE740";
-        }
+        WindowStateIcon.Glyph = "\uE740";
     }
 
     private void BackBtn_OnClick(object sender, RoutedEventArgs e)
     {
         OnBackBtnClick?.Invoke(sender, e);
+    }
+
+    private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        switch (WindowState)
+        {
+            case WindowState.Maximized:
+                WindowStateIcon.Glyph = "\uE73F";
+                WindowStateBtn.IsChecked = true;
+                break;
+            case WindowState.Normal:
+                WindowStateIcon.Glyph = "\uE740";
+                WindowStateBtn.IsChecked = false;
+                break;
+            case WindowState.Minimized:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }

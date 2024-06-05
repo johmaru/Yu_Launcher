@@ -7,6 +7,7 @@ namespace YuLauncher.Core.lib;
 
 public class TomlControl
 {
+   
     public static void CreateToml(string path)
     {
         TomlTable table = new TomlTable
@@ -95,29 +96,6 @@ public class TomlControl
                     table.WriteTo(writer);
                     writer.Flush();
                 }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
-
-    public Dictionary<string, string> ReadToml(string path)
-    {
-        try
-        {
-            using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
-            {
-                TomlTable table = TOML.Parse(reader);
-                Dictionary<string, string> settings = new();
-                foreach (var key in table.Keys)
-                {
-                    settings.Add(key, table[key]);
-                }
-
-                return settings;
             }
         }
         catch (Exception e)

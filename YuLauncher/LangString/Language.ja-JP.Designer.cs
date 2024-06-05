@@ -132,11 +132,11 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ゲーム一覧(R18).
+        ///   Looks up a localized string similar to ゲーム一覧(Web).
         /// </summary>
-        public static string GameList18 {
+        public static string GameListWeb {
             get {
-                return ResourceManager.GetString("GameList18", resourceCulture);
+                return ResourceManager.GetString("GameListWeb", resourceCulture);
             }
         }
         

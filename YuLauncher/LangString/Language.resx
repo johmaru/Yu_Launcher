@@ -21,8 +21,8 @@
     <data name="GameList" xml:space="preserve">
         <value>Game List</value>
     </data>
-    <data name="GameList18" xml:space="preserve">
-        <value>Game List(R18)</value>
+    <data name="GameListWeb" xml:space="preserve">
+        <value>Game List(Web)</value>
     </data>
     <data name="SimpleSetting" xml:space="preserve">
         <value>Setting</value>

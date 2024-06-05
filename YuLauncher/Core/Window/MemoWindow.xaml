@@ -11,6 +11,7 @@
         lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
         lex:ResxLocalizationProvider.DefaultDictionary="Language"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         MouseDown="MemoWindow_OnMouseDown"
         Title="MemoWindow" MinWidth="600" MinHeight="200">
     <Grid>

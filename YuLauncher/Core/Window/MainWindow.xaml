@@ -15,6 +15,7 @@
     lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
     WindowStartupLocation="CenterScreen"
     MouseDown="MainWindow_OnMouseDown"
+    SizeChanged="MainWindow_OnSizeChanged"
     lex:ResxLocalizationProvider.DefaultDictionary="LangString" Closing="MetroWindow_Closing">
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +28,7 @@
                             <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf0b0;" FontSize="20"/>
                         </ui:Button>
                    
-                    <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Loaded="WindowStateBtn_OnLoaded" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked">
+                    <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
                         <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
                     </ToggleButton>
                     <ui:Button x:Name="ExitBtn" VerticalAlignment="Center" Panel.ZIndex="1" Click="ExitBtn_OnClick">

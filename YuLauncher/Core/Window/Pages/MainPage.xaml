@@ -25,7 +25,7 @@
                 x:Name="StartBtn"
                 Height="50"
                 HorizontalAlignment="Stretch"
-                Content="{lex:Loc GameList18}"/>
+                Content="{lex:Loc GameListWeb}"/>
             
             <ui:Button
                 x:Name="LoginHistoryBtn"

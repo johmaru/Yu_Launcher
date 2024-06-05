@@ -7,6 +7,7 @@ public abstract class FileControl
    public struct Main
     {
         public const string Directory = "./Games";
+        public const string Settings = "./settings.toml";
     }
     
     public static bool ExistGameDirectory(string path)

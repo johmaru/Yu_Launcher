@@ -25,49 +25,73 @@ namespace YuLauncher.Core.Window.Pages
 
         private void ControlInitialize()
         {
-            TxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Height");
-            TxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Width");
-            
-            MenuTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Height");
-            MenuTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "WindowResolution", "Width");
-            
-            GameTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Height");
-            GameTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "GameResolution", "Width");
-            
-            MemoTxtResHeight.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "MemoResolution", "Height");
-            MemoTxtResWidth.Text = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "MemoResolution", "Width");
-            
-            MemoTxtFontSize.Text = TomlControl.GetTomlString("./settings.toml", "MemoFontSize");
+            try
+            {
+                TxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "SettingResolution", "Height");
+                TxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "SettingResolution", "Width");
+
+                MenuTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "WindowResolution", "Height");
+                MenuTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "WindowResolution", "Width");
+
+                GameTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+                GameTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+
+                MemoTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "MemoResolution", "Height");
+                MemoTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "MemoResolution", "Width");
+
+                MemoTxtFontSize.Text = TomlControl.GetTomlString(FileControl.Main.Settings, "MemoFontSize");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         
         private void WindowResChanged()
         {
-            _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Width", TxtResWidth.Text);
-            _tomlControl.EditTomlList("./settings.toml", "SettingResolution", "Height", TxtResHeight.Text);
-            
-            _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Width", MenuTxtResWidth.Text);
-            _tomlControl.EditTomlList("./settings.toml", "WindowResolution", "Height", MenuTxtResHeight.Text);
-            
-            _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Width", TxtResWidth.Text);
-            _tomlControl.EditTomlList("./settings.toml", "GameResolution", "Height", TxtResHeight.Text);
-            
-            _tomlControl.EditTomlList("./settings.toml", "MemoResolution", "Width", TxtResWidth.Text);
-            _tomlControl.EditTomlList("./settings.toml", "MemoResolution", "Height", TxtResHeight.Text);
-            
-            _tomlControl.EditToml("./settings.toml", "MemoFontSize", MemoTxtFontSize.Text);
+            try
+            {
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Height", TxtResHeight.Text);
+
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Width", MenuTxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Height", MenuTxtResHeight.Text);
+
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Height", TxtResHeight.Text);
+
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Height", TxtResHeight.Text);
+
+                _tomlControl.EditToml(FileControl.Main.Settings, "MemoFontSize", MemoTxtFontSize.Text);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private void SelectLanguage()
         {
             if (LanguageCombo.SelectedItem.Equals(EngItemCombo))
             {
-                        _tomlControl.EditToml("./settings.toml", "Language", "en");
+                        _tomlControl.EditToml(FileControl.Main.Settings, "Language", "en");
                         LanguageUpdater.UpdateLanguage("en-US");
                         LoggerController.LogInfo("Language Changed to English");
             }
             else if (LanguageCombo.SelectedItem.Equals(JpnItemCombo))
             {
-                        _tomlControl.EditToml("./settings.toml", "Language", "ja");
+                        _tomlControl.EditToml(FileControl.Main.Settings, "Language", "ja");
                         LanguageUpdater.UpdateLanguage("ja-JP");
                         LoggerController.LogInfo("Language Changed to Japanese");
             }
@@ -75,11 +99,11 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FullSc_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (TomlControl.GetTomlString("./settings.toml", "FullScreen") == "true")
+            if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "true")
             {
                 FullSc.IsChecked = true;
             }
-            else if (TomlControl.GetTomlString("./settings.toml", "FullScreen") == "false")
+            else if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "false")
             {
                 FullSc.IsChecked = false;
             }
@@ -87,12 +111,12 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FullSc_OnChecked(object sender, RoutedEventArgs e)
         {
-            _tomlControl.EditToml("./settings.toml", "FullScreen", "true");
+            _tomlControl.EditToml(FileControl.Main.Settings, "FullScreen", "true");
         }
 
         private void FullSc_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            _tomlControl.EditToml("./settings.toml", "FullScreen", "false");
+            _tomlControl.EditToml(FileControl.Main.Settings, "FullScreen", "false");
         }
 
         private void SaveBtn_OnClick(object sender, RoutedEventArgs e)
@@ -103,7 +127,7 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
         {
-            switch (TomlControl.GetTomlString("./settings.toml", "Language"))
+            switch (TomlControl.GetTomlString(FileControl.Main.Settings, "Language"))
             {
                 case "en":
                     LanguageCombo.SelectedItem = EngItemCombo;

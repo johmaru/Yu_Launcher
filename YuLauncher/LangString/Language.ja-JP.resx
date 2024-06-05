@@ -21,8 +21,8 @@
     <data name="GameList" xml:space="preserve">
         <value>ゲーム一覧</value>
     </data>
-    <data name="GameList18" xml:space="preserve">
-        <value>ゲーム一覧(R18)</value>
+    <data name="GameListWeb" xml:space="preserve">
+        <value>ゲーム一覧(Web)</value>
     </data>
     <data name="SimpleSetting" xml:space="preserve">
         <value>設定</value>
