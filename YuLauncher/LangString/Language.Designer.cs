@@ -177,6 +177,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebGame.
+        /// </summary>
+        public static string GenreWebGame {
+            get {
+                return ResourceManager.GetString("GenreWebGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Website(https:/, http:/).
         /// </summary>
         public static string GenreWebsite {
@@ -276,6 +285,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        public static string PropertyCtxHeader {
+            get {
+                return ResourceManager.GetString("PropertyCtxHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a file (have you selected a file with no extension?).
         /// </summary>
         public static string SelectFileErrorMessage {
@@ -362,6 +380,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string SimpleName {
+            get {
+                return ResourceManager.GetString("SimpleName", resourceCulture);
             }
         }
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,10 +17,12 @@ namespace YuLauncher.Core.Window.Pages;
 
 public partial class GameList : Page
 {
+    private static GameList _instance;
     private ManualTomlSettings _tomlControl = new();
     private PageControlCreate _pageControlCreate = new();
     private readonly GameButton _gameButton = new GameButton();
-    readonly string[] _files = FileControl.GetGameList();
+    private static string[]? _files;
+    
     
     public GameList()
     {
@@ -30,9 +33,42 @@ public partial class GameList : Page
         CreateGameDialog.OnClose += GameList_OnFileUpdate;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
+        PropertyDialog.OnGameListApplicationPanelUpdate += PropertyDialogOnOnGameListApplicationPanelUpdate;
+        PropertyDialog.OnGameListWebPanelUpdate += PropertyDialogOnOnGameListWebPanelUpdate;
     }
 
-    private void GameControl()
+    private async void PropertyDialogOnOnGameListWebPanelUpdate(object? sender, EventArgs e)
+    {
+        _files = null;
+        
+        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+        
+        GenreAllUpdate();
+    }
+
+    private async void PropertyDialogOnOnGameListApplicationPanelUpdate(object? sender, EventArgs e)
+    {
+        _files = null;
+        
+        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+        
+        GenreAllUpdate();
+    }
+
+    private async void Initialize()
+    {
+        Panel.Children.Clear();
+        ExtensionLabel.Children.Clear();
+        IconPanel.Children.Clear();
+        
+      await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+      
+      Console.WriteLine("UpdateFiles");
+      
+      GenreAllUpdate();
+    }
+
+    public static void GameControl()
     {
         if (!FileControl.ExistGameDirectory(FileControl.Main.Directory))
         {
@@ -41,15 +77,19 @@ public partial class GameList : Page
         }
     }
 
-    private void GenreAllUpdate()
+    private async void GenreAllUpdate()
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = File.ReadAllLines(file);
+            string[] path = await File.ReadAllLinesAsync(file);
             try
             {
+                if (path[1] == "WebGame")
+                {
+                    continue;
+                }
                 Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
                 ExtensionLabel.Children.Add(new Label
                 {
@@ -100,13 +140,14 @@ public partial class GameList : Page
         }
     }
 
-    private void GenreExeUpdate()
+    private async void GenreExeUpdate()
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
+        Console.WriteLine("GenreExeUpdate");
          foreach (var file in _files)
          {
              string name = Path.GetFileNameWithoutExtension(file);
-             string[] path = File.ReadAllLines(file);
+             string[] path = await File.ReadAllLinesAsync(file);
             
              try
              {
@@ -154,13 +195,13 @@ public partial class GameList : Page
          }
     }
 
-    private void GenreWebUpdate()
+    private async void GenreWebUpdate()
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = File.ReadAllLines(file);
+            string[] path = await File.ReadAllLinesAsync(file);
             
             try
             {
@@ -226,7 +267,7 @@ public partial class GameList : Page
        else
        {
            Console.WriteLine("false");
-           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "");
+           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "",new string[]{""},"");
        }
 
     }
@@ -245,7 +286,7 @@ public partial class GameList : Page
         {
             if (Equals(GenreComboBox.SelectedItem, GenreAllComboBoxItem))
             {
-                GenreAllUpdate();
+                Initialize();
             }
             else if (Equals(GenreComboBox.SelectedItem, GenreExeComboBoxItem))
             {
@@ -266,5 +307,11 @@ public partial class GameList : Page
     private void GenreComboBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         GenreComboBox.SelectedItem = GenreAllComboBoxItem;
+    }
+
+    private void AddButton_OnClick(object sender, RoutedEventArgs e)
+    {
+      CreateGameDialog createGameDialog = new CreateGameDialog();
+      createGameDialog.Show();
     }
 }

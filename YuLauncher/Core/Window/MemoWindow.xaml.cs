@@ -3,6 +3,8 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using Button = Wpf.Ui.Controls.Button;
@@ -29,6 +31,7 @@ public partial class MemoWindow : FluentWindow
          Panel.Children.Clear();
          MainGrid.Children.Clear();
         Panel.Children.Add(MemoLabel());
+        Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
 
     private TextBlock MemoLabel()

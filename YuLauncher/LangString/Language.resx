@@ -132,4 +132,13 @@
     <data name="SimpleFontSize" xml:space="preserve">
         <value>Font Size</value>
     </data>
+    <data name="GenreWebGame" xml:space="preserve">
+        <value>WebGame</value>
+    </data>
+    <data name="PropertyCtxHeader" xml:space="preserve">
+        <value>Property</value>
+    </data>
+    <data name="SimpleName" xml:space="preserve">
+        <value>Name</value>
+    </data>
 </root>

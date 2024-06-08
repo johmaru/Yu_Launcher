@@ -1,6 +1,7 @@
-﻿/*
+﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -13,8 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 using Microsoft.Web.WebView2.Core.Raw;
+using Wpf.Ui.Controls;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 
@@ -23,180 +24,17 @@ namespace YuLauncher.Game.Window
     /// <summary>
     /// GameWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class GameWindow : MetroWindow
+    public partial class GameWindow : FluentWindow
     {
-        public GameWindow(string strData)
+        public GameWindow(string url,string[] args)
         {
             InitializeComponent();
-
-            switch (Settings.Default.FullScreen)
-            {
-                case true:
-                    GameWindow1.WindowStyle = WindowStyle.None;
-
-                    GameWindow1.WindowState = WindowState.Maximized;
-                    break;
-                case false:
-                    GameWindow1.WindowStyle = WindowStyle.SingleBorderWindow;
-
-                    GameWindow1.WindowState = WindowState.Normal;
-                    break;
-            }
-
-            if (strData == "あいミスR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/imys_r/");
-                    this.Title = "あいりすミスティリア!R";
-                }
-                else if (strData == "ミナシゴノシゴト(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/minashigo_x/");
-                    this.Title = "ミナシゴノシゴトR";
-                }
-                else if (strData == "あやかしランブル(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/ayarabux/");
-                    this.Title = "あやかしランブル!X";
-                }
-
-                else if (strData == "戦国†恋姫オンラインX〜奥宴新史〜 (WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/oenshinshix/");
-                    this.Title = "戦国†恋姫オンラインX〜奥宴新史〜";
-                }
-
-                else if (strData == "DeepOne 虚無と夢幻のフラグメントR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/deeponer/");
-                    this.Title = "DeepOne 虚無と夢幻のフラグメントR";
-                }
-
-                else if (strData == "救世少女メシアガールXおかわり (WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/meshiya-girlsx/");
-                    this.Title = "救世少女メシアガールXおかわり";
-                }
-
-                else if (strData == "千年戦争アイギスR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/aigis/");
-                    this.Title = "千年戦争アイギスR";
-                }
-
-                else if (strData == "戦国百花伝R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/hyakkadenr/");
-                    this.Title = "戦国百花伝R";
-                }
-
-                else if (strData == "対魔忍RPGX(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/taimanin_rpgx/");
-                    this.Title = "対魔忍RPGX";
-                }
-
-                else if (strData == "神姫PROJECT R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/kamipror/");
-                    this.Title = "神姫PROJECT R";
-                }
-
-                else if (strData == "モンスター娘TD〜ボクは絶海の孤島でモン娘たちに溺愛されて困っています〜X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/monmusutdx/");
-                    this.Title = "モンスター娘TD";
-                }
-
-                else if (strData == "ミストトレインガールズ〜霧の世界の車窓から〜 X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/MistTrainGirlsX/");
-                    this.Title = "ミストトレインガールズX";
-                }
-
-                else if (strData == "オトギフロンティア R(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/otogi_f_r/");
-                    this.Title = "オトギフロンティア R";
-                }
-
-                else if (strData == "アイ・アム・マジカミDX(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/magicami_dx/");
-                    this.Title = "アイ・アム・マジカミDX";
-                }
-
-                else if (strData == "れじぇくろ！〜レジェンド・クローバー〜 X(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/legeclox/");
-                    this.Title = "レジェンド・クローバー〜 X";
-                }
-
-                else if (strData == "FLOWER KNIGHT GIRL X(WebRender)")
-                {
-                    webView.Source = new Uri("https://games.dmm.co.jp/detail/flower-x/");
-                    this.Title = "花騎士X";
-                }
-
-                else if (strData == "エンジェリックリンクR(WebRender)")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/angelicr/");
-                    this.Title = "エンクリR";
-                }
-
-                else if (strData == "天啓パラドクスX(WebRender)")
-                {
-                    webView.Source = new Uri("https://games.dmm.co.jp/detail/tenkeiprdx_x/");
-                    this.Title = "天啓パラドクスX";
-                }
-
-                else if (strData == "アライアンスセージ")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/alliancesagesr/");
-                    this.Title = "アライアンスセージ";
-                }
-
-                else if (strData == "プリンセスエンパイア R")
-                {
-                    webView.Source = new Uri("https://pc-play.games.dmm.co.jp/play/princessempirer/");
-                    this.Title = "プリンセスエンパイア R";
-                }
-
-
-                
-            
+            webView.Source = new Uri(url);
         }
 
         private void webView_Initialized(object sender, EventArgs e)
         {
-            if (Settings.Default.FullScreen == true)
-            {
-                var gamewd = SystemParameters.PrimaryScreenWidth;
-                var gameht = SystemParameters.PrimaryScreenHeight;
-
-                webView.Height = gameht;
-
-                webView.Width = gamewd;
-
-                gamedock.Width = gamewd;
-
-                gamedock.Height = gameht;
-            }
-
-            if (Settings.Default.FullScreen == false)
-            {
-                webView.Height = Settings.Default.Window_H;
-
-                webView.Width = Settings.Default.Window_W;
-
-                gamedock.Height = Settings.Default.Window_H;
-
-                gamedock.Width = Settings.Default.Window_W;
-            }
-
-            else
-            {
-              
-            }
+          
         }
 
         private void WikiBTN(object sender, RoutedEventArgs e)
@@ -205,14 +43,60 @@ namespace YuLauncher.Game.Window
             wikiwindow.Show();
         }
 
-        private void GameWindow1_Loaded(object sender, RoutedEventArgs e)
+        private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            this.Close();
         }
 
-        private void GameWindow1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Maximized;
+            WindowStateIcon.Glyph = "\uE73F";
+        }
+
+        private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            WindowStateIcon.Glyph = "\uE740";
+        }
+
+        private void GameWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Maximized:
+                    WindowStateIcon.Glyph = "\uE73F";
+                    WindowStateBtn.IsChecked = true;
+                    break;
+                case WindowState.Normal:
+                    WindowStateIcon.Glyph = "\uE740";
+                    WindowStateBtn.IsChecked = false;
+                    break;
+                case WindowState.Minimized:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
         {
             webView.Stop();
+            webView.Dispose();
+        }
+
+        private void Gamedock_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+         
+        }
+
+        private void Menu_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }
-*/
+

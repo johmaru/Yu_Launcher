@@ -136,4 +136,13 @@
         <value>フォントサイズ
 </value>
     </data>
+    <data name="GenreWebGame" xml:space="preserve">
+        <value>ウェブゲーム</value>
+    </data>
+    <data name="PropertyCtxHeader" xml:space="preserve">
+        <value>プロパティ</value>
+    </data>
+    <data name="SimpleName" xml:space="preserve">
+        <value>名前</value>
+    </data>
 </root>

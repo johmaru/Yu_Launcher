@@ -157,6 +157,28 @@ public partial class CreateGameDialog : FluentWindow
             OnClose?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
+        
+        else if (GenreSelectComboBox.SelectedItem == GenreWebGameComboBoxItem)
+        {
+            if (UrlBlock.Text.Contains( "http://") || UrlBlock.Text.Contains("https://"))
+            {
+                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                {
+                    string?[] test = new[] { UrlBlock.Text, "WebGame", " "};
+                    foreach (var t in test)
+                    {
+                        writer.WriteLine(t);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("NotContainsHttpError"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            OnClose?.Invoke(this, EventArgs.Empty);
+            this.Close();
+        }
         else
         {
             MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectGenreError"), "Error",
@@ -180,6 +202,14 @@ public partial class CreateGameDialog : FluentWindow
                 PathLabel.Visibility = Visibility.Visible;
                 UrlBlock.Visibility = Visibility.Collapsed;
             }
+            
+            else if (GenreSelectComboBox.SelectedItem == GenreWebGameComboBoxItem)
+            {
+                UrlButton.Visibility = Visibility.Collapsed;
+                PathLabel.Visibility = Visibility.Collapsed;
+                UrlBlock.Visibility = Visibility.Visible;
+            }
+            
             else
             {
                 UrlButton.Visibility = Visibility.Collapsed;

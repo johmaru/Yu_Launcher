@@ -46,5 +46,10 @@ namespace YuLauncher.Core.Window.Pages
         {
             NavigationService?.Navigate(new GameList());
         }
+
+        private void WebGameListBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new WebGameList());
+        }
     }
 }

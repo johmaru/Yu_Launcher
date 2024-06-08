@@ -1,0 +1,22 @@
+﻿<local:DialogInterface x:Class="YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface.Application"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:LocalizeDictionary.DesignCulture="ja-JP"
+             lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
+             lex:ResxLocalizationProvider.DefaultDictionary="Language"
+             mc:Ignorable="d">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" VerticalAlignment="Center"/>
+                <ui:TextBox x:Name="NameBox" Text="" VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+        <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+    </Grid>
+</local:DialogInterface>

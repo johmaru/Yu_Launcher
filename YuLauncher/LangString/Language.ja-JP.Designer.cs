@@ -177,6 +177,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ウェブゲーム.
+        /// </summary>
+        public static string GenreWebGame {
+            get {
+                return ResourceManager.GetString("GenreWebGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ウェブサイト(https:/, http:/).
         /// </summary>
         public static string GenreWebsite {
@@ -276,6 +285,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to プロパティ.
+        /// </summary>
+        public static string PropertyCtxHeader {
+            get {
+                return ResourceManager.GetString("PropertyCtxHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ファイルを選択してください(拡張子がないファイルを選択していませんか？).
         /// </summary>
         public static string SelectFileErrorMessage {
@@ -365,6 +383,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 名前.
+        /// </summary>
+        public static string SimpleName {
+            get {
+                return ResourceManager.GetString("SimpleName", resourceCulture);
             }
         }
         

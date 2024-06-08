@@ -30,6 +30,7 @@
                 <ComboBox x:Name="GenreSelectComboBox" Loaded="GenreSelectComboBox_OnLoaded" SelectionChanged="GenreSelectComboBox_OnSelectionChanged">
                     <ComboBoxItem x:Name="GenreApplicationComboBoxItem" Content="{lex:Loc GenreApplication}"/>
                     <ComboBoxItem x:Name="GenreWebSiteComboBoxItem" Content="{lex:Loc GenreWebsite}"/>
+                    <ComboBoxItem x:Name="GenreWebGameComboBoxItem" Content="{lex:Loc GenreWebGame}"/>
                 </ComboBox>
                 <Label x:Name="GenreLabel" VerticalAlignment="Center" Content="{lex:Loc PleaseSelectGenre}" Foreground="Yellow"/>
             </StackPanel>

@@ -36,7 +36,7 @@
                 </ui:Button>
                     </StackPanel>
         </Grid>
-            <Grid Grid.Row="1" Margin="0,5">
+            <Grid Grid.Row="1">
             <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
     </Grid>

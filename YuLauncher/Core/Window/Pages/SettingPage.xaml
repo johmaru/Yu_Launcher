@@ -53,8 +53,8 @@
                 <ComboBoxItem x:Name="EngItemCombo" Content="{lex:Loc SimpleEnglish}"/>
                 <ComboBoxItem x:Name="JpnItemCombo" Content="{lex:Loc SimpleJapanese}"/>
             </ComboBox>
+            <ui:Button x:Name="SaveBtn" Margin="0,50" Content="{lex:Loc SimpleSave}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Click="SaveBtn_OnClick"/>
             </StackPanel>
          </ScrollViewer>
-        <ui:Button x:Name="SaveBtn" Content="{lex:Loc SimpleSave}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Click="SaveBtn_OnClick"/>
         </Grid>
 </Page>

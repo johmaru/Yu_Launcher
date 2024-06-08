@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
+using YuLauncher.Game.Window;
 using Button = Wpf.Ui.Controls.Button;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
 
@@ -15,9 +16,10 @@ namespace YuLauncher.Core.lib;
 public class PageControlCreate : Page
 {
     public static event EventHandler OnDeleteFileMenuClicked;
-    public static ContextMenu GameListShowContextMenu(bool isGameButton, string gameButtonName)
+    public static ContextMenu GameListShowContextMenu(bool isGameButton, string gameButtonPathFile,string[] data,string name)
     {
         ContextMenu contextMenu = new ContextMenu();
+        
         switch (isGameButton)
         {
             case true:
@@ -48,17 +50,17 @@ public class PageControlCreate : Page
                 {
                     try
                     {
-                        if (FileControl.ExistGameFile(gameButtonName))
+                        if (FileControl.ExistGameFile(gameButtonPathFile))
                         {
-                            FileControl.DeleteGame(gameButtonName);
-                            LoggerController.LogWarn($"delete file: {gameButtonName}");
+                            FileControl.DeleteGame(gameButtonPathFile);
+                            LoggerController.LogWarn($"delete file: {gameButtonPathFile}");
                             Console.WriteLine("delete file");
                             OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
                         }
                         else
                         {
                             Console.WriteLine("file not found");
-                            Console.WriteLine(gameButtonName);
+                            Console.WriteLine(gameButtonPathFile);
                             LoggerController.LogError("file not found");
                         }
                     }
@@ -75,12 +77,12 @@ public class PageControlCreate : Page
                 };
                 memoCtx.Click += (sender, args) =>
                 {
-                    if (File.Exists(gameButtonName))
+                    if (File.Exists(gameButtonPathFile))
                     {
-                        string[] memo = File.ReadAllLines(gameButtonName);
+                        string[] memo = File.ReadAllLines(gameButtonPathFile);
                         try
                         {
-                            MemoWindow memoWindow = new MemoWindow(gameButtonName,memo);
+                            MemoWindow memoWindow = new MemoWindow(gameButtonPathFile,memo);
                             memoWindow.Show();
                         }
                         catch (Exception e)
@@ -91,6 +93,27 @@ public class PageControlCreate : Page
                     }
                 };
                 contextMenu.Items.Add(memoCtx);
+                MenuItem propertyCtx = new MenuItem()
+                {
+                    Header = LocalizeControl.GetLocalize<string>("PropertyCtxHeader")
+                };
+                propertyCtx.Click += (sender, args) =>
+                {
+                    if (File.Exists(gameButtonPathFile))
+                    {
+                        try
+                        {
+                            PropertyDialog propertyDialog = new PropertyDialog(data,name,gameButtonPathFile);
+                            propertyDialog.Show();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                    }
+                };
+                contextMenu.Items.Add(propertyCtx);
                 break;
             }
             case false:
@@ -136,7 +159,7 @@ public class GameButton : Button
             Height = ObjectProperty.GameListObjectHeight,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch,
-            ContextMenu = PageControlCreate.GameListShowContextMenu(true, thisFile),
+            ContextMenu = PageControlCreate.GameListShowContextMenu(true, thisFile,path,name),
         };
         gameButton.Click += (sender, args) => {
             try
@@ -188,6 +211,10 @@ public class GameButton : Button
                             UseShellExecute = true,
                         };
                        Process.Start(websiteInfo);
+                        break;
+                    case "WebGame":
+                        GameWindow gameWindow = new GameWindow(path[0], path);
+                        gameWindow.Show();
                         break;
                     case "":
                         break;

@@ -22,10 +22,12 @@
                 />
             
             <ui:Button
-                x:Name="StartBtn"
+                x:Name="WebGameListBtn"
                 Height="50"
                 HorizontalAlignment="Stretch"
-                Content="{lex:Loc GameListWeb}"/>
+                Content="{lex:Loc GameListWeb}"
+                Click="WebGameListBtn_OnClick"
+                />
             
             <ui:Button
                 x:Name="LoginHistoryBtn"

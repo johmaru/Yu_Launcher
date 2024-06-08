@@ -13,11 +13,16 @@
       PreviewMouseRightButtonDown="GameList_OnPreviewMouseRightButtonDown">
     <Grid>
        <StackPanel Orientation="Vertical">
-           <ComboBox x:Name="GenreComboBox" HorizontalContentAlignment="Center" Width="400" Loaded="GenreComboBox_OnLoaded" SelectionChanged="GenreComboBox_OnSelectionChanged">
+           <StackPanel Orientation="Horizontal">
+               <ui:Button x:Name="AddButton" Click="AddButton_OnClick">
+                   <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe710;" FontSize="20"/>
+               </ui:Button>
+               <ComboBox x:Name="GenreComboBox" HorizontalContentAlignment="Center" Width="400" Loaded="GenreComboBox_OnLoaded" SelectionChanged="GenreComboBox_OnSelectionChanged">
                <ComboBoxItem x:Name="GenreAllComboBoxItem" Content="{lex:Loc GenreAllComboBoxItem}"/>
                <ComboBoxItem x:Name="GenreExeComboBoxItem" Content="{lex:Loc GenreExeExtension}"/>
                <ComboBoxItem x:Name="GenreWebsiteComboBoxItem" Content="{lex:Loc GenreWebsiteExtension}"/>
-           </ComboBox>
+            </ComboBox>
+           </StackPanel>
            <ScrollViewer>
            
                <Grid>
