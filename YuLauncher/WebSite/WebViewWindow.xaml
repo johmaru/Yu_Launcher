@@ -1,0 +1,44 @@
+﻿<ui:FluentWindow x:Class="YuLauncher.WebSite.WebViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:YuLauncher.WebSite"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="ja-JP"
+        lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        SizeChanged="WebViewWindow_OnSizeChanged"
+        Loaded="WebViewWindow_OnLoaded"
+        Closing="WebViewWindow_OnClosing"
+        Title="WebViewWindow">
+    <Grid>
+        <DockPanel x:Name="gamedock">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Menu PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown" Grid.Column="0">
+                    <MenuItem Header="機能">
+                    </MenuItem>
+                    <MenuItem Header="アプリケーション">
+                        <MenuItem Header="設定"/>
+                    </MenuItem>
+                </Menu>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ToggleButton Grid.Column="1" x:Name="WindowStateBtn" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
+                        <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
+                    </ToggleButton>
+                    <ui:Button x:Name="ExitBtn" Grid.Column="1" Click="ExitBtn_OnClick">
+                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
+                    </ui:Button>
+                </StackPanel>
+            </Grid>
+            <wv2:WebView2 Name="webView"/>
+        </DockPanel>
+    </Grid>
+</ui:FluentWindow>

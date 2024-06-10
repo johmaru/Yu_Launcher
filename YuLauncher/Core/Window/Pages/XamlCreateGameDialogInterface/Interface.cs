@@ -32,6 +32,16 @@ public partial class InterFaceClass
         textBox.Foreground = isDark ? Brushes.White: Brushes.Black ;
         return textBox;
     }
+    
+    public TextBox SetPathBox(TextBox textBox,string path,bool isDark)
+    {
+        textBox.Text = path;
+        textBox.FontSize = 15;
+        textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+        
+        textBox.Foreground = isDark ? Brushes.White: Brushes.Black ;
+        return textBox;
+    }
 
     public bool IsDark()
     {
@@ -44,19 +54,20 @@ public partial class InterFaceClass
     }
 }
 
-public delegate void OnSaveButtonClicked();
 public abstract class DialogInterface : UserControl, IDialogInterface
 {
     protected new string Name { get;private set; }
 
     protected string Path { get; private set; }
     public string[] Data { get; set; }
+    protected string NewPath { get; private set; }
     
-    protected readonly InterFaceClass _interFace = new();
+    protected readonly InterFaceClass InterFace = new();
     protected readonly string[] Files = FileControl.GetGameList(); 
     protected DialogInterface(string[] data,string name,string path)
     {
         Data = data;
+        NewPath = data[0];
         Name = name;
         Path = path;
     }

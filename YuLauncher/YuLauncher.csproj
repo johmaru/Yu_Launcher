@@ -76,4 +76,11 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="image\404-error-3060993_640.png" />
+      <Resource Include="image\404-error-3060993_640.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
 </Project>

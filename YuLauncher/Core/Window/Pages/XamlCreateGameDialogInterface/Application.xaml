@@ -16,6 +16,12 @@
                 <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" VerticalAlignment="Center"/>
                 <ui:TextBox x:Name="NameBox" Text="" VerticalAlignment="Center"/>
             </StackPanel>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" >
+            <StackPanel Orientation="Horizontal">
+                <ui:TextBlock x:Name="ExePathNameTextBlock" Text="{lex:Loc SimpleExePathLabel}" VerticalAlignment="Center"/>
+                <ui:TextBox x:Name="ExePathNameBox" Text="" VerticalAlignment="Center"/>
+            </StackPanel>
+            </ScrollViewer>
         </StackPanel>
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>

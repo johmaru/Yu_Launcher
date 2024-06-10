@@ -21,6 +21,11 @@ public class TomlControl
                 ["Width"] = 1920,
                 ["Height"] = 1080
             },
+            ["WebViewResolution"] =
+            {
+                ["Width"] = 1280,
+                ["Height"] = 720
+            },
             ["WindowResolution"] =
             {
                 ["Width"] = 800,

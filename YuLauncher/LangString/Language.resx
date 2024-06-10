@@ -141,4 +141,19 @@
     <data name="SimpleName" xml:space="preserve">
         <value>Name</value>
     </data>
+    <data name="SimpleExePathLabel" xml:space="preserve">
+        <value>EXE PATH</value>
+    </data>
+    <data name="SimpleFileNotFound" xml:space="preserve">
+        <value>File Not Found,Please check exe path for property</value>
+    </data>
+    <data name="FileCantOpen" xml:space="preserve">
+        <value>This file type is cant open</value>
+    </data>
+    <data name="SimpleAddress" xml:space="preserve">
+        <value>WebAddress</value>
+    </data>
+    <data name="SimpleUseWebview" xml:space="preserve">
+        <value>Using webview</value>
+    </data>
 </root>

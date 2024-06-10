@@ -2,14 +2,17 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Game.Window;
+using YuLauncher.WebSite;
 using Button = Wpf.Ui.Controls.Button;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Core.lib;
 
@@ -164,67 +167,82 @@ public class GameButton : Button
         gameButton.Click += (sender, args) => {
             try
             {
-                switch (extension)
-                {
-                    case "exe":
-                        ProcessStartInfo startInfo = new ProcessStartInfo
-                        {
-                            FileName = path[0], 
-                            RedirectStandardOutput = true, 
-                            RedirectStandardError = true, 
-                            UseShellExecute = false, 
-                        };
-                        Process process = new Process
-                        {
-                            StartInfo = startInfo,
-                        };
-                        process.OutputDataReceived += (sender, e) =>
-                        {
-                           LoggerController.LogDebug("Output: " + e.Data);
-                        };
-                        process.ErrorDataReceived += (sender, e) =>
-                        {
-                            LoggerController.LogWarn("Error: " + e.Data);
-                        };
-                        try
-                        {
-                            process.Start();
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                            throw;
-                        }
-                        process.BeginOutputReadLine();
-                        process.BeginErrorReadLine();
+                    Console.WriteLine("File found");
+                    switch (extension)
+                    {
+                        case "exe":
+                            if (!File.Exists(path[0]))
+                            {
+                                MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
+                                LoggerController.LogError("File not found");
+                            }
+                            ProcessStartInfo startInfo = new ProcessStartInfo
+                            {
+                                FileName = path[0], 
+                                RedirectStandardOutput = true, 
+                                RedirectStandardError = true, 
+                                UseShellExecute = false, 
+                            };
+                            Process process = new Process
+                            {
+                                StartInfo = startInfo,
+                            };
+                            process.OutputDataReceived += (sender, e) =>
+                            {
+                                LoggerController.LogDebug("Output: " + e.Data);
+                            };
+                            process.ErrorDataReceived += (sender, e) =>
+                            {
+                                LoggerController.LogWarn("Error: " + e.Data);
+                            };
+                            try
+                            {
+                                process.Start();
+                            
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
+                                throw;
+                            }
+                            process.BeginOutputReadLine();
+                            process.BeginErrorReadLine();
 
-                        process.WaitForExit();
-                        break;
-                    case "web":
-                        ProcessStartInfo websiteInfo = new ProcessStartInfo
-                        {
-                            FileName = path[0],
-                            UseShellExecute = true,
-                        };
-                       Process.Start(websiteInfo);
-                        break;
-                    case "WebGame":
+                            process.WaitForExit();
+                            break;
+                        case "web":
+                            if (path[3] == "true")
+                            {
+                                WebViewWindow webViewWindow = new WebViewWindow(path[0], path);
+                                webViewWindow.Show();
+                            }
+                            else
+                            {
+                                ProcessStartInfo websiteInfo = new ProcessStartInfo
+                                {
+                                    FileName = path[0],
+                                    UseShellExecute = true,
+                                };
+                                Process.Start(websiteInfo);
+                            }
+                            break;
+                        case "WebGame":
                         GameWindow gameWindow = new GameWindow(path[0], path);
                         gameWindow.Show();
                         break;
-                    case "":
+                        case "":
                         break;
-                }
+                    }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 LoggerController.LogError(e.Message);
-                throw;
             }
         };
         gameButton.MouseEnter += (sender, args) =>

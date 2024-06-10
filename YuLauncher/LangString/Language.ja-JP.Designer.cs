@@ -123,6 +123,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to このファイルは開けません.
+        /// </summary>
+        public static string FileCantOpen {
+            get {
+                return ResourceManager.GetString("FileCantOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ゲーム一覧.
         /// </summary>
         public static string GameList {
@@ -330,6 +339,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ウェブアドレス.
+        /// </summary>
+        public static string SimpleAddress {
+            get {
+                return ResourceManager.GetString("SimpleAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 英語
         ///.
         /// </summary>
@@ -340,11 +358,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 実行アプリケーション場所.
+        /// </summary>
+        public static string SimpleExePathLabel {
+            get {
+                return ResourceManager.GetString("SimpleExePathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 終了.
         /// </summary>
         public static string SimpleExit {
             get {
                 return ResourceManager.GetString("SimpleExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ファイルが見つかりません、プロパティーの実行アプリケーション場所を確認してください.
+        /// </summary>
+        public static string SimpleFileNotFound {
+            get {
+                return ResourceManager.GetString("SimpleFileNotFound", resourceCulture);
             }
         }
         
@@ -429,6 +465,15 @@ namespace YuLauncher.LangString {
         public static string SimpleSetting {
             get {
                 return ResourceManager.GetString("SimpleSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ウェブビューを使う.
+        /// </summary>
+        public static string SimpleUseWebview {
+            get {
+                return ResourceManager.GetString("SimpleUseWebview", resourceCulture);
             }
         }
     }

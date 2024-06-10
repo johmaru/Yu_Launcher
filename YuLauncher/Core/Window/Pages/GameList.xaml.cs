@@ -102,21 +102,43 @@ public partial class GameList : Page
                 });
                 if (path[1] != "web")
                 {
-                    using (MemoryStream s = new MemoryStream())
+                    if (File.Exists(path[0]))
                     {
-                        Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
-                        icon?.Save(s);
-                        s.Position = 0;
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                        IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                        using (MemoryStream s = new MemoryStream())
                         {
-                            Source = bitmapFrame,
+                            Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                            icon?.Save(s);
+                            s.Position = 0;
+                            BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                            IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                            {
+                                Source = bitmapFrame,
+                                Height = ObjectProperty.GameListObjectHeight,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                            });
+                    
+                        }
+                    }
+                    else
+                    {
+                        BitmapImage bitmap = new BitmapImage();
+                        
+                        bitmap.BeginInit();
+                        
+                        bitmap.UriSource = new Uri("/image/404-error-3060993_640.png",UriKind.Relative);
+                        
+                        bitmap.EndInit();
+                        
+                        IconPanel.Children.Add(new Image()
+                        {
+                            Source = bitmap,
                             Height = ObjectProperty.GameListObjectHeight,
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center,
                         });
-                    
                     }
+                    
                 }
                 else
                 {
@@ -163,21 +185,42 @@ public partial class GameList : Page
                          VerticalContentAlignment = VerticalAlignment.Stretch,
                          HorizontalContentAlignment = HorizontalAlignment.Stretch,
                      });
-                
-                     using (MemoryStream s = new MemoryStream())
+
+                     if (File.Exists(path[0]))
                      {
-                         Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
-                         icon?.Save(s);
-                         s.Position = 0;
-                         BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                         IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                         using (MemoryStream s = new MemoryStream())
                          {
-                             Source = bitmapFrame,
+                             Icon? icon =  Icon.ExtractAssociatedIcon(path[0]);
+                             icon?.Save(s);
+                             s.Position = 0;
+                             BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                             IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
+                             {
+                                 Source = bitmapFrame,
+                                 Height = ObjectProperty.GameListObjectHeight,
+                                 VerticalAlignment = VerticalAlignment.Center,
+                                 HorizontalAlignment = HorizontalAlignment.Center,
+                             });
+                    
+                         }
+                     }
+                     else
+                     {
+                         BitmapImage bitmap = new BitmapImage();
+                        
+                         bitmap.BeginInit();
+                        
+                         bitmap.UriSource = new Uri("/image/404-error-3060993_640.png",UriKind.Relative);
+                        
+                         bitmap.EndInit();
+                        
+                         IconPanel.Children.Add(new Image()
+                         {
+                             Source = bitmap,
                              Height = ObjectProperty.GameListObjectHeight,
                              VerticalAlignment = VerticalAlignment.Center,
                              HorizontalAlignment = HorizontalAlignment.Center,
                          });
-                    
                      }
                  }
                  else

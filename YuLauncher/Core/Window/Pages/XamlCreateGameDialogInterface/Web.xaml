@@ -16,6 +16,13 @@
                 <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" VerticalAlignment="Center"/>
                 <ui:TextBox x:Name="NameBox" Text="" VerticalAlignment="Center"/>
             </StackPanel>
+            <ScrollViewer>
+                <StackPanel Orientation="Horizontal">
+                    <ui:TextBlock x:Name="UrlTextBlock" Text="{lex:Loc SimpleAddress}" VerticalAlignment="Center"/>
+                    <ui:TextBox x:Name="UrlBox" Text="" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ScrollViewer>
+            <ui:ToggleSwitch x:Name="WebviewSwitch" Content="{lex:Loc SimpleUseWebview}" Initialized="FrameworkElement_OnInitialized"/>
         </StackPanel>
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>

@@ -123,6 +123,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This file type is cant open.
+        /// </summary>
+        public static string FileCantOpen {
+            get {
+                return ResourceManager.GetString("FileCantOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game List.
         /// </summary>
         public static string GameList {
@@ -330,6 +339,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAddress.
+        /// </summary>
+        public static string SimpleAddress {
+            get {
+                return ResourceManager.GetString("SimpleAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string SimpleEnglish {
@@ -339,11 +357,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EXE PATH.
+        /// </summary>
+        public static string SimpleExePathLabel {
+            get {
+                return ResourceManager.GetString("SimpleExePathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string SimpleExit {
             get {
                 return ResourceManager.GetString("SimpleExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Not Found,Please check exe path for property.
+        /// </summary>
+        public static string SimpleFileNotFound {
+            get {
+                return ResourceManager.GetString("SimpleFileNotFound", resourceCulture);
             }
         }
         
@@ -425,6 +461,15 @@ namespace YuLauncher.LangString {
         public static string SimpleSetting {
             get {
                 return ResourceManager.GetString("SimpleSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using webview.
+        /// </summary>
+        public static string SimpleUseWebview {
+            get {
+                return ResourceManager.GetString("SimpleUseWebview", resourceCulture);
             }
         }
     }
