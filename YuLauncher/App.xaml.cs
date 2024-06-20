@@ -56,6 +56,11 @@ namespace YuLauncher
                 {
                     TomlControl.CreateGameListToml("./gameList.toml");
                 }
+                bool html = Directory.Exists("./html");
+                if (!html)
+                {
+                    Directory.CreateDirectory("./html");
+                }
                 LoggerController.LogInfo("First Lunch Check Complete");
         }
 

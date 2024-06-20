@@ -31,6 +31,7 @@
                     <ComboBoxItem x:Name="GenreApplicationComboBoxItem" Content="{lex:Loc GenreApplication}"/>
                     <ComboBoxItem x:Name="GenreWebSiteComboBoxItem" Content="{lex:Loc GenreWebsite}"/>
                     <ComboBoxItem x:Name="GenreWebGameComboBoxItem" Content="{lex:Loc GenreWebGame}"/>
+                    <ComboBoxItem x:Name="GenreWebSaverComboBoxItem" Content="{lex:Loc GenreWebSaver}"/>
                 </ComboBox>
                 <Label x:Name="GenreLabel" VerticalAlignment="Center" Content="{lex:Loc PleaseSelectGenre}" Foreground="Yellow"/>
             </StackPanel>

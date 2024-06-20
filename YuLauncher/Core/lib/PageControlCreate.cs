@@ -11,6 +11,7 @@ using YuLauncher.Core.Window.Pages;
 using YuLauncher.Game.Window;
 using YuLauncher.WebSite;
 using Button = Wpf.Ui.Controls.Button;
+using GameWindow = YuLauncher.Game.Window.GameWindow;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
@@ -53,18 +54,30 @@ public class PageControlCreate : Page
                 {
                     try
                     {
-                        if (FileControl.ExistGameFile(gameButtonPathFile))
+                        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                        string htmlPath = Path.Combine(baseDirectory, $"html/{name}.html");
+                        if (data[1] == "WebSaver")
                         {
+                            File.Delete(htmlPath);
                             FileControl.DeleteGame(gameButtonPathFile);
-                            LoggerController.LogWarn($"delete file: {gameButtonPathFile}");
-                            Console.WriteLine("delete file");
                             OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                            
                         }
                         else
                         {
-                            Console.WriteLine("file not found");
-                            Console.WriteLine(gameButtonPathFile);
-                            LoggerController.LogError("file not found");
+                            if (FileControl.ExistGameFile(gameButtonPathFile))
+                            {
+                                FileControl.DeleteGame(gameButtonPathFile);
+                                LoggerController.LogWarn($"delete file: {gameButtonPathFile}");
+                                Console.WriteLine("delete file");
+                                OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                            }
+                            else
+                            {
+                                Console.WriteLine("file not found");
+                                Console.WriteLine(gameButtonPathFile);
+                                LoggerController.LogError("file not found");
+                            }
                         }
                     }
                     catch (Exception e)
@@ -235,6 +248,10 @@ public class GameButton : Button
                         GameWindow gameWindow = new GameWindow(path[0], path);
                         gameWindow.Show();
                         break;
+                        case "WebSaver":
+                            WebSaverWindow.WebSaverWindow webSaverWindow = new WebSaverWindow.WebSaverWindow(name, path);
+                            webSaverWindow.Show();
+                            break;
                         case "":
                         break;
                     }

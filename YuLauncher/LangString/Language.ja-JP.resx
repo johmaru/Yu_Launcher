@@ -160,4 +160,10 @@
     <data name="SimpleUseWebview" xml:space="preserve">
         <value>ウェブビューを使う</value>
     </data>
+    <data name="WebSaver" xml:space="preserve">
+        <value>サイト保存</value>
+    </data>
+    <data name="GenreWebSaver" xml:space="preserve">
+        <value>サイト保存</value>
+    </data>
 </root>

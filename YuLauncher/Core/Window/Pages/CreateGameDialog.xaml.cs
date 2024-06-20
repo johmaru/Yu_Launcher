@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using HtmlAgilityPack;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Wpf.Ui.Controls;
@@ -25,7 +30,7 @@ public partial class CreateGameDialog : FluentWindow
         LoggerController.LogInfo("CreateGameDialog Loaded");
         this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
-
+    
     private void UrlButton_OnClick(object sender, RoutedEventArgs e)
     {
         try
@@ -179,6 +184,52 @@ public partial class CreateGameDialog : FluentWindow
             OnClose?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
+        
+        else if (GenreSelectComboBox.SelectedItem == GenreWebSaverComboBoxItem)
+        {
+            if (UrlBlock.Text.Contains("http://") || UrlBlock.Text.Contains("https://"))
+            {
+                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                {
+                    string?[] test = new[] { UrlBlock.Text, "WebSaver", " "};
+                    foreach (var t in test)
+                    {
+                        writer.WriteLine(t);
+                    }
+                }
+
+                try
+                {
+                    string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    string htmlPath = Path.Combine(baseDirectory, "html");
+                    var handler = new HttpClientHandler();
+                    handler.UseCookies = true;
+                    handler.CookieContainer = new CookieContainer();
+                    using (HttpClient client = new HttpClient(handler))
+                    {
+                        var response = client.GetAsync(UrlBlock.Text).Result;
+                        var content = response.Content.ReadAsStringAsync().Result;
+                        using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.html"))
+                        {
+                            writer.WriteLine(content);
+                        }
+                    }
+                    
+                }
+                catch (Exception exception)
+                {
+                   LoggerController.LogError(exception.Message);
+                }
+                OnClose?.Invoke(this, EventArgs.Empty);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show(LocalizeControl.GetLocalize<string>("NotContainsHttpError"), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
         else
         {
             MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectGenreError"), "Error",
@@ -188,35 +239,34 @@ public partial class CreateGameDialog : FluentWindow
 
     private void GenreSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (OpenNum == 1)
+        switch (OpenNum)
         {
-            if (GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem)
-            {
+            case 1 when GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem:
                 UrlButton.Visibility = Visibility.Collapsed;
                 PathLabel.Visibility = Visibility.Collapsed;
                 UrlBlock.Visibility = Visibility.Visible;
-            }
-            else if (GenreSelectComboBox.SelectedItem == GenreApplicationComboBoxItem)
-            {
+                break;
+            case 1 when GenreSelectComboBox.SelectedItem == GenreApplicationComboBoxItem:
                 UrlButton.Visibility = Visibility.Visible;
                 PathLabel.Visibility = Visibility.Visible;
                 UrlBlock.Visibility = Visibility.Collapsed;
-            }
-            
-            else if (GenreSelectComboBox.SelectedItem == GenreWebGameComboBoxItem)
-            {
+                break;
+            case 1 when GenreSelectComboBox.SelectedItem == GenreWebGameComboBoxItem:
                 UrlButton.Visibility = Visibility.Collapsed;
                 PathLabel.Visibility = Visibility.Collapsed;
                 UrlBlock.Visibility = Visibility.Visible;
-            }
-            
-            else
-            {
+                break;
+            case 1 when GenreSelectComboBox.SelectedItem == GenreWebSaverComboBoxItem:
+                UrlButton.Visibility = Visibility.Collapsed;
+                PathLabel.Visibility = Visibility.Collapsed;
+                UrlBlock.Visibility = Visibility.Visible;
+                break;
+            case 1:
                 UrlButton.Visibility = Visibility.Collapsed;
                 PathLabel.Visibility = Visibility.Collapsed;
                 UrlBlock.Visibility = Visibility.Collapsed;
                 Label.Visibility = Visibility.Collapsed;
-            }
+                break;
         }
     }
 

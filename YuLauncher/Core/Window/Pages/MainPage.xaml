@@ -30,6 +30,14 @@
                 />
             
             <ui:Button
+                x:Name="WebSaverBtn"
+                Height="50"
+                HorizontalAlignment="Stretch"
+                Content="{lex:Loc WebSaver}"
+                Click="WebSaverBtn_OnClick"
+                />
+            
+            <ui:Button
                 x:Name="LoginHistoryBtn"
                 Height="50"
                 HorizontalAlignment="Stretch"

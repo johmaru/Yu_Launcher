@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using HtmlAgilityPack;
+using Wpf.Ui;
+using Wpf.Ui.Appearance;
 using YuLauncher.Core.lib;
 using Button = Wpf.Ui.Controls.Button;
 using Image = System.Windows.Controls.Image;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace YuLauncher.Core.Window.Pages;
 
@@ -27,9 +34,80 @@ public partial class WebGameList : Page
         GameList.GameControl();
         LoggerController.LogInfo("WebGameList Initialized");
         PropertyDialog.OnGameListWebGamePanelUpdate += GameList_OnFileUpdate;
+        Task.Run(() => NewsParserAsync());
     }
     
-    
+
+    private async Task NewsParserAsync()
+    {
+        try
+        {
+            var url = @"https://app.famitsu.com/category/news/";
+            HtmlWeb web = new HtmlWeb();
+            var doc = await web.LoadFromWebAsync(url);
+            var nodes = doc.DocumentNode.SelectNodes("//h2[@class='article-title']/a[@title]");
+            var nodeIcon = doc.DocumentNode.SelectNodes("//div[@class='article-img']/a/img[contains(@src, '.jpg') or contains(@src, '.png')]");
+            ThemeService themeService = new();
+            var theme = themeService.GetTheme();
+
+            foreach (var node in nodes)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (theme == ApplicationTheme.Dark)
+                    {
+                        NewsPanel.Children.Add(new TextBlock()
+                        {
+                            Text = node.InnerText,
+                            Foreground = System.Windows.Media.Brushes.White,
+                            HorizontalAlignment= HorizontalAlignment.Stretch,
+                            VerticalAlignment= VerticalAlignment.Stretch,
+                            Margin = new Thickness(0, 0, 20, 0)
+                        });
+                    }
+                    else
+                    {
+                        NewsPanel.Children.Add(new TextBlock()
+                        {
+                            Text = node.InnerText,
+                            Foreground = System.Windows.Media.Brushes.Black,
+                            HorizontalAlignment= HorizontalAlignment.Stretch,
+                            VerticalAlignment= VerticalAlignment.Stretch,
+                            Margin = new Thickness(0, 0, 20, 0)
+                        });
+                    }
+                });
+            }
+
+            foreach (var node in nodeIcon)
+            {
+                var nodeValue = node.Attributes["src"].Value;
+                await Application.Current.Dispatcher.Invoke(async () =>
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(nodeValue, UriKind.Absolute);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.DownloadCompleted += (sender, args) =>
+                    {
+                    };
+                    bitmap.EndInit();
+                    
+                    NewsIcon.Children.Add(new Image()
+                    {
+                        Source = bitmap,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Margin = new Thickness(0, 0, 20, 0)
+                    });
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
 
     private async void GameList_OnFileUpdate(object? sender, EventArgs e)
     {

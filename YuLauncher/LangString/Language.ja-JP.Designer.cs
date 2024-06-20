@@ -195,6 +195,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to サイト保存.
+        /// </summary>
+        public static string GenreWebSaver {
+            get {
+                return ResourceManager.GetString("GenreWebSaver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ウェブサイト(https:/, http:/).
         /// </summary>
         public static string GenreWebsite {
@@ -474,6 +483,15 @@ namespace YuLauncher.LangString {
         public static string SimpleUseWebview {
             get {
                 return ResourceManager.GetString("SimpleUseWebview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to サイト保存.
+        /// </summary>
+        public static string WebSaver {
+            get {
+                return ResourceManager.GetString("WebSaver", resourceCulture);
             }
         }
     }

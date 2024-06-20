@@ -309,7 +309,6 @@ public partial class GameList : Page
        }
        else
        {
-           Console.WriteLine("false");
            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "",new string[]{""},"");
        }
 

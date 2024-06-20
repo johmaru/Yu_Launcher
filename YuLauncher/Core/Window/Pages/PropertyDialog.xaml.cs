@@ -16,6 +16,7 @@ public partial class PropertyDialog : FluentWindow
     public static event EventHandler? OnGameListApplicationPanelUpdate; 
     public static event EventHandler? OnGameListWebPanelUpdate;
     public static event EventHandler? OnGameListWebGamePanelUpdate;
+    public static event EventHandler? OnGameListWebSaverPanelUpdate;
     public PropertyDialog(string[] data,string name,string path)
     {
         InitializeComponent();
@@ -30,16 +31,27 @@ public partial class PropertyDialog : FluentWindow
                 Frame.NavigationService.Navigate(new WebGame(data,name,path));
                 break;
             case "web":
-                Frame.NavigationService.Navigate(new XamlCreateGameDialogInterface.Web(data,name,path));
+                Frame.NavigationService.Navigate(new Web(data,name,path));
+                break;
+            case "WebSaver":
+                Frame.NavigationService.Navigate(new WebSaver(data,name,path));
                 break;
             default:
                 this.Close();
             break;
         }
         Application.OnNameChangeAppSaveClicked += ApplicationOnOnNameChangeAppSaveClicked;
-        XamlCreateGameDialogInterface.Web.OnNameChangeWebSaveClicked += WebOnOnNameChangeWebSaveClicked;
+        Web.OnNameChangeWebSaveClicked += WebOnOnNameChangeWebSaveClicked;
         WebGame.OnNameChangeWebGameSaveClicked += WebGameOnOnNameChangeWebGameSaveClicked;
+        WebSaver.OnNameChangeWebSaverSaveClicked += WebSaverOnOnNameChangeWebSaverSaveClicked;
     }
+
+    private void WebSaverOnOnNameChangeWebSaverSaveClicked(object? sender, EventArgs e)
+    {
+        OnGameListWebSaverPanelUpdate?.Invoke(this,EventArgs.Empty);
+        this.Close();
+    }
+
     private void WebGameOnOnNameChangeWebGameSaveClicked(object? sender, EventArgs e)
     {
         OnGameListWebGamePanelUpdate?.Invoke(this,EventArgs.Empty);
@@ -76,7 +88,8 @@ public partial class PropertyDialog : FluentWindow
    {
        base.OnClosing(e);
        Application.OnNameChangeAppSaveClicked -= ApplicationOnOnNameChangeAppSaveClicked;
-         XamlCreateGameDialogInterface.Web.OnNameChangeWebSaveClicked -= WebOnOnNameChangeWebSaveClicked;
+         Web.OnNameChangeWebSaveClicked -= WebOnOnNameChangeWebSaveClicked;
          WebGame.OnNameChangeWebGameSaveClicked -= WebGameOnOnNameChangeWebGameSaveClicked;
+         WebSaver.OnNameChangeWebSaverSaveClicked -= WebSaverOnOnNameChangeWebSaverSaveClicked;
    }
 }

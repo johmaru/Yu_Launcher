@@ -110,4 +110,19 @@ public partial class SettingWindow : FluentWindow
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    private void Grid_OnMouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                var point = Mouse.GetPosition(this);
+                this.WindowState = WindowState.Normal;
+                this.Left = point.X - this.Width / 2;
+                this.Top = point.Y;
+                this.DragMove();
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@
         Title="WebViewWindow">
     <Grid>
         <DockPanel x:Name="gamedock">
-            <Grid DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Top" MouseMove="UIElement_OnMouseMove">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>

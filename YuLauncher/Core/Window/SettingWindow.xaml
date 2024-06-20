@@ -20,7 +20,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="Grid">
+        <Grid x:Name="Grid" MouseMove="Grid_OnMouseMove">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
                 <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>

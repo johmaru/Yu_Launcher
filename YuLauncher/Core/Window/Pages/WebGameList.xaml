@@ -26,10 +26,15 @@
                 </Grid.RowDefinitions>
         
                 <Grid Grid.Row="0">
-           
-                <StackPanel x:Name="NewsPanel" Orientation="Horizontal">
-                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" x:Name="NewsPanel" Orientation="Horizontal">
                 </StackPanel>
+                    <StackPanel Grid.Row="1" x:Name="NewsIcon" Orientation="Horizontal">
+                        
+                    </StackPanel>
                 </Grid>
             </Grid>  
         </ScrollViewer>

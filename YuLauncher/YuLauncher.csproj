@@ -18,10 +18,20 @@
       <None Remove="Game\Window\Pages\**" />
       <Page Remove="Data\**" />
       <Page Remove="Game\Window\Pages\**" />
+      <Page Update="Core\WebSaverWindow\WebSaverWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Compile Update="Core\WebSaverWindow\WebSaverWindow.xaml.cs">
+        <SubType>Code</SubType>
+        <DependentUpon>WebSaverWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="6.4.4" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
       <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2584-prerelease" />
       <PackageReference Include="NLog" Version="5.3.2" />
       <PackageReference Include="NLog.Config" Version="4.7.15" />
