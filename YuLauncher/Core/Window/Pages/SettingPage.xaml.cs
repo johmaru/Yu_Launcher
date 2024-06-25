@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
+using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 
 namespace YuLauncher.Core.Window.Pages
@@ -10,124 +14,128 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class SettingPage : Page
     {
+        private readonly ManualTomlSettings _manualTomlSettings = new();
+        private readonly TomlControl _tomlControl = new();
         public SettingPage()
         {
             InitializeComponent();
+            ControlInitialize();
+            LoggerController.LogInfo("SettingPage Initialized");
         }
 
-        void WindowSizeSave()
+        private void ControlInitialize()
         {
-            var settings = Settings.Default;
-            double HD = Convert.ToDouble(TXTRES1.Text);
-            double WD = Convert.ToDouble(TXTRES2.Text);
-            settings.Window_W = WD;
-            settings.Window_H = HD;
-            settings.Save();
-        }
-        /*
-        private void FullScBTN()
-        {
-            string MessageTXT = "変更を適用するには再起動する必要があります、再起動しますか？";
-            string capTXT = "警告";
-            MessageBoxButton button = MessageBoxButton.YesNo;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result = MessageBox.Show(MessageTXT, capTXT, button, icon);
-
-            switch (result)
+            try
             {
+                TxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "SettingResolution", "Height");
+                TxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "SettingResolution", "Width");
 
-                case MessageBoxResult.Yes:
-                    Application.Current.Shutdown();
-                    break;
+                MenuTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "WindowResolution", "Height");
+                MenuTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "WindowResolution", "Width");
 
-                case MessageBoxResult.No:
-                    break;
+                GameTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+                GameTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+
+                MemoTxtResHeight.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "MemoResolution", "Height");
+                MemoTxtResWidth.Text =
+                    _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "MemoResolution", "Width");
+
+                MemoTxtFontSize.Text = TomlControl.GetTomlString(FileControl.Main.Settings, "MemoFontSize");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
-        */
-        //えっぎいバグ起こる
-        /* private void DoEvents()
+        
+        private void WindowResChanged()
         {
-            DispatcherFrame frame = new DispatcherFrame();
-            var callback = new DispatcherOperationCallback(obj =>
+            try
             {
-                ((DispatcherFrame)obj).Continue = false;
-                return null;
-            });
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
-            Dispatcher.PushFrame(frame);
-        }
-       */
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Height", TxtResHeight.Text);
 
-        private void FullSc_OnChecked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.FullScreen = true;
-            Settings.Default.Save();
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Width", MenuTxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Height", MenuTxtResHeight.Text);
+
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Height", TxtResHeight.Text);
+
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Height", TxtResHeight.Text);
+
+                _tomlControl.EditToml(FileControl.Main.Settings, "MemoFontSize", MemoTxtFontSize.Text);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        private void FullSc_OnUnchecked(object sender, RoutedEventArgs e)
+        private void SelectLanguage()
         {
-            Settings.Default.FullScreen = false;
-            Settings.Default.Save();
+            if (LanguageCombo.SelectedItem.Equals(EngItemCombo))
+            {
+                        _tomlControl.EditToml(FileControl.Main.Settings, "Language", "en");
+                        LanguageUpdater.UpdateLanguage("en-US");
+                        LoggerController.LogInfo("Language Changed to English");
+            }
+            else if (LanguageCombo.SelectedItem.Equals(JpnItemCombo))
+            {
+                        _tomlControl.EditToml(FileControl.Main.Settings, "Language", "ja");
+                        LanguageUpdater.UpdateLanguage("ja-JP");
+                        LoggerController.LogInfo("Language Changed to Japanese");
+            }
         }
 
         private void FullSc_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.Default.FullScreen == true)
+            if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "true")
             {
                 FullSc.IsChecked = true;
             }
-            if (Settings.Default.FullScreen == false)
+            else if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "false")
             {
                 FullSc.IsChecked = false;
             }
         }
 
-        private void TXTRES1_Loaded(object sender, RoutedEventArgs e)
+        private void FullSc_OnChecked(object sender, RoutedEventArgs e)
         {
-            Double txt1 = Settings.Default.Window_H;
-
-            String txt1ST = txt1.ToString();
-
-            TXTRES1.Text = txt1ST;
+            _tomlControl.EditToml(FileControl.Main.Settings, "FullScreen", "true");
         }
 
-        private void TXTRES2_Loaded(object sender, RoutedEventArgs e)
+        private void FullSc_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            double txt2 = Settings.Default.Window_W;
-
-            String txt2ST = txt2.ToString();
-
-            TXTRES2.Text = txt2ST;
+            _tomlControl.EditToml(FileControl.Main.Settings, "FullScreen", "false");
         }
 
-       
-
-        private void FCBTN_Click(object sender, RoutedEventArgs e)
+        private void SaveBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            string MessageTXT = "終了して変更内容を保存しますか？";
-            string capTXT = "警告";
-            MessageBoxButton button = MessageBoxButton.YesNo;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result = MessageBox.Show(MessageTXT, capTXT, button, icon);
+            SelectLanguage();
+            WindowResChanged();
+        }
 
-            switch (result)
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            switch (TomlControl.GetTomlString(FileControl.Main.Settings, "Language"))
             {
-
-                case MessageBoxResult.Yes:
-                    var settings = Settings.Default;
-                    double HD = Convert.ToDouble(TXTRES1.Text);
-                    double WD = Convert.ToDouble(TXTRES2.Text);
-                    settings.Window_W = WD;
-                    settings.Window_H = HD;
-                    settings.Save();
-                    NavigationService.GoBack();
+                case "en":
+                    LanguageCombo.SelectedItem = EngItemCombo;
                     break;
-
-
-                case MessageBoxResult.No:
+                case "ja":
+                    LanguageCombo.SelectedItem = JpnItemCombo;
                     break;
             }
         }
     }
-}
+    }

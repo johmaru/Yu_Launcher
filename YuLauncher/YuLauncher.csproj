@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <Configurations>Debug;Release;kireinaRelease</Configurations>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,15 +18,58 @@
       <None Remove="Game\Window\Pages\**" />
       <Page Remove="Data\**" />
       <Page Remove="Game\Window\Pages\**" />
+      <Page Update="Core\WebSaverWindow\WebSaverWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Compile Update="Core\WebSaverWindow\WebSaverWindow.xaml.cs">
+        <SubType>Code</SubType>
+        <DependentUpon>WebSaverWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="6.4.4" />
-      <PackageReference Include="MahApps.Metro" Version="2.4.9" />
-      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-      <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2584-prerelease" />
+      <PackageReference Include="NLog" Version="5.3.2" />
+      <PackageReference Include="NLog.Config" Version="4.7.15" />
+      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
+      <PackageReference Include="NLog.Schema" Version="5.3.2" />
+      <PackageReference Include="NLog.WindowsEventLog" Version="5.3.2" />
+      <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+      <PackageReference Include="Tommy" Version="3.1.2" />
+      <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+      <PackageReference Include="WPF-UI" Version="3.0.4" />
+      <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     </ItemGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Update="LangString\Language.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Language.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="LangString\Language.ja-JP.resx">
+        <SubType>Designer</SubType>
+		<DependentUpon>Language.resx</DependentUpon>
+		<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+	</ItemGroup>
+	
+	
+	<ItemGroup>
+      <Compile Update="LangString\Language.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Language.resx</DependentUpon>
+      </Compile>
+      <Compile Update="LangString\Language.ja-JP.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Language.ja-JP.resx</DependentUpon>
+      </Compile>
+	</ItemGroup>
 
     <ItemGroup>
       <Compile Update="Properties\Settings.Designer.cs">
@@ -40,6 +84,13 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="image\404-error-3060993_640.png" />
+      <Resource Include="image\404-error-3060993_640.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>

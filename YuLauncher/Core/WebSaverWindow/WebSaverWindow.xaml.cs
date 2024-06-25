@@ -1,46 +1,30 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.Web.WebView2.Core.Raw;
 using Wpf.Ui.Controls;
-using YuLauncher.Core.Window.Pages;
-using YuLauncher.Properties;
+using YuLauncher.Core.WebSaverWindow;
 
-namespace YuLauncher.Game.Window
+namespace YuLauncher.Core.WebSaverWindow
 {
     /// <summary>
     /// GameWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class GameWindow : FluentWindow
+    public partial class WebSaverWindow : FluentWindow
     {
-        public GameWindow(string url,string[] args)
+        public WebSaverWindow(string name,string[] args)
         {
             InitializeComponent();
-            webView.Source = new Uri(url);
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string htmlPath = Path.Combine(baseDirectory, $"html/{name}.html");
+            Console.WriteLine(htmlPath);
+            webView.Source = new Uri("file:///" + htmlPath);
         }
 
         private void webView_Initialized(object sender, EventArgs e)
         {
           
-        }
-
-        private void WikiBTN(object sender, RoutedEventArgs e)
-        {
-            var wikiwindow = new GameWindowAssistant(this.Title);
-            wikiwindow.Show();
         }
 
         private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
