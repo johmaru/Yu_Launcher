@@ -56,5 +56,15 @@ namespace YuLauncher.Core.Window.Pages
         {
            NavigationService?.Navigate(new WebSaverList());
         }
+
+        private void FavGameList_OnClick(object sender, RoutedEventArgs e)
+        {
+          MessageBox.Show("Coming Soon");
+        }
+
+        private void LoginHistoryBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Coming Soon");
+        }
     }
 }

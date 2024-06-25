@@ -41,13 +41,17 @@
                 x:Name="LoginHistoryBtn"
                 Height="50"
                 HorizontalAlignment="Stretch"
-                Content="{lex:Loc LoginHistory}"/>
+                Content="{lex:Loc LoginHistory}"
+                Click="LoginHistoryBtn_OnClick"
+                />
             
             <ui:Button
                 x:Name="FavGameList"
                 Height="50"
                 HorizontalAlignment="Stretch"
-                Content="{lex:Loc FavoriteGame}"/>
+                Content="{lex:Loc FavoriteGame}"
+                Click="FavGameList_OnClick"
+                />
             
             <ui:Button
                 x:Name="SettingBtn"
