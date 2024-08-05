@@ -69,6 +69,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ApplicationLog.
+        /// </summary>
+        public static string AppLogButton {
+            get {
+                return ResourceManager.GetString("AppLogButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string CreateButton {

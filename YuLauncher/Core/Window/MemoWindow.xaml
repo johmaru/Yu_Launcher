@@ -22,6 +22,9 @@
         <Grid x:Name="Grid" Grid.Row="0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <ToggleButton x:Name="ModeButton" Content="{lex:Loc EditModeButton}" Checked="ModeButton_OnChecked" Unchecked="ModeButton_OnUnchecked"/>
+                <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
+                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
+                </ui:Button>
                 <ui:Button x:Name="ExitBtn" VerticalAlignment="Center" Panel.ZIndex="1" Click="ExitBtn_OnClick">
                     <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
                 </ui:Button>

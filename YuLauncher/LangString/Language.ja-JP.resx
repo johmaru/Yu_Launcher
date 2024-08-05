@@ -166,4 +166,7 @@
     <data name="GenreWebSaver" xml:space="preserve">
         <value>サイト保存</value>
     </data>
+    <data name="AppLogButton" xml:space="preserve">
+        <value>アプリケーションログ</value>
+    </data>
 </root>

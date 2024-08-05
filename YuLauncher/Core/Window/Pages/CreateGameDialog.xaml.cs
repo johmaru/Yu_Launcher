@@ -120,7 +120,7 @@ public partial class CreateGameDialog : FluentWindow
                 {
                     using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
                     {
-                        string?[] test = new[] { _openFileDialog, fileExtensionDotTrim, " ","false"};
+                        string?[] test = new[] { _openFileDialog, fileExtensionDotTrim, " ","false","false"};
                         foreach (var t in test)
                         {
                             writer.WriteLine(t);

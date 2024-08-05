@@ -7,6 +7,7 @@
         <UseWPF>true</UseWPF>
         <Configurations>Debug;Release;kireinaRelease</Configurations>
         <LangVersion>10</LangVersion>
+        <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
