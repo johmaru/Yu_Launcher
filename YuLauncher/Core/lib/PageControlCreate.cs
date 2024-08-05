@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
@@ -189,44 +191,113 @@ public class GameButton : Button
                                 MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
                                 LoggerController.LogError("File not found");
                             }
-                            ProcessStartInfo startInfo = new ProcessStartInfo
+                            if (path[4] == "true")
                             {
-                                FileName = path[0], 
-                                RedirectStandardOutput = true, 
-                                RedirectStandardError = true, 
-                                UseShellExecute = false, 
-                            };
-                            Process process = new Process
-                            {
-                                StartInfo = startInfo,
-                            };
-                            process.OutputDataReceived += (sender, e) =>
-                            {
-                                LoggerController.LogDebug("Output: " + e.Data);
-                            };
-                            process.ErrorDataReceived += (sender, e) =>
-                            {
-                                LoggerController.LogWarn("Error: " + e.Data);
-                            };
-                            try
-                            {
-                                process.Start();
-                            
-                            }
-                            catch (ObjectDisposedException)
-                            {
-                                LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                                MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
-                                throw;
-                            }
-                            process.BeginOutputReadLine();
-                            process.BeginErrorReadLine();
+                                if (!Directory.Exists("./AppLogs"))
+                                {
+                                    Directory.CreateDirectory("./AppLogs");
+                                }
 
-                            process.WaitForExit();
+                                if (!Directory.Exists("./AppLogs/" + name))
+                                {
+                                    Directory.CreateDirectory("./AppLogs/" + name);
+                                }
+                                
+                                ProcessStartInfo startInfo = new ProcessStartInfo
+                                {
+                                    FileName = path[0], 
+                                    RedirectStandardOutput = true, 
+                                    RedirectStandardError = true, 
+                                    UseShellExecute = false, 
+                                };
+                                Process process = new Process
+                                {
+                                    StartInfo = startInfo,
+                                    EnableRaisingEvents = true,
+                                };
+                                StringBuilder output = new StringBuilder();
+                                process.OutputDataReceived += (sender, e) =>
+                                {
+                                    if (!string.IsNullOrEmpty(e.Data))
+                                    {
+                                        output.AppendLine($"Output :{e.Data}");
+                                    }
+                                };
+                                process.ErrorDataReceived += (sender, e) =>
+                                {
+                                    if (!string.IsNullOrEmpty(e.Data))
+                                    {
+                                        output.AppendLine($"Error :{e.Data}");
+                                    }
+                                };
+                                process.Exited += (sender, e) =>
+                                {
+                                    string logPath = $"./AppLogs/{name}/{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt";
+                                    File.WriteAllLines(logPath,output.ToString().Split('\n').Where(x => x != "").ToArray());
+                                };
+                                
+                                try
+                                {
+                                    process.Start();
+                                }
+                                catch (ObjectDisposedException)
+                                {
+                                    LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                    MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
+                                    throw;
+                                }
+                                process.BeginOutputReadLine();
+                                process.BeginErrorReadLine();
+
+                                process.WaitForExit();
+                            }
+
+                            else
+                            {
+                                ProcessStartInfo startInfo = new ProcessStartInfo
+                                {
+                                    FileName = path[0], 
+                                    RedirectStandardOutput = true, 
+                                    RedirectStandardError = true, 
+                                    UseShellExecute = false, 
+                                };
+                                Process process = new Process
+                                {
+                                    StartInfo = startInfo,
+                                };
+                                process.OutputDataReceived += (sender, e) =>
+                                {
+                                    LoggerController.LogDebug("Output: " + e.Data);
+                                };
+                                process.ErrorDataReceived += (sender, e) =>
+                                {
+                                    LoggerController.LogWarn("Error: " + e.Data);
+                                };
+                                try
+                                {
+                                    process.Start();
+                            
+                                }
+                                catch (ObjectDisposedException)
+                                {
+                                    LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                    MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
+                                    throw;
+                                }
+                                process.BeginOutputReadLine();
+                                process.BeginErrorReadLine();
+
+                                process.WaitForExit();
+                            }
+                           
                             break;
                         case "web":
                             if (path[3] == "true")

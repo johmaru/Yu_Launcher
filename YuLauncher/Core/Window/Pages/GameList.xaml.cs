@@ -29,8 +29,8 @@ public partial class GameList : Page
         InitializeComponent();
         MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
         mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        PageControlCreate.OnDeleteFileMenuClicked += GameList_OnFileUpdate;
-        CreateGameDialog.OnClose += GameList_OnFileUpdate;
+        PageControlCreate.OnDeleteFileMenuClicked += PropertyDialogPanelUpdate;
+        CreateGameDialog.OnClose += PropertyDialogPanelUpdate;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
         PropertyDialog.OnGameListApplicationPanelUpdate += PropertyDialogOnOnGameListApplicationPanelUpdate;
@@ -47,6 +47,15 @@ public partial class GameList : Page
     }
 
     private async void PropertyDialogOnOnGameListApplicationPanelUpdate(object? sender, EventArgs e)
+    {
+        _files = null;
+        
+        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+        
+        GenreAllUpdate();
+    }
+    
+    private async void PropertyDialogPanelUpdate(object? sender, EventArgs e)
     {
         _files = null;
         
@@ -284,7 +293,7 @@ public partial class GameList : Page
         }
     }
     
-    private void GameList_OnFileUpdate(object sender, EventArgs e)
+    private async void GameList_OnFileUpdate(object sender, EventArgs e)
     {
         Panel.Children.Clear();
         ExtensionLabel.Children.Clear();

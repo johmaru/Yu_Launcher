@@ -27,7 +27,9 @@
                         <ui:Button x:Name="BackBtn" Click="BackBtn_OnClick">
                             <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf0b0;" FontSize="20"/>
                         </ui:Button>
-                   
+                   <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
+                       <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
+                   </ui:Button>
                     <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
                         <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
                     </ToggleButton>

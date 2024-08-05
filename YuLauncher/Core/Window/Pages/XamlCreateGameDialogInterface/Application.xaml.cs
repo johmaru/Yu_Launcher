@@ -35,6 +35,23 @@ public partial class Application : DialogInterface
            
            await File.WriteAllLinesAsync(Path,lines);
         }
+        string[] lines2 = await File.ReadAllLinesAsync(Path);
+        lines2[4] = ApplicationLogButton.IsChecked == true ? "true" : "false";
+        await File.WriteAllLinesAsync(Path,lines2);
+        
         OnNameChangeAppSaveClicked?.Invoke(this,EventArgs.Empty);
+    }
+
+    private async void ApplicationLog_OnInitialized(object? sender, EventArgs e)
+    {
+        string[] lines = await File.ReadAllLinesAsync(Path);
+        if (lines[4] == "true")
+        {
+            ApplicationLogButton.IsChecked = true;
+        }
+        else
+        {
+            ApplicationLogButton.IsChecked = false;
+        }
     }
 }

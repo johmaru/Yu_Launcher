@@ -112,4 +112,9 @@ public partial class MemoWindow : FluentWindow
         MainGrid.Children.Add(saveButton);
         
     }
+
+    private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
 }

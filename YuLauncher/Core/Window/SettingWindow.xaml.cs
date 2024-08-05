@@ -125,4 +125,9 @@ public partial class SettingWindow : FluentWindow
             }
         }
     }
+
+    private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
 }

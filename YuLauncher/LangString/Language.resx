@@ -162,4 +162,7 @@
     <data name="GenreWebSaver" xml:space="preserve">
         <value>WebSaver</value>
     </data>
+    <data name="AppLogButton" xml:space="preserve">
+        <value>ApplicationLog</value>
+    </data>
 </root>

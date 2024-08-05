@@ -30,6 +30,9 @@
                     </MenuItem>
                 </Menu>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
+                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
+                    </ui:Button>
                     <ToggleButton Grid.Column="1" x:Name="WindowStateBtn" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
                         <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
                     </ToggleButton>
