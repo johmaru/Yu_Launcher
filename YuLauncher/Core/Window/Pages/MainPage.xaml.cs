@@ -4,9 +4,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Core.Window.Pages
 {
@@ -44,17 +46,17 @@ namespace YuLauncher.Core.Window.Pages
 
         private void GameListBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new GameList());
+          Frame.Source = new Uri("GameList.xaml", UriKind.Relative);
         }
 
         private void WebGameListBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new WebGameList());
+            Frame.Source = new Uri("WebGameList.xaml", UriKind.Relative);
         }
 
         private void WebSaverBtn_OnClick(object sender, RoutedEventArgs e)
         {
-           NavigationService?.Navigate(new WebSaverList());
+            Frame.Source = new Uri("WebSaverList.xaml", UriKind.Relative);
         }
 
         private void FavGameList_OnClick(object sender, RoutedEventArgs e)

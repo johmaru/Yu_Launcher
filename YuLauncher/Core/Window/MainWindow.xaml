@@ -24,9 +24,6 @@
         </Grid.RowDefinitions>
             <Grid Grid.Row="0"  x:Name="Grid" MouseMove="Grid_OnMouseMove">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ui:Button x:Name="BackBtn" Click="BackBtn_OnClick">
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf0b0;" FontSize="20"/>
-                        </ui:Button>
                    <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
                    </ui:Button>

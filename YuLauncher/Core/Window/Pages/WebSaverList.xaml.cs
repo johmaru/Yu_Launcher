@@ -50,7 +50,7 @@ public partial class WebSaverList : Page
             {
                 if (path[1] == "WebSaver")
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                    Panel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
                 }
                 else
                 {

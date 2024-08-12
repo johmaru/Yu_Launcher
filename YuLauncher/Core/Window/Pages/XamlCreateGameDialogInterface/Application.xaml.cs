@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
@@ -35,23 +36,49 @@ public partial class Application : DialogInterface
            
            await File.WriteAllLinesAsync(Path,lines);
         }
-        string[] lines2 = await File.ReadAllLinesAsync(Path);
-        lines2[4] = ApplicationLogButton.IsChecked == true ? "true" : "false";
-        await File.WriteAllLinesAsync(Path,lines2);
-        
-        OnNameChangeAppSaveClicked?.Invoke(this,EventArgs.Empty);
+        try
+        {
+            string[] lines2 = await File.ReadAllLinesAsync(Path);
+            lines2[4] = ApplicationLogButton.IsChecked == true ? "true" : "false";
+            await File.WriteAllLinesAsync(Path, lines2);
+
+            OnNameChangeAppSaveClicked?.Invoke(this, EventArgs.Empty);
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            MessageBox.Show("this file is old system on file and you using old version of file");
+            LoggerController.LogError(ex.Message);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
     }
 
     private async void ApplicationLog_OnInitialized(object? sender, EventArgs e)
     {
-        string[] lines = await File.ReadAllLinesAsync(Path);
-        if (lines[4] == "true")
+        try
         {
-            ApplicationLogButton.IsChecked = true;
+            string[] lines = await File.ReadAllLinesAsync(Path);
+            if (lines[4] == "true")
+            {
+                ApplicationLogButton.IsChecked = true;
+            }
+            else
+            {
+                ApplicationLogButton.IsChecked = false;
+            }
         }
-        else
+        catch (IndexOutOfRangeException ex)
         {
-            ApplicationLogButton.IsChecked = false;
+            MessageBox.Show("this file is old system on file and you using old version of file");
+            LoggerController.LogError(ex.Message);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
         }
     }
 }

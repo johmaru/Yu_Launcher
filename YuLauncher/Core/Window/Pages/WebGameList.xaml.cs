@@ -116,7 +116,6 @@ public partial class WebGameList : Page
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
         WebGameListPanel.Children.Clear();
-        IconPanel.Children.Clear();
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
@@ -125,14 +124,7 @@ public partial class WebGameList : Page
             {
                 if (path[1] == "WebGame")
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
+                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
                 }
                 else
                 {
@@ -183,7 +175,6 @@ public partial class WebGameList : Page
     private async void WebGameList_OnLoaded(object sender, RoutedEventArgs e)
     {
         WebGameListPanel.Children.Clear();
-        IconPanel.Children.Clear();
         
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
@@ -195,14 +186,7 @@ public partial class WebGameList : Page
             {
                 if (path[1] == "WebGame")
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
+                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
                 }
                 else
                 {

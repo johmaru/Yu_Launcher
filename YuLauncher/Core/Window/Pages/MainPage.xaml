@@ -12,60 +12,48 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Language"
     mc:Ignorable="d">
     <Grid>
-        <StackPanel>
-            <ui:Button 
-                x:Name="GameListBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc GameList}"
-                Click="GameListBtn_OnClick"
-                />
-            
-            <ui:Button
-                x:Name="WebGameListBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc GameListWeb}"
-                Click="WebGameListBtn_OnClick"
-                />
-            
-            <ui:Button
-                x:Name="WebSaverBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc WebSaver}"
-                Click="WebSaverBtn_OnClick"
-                />
-            
-            <ui:Button
-                x:Name="LoginHistoryBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc LoginHistory}"
-                Click="LoginHistoryBtn_OnClick"
-                />
-            
-            <ui:Button
-                x:Name="FavGameList"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc FavoriteGame}"
-                Click="FavGameList_OnClick"
-                />
-            
-            <ui:Button
-                x:Name="SettingBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Click="SettingBtn_OnClick"
-                Content="{lex:Loc SimpleSetting}"/>
-            
-            <ui:Button
-                x:Name="ExitBtn"
-                Height="50"
-                HorizontalAlignment="Stretch"
-                Content="{lex:Loc SimpleExit}"
-                Click="ExitBtn_OnClick"/>
-        </StackPanel>
+        <ui:NavigationView PaneDisplayMode="LeftMinimal">
+            <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem x:Name="GameListBtn" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="GameListBtn_OnClick">
+            <ui:NavigationViewItem.Icon>
+                <ui:SymbolIcon Symbol="Home12"/>
+            </ui:NavigationViewItem.Icon>
+            <ui:TextBlock Text="{lex:Loc GameList}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
+            </ui:NavigationViewItem>
+        <ui:NavigationViewItem x:Name="WebGameListBtn" Click="WebGameListBtn_OnClick">
+            <ui:NavigationViewItem.Icon>
+                <ui:SymbolIcon Symbol="WebAsset16"/>
+        </ui:NavigationViewItem.Icon>
+            <ui:TextBlock Text="{lex:Loc GameListWeb}"/>
+        </ui:NavigationViewItem>
+        <ui:NavigationViewItem x:Name="WebSaverBtn" Click="WebSaverBtn_OnClick">
+            <ui:NavigationViewItem.Icon>
+                <ui:SymbolIcon Symbol="Save24"/>
+            </ui:NavigationViewItem.Icon>
+            <ui:TextBlock Text="{lex:Loc WebSaver}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
+        </ui:NavigationViewItem>
+        <!-- <ui:NavigationViewItem x:Name="LoginHistoryBtn" Click="LoginHistoryBtn_OnClick"> -->
+        <!--     <TextBlock Text="{lex:Loc LoginHistory}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/> -->
+        <!-- </ui:NavigationViewItem> -->
+        <!-- <ui:NavigationViewItem x:Name="FavGameList" Click="FavGameList_OnClick"> -->
+        <!--     <TextBlock Text="{lex:Loc FavoriteGame}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/> -->
+        <!-- </ui:NavigationViewItem> -->
+        <ui:NavigationViewItem x:Name="SettingBtn" Click="SettingBtn_OnClick">
+            <ui:NavigationViewItem.Icon>
+                <ui:SymbolIcon Symbol="Settings24"/>
+        </ui:NavigationViewItem.Icon>
+            <ui:TextBlock Text="{lex:Loc SimpleSetting}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
+        </ui:NavigationViewItem>
+        <ui:NavigationViewItem x:Name="ExitBtn" Click="ExitBtn_OnClick">
+            <ui:NavigationViewItem.Icon>
+                <ui:SymbolIcon Symbol="ArrowExit20"/>
+        </ui:NavigationViewItem.Icon>
+            <ui:TextBlock Text="{lex:Loc SimpleExit}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
+        </ui:NavigationViewItem>
+    </ui:NavigationView.MenuItems>
+            <ui:NavigationView.Header>
+                <Frame x:Name="Frame" Source="GameList.xaml" NavigationUIVisibility="Hidden"/>
+            </ui:NavigationView.Header>
+        </ui:NavigationView>
     </Grid>
 </Page>

@@ -18,6 +18,7 @@ public partial class MemoWindow : FluentWindow
     private readonly string[] _memo;
     private readonly string _filePath;
     private readonly double _fontSize;
+    private TextBox? _memoTextBox;
     public MemoWindow(string filePath,string[] memo)
     {
         this._memo = memo;
@@ -28,9 +29,6 @@ public partial class MemoWindow : FluentWindow
         this.Width = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Width"));
         this.Height = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Height"));
         
-         Panel.Children.Clear();
-         MainGrid.Children.Clear();
-        Panel.Children.Add(MemoLabel());
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
 
@@ -48,14 +46,20 @@ public partial class MemoWindow : FluentWindow
     
     private TextBox MemoTextBox()
     {
-        TextBox textBox = new TextBox
+        _memoTextBox = new TextBox
         {
             Text = _memo[2],
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
-            FontSize = _fontSize
+            FontSize = _fontSize,
+            Margin = new Thickness(10)
         };
-        return textBox;
+        return _memoTextBox;
+    }
+    
+    private string? GetMemoTextBoxText()
+    {
+        return _memoTextBox?.Text;
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
@@ -76,41 +80,71 @@ public partial class MemoWindow : FluentWindow
         
     }
 
-    private void SaveButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            string[] _ = { _memo[0], _memo[1], ((TextBox)Panel.Children[0]).Text };
-            File.WriteAllLines(_filePath, _);
-        }
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception);
-            throw;
-        }
-        this.Close();
-    }
-
     private void ModeButton_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        Panel.Children.Clear();
         MainGrid.Children.Clear();
-        Panel.Children.Add(MemoLabel());
+        ScrollViewer scrollViewer = new ScrollViewer
+        {
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        StackPanel stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        MainGrid.Children.Add(scrollViewer);
+        scrollViewer.Content = stackPanel;
+        stackPanel.Children.Add(MemoLabel());
     }
 
     private void ModeButton_OnChecked(object sender, RoutedEventArgs e)
     {
-           Panel.Children.Clear();
-        Panel.Children.Add(MemoTextBox());
+        MainGrid.Children.Clear();
+        ScrollViewer scrollViewer = new ScrollViewer
+        {
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        StackPanel stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        MainGrid.Children.Add(scrollViewer);
+        scrollViewer.Content = stackPanel;
+        stackPanel.Children.Add(MemoTextBox());
         Button saveButton = new Button
         {
             Content = LocalizeControl.GetLocalize<string>("SimpleSave"),
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Bottom
         };
-        saveButton.Click += SaveButton_OnClick;
-        MainGrid.Children.Add(saveButton);
-        
+        saveButton.Click += (sender, args) =>
+        {
+            try
+            {
+                if (_memoTextBox != null)
+                {
+                    string[] _ = { _memo[0], _memo[1],_memoTextBox.Text };
+                    File.WriteAllLines(_filePath, _);
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+
+            this.Close();
+        };
+       stackPanel.Children.Add(saveButton);
     }
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)

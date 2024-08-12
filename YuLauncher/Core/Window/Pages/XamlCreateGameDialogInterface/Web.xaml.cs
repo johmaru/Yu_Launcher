@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
@@ -67,22 +68,35 @@ public partial class Web : DialogInterface
     private async void FrameworkElement_OnInitialized(object? sender, EventArgs e)
     {
        string [] nowData = await File.ReadAllLinesAsync(Path);
-        if (nowData.Length == 3)
-        {
-            List <string> nowDataList = new(nowData);
-            if (nowDataList == null) throw new ArgumentNullException(nameof(nowDataList));
-            
-            nowDataList.Add("false");
-            await File.WriteAllLinesAsync(Path,nowDataList);
-        }
-        
-        if (nowData[3] == "true")
-        {
-            WebviewSwitch.IsChecked = true;
-        }
-        else
-        {
-            WebviewSwitch.IsChecked = false;
-        }
+       try
+       {
+           if (nowData.Length == 3)
+           {
+               List<string> nowDataList = new(nowData);
+               if (nowDataList == null) throw new ArgumentNullException(nameof(nowDataList));
+
+               nowDataList.Add("false");
+               await File.WriteAllLinesAsync(Path, nowDataList);
+           }
+
+           if (nowData[3] == "true")
+           {
+               WebviewSwitch.IsChecked = true;
+           }
+           else
+           {
+               WebviewSwitch.IsChecked = false;
+           }
+       }
+       catch (IndexOutOfRangeException ex)
+       {
+           MessageBox.Show("this file is old system on file and you using old version of file");
+           LoggerController.LogError(ex.Message);
+       }
+       catch (Exception exception)
+       {
+           Console.WriteLine(exception);
+           throw;
+       }
     }
 }
