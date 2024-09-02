@@ -23,7 +23,7 @@
             </StackPanel>
             </ScrollViewer>
             <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="ApplicationLogButton" Content="{lex:Loc AppLogButton}" Initialized="ApplicationLog_OnInitialized"/>
+                <CheckBox x:Name="ApplicationLogButton" IsChecked="" Content="{lex:Loc AppLogButton}" Initialized="ApplicationLog_OnInitialized"/>
             </StackPanel>
         </StackPanel>
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>

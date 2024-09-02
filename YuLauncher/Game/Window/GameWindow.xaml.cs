@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Web.WebView2.Core.Raw;
 using Wpf.Ui.Controls;
+using YuLauncher.Core.lib;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 
@@ -26,7 +27,7 @@ namespace YuLauncher.Game.Window
     /// </summary>
     public partial class GameWindow : FluentWindow
     {
-        public GameWindow(string url,string[] args)
+        public GameWindow(string url,JsonControl.ApplicationJsonData data)
         {
             InitializeComponent();
             webView.Source = new Uri(url);

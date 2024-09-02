@@ -27,7 +27,7 @@ namespace YuLauncher.Core.lib;
 public class PageControlCreate : Page
 {
     public static event EventHandler OnDeleteFileMenuClicked;
-    public static ContextMenu GameListShowContextMenu(bool isGameButton, string gameButtonPathFile,string[] data,string name)
+    public static ContextMenu GameListShowContextMenu(bool isGameButton,JsonControl.ApplicationJsonData data)
     {
         ContextMenu contextMenu = new ContextMenu();
         
@@ -62,27 +62,27 @@ public class PageControlCreate : Page
                     try
                     {
                         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                        string htmlPath = Path.Combine(baseDirectory, $"html/{name}.html");
-                        if (data[1] == "WebSaver")
+                        string htmlPath = Path.Combine(baseDirectory, $"html/{data.Name}.html");
+                        if (data.FileExtension == "WebSaver")
                         {
                             File.Delete(htmlPath);
-                            FileControl.DeleteGame(gameButtonPathFile);
+                            FileControl.DeleteGame(data.JsonPath);
                             OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
                             
                         }
                         else
                         {
-                            if (FileControl.ExistGameFile(gameButtonPathFile))
+                            if (FileControl.ExistGameFile(data.JsonPath))
                             {
-                                FileControl.DeleteGame(gameButtonPathFile);
-                                LoggerController.LogWarn($"delete file: {gameButtonPathFile}");
+                                FileControl.DeleteGame(data.JsonPath);
+                                LoggerController.LogWarn($"delete file: {data.JsonPath}");
                                 Console.WriteLine("delete file");
                                 OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
                             }
                             else
                             {
                                 Console.WriteLine("file not found");
-                                Console.WriteLine(gameButtonPathFile);
+                                Console.WriteLine(data.JsonPath);
                                 LoggerController.LogError("file not found");
                             }
                         }
@@ -100,12 +100,11 @@ public class PageControlCreate : Page
                 };
                 memoCtx.Click += (sender, args) =>
                 {
-                    if (File.Exists(gameButtonPathFile))
+                    if (File.Exists(data.JsonPath))
                     {
-                        string[] memo = File.ReadAllLines(gameButtonPathFile);
                         try
                         {
-                            MemoWindow memoWindow = new MemoWindow(gameButtonPathFile,memo);
+                            MemoWindow memoWindow = new MemoWindow(data);
                             memoWindow.Show();
                         }
                         catch (Exception e)
@@ -122,11 +121,11 @@ public class PageControlCreate : Page
                 };
                 propertyCtx.Click += (sender, args) =>
                 {
-                    if (File.Exists(gameButtonPathFile))
+                    if (File.Exists(data.JsonPath))
                     {
                         try
                         {
-                            PropertyDialog propertyDialog = new PropertyDialog(data,name,gameButtonPathFile);
+                            PropertyDialog propertyDialog = new PropertyDialog(data);
                             propertyDialog.Show();
                         }
                         catch (Exception e)
@@ -185,7 +184,7 @@ public class GameButton : Button
         }
     }
     
-    private ValueTask StartProcessWithLogging(string fileName, string name, string[] path)
+    private ValueTask StartProcessWithLogging(string fileName, string name)
     {
         EnsureLogDirectories(name);
 
@@ -246,15 +245,15 @@ public class GameButton : Button
         return ValueTask.CompletedTask;
     }
 
-    private BitmapImage GetImage(string[] path)
+    private static BitmapImage GetImage(JsonControl.ApplicationJsonData appData)
     {
-        switch (path[1])
+        switch (appData.FileExtension)
         {
             case "WebGame":
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + path[0]);
+                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
                 bitmap.EndInit();
                 return bitmap;
             }
@@ -262,19 +261,19 @@ public class GameButton : Button
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + path[0]);
+                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
                 bitmap.EndInit();
                 return bitmap;
             }
         }
 
-        if (path[1] != "web")
+        if (appData.FileExtension != "web")
         {
-            if (File.Exists(path[0]))
+            if (File.Exists(appData.FilePath))
             {
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
+                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
                     icon.Save(memoryStream);
                     memoryStream.Position = 0;
 
@@ -293,103 +292,24 @@ public class GameButton : Button
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + path[0]);
+            bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
             bitmap.EndInit();
             return bitmap;
         }
 
         return null;
     }
-
-    private int CountLines(string filePath)
+    public Button GameButtonShow(string name,JsonControl.ApplicationJsonData data)
     {
-        using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-        using (var reader = new StreamReader(stream))
-        {
-            int lineCount = 0;
-            while (reader.ReadLine() != null)
+        string thisFile = "./Games/" + name + ".json";
+            Image image = new Image
             {
-                lineCount++;
-            }
-            return lineCount;
-        }
-    }
-
-    private async Task<bool> FirstLineCheck(string filePath)
-    {
-        return await Task.Run(() =>
-        {
-            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read,FileShare.ReadWrite))
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadLine() == "";
-            }
-        });
-    }
-
-    private async Task UpdateFileAsync(string filePath)
-    {
-        int lineCount = await Task.Run(() => CountLines(filePath));
-        Console.WriteLine(lineCount);
-        using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))        
-        using (StreamWriter writer = new StreamWriter(stream))
-        {
-            bool isFirstLineEmpty = await Task.Run(() => FirstLineCheck(filePath));
-            if (isFirstLineEmpty)
-            {
-                switch (lineCount)
-                {
-                    case 2:
-                        await writer.WriteLineAsync("false");
-                        await writer.WriteLineAsync("false");
-                        break;
-                    case 3:
-                        await writer.WriteLineAsync("false");
-                        break;
-                }
-            }
-            else
-            {
-                switch (lineCount)
-                {
-                    case 2:
-                        await writer.WriteLineAsync("");
-                        await writer.WriteLineAsync("false");
-                        await writer.WriteLineAsync("false");
-                        break;
-                    case 3:
-                        await writer.WriteLineAsync("false");
-                        await writer.WriteLineAsync("false");
-                        break;
-                    case 4:
-                        await writer.WriteLineAsync("false");
-                        break;
-                }
-            }
-        }
-    }
-
-    private async Task TrimEndLinesAsync(string filePath)
-    {
-        var lines = await File.ReadAllLinesAsync(filePath);
-        if (lines.Length > 0 && string.IsNullOrWhiteSpace(lines[^1]))
-        {
-            lines = lines.Take(lines.Length - 1).ToArray();
-            await File.WriteAllLinesAsync(filePath, lines);
-        }
-    }
-    public Button GameButtonShow(string name,string[] path,string extension)
-    {
-        
-        string[] tag = {name, path[0], extension};
-        string thisFile = "./Games/" + name + ".txt";
-        Image image = new Image
-        {
-            Source = GetImage(path)
-        };
+                Source = GetImage(data)
+            };
+ 
         TextBlock textBlock = new TextBlock
         {
-            Text = name + $" : {extension}",
+            Text = name + $" : {data.FileExtension}",
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             FontSize = 12,
@@ -406,34 +326,34 @@ public class GameButton : Button
         Button gameButton = new Button()
         {
             Content = stackPanel,
-            Tag = tag,
+            Tag = data,
             Height = ObjectProperty.GameListObjectHeight,
             Width = ObjectProperty.GameListObjectWidth,
             HorizontalAlignment = HorizontalAlignment.Center,
-            ContextMenu = PageControlCreate.GameListShowContextMenu(true, thisFile,path,name),
+            ContextMenu = PageControlCreate.GameListShowContextMenu(true,data),
         };
         gameButton.Click += async (sender, args) => {
             try
             {
-                switch (extension)
+                switch (data.FileExtension)
                 {
                     case "exe":
-                        if (!File.Exists(path[0]))
+                        if (!File.Exists(data.FilePath))
                         {
                             MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
                             LoggerController.LogError("File not found");
                         }
 
-                        if (path[4] == "true")
+                        if (data.IsUseLog == true)
                         {
-                            StartProcessWithLogging(path[0], name, path);
+                            await StartProcessWithLogging(data.FilePath, name);
                         }
 
                         else
                         {
                             ProcessStartInfo startInfo = new ProcessStartInfo
                             {
-                                FileName = path[0],
+                                FileName = data.FilePath,
                                 RedirectStandardOutput = true,
                                 RedirectStandardError = true,
                                 UseShellExecute = false,
@@ -475,16 +395,16 @@ public class GameButton : Button
 
                         break;
                     case "web":
-                        if (path[3] == "true")
+                        if (data.IsWebView == true)
                         {
-                            WebViewWindow webViewWindow = new WebViewWindow(path[0], path);
+                            WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
                             webViewWindow.Show();
                         }
                         else
                         {
                             ProcessStartInfo websiteInfo = new ProcessStartInfo
                             {
-                                FileName = path[0],
+                                FileName = data.Url,
                                 UseShellExecute = true,
                             };
                             Process.Start(websiteInfo);
@@ -492,24 +412,16 @@ public class GameButton : Button
 
                         break;
                     case "WebGame":
-                        GameWindow gameWindow = new GameWindow(path[0], path);
+                        GameWindow gameWindow = new GameWindow(data.Url, data);
                         gameWindow.Show();
                         break;
                     case "WebSaver":
-                        WebSaverWindow.WebSaverWindow webSaverWindow = new WebSaverWindow.WebSaverWindow(name, path);
+                        WebSaverWindow.WebSaverWindow webSaverWindow = new WebSaverWindow.WebSaverWindow(name,data);
                         webSaverWindow.Show();
                         break;
                     case "":
                         break;
                 }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                MessageBox.Show("this file is old system on file and you using old version of file now optimized file please relaunch the app");
-                LoggerController.LogError(e.Message);
-
-                await UpdateFileAsync(thisFile);
-                await TrimEndLinesAsync(thisFile);
             }
             catch (Exception e)
             {

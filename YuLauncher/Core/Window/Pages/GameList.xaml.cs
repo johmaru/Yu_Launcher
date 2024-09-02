@@ -90,15 +90,16 @@ public partial class GameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            var data = await JsonControl.ReadExeJson(file);
+           var jsonData = await JsonControl.ReadExeJson(file);
             try
             {
-                if (path[1] == "WebGame")
+                if (jsonData.FileExtension == "WebGame")
                 {
                     continue;
                 }
                 
-                Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, data));
             }
             catch (System.IO.IOException ex)
             {
@@ -106,7 +107,7 @@ public partial class GameList : Page
                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
                 throw;
             }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.Name}");
         }
 
         Viewer.Content = null;
@@ -120,13 +121,13 @@ public partial class GameList : Page
          foreach (var file in _files)
          {
              string name = Path.GetFileNameWithoutExtension(file);
-             string[] path = await File.ReadAllLinesAsync(file);
+                var data = await JsonControl.ReadExeJson(file);
             
              try
              {
-                 if (path[1] == "exe")
+                 if (data.FileExtension == "exe")
                  {
-                     Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                     Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
                  }
                  else
                  {
@@ -139,7 +140,7 @@ public partial class GameList : Page
                  LoggerController.LogError("An I/O error occurred: " + ex.Message);
                  throw;
              }
-             LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+             LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
          }
          Viewer.Content = null;
          Viewer.Content = Panel;
@@ -151,13 +152,13 @@ public partial class GameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            var data = await JsonControl.ReadExeJson(file);
             
             try
             {
-                if (path[1] == "web")
+                if (data.FileExtension == "web")
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
+                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name,data ));
                 }
                 else
                 {
@@ -170,7 +171,7 @@ public partial class GameList : Page
                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
                 throw;
             }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
         }
         Viewer.Content = null;
         Viewer.Content = Panel;
@@ -199,7 +200,7 @@ public partial class GameList : Page
        }
        else
        {
-           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "",new string[]{""},"");
+           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
        }
 
     }

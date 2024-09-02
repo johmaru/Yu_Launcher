@@ -92,7 +92,7 @@ public partial class CreateGameDialog : FluentWindow
             this.DragMove();
     }
 
-    private void CreateButton_OnClick(object sender, RoutedEventArgs e)
+    private async void CreateButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (GenreSelectComboBox.SelectedItem == GenreApplicationComboBoxItem)
         {
@@ -118,14 +118,18 @@ public partial class CreateGameDialog : FluentWindow
 
                 else
                 {
-                    using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                    JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                     {
-                        string?[] test = new[] { _openFileDialog, fileExtensionDotTrim, " ","false","false"};
-                        foreach (var t in test)
-                        {
-                            writer.WriteLine(t);
-                        }
-                    }
+                        FilePath = _openFileDialog,
+                        FileExtension = fileExtensionDotTrim,
+                        Url = "",
+                        Name = Label.Text,
+                        JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
+                        Memo = "",
+                        IsWebView = false,
+                        IsUseLog = false
+                    };
+                    await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
                     OnClose?.Invoke(this, EventArgs.Empty);
                     this.Close();
@@ -141,14 +145,18 @@ public partial class CreateGameDialog : FluentWindow
         {
             if (UrlBlock.Text.Contains( "http://") || UrlBlock.Text.Contains("https://"))
             {
-                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                 {
-                    string?[] test = new[] { UrlBlock.Text, "web", " "};
-                    foreach (var t in test)
-                    {
-                        writer.WriteLine(t);
-                    }
-                }
+                    FilePath = _openFileDialog,
+                    JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
+                    FileExtension = "web",
+                    Name = Label.Text,
+                    Url = UrlBlock.Text,
+                    Memo = "",
+                    IsWebView = false,
+                    IsUseLog = false
+                };
+                await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
             else
             {
@@ -167,14 +175,18 @@ public partial class CreateGameDialog : FluentWindow
         {
             if (UrlBlock.Text.Contains( "http://") || UrlBlock.Text.Contains("https://"))
             {
-                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                 {
-                    string?[] test = new[] { UrlBlock.Text, "WebGame", " "};
-                    foreach (var t in test)
-                    {
-                        writer.WriteLine(t);
-                    }
-                }
+                    FilePath = _openFileDialog,
+                    JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
+                    FileExtension = "WebGame",
+                    Url = UrlBlock.Text,
+                    Name = Label.Text,
+                    Memo = "",
+                    IsWebView = false,
+                    IsUseLog = false
+                };
+                await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
             else
             {
@@ -189,14 +201,18 @@ public partial class CreateGameDialog : FluentWindow
         {
             if (UrlBlock.Text.Contains("http://") || UrlBlock.Text.Contains("https://"))
             {
-                using (var writer = new StreamWriter($"{FileControl.Main.Directory}\\{Label.Text}.txt"))
+                JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                 {
-                    string?[] test = new[] { UrlBlock.Text, "WebSaver", " "};
-                    foreach (var t in test)
-                    {
-                        writer.WriteLine(t);
-                    }
-                }
+                    FilePath = _openFileDialog,
+                    JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
+                    FileExtension = "WebSaver",
+                    Name = Label.Text,
+                    Url = UrlBlock.Text,
+                    Memo = "",
+                    IsWebView = false,
+                    IsUseLog = false
+                };
+                await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
                 try
                 {
@@ -211,7 +227,7 @@ public partial class CreateGameDialog : FluentWindow
                         var content = response.Content.ReadAsStringAsync().Result;
                         using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.html"))
                         {
-                            writer.WriteLine(content);
+                            await writer.WriteLineAsync(content);
                         }
                     }
                     

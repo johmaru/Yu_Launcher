@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Controls;
+using YuLauncher.Core.lib;
 using YuLauncher.Core.WebSaverWindow;
 
 namespace YuLauncher.Core.WebSaverWindow
@@ -13,7 +14,7 @@ namespace YuLauncher.Core.WebSaverWindow
     /// </summary>
     public partial class WebSaverWindow : FluentWindow
     {
-        public WebSaverWindow(string name,string[] args)
+        public WebSaverWindow(string name,JsonControl.ApplicationJsonData data)
         {
             InitializeComponent();
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;

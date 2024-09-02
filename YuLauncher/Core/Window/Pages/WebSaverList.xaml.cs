@@ -45,12 +45,12 @@ public partial class WebSaverList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {
-                if (path[1] == "WebSaver")
+                if (data.FileExtension == "WebSaver")
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
+                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
                 }
                 else
                 {
@@ -100,7 +100,7 @@ public partial class WebSaverList : Page
         }
         else
         {
-            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "",new string[]{""},"");
+            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
         }
     }
 }

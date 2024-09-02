@@ -82,7 +82,7 @@ public partial class WebGameList : Page
             foreach (var node in nodeIcon)
             {
                 var nodeValue = node.Attributes["src"].Value;
-                await Application.Current.Dispatcher.Invoke(async () =>
+                await Application.Current.Dispatcher.Invoke(() =>
                 {
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
@@ -100,6 +100,7 @@ public partial class WebGameList : Page
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         Margin = new Thickness(0, 0, 20, 0)
                     });
+                    return Task.CompletedTask;
                 });
             }
         }
@@ -119,12 +120,12 @@ public partial class WebGameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {
-                if (path[1] == "WebGame")
+                if (data.FileExtension == "WebGame")
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
+                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
                 }
                 else
                 {
@@ -168,7 +169,7 @@ public partial class WebGameList : Page
         else
         {
             Console.WriteLine("false");
-            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "", Array.Empty<string>(), "");
+            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
         }
     }
 
@@ -181,12 +182,12 @@ public partial class WebGameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {
-                if (path[1] == "WebGame")
+                if (data.FileExtension == "WebGame")
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(name,path, path[1]));
+                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
                 }
                 else
                 {

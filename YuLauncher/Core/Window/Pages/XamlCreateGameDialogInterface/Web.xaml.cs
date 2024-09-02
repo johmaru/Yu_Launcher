@@ -11,50 +11,42 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 public partial class Web : DialogInterface
 {
     public static event EventHandler? OnNameChangeWebSaveClicked;
-    public Web(string[] data,string name,string path) : base(data,name,path)
+    public Web(JsonControl.ApplicationJsonData data) : base(data)
     {
         InitializeComponent();
         InterFace.SetNameLabel(NameTextBlock,InterFace.IsDark());
-        InterFace.SetNameBox(NameBox,name,InterFace.IsDark());
+        InterFace.SetNameBox(NameBox,data.Name,InterFace.IsDark());
         
         InterFace.SetNameLabel(UrlTextBlock,InterFace.IsDark());
-        InterFace.SetPathBox(UrlBox,NewPath,InterFace.IsDark());
+        InterFace.SetPathBox(UrlBox,data.Url,InterFace.IsDark());
     }
 
     private async void SaveButton_OnClick(object sender, RoutedEventArgs e)
     {
-        if (NameBox.Text != Name)
+        if (NameBox.Text != NowName)
         {
-            string newPath = Path.Replace(Name,NameBox.Text);
-            await Task.Run(() => File.Move(Path,newPath));
-            
-            
+            Data = Data with { Name = NameBox.Text };
+            await JsonControl.CreateExeJson(Data.JsonPath,Data);
         }
         
         if (UrlBox.Text != NewPath)
         {
-            string[] lines = await File.ReadAllLinesAsync(Path);
-            lines[0] = UrlBox.Text;
-            
-            await File.WriteAllLinesAsync(Path,lines);
+            Data = Data with { Url = UrlBox.Text };
+            await JsonControl.CreateExeJson(Data.JsonPath,Data);
         }
 
         switch (WebviewSwitch.IsChecked)
         {
             case true:
             {
-                string[] lines = await File.ReadAllLinesAsync(Path);
-                lines[3] = "true";
-            
-                await File.WriteAllLinesAsync(Path,lines);
+                Data = Data with { IsWebView = true };
+               await JsonControl.CreateExeJson(Data.JsonPath,Data);
                 break;
             }
             case false:
             {
-                string[] lines = await File.ReadAllLinesAsync(Path);
-                lines[3] = "false";
-            
-                await File.WriteAllLinesAsync(Path,lines);
+                Data = Data with { IsWebView = false };
+                await JsonControl.CreateExeJson(Data.JsonPath,Data);
                 break;
             }
             default:
@@ -67,19 +59,10 @@ public partial class Web : DialogInterface
 
     private async void FrameworkElement_OnInitialized(object? sender, EventArgs e)
     {
-       string [] nowData = await File.ReadAllLinesAsync(Path);
        try
        {
-           if (nowData.Length == 3)
-           {
-               List<string> nowDataList = new(nowData);
-               if (nowDataList == null) throw new ArgumentNullException(nameof(nowDataList));
 
-               nowDataList.Add("false");
-               await File.WriteAllLinesAsync(Path, nowDataList);
-           }
-
-           if (nowData[3] == "true")
+           if (Data.IsWebView == true)
            {
                WebviewSwitch.IsChecked = true;
            }

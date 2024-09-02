@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,14 +17,12 @@ namespace YuLauncher.Core.Window;
 
 public partial class MemoWindow : FluentWindow
 {
-    private readonly string[] _memo;
-    private readonly string _filePath;
     private readonly double _fontSize;
+    private JsonControl.ApplicationJsonData _data;
     private TextBox? _memoTextBox;
-    public MemoWindow(string filePath,string[] memo)
+    public MemoWindow(JsonControl.ApplicationJsonData data)
     {
-        this._memo = memo;
-        this._filePath = filePath;
+       LoadData(data.JsonPath);
         this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
         InitializeComponent();
         
@@ -32,11 +32,16 @@ public partial class MemoWindow : FluentWindow
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
 
+    private async void LoadData(string jsonPath)
+    {
+        _data = await JsonControl.ReadExeJson(jsonPath);
+    }
+
     private TextBlock MemoLabel()
     {
         TextBlock text = new TextBlock
         {
-            Text = _memo[2],
+            Text = _data.Memo,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
             FontSize = _fontSize
@@ -48,18 +53,13 @@ public partial class MemoWindow : FluentWindow
     {
         _memoTextBox = new TextBox
         {
-            Text = _memo[2],
+            Text = _data.Memo,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
             FontSize = _fontSize,
             Margin = new Thickness(10)
         };
         return _memoTextBox;
-    }
-    
-    private string? GetMemoTextBoxText()
-    {
-        return _memoTextBox?.Text;
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
@@ -126,14 +126,13 @@ public partial class MemoWindow : FluentWindow
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Bottom
         };
-        saveButton.Click += (sender, args) =>
+        saveButton.Click +=async (sender, args) =>
         {
             try
             {
                 if (_memoTextBox != null)
                 {
-                    string[] _ = { _memo[0], _memo[1],_memoTextBox.Text };
-                    File.WriteAllLines(_filePath, _);
+                  _data = _data with{Memo = _memoTextBox.Text};
                 }
             }
             catch (Exception exception)
@@ -141,7 +140,7 @@ public partial class MemoWindow : FluentWindow
                 Console.WriteLine(exception);
                 throw;
             }
-
+            await JsonControl.CreateExeJson(_data.JsonPath,_data);
             this.Close();
         };
        stackPanel.Children.Add(saveButton);
