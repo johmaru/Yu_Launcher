@@ -62,6 +62,11 @@ namespace YuLauncher
                 {
                     Directory.CreateDirectory("./html");
                 }
+
+                if (!File.Exists("./Games"))
+                {
+                    Directory.CreateDirectory("./Games");
+                }
                 LoggerController.LogInfo("First Lunch Check Complete");
         }
 
