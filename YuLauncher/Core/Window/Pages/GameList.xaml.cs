@@ -90,7 +90,6 @@ public partial class GameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            var data = await JsonControl.ReadExeJson(file);
            var jsonData = await JsonControl.ReadExeJson(file);
             try
             {
@@ -99,7 +98,7 @@ public partial class GameList : Page
                     continue;
                 }
                 
-                Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, data));
+                Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
             }
             catch (System.IO.IOException ex)
             {
@@ -107,7 +106,7 @@ public partial class GameList : Page
                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
                 throw;
             }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.Name}");
+            LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
         }
 
         Viewer.Content = null;

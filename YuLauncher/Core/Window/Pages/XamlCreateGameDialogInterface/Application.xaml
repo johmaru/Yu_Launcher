@@ -25,7 +25,15 @@
             <StackPanel Orientation="Horizontal">
                 <CheckBox x:Name="ApplicationLogButton" IsChecked="" Content="{lex:Loc AppLogButton}" Initialized="ApplicationLog_OnInitialized"/>
             </StackPanel>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}" />
+                <ScrollViewer>
+                    <StackPanel x:Name="MultiplePanel" Orientation="Vertical">
+                    
+                    </StackPanel>
+                </ScrollViewer>    
+            </StackPanel>
+        </StackPanel>    
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </local:DialogInterface>
