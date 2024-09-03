@@ -21,6 +21,8 @@ public static class JsonControl
         public bool IsUseLog { get; set; }
         
         public string Url { get; set;}
+        
+        public string[] MultipleLaunch { get; set; }
     }
     
     public static async ValueTask CreateExeJson(string path,ApplicationJsonData applicationJsonData)
@@ -34,6 +36,15 @@ public static class JsonControl
     {
         string json = await File.ReadAllTextAsync(path);
         return JsonSerializer.Deserialize<ApplicationJsonData>(json);
+    }
+
+    public static async ValueTask CheckJsonData(string jsonPath,ApplicationJsonData data)
+    {
+        if (data.MultipleLaunch == null)
+        {
+            data = data with { MultipleLaunch = new string[0] };
+            await CreateExeJson(jsonPath,data);
+        }
     }
 
 }

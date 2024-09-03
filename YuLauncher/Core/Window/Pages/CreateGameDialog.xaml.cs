@@ -201,19 +201,6 @@ public partial class CreateGameDialog : FluentWindow
         {
             if (UrlBlock.Text.Contains("http://") || UrlBlock.Text.Contains("https://"))
             {
-                JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
-                {
-                    FilePath = _openFileDialog,
-                    JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
-                    FileExtension = "WebSaver",
-                    Name = Label.Text,
-                    Url = UrlBlock.Text,
-                    Memo = "",
-                    IsWebView = false,
-                    IsUseLog = false
-                };
-                await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
-
                 try
                 {
                     string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -230,6 +217,19 @@ public partial class CreateGameDialog : FluentWindow
                             await writer.WriteLineAsync(content);
                         }
                     }
+                    JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
+                    {
+                        FilePath = $"{htmlPath}/{Label.Text}.html",
+                        JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
+                        FileExtension = "WebSaver",
+                        Name = Label.Text,
+                        MultipleLaunch = new []{""},
+                        Url = UrlBlock.Text,
+                        Memo = "",
+                        IsWebView = false,
+                        IsUseLog = false
+                    };
+                    await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
                     
                 }
                 catch (Exception exception)

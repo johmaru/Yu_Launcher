@@ -169,4 +169,7 @@
     <data name="AppLogButton" xml:space="preserve">
         <value>アプリケーションログ</value>
     </data>
+    <data name="MultipleLaunchText" xml:space="preserve">
+        <value>複数起動</value>
+    </data>
 </root>
