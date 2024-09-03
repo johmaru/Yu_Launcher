@@ -19,7 +19,7 @@
                 </ui:Button>
             </StackPanel>
             <ScrollViewer>
-                <StackPanel Orientation="Vertical" x:Name="Panel"/>
+                <WrapPanel Orientation="Vertical" x:Name="Panel"/>
             </ScrollViewer>
             </StackPanel>
     </Grid>

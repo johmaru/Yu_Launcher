@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,30 +17,31 @@ namespace YuLauncher.Core.Window;
 
 public partial class MemoWindow : FluentWindow
 {
-    private readonly string[] _memo;
-    private readonly string _filePath;
     private readonly double _fontSize;
-    public MemoWindow(string filePath,string[] memo)
+    private JsonControl.ApplicationJsonData _data;
+    private TextBox? _memoTextBox;
+    public MemoWindow(JsonControl.ApplicationJsonData data)
     {
-        this._memo = memo;
-        this._filePath = filePath;
+       LoadData(data.JsonPath);
         this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
         InitializeComponent();
         
         this.Width = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Width"));
         this.Height = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Height"));
         
-         Panel.Children.Clear();
-         MainGrid.Children.Clear();
-        Panel.Children.Add(MemoLabel());
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
+    }
+
+    private async void LoadData(string jsonPath)
+    {
+        _data = await JsonControl.ReadExeJson(jsonPath);
     }
 
     private TextBlock MemoLabel()
     {
         TextBlock text = new TextBlock
         {
-            Text = _memo[2],
+            Text = _data.Memo,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
             FontSize = _fontSize
@@ -48,14 +51,15 @@ public partial class MemoWindow : FluentWindow
     
     private TextBox MemoTextBox()
     {
-        TextBox textBox = new TextBox
+        _memoTextBox = new TextBox
         {
-            Text = _memo[2],
+            Text = _data.Memo,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
-            FontSize = _fontSize
+            FontSize = _fontSize,
+            Margin = new Thickness(10)
         };
-        return textBox;
+        return _memoTextBox;
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
@@ -76,41 +80,70 @@ public partial class MemoWindow : FluentWindow
         
     }
 
-    private void SaveButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            string[] _ = { _memo[0], _memo[1], ((TextBox)Panel.Children[0]).Text };
-            File.WriteAllLines(_filePath, _);
-        }
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception);
-            throw;
-        }
-        this.Close();
-    }
-
     private void ModeButton_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        Panel.Children.Clear();
         MainGrid.Children.Clear();
-        Panel.Children.Add(MemoLabel());
+        ScrollViewer scrollViewer = new ScrollViewer
+        {
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        StackPanel stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        MainGrid.Children.Add(scrollViewer);
+        scrollViewer.Content = stackPanel;
+        stackPanel.Children.Add(MemoLabel());
     }
 
     private void ModeButton_OnChecked(object sender, RoutedEventArgs e)
     {
-           Panel.Children.Clear();
-        Panel.Children.Add(MemoTextBox());
+        MainGrid.Children.Clear();
+        ScrollViewer scrollViewer = new ScrollViewer
+        {
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        StackPanel stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        MainGrid.Children.Add(scrollViewer);
+        scrollViewer.Content = stackPanel;
+        stackPanel.Children.Add(MemoTextBox());
         Button saveButton = new Button
         {
             Content = LocalizeControl.GetLocalize<string>("SimpleSave"),
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Bottom
         };
-        saveButton.Click += SaveButton_OnClick;
-        MainGrid.Children.Add(saveButton);
-        
+        saveButton.Click +=async (sender, args) =>
+        {
+            try
+            {
+                if (_memoTextBox != null)
+                {
+                  _data = _data with{Memo = _memoTextBox.Text};
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+            await JsonControl.CreateExeJson(_data.JsonPath,_data);
+            this.Close();
+        };
+       stackPanel.Children.Add(saveButton);
     }
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)

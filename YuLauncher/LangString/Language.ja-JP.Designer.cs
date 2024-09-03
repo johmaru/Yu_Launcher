@@ -267,6 +267,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 複数起動.
+        /// </summary>
+        public static string MultipleLaunchText {
+            get {
+                return ResourceManager.GetString("MultipleLaunchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 名前を入力してください.
         /// </summary>
         public static string NameInput {

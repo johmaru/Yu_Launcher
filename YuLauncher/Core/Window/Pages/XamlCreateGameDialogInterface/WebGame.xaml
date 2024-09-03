@@ -8,6 +8,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="ja-JP"
+             Initialized="WebGame_OnInitialized"
              lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
              lex:ResxLocalizationProvider.DefaultDictionary="Language">
     <Grid>
@@ -22,6 +23,14 @@
                 <ui:TextBox x:Name="UrlBox" Text="" VerticalAlignment="Center"/>
             </StackPanel>
         </ScrollViewer>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}" />
+                <ScrollViewer>
+                    <StackPanel x:Name="MultiplePanel" Orientation="Vertical">
+                    
+                    </StackPanel>
+                </ScrollViewer>    
+            </StackPanel>
         </StackPanel>
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>

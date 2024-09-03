@@ -39,29 +39,11 @@
             </Grid>  
         </ScrollViewer>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="90*"/>
-            </Grid.ColumnDefinitions>
-            
-            <Grid Grid.Column="0" Grid.Row="0">
-                <StackPanel x:Name="IconPanel">
-                </StackPanel>
-            </Grid>
-            
-            <Grid Grid.Column="1" Grid.Row="0">
-                <StackPanel x:Name="WebGameListPanel" Orientation="Vertical">
+                <WrapPanel x:Name="WebGameListPanel" Orientation="Horizontal">
                     
-                </StackPanel>
-            </Grid>
+                </WrapPanel>
             
-        </Grid>   
         </ScrollViewer>
         </StackPanel>
-    </Grid>
+        </Grid>
 </Page>

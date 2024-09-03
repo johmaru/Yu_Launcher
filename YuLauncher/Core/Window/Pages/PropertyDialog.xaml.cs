@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
+using YuLauncher.Core.lib;
 using YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 using Application = YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface.Application;
 using Web = YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface.Web;
@@ -17,24 +18,24 @@ public partial class PropertyDialog : FluentWindow
     public static event EventHandler? OnGameListWebPanelUpdate;
     public static event EventHandler? OnGameListWebGamePanelUpdate;
     public static event EventHandler? OnGameListWebSaverPanelUpdate;
-    public PropertyDialog(string[] data,string name,string path)
+    public PropertyDialog(JsonControl.ApplicationJsonData data)
     {
         InitializeComponent();
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
 
-        switch (data[1])
+        switch (data.FileExtension)
         {
             case "exe":
-                Frame.NavigationService.Navigate(new Application(data,name,path));
+                Frame.NavigationService.Navigate(new Application(data));
                 break;
             case "WebGame":
-                Frame.NavigationService.Navigate(new WebGame(data,name,path));
+                Frame.NavigationService.Navigate(new WebGame(data));
                 break;
             case "web":
-                Frame.NavigationService.Navigate(new Web(data,name,path));
+                Frame.NavigationService.Navigate(new Web(data));
                 break;
             case "WebSaver":
-                Frame.NavigationService.Navigate(new WebSaver(data,name,path));
+                Frame.NavigationService.Navigate(new WebSaver(data));
                 break;
             default:
                 this.Close();

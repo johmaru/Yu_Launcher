@@ -24,7 +24,6 @@ public partial class MainWindow : FluentWindow
         InitializeComponent();
         Initialize();
         WindowSizeInitialize();
-        BackBtn.Click += BackBtn_OnClick;
         ApplicationThemeManager.Apply(this);
         LoggerController.LogInfo("MainWindow Initialized");
     }

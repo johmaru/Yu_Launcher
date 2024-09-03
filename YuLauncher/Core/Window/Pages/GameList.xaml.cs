@@ -67,8 +67,6 @@ public partial class GameList : Page
     private async void Initialize()
     {
         Panel.Children.Clear();
-        ExtensionLabel.Children.Clear();
-        IconPanel.Children.Clear();
         
       await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
       
@@ -92,74 +90,15 @@ public partial class GameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+           var jsonData = await JsonControl.ReadExeJson(file);
             try
             {
-                if (path[1] == "WebGame")
+                if (jsonData.FileExtension == "WebGame")
                 {
                     continue;
                 }
-                Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                ExtensionLabel.Children.Add(new Label
-                {
-                    Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
-                    Height = ObjectProperty.GameListObjectHeight,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalContentAlignment = VerticalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                });
-                if (path[1] != "web")
-                {
-                    if (File.Exists(path[0]))
-                    {
-                        using (MemoryStream s = new MemoryStream())
-                        {
-                            Icon? icon =  System.Drawing.Icon.ExtractAssociatedIcon(path[0]);
-                            icon?.Save(s);
-                            s.Position = 0;
-                            BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                            IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
-                            {
-                                Source = bitmapFrame,
-                                Height = ObjectProperty.GameListObjectHeight,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                            });
-                    
-                        }
-                    }
-                    else
-                    {
-                        BitmapImage bitmap = new BitmapImage();
-                        
-                        bitmap.BeginInit();
-                        
-                        bitmap.UriSource = new Uri("/image/404-error-3060993_640.png",UriKind.Relative);
-                        
-                        bitmap.EndInit();
-                        
-                        IconPanel.Children.Add(new Image()
-                        {
-                            Source = bitmap,
-                            Height = ObjectProperty.GameListObjectHeight,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                        });
-                    }
-                    
-                }
-                else
-                {
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
                 
-                }
+                Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
             }
             catch (System.IO.IOException ex)
             {
@@ -167,8 +106,11 @@ public partial class GameList : Page
                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
                 throw;
             }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+            LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
         }
+
+        Viewer.Content = null;
+        Viewer.Content = Panel;
     }
 
     private async void GenreExeUpdate()
@@ -178,59 +120,13 @@ public partial class GameList : Page
          foreach (var file in _files)
          {
              string name = Path.GetFileNameWithoutExtension(file);
-             string[] path = await File.ReadAllLinesAsync(file);
+                var data = await JsonControl.ReadExeJson(file);
             
              try
              {
-                 if (path[1] == "exe")
+                 if (data.FileExtension == "exe")
                  {
-                     Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                     ExtensionLabel.Children.Add(new Label
-                     {
-                         Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
-                         Height = ObjectProperty.GameListObjectHeight,
-                         VerticalAlignment = VerticalAlignment.Stretch,
-                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                         VerticalContentAlignment = VerticalAlignment.Stretch,
-                         HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                     });
-
-                     if (File.Exists(path[0]))
-                     {
-                         using (MemoryStream s = new MemoryStream())
-                         {
-                             Icon? icon =  Icon.ExtractAssociatedIcon(path[0]);
-                             icon?.Save(s);
-                             s.Position = 0;
-                             BitmapFrame bitmapFrame = BitmapFrame.Create(s, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                             IconPanel.Children.Add(new Wpf.Ui.Controls.Image()
-                             {
-                                 Source = bitmapFrame,
-                                 Height = ObjectProperty.GameListObjectHeight,
-                                 VerticalAlignment = VerticalAlignment.Center,
-                                 HorizontalAlignment = HorizontalAlignment.Center,
-                             });
-                    
-                         }
-                     }
-                     else
-                     {
-                         BitmapImage bitmap = new BitmapImage();
-                        
-                         bitmap.BeginInit();
-                        
-                         bitmap.UriSource = new Uri("/image/404-error-3060993_640.png",UriKind.Relative);
-                        
-                         bitmap.EndInit();
-                        
-                         IconPanel.Children.Add(new Image()
-                         {
-                             Source = bitmap,
-                             Height = ObjectProperty.GameListObjectHeight,
-                             VerticalAlignment = VerticalAlignment.Center,
-                             HorizontalAlignment = HorizontalAlignment.Center,
-                         });
-                     }
+                     Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
                  }
                  else
                  {
@@ -243,8 +139,10 @@ public partial class GameList : Page
                  LoggerController.LogError("An I/O error occurred: " + ex.Message);
                  throw;
              }
-             LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+             LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
          }
+         Viewer.Content = null;
+         Viewer.Content = Panel;
     }
 
     private async void GenreWebUpdate()
@@ -253,30 +151,13 @@ public partial class GameList : Page
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
-            string[] path = await File.ReadAllLinesAsync(file);
+            var data = await JsonControl.ReadExeJson(file);
             
             try
             {
-                if (path[1] == "web")
+                if (data.FileExtension == "web")
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(name, path, path[1]));
-                    ExtensionLabel.Children.Add(new Label
-                    {
-                        Content = LocalizeControl.GetLocalize<string>("ExtensionLabel") + path[1],
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        VerticalContentAlignment = VerticalAlignment.Stretch,
-                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    });
-                
-                    IconPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri("https://www.google.com/s2/favicons?domain=" + path[0])),
-                        Height = ObjectProperty.GameListObjectHeight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    });
+                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name,data ));
                 }
                 else
                 {
@@ -289,15 +170,15 @@ public partial class GameList : Page
                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
                 throw;
             }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {path[1]}");
+            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
         }
+        Viewer.Content = null;
+        Viewer.Content = Panel;
     }
     
     private async void GameList_OnFileUpdate(object sender, EventArgs e)
     {
         Panel.Children.Clear();
-        ExtensionLabel.Children.Clear();
-        IconPanel.Children.Clear();
         LoggerController.LogInfo("GameList Page Reloaded");
     }
 
@@ -318,7 +199,7 @@ public partial class GameList : Page
        }
        else
        {
-           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false, "",new string[]{""},"");
+           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
        }
 
     }

@@ -32,6 +32,7 @@ namespace YuLauncher
             LanguageCheck();
             VersionCheck();
            await Initialize();
+           await JsonCheck();
            LoggerController.LogInfo("Application Start");
         }
         
@@ -62,6 +63,17 @@ namespace YuLauncher
                     Directory.CreateDirectory("./html");
                 }
                 LoggerController.LogInfo("First Lunch Check Complete");
+        }
+
+        private static async ValueTask JsonCheck()
+        {
+            var json = Directory.GetFiles("./Games", "*.json");
+            foreach (var t in json)
+            {
+                var data = await JsonControl.ReadExeJson(t);
+                await JsonControl.CheckJsonData(t, data);
+            }
+            LoggerController.LogInfo("Json Check Complete");
         }
 
         private void VersionCheck()

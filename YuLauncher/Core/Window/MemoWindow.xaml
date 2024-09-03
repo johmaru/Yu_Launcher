@@ -32,11 +32,7 @@
         </Grid>
         
         <Grid x:Name="MainGrid" Grid.Row="1">
-            <ScrollViewer>
-            <StackPanel x:Name="Panel" Orientation="Vertical">
-                <!-- <ui:Button x:Name="SaveButton" Click="SaveButton_OnClick" Content="{lex:Loc SimpleSave}" HorizontalAlignment="Stretch" Panel.ZIndex="1" Visibility="Collapsed"/> -->
-            </StackPanel>
-             </ScrollViewer>
+         
         </Grid>
     </Grid>
 </ui:FluentWindow>

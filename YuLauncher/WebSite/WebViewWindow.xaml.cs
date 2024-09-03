@@ -9,7 +9,7 @@ namespace YuLauncher.WebSite;
 
 public partial class WebViewWindow : FluentWindow
 {
-    public WebViewWindow(string url,string[] args)
+    public WebViewWindow(string url,JsonControl.ApplicationJsonData data)
     {
         InitializeComponent();
         webView.Source = new Uri(url);

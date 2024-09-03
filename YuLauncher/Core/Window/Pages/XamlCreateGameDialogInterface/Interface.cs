@@ -12,8 +12,9 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
 public interface IDialogInterface
 {
-    string Name { get; set; }
-    string[] Data { get; set; }
+    public JsonControl.ApplicationJsonData Data { get; set; }
+    public string NewPath { get; }
+    public string NowName { get; }
 }
 
 public partial class InterFaceClass
@@ -56,20 +57,18 @@ public partial class InterFaceClass
 
 public abstract class DialogInterface : UserControl, IDialogInterface
 {
-    protected new string Name { get;private set; }
-
-    protected string Path { get; private set; }
-    public string[] Data { get; set; }
-    protected string NewPath { get; private set; }
+    public JsonControl.ApplicationJsonData Data { get; set; }
+    public string NewPath { get; private set; }
+    
+    public string NowName { get; private set; }
     
     protected readonly InterFaceClass InterFace = new();
     protected readonly string[] Files = FileControl.GetGameList(); 
-    protected DialogInterface(string[] data,string name,string path)
+    protected DialogInterface(JsonControl.ApplicationJsonData data)
     {
         Data = data;
-        NewPath = data[0];
-        Name = name;
-        Path = path;
+        NewPath = data.FilePath;
+        NowName = data.Name;
     }
     
 }
