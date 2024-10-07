@@ -31,14 +31,28 @@ public partial class Application : DialogInterface
     {
         if (NameBox.Text != NowName)
         {
-                Data = Data with{Name = NameBox.Text};            
+            try
+            {
+                Data = Data with { Name = NameBox.Text };
                 await JsonControl.CreateExeJson(Data.JsonPath,Data);
+            }
+            catch (Exception exception)
+            {
+                LoggerController.LogError($"{exception}");
+            }
         }
 
         if (ExePathNameBox.Text != NewPath)
         {
-            Data = Data with { FilePath = ExePathNameBox.Text };
-            await JsonControl.CreateExeJson(Data.JsonPath,Data);
+            try
+            {
+                Data = Data with { FilePath = ExePathNameBox.Text };
+                await JsonControl.CreateExeJson(Data.JsonPath, Data);
+            }
+            catch (Exception exception)
+            {
+                LoggerController.LogError($"{exception}");
+            }
         }
         try
         {
@@ -51,29 +65,42 @@ public partial class Application : DialogInterface
             {
               Data = Data with { IsUseLog = false };
             }
-            await JsonControl.CreateExeJson(Data.JsonPath, Data);
-
-            var data = await JsonControl.ReadExeJson(Data.JsonPath);
-            var checkBox = MultiplePanel.Children.OfType<CheckBox>();
-            foreach (var CB in checkBox)
+            try
             {
-                 if (CB.IsChecked == true)
-                 {
-                     if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
-                     {
-                         data = data with { MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray() };
-                     }
-                     else
-                     {
-                         continue;
-                     }
-                 }
-                 else
-                 {
-                     data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray() };
-                 }
+                await JsonControl.CreateExeJson(Data.JsonPath, Data);
 
-                 await JsonControl.CreateExeJson(data.JsonPath, data);
+                var data = await JsonControl.ReadExeJson(Data.JsonPath);
+                var checkBox = MultiplePanel.Children.OfType<CheckBox>();
+                foreach (var CB in checkBox)
+                {
+                    if (CB.IsChecked == true)
+                    {
+                        if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
+                        {
+                            data = data with
+                            {
+                                MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray()
+                            };
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        data = data with
+                        {
+                            MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray()
+                        };
+                    }
+
+                    await JsonControl.CreateExeJson(data.JsonPath, data);
+                }
+            }
+            catch (Exception exception)
+            {
+               LoggerController.LogError($"{exception}");
             }
 
             _nameChangeSaveClicked.OnNext(0);
@@ -111,12 +138,12 @@ public partial class Application : DialogInterface
                 {
                     continue;
                 }
-
+                
                 MultiplePanel.Children.Add(new CheckBox()
-                {
-                    Content = data.Name,
-                    IsChecked = Data.MultipleLaunch.Contains(data.Name),
-                    Tag = data.FilePath
+                    {
+                        Content = data.Name,
+                        IsChecked = Data.MultipleLaunch.Contains(data.Name),
+                        Tag = data.FilePath
                 });
             }
         }
@@ -127,7 +154,7 @@ public partial class Application : DialogInterface
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            LoggerController.LogError($"{exception}");
             throw;
         }
     }

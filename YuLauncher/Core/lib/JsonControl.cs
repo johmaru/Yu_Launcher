@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ public static class JsonControl
     
     public static async ValueTask CreateExeJson(string path,ApplicationJsonData applicationJsonData)
     {
-        JsonSerializerOptions options = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) };
+        JsonSerializerOptions options = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)};
         string json = JsonSerializer.Serialize(applicationJsonData, options);
         await File.WriteAllTextAsync(path, json);
     }

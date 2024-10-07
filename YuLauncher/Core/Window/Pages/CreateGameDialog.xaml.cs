@@ -133,7 +133,8 @@ public partial class CreateGameDialog : FluentWindow
                         JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
                         Memo = "",
                         IsWebView = false,
-                        IsUseLog = false
+                        IsUseLog = false,
+                        MultipleLaunch = new []{""}
                     };
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
@@ -160,7 +161,8 @@ public partial class CreateGameDialog : FluentWindow
                     Url = UrlBlock.Text,
                     Memo = "",
                     IsWebView = false,
-                    IsUseLog = false
+                    IsUseLog = false,
+                    MultipleLaunch = new []{""}
                 };
                 await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
@@ -190,7 +192,8 @@ public partial class CreateGameDialog : FluentWindow
                     Name = Label.Text,
                     Memo = "",
                     IsWebView = false,
-                    IsUseLog = false
+                    IsUseLog = false,
+                    MultipleLaunch = new []{""}
                 };
                 await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
