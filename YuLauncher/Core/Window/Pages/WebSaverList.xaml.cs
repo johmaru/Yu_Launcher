@@ -19,9 +19,10 @@ public partial class WebSaverList : Page
         InitializeComponent();
         MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
         mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        PageControlCreate.OnDeleteFileMenuClicked += PageControlCreateOnOnDeleteFileMenuClicked;
-        CreateGameDialog.OnClose += PropertyDialogOnOnGameListWebSaverPanelUpdate;
-        PropertyDialog.OnGameListWebSaverPanelUpdate += PropertyDialogOnOnGameListWebSaverPanelUpdate;
+        
+        PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => PageControlCreateOnOnDeleteFileMenuClicked(this, EventArgs.Empty));
+        CreateGameDialog.CloseObservable.Subscribe(_ => PropertyDialogOnOnGameListWebSaverPanelUpdate(this, EventArgs.Empty));
+        PropertyDialog.AllGameListPanelUpdate.Subscribe( _ => PropertyDialogOnOnGameListWebSaverPanelUpdate(this, EventArgs.Empty));
         Initialize();
     }
 

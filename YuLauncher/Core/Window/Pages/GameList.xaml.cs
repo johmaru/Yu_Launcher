@@ -29,30 +29,36 @@ public partial class GameList : Page
         InitializeComponent();
         MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
         mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        PageControlCreate.OnDeleteFileMenuClicked += PropertyDialogPanelUpdate;
-        CreateGameDialog.OnClose += PropertyDialogPanelUpdate;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
-        PropertyDialog.OnGameListApplicationPanelUpdate += PropertyDialogOnOnGameListApplicationPanelUpdate;
-        PropertyDialog.OnGameListWebPanelUpdate += PropertyDialogOnOnGameListWebPanelUpdate;
+        
+        PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
+        CreateGameDialog.CloseObservable.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
+        PropertyDialog.AllGameListPanelUpdate.Subscribe( n => PropertyDialogOnAllGamePanelUpdate(this, EventArgs.Empty,n));
     }
-
-    private async void PropertyDialogOnOnGameListWebPanelUpdate(object? sender, EventArgs e)
+    
+    private async void PropertyDialogOnAllGamePanelUpdate(object? sender, EventArgs e, int n)
     {
-        _files = null;
+        switch (n)
+        {
+            case 0:
+                // App Update
+                _files = null;
         
-        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+                await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
-        GenreAllUpdate();
-    }
-
-    private async void PropertyDialogOnOnGameListApplicationPanelUpdate(object? sender, EventArgs e)
-    {
-        _files = null;
+                GenreAllUpdate();
+                break;
+            case 1:
+                // Web Update
+                _files = null;
         
-        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+                await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
-        GenreAllUpdate();
+                GenreAllUpdate();
+                break;
+        }
+        
     }
     
     private async void PropertyDialogPanelUpdate(object? sender, EventArgs e)

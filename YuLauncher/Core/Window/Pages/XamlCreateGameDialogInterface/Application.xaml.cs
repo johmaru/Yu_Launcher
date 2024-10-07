@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +12,8 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
 public partial class Application : DialogInterface
 {
-    public static event EventHandler? OnNameChangeAppSaveClicked;
+    private Subject<int> _nameChangeSaveClicked = new Subject<int>();
+    public IObservable<int> NameChangeSaveClicked => _nameChangeSaveClicked.AsObservable();
     public Application(JsonControl.ApplicationJsonData data) : base(data)
     {
         InitializeComponent();
@@ -73,7 +76,7 @@ public partial class Application : DialogInterface
                  await JsonControl.CreateExeJson(data.JsonPath, data);
             }
 
-            OnNameChangeAppSaveClicked?.Invoke(this, EventArgs.Empty);
+            _nameChangeSaveClicked.OnNext(0);
         }
         catch (IndexOutOfRangeException ex)
         {

@@ -30,7 +30,6 @@ namespace YuLauncher
         { 
             FirstLunch();
             LanguageCheck();
-            VersionCheck();
            await Initialize();
            await JsonCheck();
            LoggerController.LogInfo("Application Start");
@@ -79,43 +78,6 @@ namespace YuLauncher
                 await JsonControl.CheckJsonData(t, data);
             }
             LoggerController.LogInfo("Json Check Complete");
-        }
-
-        private void VersionCheck()
-        {
-            if (!File.Exists("./version.txt"))
-            {
-                using (var writer = new StreamWriter("Version.txt"))
-                {
-                    string[] version = new []{Version.Alpha, Version.Major.ToString(CultureInfo.InvariantCulture)};
-                    foreach (var t in version)
-                    {
-                        writer.WriteLine(t);
-                    }
-                }
-            }
-            else
-            {
-                using (var reader = new StreamReader("Version.txt"))
-                {
-                    string[] version = new string[2];
-                    for (int i = 0; i < 2; i++)
-                    {
-                        version[i] = reader.ReadLine();
-                    }
-                    if (version[0] == Version.Alpha && version[1] == Version.Major.ToString(CultureInfo.InvariantCulture))
-                    {
-                        LoggerController.LogInfo($"Version Check Complete :{Version.Major}");
-                    }
-                    else
-                    {
-                        LoggerController.LogWarn("Version Mismatch");
-                        LoggerController.LogWarn("Please Update");
-                        MessageBox.Show("Please Update", "Version Mismatch", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        Environment.Exit(0);
-                    }
-                }
-            }
         }
 
         private void LanguageCheck()
