@@ -29,12 +29,13 @@ public partial class WebGameList : Page
         InitializeComponent();
         MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
         if (mainWindow != null) mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        PageControlCreate.OnDeleteFileMenuClicked += GameList_OnFileUpdate;
-        CreateGameDialog.OnClose += GameList_OnFileUpdate;
         GameList.GameControl();
         LoggerController.LogInfo("WebGameList Initialized");
-        PropertyDialog.OnGameListWebGamePanelUpdate += GameList_OnFileUpdate;
         Task.Run(() => NewsParserAsync());
+        
+        PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
+        CreateGameDialog.CloseObservable.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
+        PropertyDialog.AllGameListPanelUpdate.Subscribe( _ => GameList_OnFileUpdate(this, EventArgs.Empty));
     }
     
 

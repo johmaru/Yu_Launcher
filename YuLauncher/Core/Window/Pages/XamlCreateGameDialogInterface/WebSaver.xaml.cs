@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,7 +12,8 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
 public partial class WebSaver : DialogInterface
 {
-    public static event EventHandler? OnNameChangeWebSaverSaveClicked;
+    private Subject<int> _nameChangeSaveClicked = new();
+    public IObservable<int> NameChangeSaveClicked => _nameChangeSaveClicked;
     public WebSaver(JsonControl.ApplicationJsonData data) : base(data)
     {
         InitializeComponent();
@@ -59,7 +61,7 @@ public partial class WebSaver : DialogInterface
             await JsonControl.CreateExeJson(data.JsonPath, data);
         }
         
-        OnNameChangeWebSaverSaveClicked?.Invoke(this,EventArgs.Empty);
+        _nameChangeSaveClicked.OnNext(3);
     }
 
     private async void FrameworkElement_OnInitialized(object? sender, EventArgs e)

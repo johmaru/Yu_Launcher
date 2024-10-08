@@ -19,6 +19,7 @@ using MenuItem = Wpf.Ui.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
 using System.Drawing;
+using System.Reactive.Subjects;
 using Image = System.Windows.Controls.Image;
 using IndexOutOfRangeException = System.IndexOutOfRangeException;
 
@@ -26,7 +27,8 @@ namespace YuLauncher.Core.lib;
 
 public class PageControlCreate : Page
 {
-    public static event EventHandler OnDeleteFileMenuClicked;
+    private static Subject<int> _deleteFileMenuClicked = new Subject<int>();
+    public static IObservable<int> DeleteFileMenuClicked => _deleteFileMenuClicked;
     public static ContextMenu GameListShowContextMenu(bool isGameButton,JsonControl.ApplicationJsonData data)
     {
         ContextMenu contextMenu = new ContextMenu();
@@ -67,7 +69,7 @@ public class PageControlCreate : Page
                         {
                             File.Delete(htmlPath);
                             FileControl.DeleteGame(data.JsonPath);
-                            OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                           _deleteFileMenuClicked.OnNext(0);
                             
                         }
                         else
@@ -77,7 +79,7 @@ public class PageControlCreate : Page
                                 FileControl.DeleteGame(data.JsonPath);
                                 LoggerController.LogWarn($"delete file: {data.JsonPath}");
                                 Console.WriteLine("delete file");
-                                OnDeleteFileMenuClicked?.Invoke(null, EventArgs.Empty);
+                               _deleteFileMenuClicked.OnNext(0);
                             }
                             else
                             {

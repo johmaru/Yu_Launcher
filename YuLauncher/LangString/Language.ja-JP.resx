@@ -172,4 +172,16 @@
     <data name="MultipleLaunchText" xml:space="preserve">
         <value>複数起動</value>
     </data>
+    <data name="SimpleBack" xml:space="preserve">
+        <value>戻る</value>
+    </data>
+    <data name="SimpleControlMenu" xml:space="preserve">
+        <value>コントロールメニュー</value>
+    </data>
+    <data name="SimpleForward" xml:space="preserve">
+        <value>進む</value>
+    </data>
+    <data name="SimpleReload" xml:space="preserve">
+        <value>リロード</value>
+    </data>
 </root>

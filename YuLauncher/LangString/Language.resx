@@ -168,4 +168,16 @@
     <data name="MultipleLaunchText" xml:space="preserve">
         <value>MultipleLaunch</value>
     </data>
+    <data name="SimpleBack" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="SimpleControlMenu" xml:space="preserve">
+        <value>ControlMenu</value>
+    </data>
+    <data name="SimpleForward" xml:space="preserve">
+        <value>Forward</value>
+    </data>
+    <data name="SimpleReload" xml:space="preserve">
+        <value>Reload</value>
+    </data>
 </root>

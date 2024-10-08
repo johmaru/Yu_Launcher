@@ -375,6 +375,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 戻る.
+        /// </summary>
+        public static string SimpleBack {
+            get {
+                return ResourceManager.GetString("SimpleBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to コントロールメニュー.
+        /// </summary>
+        public static string SimpleControlMenu {
+            get {
+                return ResourceManager.GetString("SimpleControlMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 英語
         ///.
         /// </summary>
@@ -422,6 +440,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 進む.
+        /// </summary>
+        public static string SimpleForward {
+            get {
+                return ResourceManager.GetString("SimpleForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to フルスクリーン.
         /// </summary>
         public static string SimpleFullScreen {
@@ -455,6 +482,15 @@ namespace YuLauncher.LangString {
         public static string SimpleName {
             get {
                 return ResourceManager.GetString("SimpleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to リロード.
+        /// </summary>
+        public static string SimpleReload {
+            get {
+                return ResourceManager.GetString("SimpleReload", resourceCulture);
             }
         }
         
