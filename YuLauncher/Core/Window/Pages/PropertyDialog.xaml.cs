@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,61 +15,78 @@ namespace YuLauncher.Core.Window.Pages;
 
 public partial class PropertyDialog : FluentWindow
 {
-    public static event EventHandler? OnGameListApplicationPanelUpdate; 
-    public static event EventHandler? OnGameListWebPanelUpdate;
-    public static event EventHandler? OnGameListWebGamePanelUpdate;
-    public static event EventHandler? OnGameListWebSaverPanelUpdate;
+    
+    private static Subject<int> OnAllGameListPanelUpdate = new();
+    public static IObservable<int> AllGameListPanelUpdate => OnAllGameListPanelUpdate;
+    
+    private JsonControl.ApplicationJsonData _data;
+    
+    private Application? _application;
+    private Web? _web;
+    private WebGame? _webGame;
+    private WebSaver? _webSaver;
     public PropertyDialog(JsonControl.ApplicationJsonData data)
     {
         InitializeComponent();
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
+        
+        _data = data;
 
         switch (data.FileExtension)
         {
             case "exe":
-                Frame.NavigationService.Navigate(new Application(data));
+                _application = new Application(data);
+                Frame.NavigationService.Navigate(_application);
                 break;
             case "WebGame":
-                Frame.NavigationService.Navigate(new WebGame(data));
+                _webGame = new WebGame(data);
+                Frame.NavigationService.Navigate(_webGame);
                 break;
             case "web":
-                Frame.NavigationService.Navigate(new Web(data));
+                _web = new Web(data);
+                Frame.NavigationService.Navigate(_web);
                 break;
             case "WebSaver":
-                Frame.NavigationService.Navigate(new WebSaver(data));
+                _webSaver = new WebSaver(data);
+                Frame.NavigationService.Navigate(_webSaver);
                 break;
             default:
                 this.Close();
             break;
         }
-        Application.OnNameChangeAppSaveClicked += ApplicationOnOnNameChangeAppSaveClicked;
-        Web.OnNameChangeWebSaveClicked += WebOnOnNameChangeWebSaveClicked;
-        WebGame.OnNameChangeWebGameSaveClicked += WebGameOnOnNameChangeWebGameSaveClicked;
-        WebSaver.OnNameChangeWebSaverSaveClicked += WebSaverOnOnNameChangeWebSaverSaveClicked;
+
+        if (_application != null)
+            _application.NameChangeSaveClicked.Subscribe(n => AllOnNameChangeSaveClicked(this, EventArgs.Empty,n));
+        else if (_web != null)
+            _web.NameChangeSaveClicked.Subscribe(n => AllOnNameChangeSaveClicked(this, EventArgs.Empty,n));
+        else if (_webGame != null)
+            _webGame.NameChangeSaveClicked.Subscribe(n => AllOnNameChangeSaveClicked(this, EventArgs.Empty,n));
+        else if (_webSaver != null)
+            _webSaver.NameChangeSaveClicked.Subscribe(n => AllOnNameChangeSaveClicked(this, EventArgs.Empty,n));
     }
 
-    private void WebSaverOnOnNameChangeWebSaverSaveClicked(object? sender, EventArgs e)
+    private void AllOnNameChangeSaveClicked(object? sender, EventArgs e,int value)
     {
-        OnGameListWebSaverPanelUpdate?.Invoke(this,EventArgs.Empty);
-        this.Close();
-    }
-
-    private void WebGameOnOnNameChangeWebGameSaveClicked(object? sender, EventArgs e)
-    {
-        OnGameListWebGamePanelUpdate?.Invoke(this,EventArgs.Empty);
-        this.Close();
-    }
-
-    private void WebOnOnNameChangeWebSaveClicked(object? sender, EventArgs e)
-    {
-        OnGameListWebPanelUpdate?.Invoke(this,EventArgs.Empty);
-        this.Close();
-    }
-
-    private void ApplicationOnOnNameChangeAppSaveClicked(object? sender, EventArgs e)
-    {
-        OnGameListApplicationPanelUpdate?.Invoke(this,EventArgs.Empty);
-        this.Close();
+        if (value == 0)
+        {
+            OnAllGameListPanelUpdate.OnNext(0);
+            this.Close();
+        }
+        else if (value == 1)
+        {
+            OnAllGameListPanelUpdate.OnNext(1);
+            this.Close();
+        }
+        else if (value == 2)
+        {
+            OnAllGameListPanelUpdate.OnNext(2);
+            this.Close();
+        }
+        else if (value == 3)
+        {
+            OnAllGameListPanelUpdate.OnNext(3);
+            this.Close();
+        }
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
@@ -84,13 +102,4 @@ public partial class PropertyDialog : FluentWindow
         }
            
     }
-
-   protected override void OnClosing(CancelEventArgs e)
-   {
-       base.OnClosing(e);
-       Application.OnNameChangeAppSaveClicked -= ApplicationOnOnNameChangeAppSaveClicked;
-         Web.OnNameChangeWebSaveClicked -= WebOnOnNameChangeWebSaveClicked;
-         WebGame.OnNameChangeWebGameSaveClicked -= WebGameOnOnNameChangeWebGameSaveClicked;
-         WebSaver.OnNameChangeWebSaverSaveClicked -= WebSaverOnOnNameChangeWebSaverSaveClicked;
-   }
 }

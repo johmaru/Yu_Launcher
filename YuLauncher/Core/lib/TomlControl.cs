@@ -164,30 +164,5 @@ public class ManualTomlSettings
             throw;
         }
     }
-
-    public string[] GetAllGameList(string path, string data)
-    {
-        try
-        {
-            using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
-            {
-                TomlTable table = TOML.Parse(reader);
-                List<string> list = new();
-                var enumerable = table[data].Keys;
-                if (enumerable != null)
-                    foreach (var key in enumerable)
-                    {
-                        list.Add(key);
-                    }
-
-                return list.ToArray();
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
 }
     

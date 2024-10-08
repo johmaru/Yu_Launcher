@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +23,10 @@ namespace YuLauncher.Core.Window.Pages;
 
 public partial class CreateGameDialog : FluentWindow
 {
-   public static event EventHandler? OnClose;
+   
+   private static Subject<int> OnClose = new();
+   public static IObservable<int> CloseObservable => OnClose.AsObservable();
+   
    private string _openFileDialog = "";
    private int OpenNum { get; set; }
     public CreateGameDialog()
@@ -46,6 +51,7 @@ public partial class CreateGameDialog : FluentWindow
                     {
                         _openFileDialog = ofd.FileName;
                         PathLabel.Content = _openFileDialog;
+                        Label.Text = Path.GetFileNameWithoutExtension(_openFileDialog);
                         this.Activate();
                     }
                     catch (Exception exception)
@@ -127,11 +133,12 @@ public partial class CreateGameDialog : FluentWindow
                         JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
                         Memo = "",
                         IsWebView = false,
-                        IsUseLog = false
+                        IsUseLog = false,
+                        MultipleLaunch = new []{""}
                     };
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
-                    OnClose?.Invoke(this, EventArgs.Empty);
+                    OnClose.OnNext(0);
                     this.Close();
                 }
             }
@@ -154,7 +161,8 @@ public partial class CreateGameDialog : FluentWindow
                     Url = UrlBlock.Text,
                     Memo = "",
                     IsWebView = false,
-                    IsUseLog = false
+                    IsUseLog = false,
+                    MultipleLaunch = new []{""}
                 };
                 await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
@@ -167,7 +175,7 @@ public partial class CreateGameDialog : FluentWindow
                 
             }
 
-            OnClose?.Invoke(this, EventArgs.Empty);
+            OnClose.OnNext(0);
             this.Close();
         }
         
@@ -184,7 +192,8 @@ public partial class CreateGameDialog : FluentWindow
                     Name = Label.Text,
                     Memo = "",
                     IsWebView = false,
-                    IsUseLog = false
+                    IsUseLog = false,
+                    MultipleLaunch = new []{""}
                 };
                 await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
             }
@@ -193,7 +202,7 @@ public partial class CreateGameDialog : FluentWindow
                 MessageBox.Show(LocalizeControl.GetLocalize<string>("NotContainsHttpError"), "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            OnClose?.Invoke(this, EventArgs.Empty);
+            OnClose.OnNext(0);
             this.Close();
         }
         
@@ -236,7 +245,7 @@ public partial class CreateGameDialog : FluentWindow
                 {
                    LoggerController.LogError(exception.Message);
                 }
-                OnClose?.Invoke(this, EventArgs.Empty);
+                OnClose.OnNext(0);
                 this.Close();
             }
             else

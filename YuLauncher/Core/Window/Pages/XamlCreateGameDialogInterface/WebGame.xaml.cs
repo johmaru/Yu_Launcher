@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +11,8 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 
 public partial class WebGame : DialogInterface
 {
-    public static event EventHandler? OnNameChangeWebGameSaveClicked;
+    private Subject<int> _nameChangeSaveClicked = new();
+    public IObservable<int> NameChangeSaveClicked => _nameChangeSaveClicked;
     public WebGame(JsonControl.ApplicationJsonData data) : base(data)
     {
        InitializeComponent();
@@ -58,7 +60,7 @@ public partial class WebGame : DialogInterface
             await JsonControl.CreateExeJson(data.JsonPath, data);
         }
         
-        OnNameChangeWebGameSaveClicked?.Invoke(this,EventArgs.Empty);
+        _nameChangeSaveClicked.OnNext(2);
     }
 
     private async void WebGame_OnInitialized(object? sender, EventArgs e)

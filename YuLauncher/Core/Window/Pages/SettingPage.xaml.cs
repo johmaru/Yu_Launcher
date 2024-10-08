@@ -66,11 +66,11 @@ namespace YuLauncher.Core.Window.Pages
                 _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Width", MenuTxtResWidth.Text);
                 _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Height", MenuTxtResHeight.Text);
 
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Width", TxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Height", TxtResHeight.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Width", GameTxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Height", GameTxtResHeight.Text);
 
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Width", TxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Height", TxtResHeight.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Width", MemoTxtResWidth.Text);
+                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Height", MemoTxtResHeight.Text);
 
                 _tomlControl.EditToml(FileControl.Main.Settings, "MemoFontSize", MemoTxtFontSize.Text);
             }
