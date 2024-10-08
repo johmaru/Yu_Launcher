@@ -33,7 +33,15 @@ namespace YuLauncher.Game.Window
         public GameWindow(string url,JsonControl.ApplicationJsonData data)
         {
             InitializeComponent();
+
            WebView.Source = new Uri(url);
+
+           ManualTomlSettings manualTomlSettings = new ManualTomlSettings();
+            var tomlWidth = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+           var tomlHeight = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+
+            this.Width = double.Parse(tomlWidth);
+            this.Height = double.Parse(tomlHeight);
         }
         
         private void Resize()

@@ -13,7 +13,6 @@ using NLog;
 using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using Application = System.Windows.Application;
-using Version = YuLauncher.Core.lib.Version.Version;
 
 namespace YuLauncher
 {
