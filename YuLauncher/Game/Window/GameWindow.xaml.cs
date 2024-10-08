@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Core.Raw;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
+using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 
@@ -30,18 +33,83 @@ namespace YuLauncher.Game.Window
         public GameWindow(string url,JsonControl.ApplicationJsonData data)
         {
             InitializeComponent();
-            webView.Source = new Uri(url);
+           WebView.Source = new Uri(url);
+        }
+        
+        private void Resize()
+        {
+            ManualTomlSettings manualTomlSettings = new ManualTomlSettings();
+            var tomlWidth = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Width");
+            var tomlHeight = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Height");
+            
+            this.Width = double.Parse(tomlWidth);
+            this.Height = double.Parse(tomlHeight);
         }
 
-        private void webView_Initialized(object sender, EventArgs e)
+        private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
         {
-          
-        }
+           e.MenuItems.Clear();
+           
+           // ControlMenu Object
+           var controlMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               LocalizeControl.GetLocalize<string>("SimpleControlMenu"),
+               null,
+               CoreWebView2ContextMenuItemKind.Submenu
+           );
+           
+           var menuForward = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               LocalizeControl.GetLocalize<string>("SimpleForward"),
+               null,
+               CoreWebView2ContextMenuItemKind.Command
+           );
+           
+           var menuBack = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+                LocalizeControl.GetLocalize<string>("SimpleBack"),
+                null,
+                CoreWebView2ContextMenuItemKind.Command
+            );
+           
+           var menuReload = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               LocalizeControl.GetLocalize<string>("SimpleReload"),
+               null,
+               CoreWebView2ContextMenuItemKind.Command
+           );
+           // Event
+           menuForward.CustomItemSelected += (_,_) => { WebView.GoForward(); };
+           
+           menuBack.CustomItemSelected += (_,_) => { WebView.GoBack(); };
+           
+           menuReload.CustomItemSelected += (_,_) => { WebView.Reload(); };
+           
+           // Add
+           controlMenu.Children.Add(menuForward);
+           
+           controlMenu.Children.Add(menuBack);
+           
+           controlMenu.Children.Add(menuReload);
+           
+           //ControlMenu Add
+           e.MenuItems.Add(controlMenu);
+           
+           var settingMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               LocalizeControl.GetLocalize<string>("SimpleSetting"),
+               null,
+               CoreWebView2ContextMenuItemKind.Command
+           );
 
-        private void WikiBTN(object sender, RoutedEventArgs e)
-        {
-            var wikiwindow = new GameWindowAssistant(this.Title);
-            wikiwindow.Show();
+           settingMenu.CustomItemSelected += (_,_) =>
+           {
+                var settingWindow = new SettingWindow();
+                var url = WebView.Source.ToString();
+                settingWindow.Closed += (_,_) =>
+                {
+                   Resize();
+                };
+                settingWindow.Show();
+           };
+           
+           e.MenuItems.Add(settingMenu);
+
         }
 
         private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
@@ -82,13 +150,9 @@ namespace YuLauncher.Game.Window
 
         private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
         {
-            webView.Stop();
-            webView.Dispose();
-        }
-
-        private void Gamedock_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-         
+            WebView.Stop();
+            WebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
+            WebView.Dispose();
         }
 
         private void Menu_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -117,6 +181,19 @@ namespace YuLauncher.Game.Window
         private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void WebView_OnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+            if (e.IsSuccess)
+            {
+                WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+            }
+            else
+            {
+                LoggerController.LogError("WebView2 Initialization Failed");
+                throw new Exception("WebView2 Initialization Failed");
+            }
         }
     }
 }

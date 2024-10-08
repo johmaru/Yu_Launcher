@@ -375,6 +375,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string SimpleBack {
+            get {
+                return ResourceManager.GetString("SimpleBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ControlMenu.
+        /// </summary>
+        public static string SimpleControlMenu {
+            get {
+                return ResourceManager.GetString("SimpleControlMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string SimpleEnglish {
@@ -420,6 +438,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forward.
+        /// </summary>
+        public static string SimpleForward {
+            get {
+                return ResourceManager.GetString("SimpleForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullScreen.
         /// </summary>
         public static string SimpleFullScreen {
@@ -452,6 +479,15 @@ namespace YuLauncher.LangString {
         public static string SimpleName {
             get {
                 return ResourceManager.GetString("SimpleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        public static string SimpleReload {
+            get {
+                return ResourceManager.GetString("SimpleReload", resourceCulture);
             }
         }
         

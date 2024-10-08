@@ -35,6 +35,10 @@ public static class JsonControl
     
     public static async ValueTask<ApplicationJsonData> ReadExeJson(string path)
     {
+        if (path == ".json")
+        {
+            LoggerController.LogWarn("This is not exist an application error. this is not critical error");
+        }
         string json = await File.ReadAllTextAsync(path);
         return JsonSerializer.Deserialize<ApplicationJsonData>(json);
     }
