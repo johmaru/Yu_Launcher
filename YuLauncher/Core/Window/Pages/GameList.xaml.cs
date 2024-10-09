@@ -24,8 +24,6 @@ public partial class GameList : Page
     public GameList()
     {
         InitializeComponent();
-        MainWindow mainWindow = Application.Current.MainWindow as MainWindow ?? throw new InvalidOperationException();
-        mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
         

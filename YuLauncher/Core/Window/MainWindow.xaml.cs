@@ -16,8 +16,6 @@ namespace YuLauncher.Core.Window;
 
 public partial class MainWindow : FluentWindow
 {
-    public delegate void BackBtnClickHandler(object sender, RoutedEventArgs e);
-    public event BackBtnClickHandler? OnBackBtnClick;
 
     public MainWindow()
     {

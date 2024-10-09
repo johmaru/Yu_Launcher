@@ -27,7 +27,6 @@ public partial class WebGameList : Page
     public WebGameList()
     {
         InitializeComponent();
-        if (Application.Current.MainWindow is MainWindow mainWindow) mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
         GameList.GameControl();
         LoggerController.LogInfo("WebGameList Initialized");
         Task.Run(NewsParserAsync);
