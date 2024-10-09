@@ -40,13 +40,13 @@ public partial class WebSaver : DialogInterface
         
         var data = await JsonControl.ReadExeJson(Data.JsonPath);
         var checkBox = MultiplePanel.Children.OfType<CheckBox>();
-        foreach (var CB in checkBox)
+        foreach (var cb in checkBox)
         {
-            if (CB.IsChecked == true)
+            if (cb.IsChecked == true)
             {
-                if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
+                if (!data.MultipleLaunch.Contains(cb.Content.ToString()))
                 {
-                    data = data with { MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray() };
+                    data = data with { MultipleLaunch = data.MultipleLaunch.Append(cb.Content.ToString()).ToArray() };
                 }
                 else
                 {
@@ -55,7 +55,7 @@ public partial class WebSaver : DialogInterface
             }
             else
             {
-                data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray() };
+                data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)cb.Content).ToArray() };
             }
 
             await JsonControl.CreateExeJson(data.JsonPath, data);
@@ -66,14 +66,7 @@ public partial class WebSaver : DialogInterface
 
     private async void FrameworkElement_OnInitialized(object? sender, EventArgs e)
     {
-        if (Data.IsWebView)
-        {
-            WebviewSwitch.IsChecked = true;
-        }
-        else
-        {
-            WebviewSwitch.IsChecked = false;
-        }
+        WebviewSwitch.IsChecked = Data.IsWebView;
         
         var jsonFiles = Directory.GetFiles("./Games", "*.json");
         foreach (var jf in jsonFiles)

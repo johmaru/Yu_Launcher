@@ -8,7 +8,6 @@ using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Core.Window.Pages
 {
@@ -20,15 +19,8 @@ namespace YuLauncher.Core.Window.Pages
         public MainPage()
         {
             InitializeComponent();
-
-            InitializeControl();
             
             LoggerController.LogInfo("MainPage Initialized");
-        }
-
-        private void InitializeControl()
-        {
-            
         }
         
 
@@ -39,8 +31,10 @@ namespace YuLauncher.Core.Window.Pages
 
         private void SettingBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SettingWindow settingWindow = new SettingWindow();
-            settingWindow.Owner = Application.Current.MainWindow;
+            SettingWindow settingWindow = new SettingWindow
+            {
+                Owner = Application.Current.MainWindow
+            };
             settingWindow.Show();
         }
 
@@ -57,16 +51,6 @@ namespace YuLauncher.Core.Window.Pages
         private void WebSaverBtn_OnClick(object sender, RoutedEventArgs e)
         {
             Frame.Source = new Uri("WebSaverList.xaml", UriKind.Relative);
-        }
-
-        private void FavGameList_OnClick(object sender, RoutedEventArgs e)
-        {
-          MessageBox.Show("Coming Soon");
-        }
-
-        private void LoginHistoryBtn_OnClick(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Coming Soon");
         }
     }
 }

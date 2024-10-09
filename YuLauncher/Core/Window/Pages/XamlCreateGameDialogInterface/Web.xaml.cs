@@ -88,14 +88,7 @@ public partial class Web : DialogInterface
        try
        {
 
-           if (Data.IsWebView == true)
-           {
-               WebviewSwitch.IsChecked = true;
-           }
-           else
-           {
-               WebviewSwitch.IsChecked = false;
-           }
+           WebviewSwitch.IsChecked = Data.IsWebView;
            
            var jsonFiles = Directory.GetFiles("./Games", "*.json");
            foreach (var jf in jsonFiles)

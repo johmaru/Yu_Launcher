@@ -23,15 +23,14 @@ namespace YuLauncher.Core.Window.Pages;
 public partial class WebGameList : Page
 {
     private static string[]? _files;
-    private readonly GameButton _gameButton = new GameButton();
+    private readonly GameButton _gameButton = new();
     public WebGameList()
     {
         InitializeComponent();
-        MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
-        if (mainWindow != null) mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
+        if (Application.Current.MainWindow is MainWindow mainWindow) mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
         GameList.GameControl();
         LoggerController.LogInfo("WebGameList Initialized");
-        Task.Run(() => NewsParserAsync());
+        Task.Run(NewsParserAsync);
         
         PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
         CreateGameDialog.CloseObservable.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
@@ -118,27 +117,25 @@ public partial class WebGameList : Page
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
         WebGameListPanel.Children.Clear();
-        foreach (var file in _files)
-        {
-            string name = Path.GetFileNameWithoutExtension(file);
-            JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
-            try
+        if (_files != null)
+            foreach (var file in _files)
             {
-                if (data.FileExtension == "WebGame")
+                string name = Path.GetFileNameWithoutExtension(file);
+                JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
+                try
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
+                    if (data.FileExtension == "WebGame")
+                    {
+                        WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
+                    }
                 }
-                else
+                catch (Exception exception)
                 {
-                    continue;
+                    Console.WriteLine(exception);
+                    throw;
                 }
             }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
-            }
-        }
+
         LoggerController.LogInfo("WebGameList Reloaded");
     }
 
@@ -157,8 +154,8 @@ public partial class WebGameList : Page
 
     private void WebGameList_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        DependencyObject source = e.OriginalSource as DependencyObject;
-        while (source != null && !(source is Wpf.Ui.Controls.Button))
+        DependencyObject? source = e.OriginalSource as DependencyObject;
+        while (source != null && !(source is Button))
         {
             source = VisualTreeHelper.GetParent(source);
         }
@@ -179,7 +176,8 @@ public partial class WebGameList : Page
         WebGameListPanel.Children.Clear();
         
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
-        
+
+        if (_files == null) return;
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
@@ -188,11 +186,7 @@ public partial class WebGameList : Page
             {
                 if (data.FileExtension == "WebGame")
                 {
-                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
-                }
-                else
-                {
-                    continue;
+                    WebGameListPanel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
                 }
             }
             catch (Exception exception)

@@ -39,13 +39,13 @@ public partial class WebGame : DialogInterface
         
         var data = await JsonControl.ReadExeJson(Data.JsonPath);
         var checkBox = MultiplePanel.Children.OfType<CheckBox>();
-        foreach (var CB in checkBox)
+        foreach (var cb in checkBox)
         {
-            if (CB.IsChecked == true)
+            if (cb.IsChecked == true)
             {
-                if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
+                if (!data.MultipleLaunch.Contains(cb.Content.ToString()))
                 {
-                    data = data with { MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray() };
+                    data = data with { MultipleLaunch = data.MultipleLaunch.Append(cb.Content.ToString()).ToArray() };
                 }
                 else
                 {
@@ -54,7 +54,7 @@ public partial class WebGame : DialogInterface
             }
             else
             {
-                data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray() };
+                data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)cb.Content).ToArray() };
             }
 
             await JsonControl.CreateExeJson(data.JsonPath, data);

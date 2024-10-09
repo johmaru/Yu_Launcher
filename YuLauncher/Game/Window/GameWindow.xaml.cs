@@ -98,8 +98,31 @@ namespace YuLauncher.Game.Window
            
            //ControlMenu Add
            e.MenuItems.Add(controlMenu);
-           
-           var settingMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+
+            //Mute Object
+
+            var label = LocalizeControl.GetLocalize<string>(WebView.CoreWebView2.IsMuted ? "SimpleMuteEnable" : "SimpleMuteDisable");
+
+            var muteMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               label ,
+                null,
+                CoreWebView2ContextMenuItemKind.Command
+            );
+
+            muteMenu.CustomItemSelected += (_, _) =>
+            {
+                WebView.CoreWebView2.IsMuted = WebView.CoreWebView2.IsMuted switch
+                {
+                    true => false,
+                    _ => true
+                };
+            };
+
+            e.MenuItems.Add(muteMenu);
+
+            // SettingMenu Object
+
+            var settingMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
                LocalizeControl.GetLocalize<string>("SimpleSetting"),
                null,
                CoreWebView2ContextMenuItemKind.Command
@@ -173,17 +196,13 @@ namespace YuLauncher.Game.Window
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (this.WindowState == WindowState.Maximized)
-                {
-                    var point = Mouse.GetPosition(this);
-                    this.WindowState = WindowState.Normal;
-                    this.Left = point.X - this.Width / 2;
-                    this.Top = point.Y;
-                    this.DragMove();
-                }
-            }
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+            if (this.WindowState != WindowState.Maximized) return;
+            var point = Mouse.GetPosition(this);
+            this.WindowState = WindowState.Normal;
+            this.Left = point.X - this.Width / 2;
+            this.Top = point.Y;
+            this.DragMove();
         }
 
         private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)

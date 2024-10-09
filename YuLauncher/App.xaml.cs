@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
@@ -22,8 +21,6 @@ namespace YuLauncher
     public partial class App : Application
     {
        public MainWindow? MainWindowInstance { get; set;}
-       private DateTime _startTime;
-       private readonly TomlControl _tomlControl = new();
        public LanguageUpdater? LanguageUpdater { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         { 
@@ -39,7 +36,6 @@ namespace YuLauncher
                   LanguageUpdater = new LanguageUpdater();
                   MainWindowInstance =　await Dispatcher.InvokeAsync(() => new MainWindow());
                  MainWindowInstance.Show();
-                 _startTime = DateTime.Now;
                  LoggerController.LogInfo("App Initialize Complete");
         }
         

@@ -14,9 +14,6 @@
     <Compile Update="Game\Window\GameWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Game\Window\GameWindowAssistant.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Core\Window\Pages\GameHistoryPage.xaml">
@@ -29,9 +26,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Game\Window\GameWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Game\Window\GameWindowAssistant.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -88,7 +88,7 @@ public class TomlControl
         }
     }
     
-    public void EditTomlList(string path, string dat,string dat2, string value)
+    public void EditToml(string path, string dat,string dat2, string value)
     {
         try
         {
@@ -110,7 +110,7 @@ public class TomlControl
         }
     }
 
-    public static string GetTomlString(string path, string key)
+    public static string GetToml(string path, string key)
     {
         try
         {
@@ -127,7 +127,7 @@ public class TomlControl
         }
     }
 
-    public static string GetTomlStringList(string path, string key, string list)
+    public static string GetTomlString(string path, string key, string list)
     {
         try
         {
@@ -135,6 +135,23 @@ public class TomlControl
             {
                 TomlTable table = TOML.Parse(reader);
                 return table[key][list];
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public static string GetTomlString(string path, string key)
+    {
+        try
+        {
+            using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
+            {
+                TomlTable table = TOML.Parse(reader);
+                return table[key];
             }
         }
         catch (Exception e)

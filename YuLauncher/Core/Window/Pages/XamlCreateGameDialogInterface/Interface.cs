@@ -63,7 +63,7 @@ public abstract class DialogInterface : UserControl, IDialogInterface
     public string NowName { get; private set; }
     
     protected readonly InterFaceClass InterFace = new();
-    protected readonly string[] Files = FileControl.GetGameList(); 
+
     protected DialogInterface(JsonControl.ApplicationJsonData data)
     {
         Data = data;

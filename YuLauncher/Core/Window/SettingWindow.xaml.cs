@@ -11,8 +11,7 @@ namespace YuLauncher.Core.Window;
 
 public partial class SettingWindow : FluentWindow
 {
-   private readonly TomlControl _tomlControl = new();
-   private readonly ManualTomlSettings _manualTomlSettings = new();
+    private readonly ManualTomlSettings _manualTomlSettings = new();
     public SettingWindow()
     {
         InitializeComponent();

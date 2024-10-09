@@ -67,8 +67,8 @@ public partial class WebViewWindow : FluentWindow
 
     private void WebViewWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-       string height = TomlControl.GetTomlStringList(FileControl.Main.Settings, "WebViewResolution", "Height");
-       string width = TomlControl.GetTomlStringList(FileControl.Main.Settings, "WebViewResolution", "Width");
+       string height = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Height");
+       string width = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Width");
 
        Width = Convert.ToDouble(width);
        Height = Convert.ToDouble(height);
@@ -76,17 +76,13 @@ public partial class WebViewWindow : FluentWindow
 
     private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                var point = Mouse.GetPosition(this);
-                this.WindowState = WindowState.Normal;
-                this.Left = point.X - this.Width / 2;
-                this.Top = point.Y;
-                this.DragMove();
-            }
-        }
+        if (e.LeftButton != MouseButtonState.Pressed) return;
+        if (this.WindowState != WindowState.Maximized) return;
+        var point = Mouse.GetPosition(this);
+        this.WindowState = WindowState.Normal;
+        this.Left = point.X - this.Width / 2;
+        this.Top = point.Y;
+        this.DragMove();
     }
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)

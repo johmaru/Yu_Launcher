@@ -26,8 +26,8 @@ public partial class MemoWindow : FluentWindow
         this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
         InitializeComponent();
         
-        this.Width = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Width"));
-        this.Height = double.Parse(TomlControl.GetTomlStringList("./settings.toml", "MemoResolution", "Height"));
+        this.Width = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Width"));
+        this.Height = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Height"));
         
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
@@ -73,11 +73,6 @@ public partial class MemoWindow : FluentWindow
         {
            this.DragMove();
         }
-    }
-
-    private void ModeButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        
     }
 
     private void ModeButton_OnUnchecked(object sender, RoutedEventArgs e)
@@ -126,7 +121,7 @@ public partial class MemoWindow : FluentWindow
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Bottom
         };
-        saveButton.Click +=async (sender, args) =>
+        saveButton.Click +=async (_,_) =>
         {
             try
             {

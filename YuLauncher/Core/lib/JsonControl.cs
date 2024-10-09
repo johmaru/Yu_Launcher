@@ -16,7 +16,7 @@ public static class JsonControl
         public string JsonPath { get; set; }
         
         public string Name { get; set; }
-        public string FileExtension { get; set; }
+        public string? FileExtension { get; set; }
         public string Memo { get; set; }
         public bool IsWebView { get; set; }
         public bool IsUseLog { get; set; }

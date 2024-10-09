@@ -24,8 +24,8 @@ namespace YuLauncher.Core.Window.Pages;
 public partial class CreateGameDialog : FluentWindow
 {
    
-   private static Subject<int> OnClose = new();
-   public static IObservable<int> CloseObservable => OnClose.AsObservable();
+   private static Subject<int> _onClose = new();
+   public static IObservable<int> CloseObservable => _onClose.AsObservable();
    
    private string _openFileDialog = "";
    private int OpenNum { get; set; }
@@ -66,7 +66,7 @@ public partial class CreateGameDialog : FluentWindow
                     LoggerController.LogWarn("User Cancelled File Selection");
                     ErrLabel.Visibility = Visibility.Visible;
                     Timer timer = new Timer(3000);
-                    timer.Elapsed += (sender, args) =>
+                    timer.Elapsed += (_,_) =>
                     {
                         this.Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
                         timer.Stop();
@@ -138,7 +138,7 @@ public partial class CreateGameDialog : FluentWindow
                     };
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
-                    OnClose.OnNext(0);
+                    _onClose.OnNext(0);
                     this.Close();
                 }
             }
@@ -175,7 +175,7 @@ public partial class CreateGameDialog : FluentWindow
                 
             }
 
-            OnClose.OnNext(0);
+            _onClose.OnNext(0);
             this.Close();
         }
         
@@ -202,7 +202,7 @@ public partial class CreateGameDialog : FluentWindow
                 MessageBox.Show(LocalizeControl.GetLocalize<string>("NotContainsHttpError"), "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            OnClose.OnNext(0);
+            _onClose.OnNext(0);
             this.Close();
         }
         
@@ -245,7 +245,7 @@ public partial class CreateGameDialog : FluentWindow
                 {
                    LoggerController.LogError(exception.Message);
                 }
-                OnClose.OnNext(0);
+                _onClose.OnNext(0);
                 this.Close();
             }
             else
@@ -303,7 +303,7 @@ public partial class CreateGameDialog : FluentWindow
             LoggerController.LogInfo("GenreSelectComboBox Loaded");
             GenreLabel.Visibility = Visibility.Visible;
             Timer timer = new Timer(3000);
-            timer.Elapsed += (sender, args) =>
+            timer.Elapsed += (_,_) =>
             {
                 this.Dispatcher.Invoke(() => { GenreLabel.Visibility = Visibility.Collapsed; });
                 timer.Stop();

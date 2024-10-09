@@ -71,15 +71,15 @@ public partial class Application : DialogInterface
 
                 var data = await JsonControl.ReadExeJson(Data.JsonPath);
                 var checkBox = MultiplePanel.Children.OfType<CheckBox>();
-                foreach (var CB in checkBox)
+                foreach (var cb in checkBox)
                 {
-                    if (CB.IsChecked == true)
+                    if (cb.IsChecked == true)
                     {
-                        if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
+                        if (!data.MultipleLaunch.Contains(cb.Content.ToString()))
                         {
                             data = data with
                             {
-                                MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray()
+                                MultipleLaunch = data.MultipleLaunch.Append(cb.Content.ToString()).ToArray()
                             };
                         }
                         else
@@ -91,7 +91,7 @@ public partial class Application : DialogInterface
                     {
                         data = data with
                         {
-                            MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray()
+                            MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)cb.Content).ToArray()
                         };
                     }
 
@@ -121,14 +121,7 @@ public partial class Application : DialogInterface
     {
         try
         {
-            if (Data.IsUseLog)
-            {
-                ApplicationLogButton.IsChecked = true;
-            }
-            else
-            {
-                ApplicationLogButton.IsChecked = false;
-            }
+            ApplicationLogButton.IsChecked = Data.IsUseLog;
             
             var jsonFiles = Directory.GetFiles("./Games", "*.json");
             foreach (var jf in jsonFiles)
