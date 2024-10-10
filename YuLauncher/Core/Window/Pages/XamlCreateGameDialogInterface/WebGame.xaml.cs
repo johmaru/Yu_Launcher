@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
@@ -74,12 +75,32 @@ public partial class WebGame : DialogInterface
                 continue;
             }
 
-            MultiplePanel.Children.Add(new CheckBox()
+            TextBlock text = new TextBlock()
             {
-                Content = data.Name,
+                Text = data.Name,
+                FontSize = 20
+            };
+
+            var checkBox = new CheckBox()
+            {
+                Content = text,
                 IsChecked = Data.MultipleLaunch.Contains(data.Name),
-                Tag = data.Url
+                Tag = data.FilePath,
+            };
+
+            checkBox.SetBinding(WidthProperty, new Binding("ActualWidth")
+            {
+                Source = this,
+                Mode = BindingMode.OneWay
             });
+
+            MultiplePanel.Children.Add(checkBox);
         }
+    }
+
+    private void WebGame_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UrlBox.Width = e.NewSize.Width - UrlTextBlock.ActualWidth - 50;
+        NameBox.Width = e.NewSize.Width - NameTextBlock.ActualWidth - 50;
     }
 }

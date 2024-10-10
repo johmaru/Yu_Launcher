@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
@@ -131,13 +132,27 @@ public partial class Application : DialogInterface
                 {
                     continue;
                 }
-                
-                MultiplePanel.Children.Add(new CheckBox()
-                    {
-                        Content = data.Name,
-                        IsChecked = Data.MultipleLaunch.Contains(data.Name),
-                        Tag = data.FilePath
+
+                TextBlock text = new TextBlock()
+                {
+                    Text = data.Name,
+                    FontSize = 20
+                };
+
+                var checkBox = new CheckBox()
+                {
+                    Content = text,
+                    IsChecked = Data.MultipleLaunch.Contains(data.Name),
+                    Tag = data.FilePath,
+                };
+
+                checkBox.SetBinding(WidthProperty, new Binding("ActualWidth")
+                {
+                    Source = this,
+                    Mode = BindingMode.OneWay
                 });
+
+                MultiplePanel.Children.Add(checkBox);
             }
         }
         catch (IndexOutOfRangeException ex)
@@ -152,5 +167,9 @@ public partial class Application : DialogInterface
         }
     }
 
-   
+    private void Application_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        ExePathNameBox.Width = e.NewSize.Width - ExePathNameTextBlock.ActualWidth - 50;
+        NameBox.Width = e.NewSize.Width - NameTextBlock.ActualWidth - 50;
     }
+}

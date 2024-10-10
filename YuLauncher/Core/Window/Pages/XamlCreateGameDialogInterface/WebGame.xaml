@@ -9,20 +9,35 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="ja-JP"
              Initialized="WebGame_OnInitialized"
+             SizeChanged="WebGame_OnSizeChanged"
              lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
              lex:ResxLocalizationProvider.DefaultDictionary="Language">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+       <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
                 <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" VerticalAlignment="Center"/>
-                <ui:TextBox x:Name="NameBox" Text="" VerticalAlignment="Center"/>
+                <ScrollViewer>
+                <ui:TextBox x:Name="NameBox" Text=""/>
+                </ScrollViewer>
             </StackPanel>
-        <ScrollViewer>
-            <StackPanel Orientation="Horizontal">
-                <ui:TextBlock x:Name="UrlTextBlock" Text="{lex:Loc SimpleAddress}" VerticalAlignment="Center"/>
-                <ui:TextBox x:Name="UrlBox" Text="" VerticalAlignment="Center"/>
-            </StackPanel>
-        </ScrollViewer>
+           </Grid>
+        <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <ui:TextBlock x:Name="UrlTextBlock" Text="{lex:Loc SimpleAddress}" VerticalAlignment="Center"/>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <ui:TextBox x:Name="UrlBox" Text="" />
+                    </ScrollViewer>
+                </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}" />
                 <ScrollViewer>
@@ -31,7 +46,10 @@
                     </StackPanel>
                 </ScrollViewer>    
             </StackPanel>
-        </StackPanel>
+            </Grid>
+        <Grid Grid.Row="3">
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+        </Grid>
     </Grid>
 </local:DialogInterface>

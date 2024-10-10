@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         MouseDown="PropertyDialog_OnMouseDown"
-        Title="PropertyDialog"  Width="400" Height="300">
+        Title="PropertyDialog" MinWidth="400" MinHeight="300"  Width="400" Height="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>

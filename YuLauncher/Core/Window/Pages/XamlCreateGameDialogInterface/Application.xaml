@@ -7,33 +7,52 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="ja-JP"
+             Initialized="ApplicationLog_OnInitialized"
+             SizeChanged="Application_OnSizeChanged"
              lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              mc:Ignorable="d">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+         <Grid  Grid.Row="0">
+            <StackPanel Orientation="Horizontal" >
                 <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" VerticalAlignment="Center"/>
-                <ui:TextBox x:Name="NameBox" Text="" VerticalAlignment="Center"/>
+                <ScrollViewer>
+                <ui:TextBox x:Name="NameBox" Text=""/>
+                </ScrollViewer>
             </StackPanel>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" >
+          </Grid>
+        <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <ui:TextBlock x:Name="ExePathNameTextBlock" Text="{lex:Loc SimpleExePathLabel}" VerticalAlignment="Center"/>
-                <ui:TextBox x:Name="ExePathNameBox" Text="" VerticalAlignment="Center"/>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <ui:TextBox x:Name="ExePathNameBox" Text=""/>
+                </ScrollViewer>
             </StackPanel>
-            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <CheckBox x:Name="ApplicationLogButton" IsChecked="" Content="{lex:Loc AppLogButton}" Initialized="ApplicationLog_OnInitialized"/>
             </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" x:Name="MultiplePanelMain">
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}" />
+                <TextBlock x:Name="MultipleLaunchText" Margin="0,0,50,0" Text="{lex:Loc MultipleLaunchText}" />
                 <ScrollViewer>
-                    <StackPanel x:Name="MultiplePanel" Orientation="Vertical">
-                    
-                    </StackPanel>
+                        <StackPanel x:Name="MultiplePanel" Orientation="Vertical">
+                        </StackPanel>
                 </ScrollViewer>    
             </StackPanel>
-        </StackPanel>    
-        <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        </Grid>
+        <Grid Grid.Row="4" HorizontalAlignment="Right">
+            <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick"/>
+        </Grid>
     </Grid>
 </local:DialogInterface>
