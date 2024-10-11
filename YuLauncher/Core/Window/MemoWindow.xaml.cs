@@ -22,19 +22,57 @@ public partial class MemoWindow : FluentWindow
     private TextBox? _memoTextBox;
     public MemoWindow(JsonControl.ApplicationJsonData data)
     {
-       LoadData(data.JsonPath);
-        this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
+      
         InitializeComponent();
-        
+        this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
         this.Width = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Width"));
         this.Height = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Height"));
         
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
+
+        _data = data;
+        if (!Init().IsCompleted) return;
+
+        while (MainGrid.IsInitialized == false)
+        {
+            if (MainGrid.IsInitialized)
+            {
+                break;
+            }
+        }
+        InitializedLabel();
     }
 
     private async void LoadData(string jsonPath)
     {
         _data = await JsonControl.ReadExeJson(jsonPath);
+    }
+
+    private ValueTask Init()
+    {
+        LoadData(_data.JsonPath);
+        return ValueTask.CompletedTask;
+    }
+
+    private Task InitializedLabel()
+    {
+        ScrollViewer scrollViewer = new ScrollViewer
+        {
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        StackPanel stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+        MainGrid.Children.Add(scrollViewer);
+        scrollViewer.Content = stackPanel;
+        stackPanel.Children.Add(MemoLabel());
+        return Task.CompletedTask;
     }
 
     private TextBlock MemoLabel()
@@ -44,6 +82,7 @@ public partial class MemoWindow : FluentWindow
             Text = _data.Memo,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
+            TextWrapping = TextWrapping.WrapWithOverflow,
             FontSize = _fontSize
         };
         return text;
@@ -57,6 +96,7 @@ public partial class MemoWindow : FluentWindow
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Center,
             FontSize = _fontSize,
+            TextWrapping = TextWrapping.WrapWithOverflow,
             Margin = new Thickness(10)
         };
         return _memoTextBox;
@@ -138,7 +178,7 @@ public partial class MemoWindow : FluentWindow
             await JsonControl.CreateExeJson(_data.JsonPath,_data);
             this.Close();
         };
-       stackPanel.Children.Add(saveButton);
+      stackPanel.Children.Add(saveButton);
     }
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
