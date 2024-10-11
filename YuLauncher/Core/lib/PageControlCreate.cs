@@ -337,7 +337,7 @@ public class GameButton : Button
                             LoggerController.LogError("File not found");
                         }
 
-                        if (data.IsUseLog)
+                        if ((bool)data.IsUseLog!)
                         {
                                 await StartProcessWithLogging(data.FilePath, data.Name);
                         }
@@ -384,7 +384,7 @@ public class GameButton : Button
 
                         break;
                     case "web":
-                        if (data.IsWebView)
+                        if ((bool)data.IsWebView!)
                         {
                             WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
                             webViewWindow.Show();
@@ -429,7 +429,7 @@ public class GameButton : Button
                                     LoggerController.LogError("File not found");
                                 }
 
-                                if (multipleData.IsUseLog)
+                                if ((bool)multipleData.IsUseLog!)
                                 {
                                     await StartProcessWithLogging(multipleData.FilePath, multipleData.Name);
                                 }
@@ -516,7 +516,7 @@ public class GameButton : Button
                             LoggerController.LogError("File not found");
                         }
 
-                        if (data.IsUseLog)
+                        if ((bool)data.IsUseLog!)
                         {
                                 await StartProcessWithLogging(data.FilePath, data.Name);
                         }
@@ -563,7 +563,7 @@ public class GameButton : Button
 
                         break;
                     case "web":
-                        if (data.IsWebView)
+                        if ((bool)data.IsWebView!)
                         {
                             WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
                             webViewWindow.Show();

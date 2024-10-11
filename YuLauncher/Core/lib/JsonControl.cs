@@ -18,8 +18,8 @@ public static class JsonControl
         public string Name { get; set; }
         public string? FileExtension { get; set; }
         public string Memo { get; set; }
-        public bool IsWebView { get; set; }
-        public bool IsUseLog { get; set; }
+        public bool? IsWebView { get; set; }
+        public bool? IsUseLog { get; set; }
         
         public string Url { get; set;}
         
@@ -45,11 +45,54 @@ public static class JsonControl
 
     public static async ValueTask CheckJsonData(string jsonPath,ApplicationJsonData data)
     {
-        if (data.MultipleLaunch == null)
+        switch (data)
         {
-            data = data with { MultipleLaunch = new string[0] };
-            await CreateExeJson(jsonPath,data);
+            case { FilePath: null }:
+                data = data with { FilePath = "" };
+                    await CreateExeJson(jsonPath, data);
+                    break;
+            
+            case {JsonPath: null}:
+                data = data with { JsonPath = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case {Name:  null}:
+                data = data with { Name = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { FileExtension: null }:
+                data = data with { FileExtension = "Unknown" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { Memo: null }:
+                data = data with { Memo = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { IsWebView: null }:
+                data = data with { IsWebView = false };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { IsUseLog: null }:
+                data = data with { IsUseLog = false };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { Url: null }:
+                data = data with { Url = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { MultipleLaunch: null }:
+                data = data with { MultipleLaunch = new string[0] };
+                await CreateExeJson(jsonPath, data);
+                break;
         }
+
     }
 
 }
