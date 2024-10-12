@@ -30,11 +30,17 @@ namespace YuLauncher.Game.Window
     /// </summary>
     public partial class GameWindow : FluentWindow
     {
+        private JsonControl.ApplicationJsonData _data;
+        private GameWindow ThisGameWindow { get; }
         public GameWindow(string url,JsonControl.ApplicationJsonData data)
         {
             InitializeComponent();
 
-           WebView.Source = new Uri(url);
+            this._data = data;
+
+            ThisGameWindow = this;
+
+            WebView.Source = new Uri(url);
 
            ManualTomlSettings manualTomlSettings = new ManualTomlSettings();
             var tomlWidth = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
@@ -215,12 +221,31 @@ namespace YuLauncher.Game.Window
             if (e.IsSuccess)
             {
                 WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+                WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             }
             else
             {
                 LoggerController.LogError("WebView2 Initialization Failed");
                 throw new Exception("WebView2 Initialization Failed");
             }
+        }
+
+        private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+        {
+            e.Handled = true;
+            GameWindow gameWindow = new GameWindow(e.Uri, _data)
+            {
+                
+            };
+            gameWindow.Loaded += (_, _) =>
+            {
+                Activate();
+            };
+            gameWindow.Closing += (_, _) =>
+            {
+                ThisGameWindow.Activate();
+            };
+            gameWindow.Show();
         }
     }
 }
