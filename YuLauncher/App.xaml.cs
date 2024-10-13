@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
@@ -9,6 +10,9 @@ using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using NLog;
+using Velopack;
+using Velopack.Locators;
+using Velopack.Sources;
 using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using Application = System.Windows.Application;
@@ -24,22 +28,62 @@ namespace YuLauncher
        public LanguageUpdater? LanguageUpdater { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         { 
-            FirstLunch();
-            LanguageCheck();
+           await UpdateCheck();
+            
+           await FirstLunch();
+
+           await LanguageCheck();
+
            await Initialize();
+
            await JsonCheck();
            LoggerController.LogInfo("Application Start");
         }
         
-        private async Task Initialize()
+        private async ValueTask Initialize()
         {
                   LanguageUpdater = new LanguageUpdater();
                   MainWindowInstance =　await Dispatcher.InvokeAsync(() => new MainWindow());
                  MainWindowInstance.Show();
                  LoggerController.LogInfo("App Initialize Complete");
         }
+
+        private static async ValueTask UpdateCheck()
+        {
+           
+            try
+            {
+                var mgr = new UpdateManager(new GithubSource(@"https://github.com/johmaru/Yu_Launcher", null, false),
+                    new UpdateOptions
+                    {
+                        AllowVersionDowngrade = true
+                    });
+
+                if (!mgr.IsInstalled)
+                {
+                    LoggerController.LogError("Application is not installed. Update check cannot proceed.");
+                    return;
+                }
+
+                var newVersionCheck = await mgr.CheckForUpdatesAsync();
+                if (newVersionCheck == null) return;
+
+                var result = MessageBox.Show("New Version Available", "Update", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await mgr.DownloadUpdatesAsync(newVersionCheck);
+                    mgr.ApplyUpdatesAndRestart(newVersionCheck);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                LoggerController.LogError($"{e}");
+                throw;
+            }
+        }
         
-        private void FirstLunch()
+        private ValueTask FirstLunch()
         {
                 bool path = File.Exists("./settings.toml");
                 if (!path)
@@ -62,6 +106,7 @@ namespace YuLauncher
                     Directory.CreateDirectory("./Games");
                 }
                 LoggerController.LogInfo("First Lunch Check Complete");
+                return ValueTask.CompletedTask;
         }
 
         private static async ValueTask JsonCheck()
@@ -75,7 +120,7 @@ namespace YuLauncher
             LoggerController.LogInfo("Json Check Complete");
         }
 
-        private void LanguageCheck()
+        private ValueTask LanguageCheck()
         {
            var result = TomlControl.GetTomlString("./settings.toml", "Language");
            switch (result)
@@ -88,6 +133,7 @@ namespace YuLauncher
                      break;
            }
            LoggerController.LogInfo("Language Check Complete");
+           return ValueTask.CompletedTask;
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -8,6 +8,7 @@
         <Configurations>Debug;Release;kireinaRelease</Configurations>
         <LangVersion>10</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
+		<StartupObject>YuLauncher.Program</StartupObject>
     </PropertyGroup>
 
     <ItemGroup>
@@ -43,6 +44,8 @@
       <PackageReference Include="System.Reactive" Version="6.0.1" />
       <PackageReference Include="System.Text.Json" Version="9.0.0-rc.1.24431.7" />
       <PackageReference Include="Tommy" Version="3.1.2" />
+      <PackageReference Include="ValueTaskSupplement" Version="1.1.0" />
+      <PackageReference Include="Velopack" Version="0.0.626" />
       <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
