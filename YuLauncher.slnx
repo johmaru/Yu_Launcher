@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="kireinaRelease" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="YHuLauncherBackEndTestUnit\YHuLauncherBackEndTestUnit.csproj" Type="Classic C#">
+    <Configuration Solution="kireinaRelease|Any CPU" Project="Debug|Any CPU" />
+  </Project>
+  <Project Path="YuLauncher\YuLauncher.csproj" />
+</Solution>

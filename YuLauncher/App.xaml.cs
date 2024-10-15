@@ -37,6 +37,7 @@ namespace YuLauncher
            await Initialize();
 
            await JsonCheck();
+           
            LoggerController.LogInfo("Application Start");
         }
         

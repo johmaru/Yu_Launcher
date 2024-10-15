@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <Configurations>Debug;Release;kireinaRelease</Configurations>
-        <LangVersion>10</LangVersion>
+        <LangVersion>13</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
     </PropertyGroup>
