@@ -16,6 +16,7 @@ using Velopack.Sources;
 using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using Application = System.Windows.Application;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace YuLauncher
 {
@@ -28,8 +29,6 @@ namespace YuLauncher
        public LanguageUpdater? LanguageUpdater { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         { 
-           await UpdateCheck();
-            
            await FirstLunch();
 
            await LanguageCheck();
@@ -37,6 +36,8 @@ namespace YuLauncher
            await Initialize();
 
            await JsonCheck();
+           
+           _ = UpdateCheck();
            
            LoggerController.LogInfo("Application Start");
         }
@@ -49,7 +50,7 @@ namespace YuLauncher
                  LoggerController.LogInfo("App Initialize Complete");
         }
 
-        private static async ValueTask UpdateCheck()
+        private static async Task UpdateCheck()
         {
            
             try
@@ -142,6 +143,7 @@ namespace YuLauncher
             if (MainWindowInstance != null) MainWindowInstance.Close();
             LoggerController.LogInfo("Application Exit");
             base.OnExit(e);
+            Current.Shutdown();
         }
     }
 }

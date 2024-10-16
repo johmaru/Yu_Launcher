@@ -9,7 +9,28 @@
         <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <PublishTrimmed>false</PublishTrimmed>
+        <PublishReadyToRun>false</PublishReadyToRun>
     </PropertyGroup>
+
+    <ItemGroup>
+        <TrimmerRootAssembly Include="NLog" />
+        <TrimmerRootAssembly Include="Velopack" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="linker.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!--Condition below is only needed to test this sample project against the local projects instead of the NuGet package. Remove it in your app.-->
+        <PackageReference Include="Velopack" Version="0.*" Condition="$(UseLocalVelopack) == ''" />
+    </ItemGroup>
+
 
     <ItemGroup>
       <Compile Remove="Data\**" />
@@ -35,17 +56,17 @@
       <PackageReference Include="EntityFramework" Version="6.5.1" />
       <PackageReference Include="HtmlAgilityPack" Version="1.11.67" />
       <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2839-prerelease" />
-      <PackageReference Include="NLog" Version="5.3.2" />
+      <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="NLog.Config" Version="4.7.15" />
-      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
-      <PackageReference Include="NLog.Schema" Version="5.3.2" />
-      <PackageReference Include="NLog.WindowsEventLog" Version="5.3.2" />
-      <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
+      <PackageReference Include="NLog.Schema" Version="5.3.4" />
+      <PackageReference Include="NLog.WindowsEventLog" Version="5.3.4" />
+      <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
       <PackageReference Include="System.Reactive" Version="6.0.1" />
-      <PackageReference Include="System.Text.Json" Version="9.0.0-rc.1.24431.7" />
+      <PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
       <PackageReference Include="Tommy" Version="3.1.2" />
       <PackageReference Include="ValueTaskSupplement" Version="1.1.0" />
-      <PackageReference Include="Velopack" Version="0.0.626" />
+      <PackageReference Include="Velopack" Version="0.0.783-g8c9c649" />
       <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
@@ -97,6 +118,12 @@
       <Resource Include="image\404-error-3060993_640.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="NLog.config">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
