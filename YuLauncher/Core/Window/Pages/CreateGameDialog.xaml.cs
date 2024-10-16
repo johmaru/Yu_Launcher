@@ -35,6 +35,15 @@ public partial class CreateGameDialog : FluentWindow
         LoggerController.LogInfo("CreateGameDialog Loaded");
         this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
+
+    public CreateGameDialog(string path)
+    {
+        InitializeComponent();
+        LoggerController.LogInfo("CreateGameDialog Loaded");
+        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        PathLabel.Content = path;
+        Label.Text = Path.GetFileNameWithoutExtension(path);
+    }
     
     private void UrlButton_OnClick(object sender, RoutedEventArgs e)
     {

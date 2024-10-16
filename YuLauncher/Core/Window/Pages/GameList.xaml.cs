@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -208,14 +209,6 @@ public partial class GameList : Page
        }
 
     }
-    
-    private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)
-    {
-        if (NavigationService is { CanGoBack: true })
-        {
-            NavigationService.GoBack();
-        }
-    }
 
     private void GenreComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -251,4 +244,30 @@ public partial class GameList : Page
       CreateGameDialog createGameDialog = new CreateGameDialog();
       createGameDialog.Show();
     }
+    
+    private void Main_OnDragEnter(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
+            if (files.Length > 0)
+            {
+                string fileExtension = System.IO.Path.GetExtension(files[0]);
+                if (fileExtension == ".exe")
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+              
+            }
+        }
+        else
+        {
+            e.Effects = DragDropEffects.None;
+        }
+    }
 }
+

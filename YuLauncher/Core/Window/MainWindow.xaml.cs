@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
+using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
@@ -16,6 +17,8 @@ namespace YuLauncher.Core.Window;
 
 public partial class MainWindow : FluentWindow
 {
+
+    public static double WindowHeight = new MainWindow().Height;
 
     public MainWindow()
     {

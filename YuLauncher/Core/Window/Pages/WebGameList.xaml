@@ -33,7 +33,7 @@
                     </ItemsControl>
                 </ui:DynamicScrollViewer>
             </Grid>  
-        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <WrapPanel x:Name="WebGameListPanel" Orientation="Horizontal">
                     
                 </WrapPanel>
