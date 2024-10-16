@@ -27,6 +27,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!--Condition below is only needed to test this sample project against the local projects instead of the NuGet package. Remove it in your app.-->
+        <PackageReference Include="Velopack" Version="0.*" Condition="$(UseLocalVelopack) == ''" />
+    </ItemGroup>
+
+
+    <ItemGroup>
       <Compile Remove="Data\**" />
       <Compile Remove="Game\Window\Pages\**" />
       <EmbeddedResource Remove="Data\**" />

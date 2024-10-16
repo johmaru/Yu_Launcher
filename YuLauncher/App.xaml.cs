@@ -37,7 +37,7 @@ namespace YuLauncher
 
            await JsonCheck();
            
-           await UpdateCheck();
+           _ = UpdateCheck();
            
            LoggerController.LogInfo("Application Start");
         }
@@ -50,7 +50,7 @@ namespace YuLauncher
                  LoggerController.LogInfo("App Initialize Complete");
         }
 
-        private static async ValueTask UpdateCheck()
+        private static async Task UpdateCheck()
         {
            
             try
