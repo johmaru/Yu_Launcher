@@ -49,7 +49,7 @@ public partial class MainWindow : FluentWindow
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
-       this.Close();
+       Application.Current.Shutdown();
     }
 
     private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)

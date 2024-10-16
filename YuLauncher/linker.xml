@@ -1,0 +1,10 @@
+<linker>
+    <assembly fullname="NLog">
+        <type fullname="NLog.Logger" />
+        <type fullname="NLog.Config.XmlLoggingConfiguration" />
+    </assembly>
+    <assembly fullname="Velopack">
+        <type fullname="Velopack.UpdateManager" />
+        <type fullname="Velopack.Sources.GithubSource" />
+    </assembly>
+</linker>
