@@ -2,13 +2,17 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Navigation;
+using Wpf.Ui;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using YuLauncher.Properties;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Core.Window.Pages
 {
@@ -17,18 +21,23 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class MainPage : Page
     {
+        private ApplicationTheme _theme = new ThemeService().GetTheme();
         public MainPage()
         {
             InitializeComponent();
 
-            InitializeControl();
+            Init();
             
             LoggerController.LogInfo("MainPage Initialized");
         }
 
-        private void InitializeControl()
+        private async void Init()
         {
-            
+            await Dispatcher.InvokeAsync(() =>
+            {
+                MainGrid.Height = MainWindow.WindowHeight;
+                Frame.Source = new Uri("GameList.xaml", UriKind.Relative);
+            });
         }
         
 
@@ -39,14 +48,16 @@ namespace YuLauncher.Core.Window.Pages
 
         private void SettingBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SettingWindow settingWindow = new SettingWindow();
-            settingWindow.Owner = Application.Current.MainWindow;
+            SettingWindow settingWindow = new SettingWindow
+            {
+                Owner = Application.Current.MainWindow
+            };
             settingWindow.Show();
         }
 
         private void GameListBtn_OnClick(object sender, RoutedEventArgs e)
         {
-          Frame.Source = new Uri("GameList.xaml", UriKind.Relative);
+            Frame.Source = new Uri("GameList.xaml", UriKind.Relative);
         }
 
         private void WebGameListBtn_OnClick(object sender, RoutedEventArgs e)
@@ -58,15 +69,45 @@ namespace YuLauncher.Core.Window.Pages
         {
             Frame.Source = new Uri("WebSaverList.xaml", UriKind.Relative);
         }
-
-        private void FavGameList_OnClick(object sender, RoutedEventArgs e)
+        
+        private void Main_OnDragEnter(object sender, DragEventArgs e)
         {
-          MessageBox.Show("Coming Soon");
+            
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
+                if (files.Length > 0)
+                {
+                    string fileExtension = System.IO.Path.GetExtension(files[0]);
+                    if (fileExtension == ".exe")
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                    }
+                    else
+                    {
+                        e.Effects = DragDropEffects.None;
+                    }
+              
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
         }
 
-        private void LoginHistoryBtn_OnClick(object sender, RoutedEventArgs e)
+        private void Main_OnDrop(object sender, DragEventArgs e)
         {
-            MessageBox.Show("Coming Soon");
+            string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
+            if (files.Length > 0)
+            {
+                foreach (var f in files)
+                {
+                    
+                    CreateGameDialog createGameDialog = new CreateGameDialog(f);
+                    createGameDialog.Show();
+                }
+            }
         }
     }
 }

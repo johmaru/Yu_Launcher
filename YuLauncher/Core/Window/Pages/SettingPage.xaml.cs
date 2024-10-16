@@ -47,7 +47,7 @@ namespace YuLauncher.Core.Window.Pages
                 MemoTxtResWidth.Text =
                     _manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "MemoResolution", "Width");
 
-                MemoTxtFontSize.Text = TomlControl.GetTomlString(FileControl.Main.Settings, "MemoFontSize");
+                MemoTxtFontSize.Text = TomlControl.GetToml(FileControl.Main.Settings, "MemoFontSize");
             }
             catch (Exception e)
             {
@@ -60,17 +60,17 @@ namespace YuLauncher.Core.Window.Pages
         {
             try
             {
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Width", TxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "SettingResolution", "Height", TxtResHeight.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "SettingResolution", "Width", TxtResWidth.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "SettingResolution", "Height", TxtResHeight.Text);
 
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Width", MenuTxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "WindowResolution", "Height", MenuTxtResHeight.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "WindowResolution", "Width", MenuTxtResWidth.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "WindowResolution", "Height", MenuTxtResHeight.Text);
 
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Width", GameTxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "GameResolution", "Height", GameTxtResHeight.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "GameResolution", "Width", GameTxtResWidth.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "GameResolution", "Height", GameTxtResHeight.Text);
 
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Width", MemoTxtResWidth.Text);
-                _tomlControl.EditTomlList(FileControl.Main.Settings, "MemoResolution", "Height", MemoTxtResHeight.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "MemoResolution", "Width", MemoTxtResWidth.Text);
+                _tomlControl.EditToml(FileControl.Main.Settings, "MemoResolution", "Height", MemoTxtResHeight.Text);
 
                 _tomlControl.EditToml(FileControl.Main.Settings, "MemoFontSize", MemoTxtFontSize.Text);
             }
@@ -99,11 +99,11 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FullSc_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "true")
+            if (TomlControl.GetToml(FileControl.Main.Settings, "FullScreen") == "true")
             {
                 FullSc.IsChecked = true;
             }
-            else if (TomlControl.GetTomlString(FileControl.Main.Settings, "FullScreen") == "false")
+            else if (TomlControl.GetToml(FileControl.Main.Settings, "FullScreen") == "false")
             {
                 FullSc.IsChecked = false;
             }
@@ -127,15 +127,12 @@ namespace YuLauncher.Core.Window.Pages
 
         private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
         {
-            switch (TomlControl.GetTomlString(FileControl.Main.Settings, "Language"))
+            LanguageCombo.SelectedItem = TomlControl.GetToml(FileControl.Main.Settings, "Language") switch
             {
-                case "en":
-                    LanguageCombo.SelectedItem = EngItemCombo;
-                    break;
-                case "ja":
-                    LanguageCombo.SelectedItem = JpnItemCombo;
-                    break;
-            }
+                "en" => EngItemCombo,
+                "ja" => JpnItemCombo,
+                _ => LanguageCombo.SelectedItem
+            };
         }
     }
     }

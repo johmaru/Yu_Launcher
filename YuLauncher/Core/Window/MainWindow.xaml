@@ -30,7 +30,7 @@
                     <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
                         <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
                     </ToggleButton>
-                    <ui:Button x:Name="ExitBtn" VerticalAlignment="Center" Panel.ZIndex="1" Click="ExitBtn_OnClick">
+                    <ui:Button x:Name="ExitBtn" VerticalAlignment="Center" Click="ExitBtn_OnClick">
                     <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
                 </ui:Button>
                     </StackPanel>

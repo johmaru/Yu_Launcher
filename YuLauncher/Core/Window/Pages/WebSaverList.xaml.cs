@@ -13,13 +13,11 @@ namespace YuLauncher.Core.Window.Pages;
 public partial class WebSaverList : Page
 {
     private static string[]? _files;
-    private readonly GameButton _gameButton = new GameButton();
+    private readonly GameButton _gameButton = new();
     public WebSaverList()
     {
         InitializeComponent();
-        MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
-        mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
-        
+
         PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => PageControlCreateOnOnDeleteFileMenuClicked(this, EventArgs.Empty));
         CreateGameDialog.CloseObservable.Subscribe(_ => PropertyDialogOnOnGameListWebSaverPanelUpdate(this, EventArgs.Empty));
         PropertyDialog.AllGameListPanelUpdate.Subscribe( _ => PropertyDialogOnOnGameListWebSaverPanelUpdate(this, EventArgs.Empty));
@@ -43,6 +41,7 @@ public partial class WebSaverList : Page
     private async void SaverListLoad()
     {
         Panel.Children.Clear();
+        if (_files == null) return;
         foreach (var file in _files)
         {
             string name = Path.GetFileNameWithoutExtension(file);
@@ -51,11 +50,7 @@ public partial class WebSaverList : Page
             {
                 if (data.FileExtension == "WebSaver")
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name,data));
-                }
-                else
-                {
-                  continue;
+                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
                 }
             }
             catch (Exception e)
@@ -89,8 +84,8 @@ public partial class WebSaverList : Page
 
     private void WebSaverList_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        DependencyObject source = e.OriginalSource as DependencyObject;
-        while (source != null && !(source is Wpf.Ui.Controls.Button))
+        DependencyObject? source = e.OriginalSource as DependencyObject;
+        while (source != null && !(source is Button))
         {
             source = VisualTreeHelper.GetParent(source);
         }

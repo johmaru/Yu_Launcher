@@ -23,11 +23,6 @@ namespace YuLauncher.Core.WebSaverWindow
             webView.Source = new Uri("file:///" + htmlPath);
         }
 
-        private void webView_Initialized(object sender, EventArgs e)
-        {
-          
-        }
-
         private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -70,11 +65,6 @@ namespace YuLauncher.Core.WebSaverWindow
             webView.Dispose();
         }
 
-        private void Gamedock_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-         
-        }
-
         private void Menu_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -85,17 +75,13 @@ namespace YuLauncher.Core.WebSaverWindow
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (this.WindowState == WindowState.Maximized)
-                {
-                    var point = Mouse.GetPosition(this);
-                    this.WindowState = WindowState.Normal;
-                    this.Left = point.X - this.Width / 2;
-                    this.Top = point.Y;
-                    this.DragMove();
-                }
-            }
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+            if (this.WindowState != WindowState.Maximized) return;
+            var point = Mouse.GetPosition(this);
+            this.WindowState = WindowState.Normal;
+            this.Left = point.X - this.Width / 2;
+            this.Top = point.Y;
+            this.DragMove();
         }
 
         private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)

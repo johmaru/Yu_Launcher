@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,6 @@ namespace YuLauncher.Core.Window.Pages;
 
 public partial class GameList : Page
 {
-    private static GameList _instance;
-    private ManualTomlSettings _tomlControl = new();
-    private PageControlCreate _pageControlCreate = new();
     private readonly GameButton _gameButton = new GameButton();
     private static string[]? _files;
     
@@ -27,8 +25,6 @@ public partial class GameList : Page
     public GameList()
     {
         InitializeComponent();
-        MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-        mainWindow.OnBackBtnClick += MainWindow_OnBackBtnClick;
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
         
@@ -83,37 +79,37 @@ public partial class GameList : Page
 
     public static void GameControl()
     {
-        if (!FileControl.ExistGameDirectory(FileControl.Main.Directory))
-        {
-            Directory.CreateDirectory(FileControl.Main.Directory);
-            LoggerController.LogInfo("Create Game Directory");
-        }
+        if (Directory.Exists(FileControl.Main.Directory)) return;
+        Directory.CreateDirectory(FileControl.Main.Directory);
+        LoggerController.LogInfo("Create Game Directory");
     }
 
     private async void GenreAllUpdate()
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
-        foreach (var file in _files)
-        {
-            string name = Path.GetFileNameWithoutExtension(file);
-           var jsonData = await JsonControl.ReadExeJson(file);
-            try
+        if (_files != null)
+            foreach (var file in _files)
             {
-                if (jsonData.FileExtension == "WebGame")
+                string name = Path.GetFileNameWithoutExtension(file);
+                var jsonData = await JsonControl.ReadExeJson(file);
+                try
                 {
-                    continue;
+                    if (jsonData.FileExtension == "WebGame")
+                    {
+                        continue;
+                    }
+
+                    Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
                 }
-                
-                Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
+                catch (System.IO.IOException ex)
+                {
+                    Console.WriteLine("An I/O error occurred: " + ex.Message);
+                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                    throw;
+                }
+
+                LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
             }
-            catch (System.IO.IOException ex)
-            {
-                Console.WriteLine("An I/O error occurred: " + ex.Message);
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                throw;
-            }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
-        }
 
         Viewer.Content = null;
         Viewer.Content = Panel;
@@ -123,66 +119,72 @@ public partial class GameList : Page
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
         Console.WriteLine("GenreExeUpdate");
-         foreach (var file in _files)
-         {
-             string name = Path.GetFileNameWithoutExtension(file);
+        if (_files != null)
+            foreach (var file in _files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file);
                 var data = await JsonControl.ReadExeJson(file);
-            
-             try
-             {
-                 if (data.FileExtension == "exe")
-                 {
-                     Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
-                 }
-                 else
-                 {
-                     continue;
-                 }
-             }
-             catch (Exception ex)
-             {
-                 Console.WriteLine(ex);
-                 LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                 throw;
-             }
-             LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
-         }
-         Viewer.Content = null;
+
+                try
+                {
+                    if (data.FileExtension == "exe")
+                    {
+                        Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                    throw;
+                }
+
+                LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
+            }
+
+        Viewer.Content = null;
          Viewer.Content = Panel;
     }
 
     private async void GenreWebUpdate()
     {
         GameList_OnFileUpdate(this, EventArgs.Empty);
-        foreach (var file in _files)
-        {
-            string name = Path.GetFileNameWithoutExtension(file);
-            var data = await JsonControl.ReadExeJson(file);
-            
-            try
+        if (_files != null)
+            foreach (var file in _files)
             {
-                if (data.FileExtension == "web")
+                string name = Path.GetFileNameWithoutExtension(file);
+                var data = await JsonControl.ReadExeJson(file);
+
+                try
                 {
-                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name,data ));
+                    if (data.FileExtension == "web")
+                    {
+                        Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    continue;
+                    Console.WriteLine(ex);
+                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                    throw;
                 }
+
+                LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                throw;
-            }
-            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
-        }
+
         Viewer.Content = null;
         Viewer.Content = Panel;
     }
     
-    private async void GameList_OnFileUpdate(object sender, EventArgs e)
+    private void GameList_OnFileUpdate(object sender, EventArgs e)
     {
         Panel.Children.Clear();
         LoggerController.LogInfo("GameList Page Reloaded");
@@ -190,10 +192,8 @@ public partial class GameList : Page
 
     private void GameList_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-       /*CreateGameDialog createGameDialog = new CreateGameDialog();
-       createGameDialog.Show();*/
 
-       DependencyObject source = e.OriginalSource as DependencyObject;
+       DependencyObject? source = e.OriginalSource as DependencyObject;
        while (source != null && !(source is Button))
        {
            source = VisualTreeHelper.GetParent(source);
@@ -208,14 +208,6 @@ public partial class GameList : Page
            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
        }
 
-    }
-    
-    private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)
-    {
-        if (NavigationService is { CanGoBack: true })
-        {
-            NavigationService.GoBack();
-        }
     }
 
     private void GenreComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -252,4 +244,30 @@ public partial class GameList : Page
       CreateGameDialog createGameDialog = new CreateGameDialog();
       createGameDialog.Show();
     }
+    
+    private void Main_OnDragEnter(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
+            if (files.Length > 0)
+            {
+                string fileExtension = System.IO.Path.GetExtension(files[0]);
+                if (fileExtension == ".exe")
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+              
+            }
+        }
+        else
+        {
+            e.Effects = DragDropEffects.None;
+        }
+    }
 }
+

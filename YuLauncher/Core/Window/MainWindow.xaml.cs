@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
+using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
@@ -16,9 +17,9 @@ namespace YuLauncher.Core.Window;
 
 public partial class MainWindow : FluentWindow
 {
-    public delegate void BackBtnClickHandler(object sender, RoutedEventArgs e);
-    public event BackBtnClickHandler? OnBackBtnClick;
-    private readonly TomlControl _tomlControl = new();
+
+    public static double WindowHeight = new MainWindow().Height;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -36,9 +37,8 @@ public partial class MainWindow : FluentWindow
     
     private void WindowSizeInitialize()
     {
-               var width = TomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Width");
-               var height = TomlControl.GetTomlStringList("./settings.toml", "WindowResolution", "Height");
-                Console.WriteLine(double.Parse(width));
+               var width = TomlControl.GetTomlString("./settings.toml", "WindowResolution", "Width");
+               var height = TomlControl.GetTomlString("./settings.toml", "WindowResolution", "Height");
                this.Width = double.Parse(width);
                this.Height = double.Parse(height);
     }
@@ -71,11 +71,6 @@ public partial class MainWindow : FluentWindow
         WindowStateIcon.Glyph = "\uE740";
     }
 
-    private void BackBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        OnBackBtnClick?.Invoke(sender, e);
-    }
-
     private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         switch (WindowState)
@@ -97,16 +92,25 @@ public partial class MainWindow : FluentWindow
 
     private void Grid_OnMouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
+        switch (e.LeftButton)
         {
-            if (this.WindowState == WindowState.Maximized)
+            case MouseButtonState.Pressed:
             {
-                var point = Mouse.GetPosition(this);
-                this.WindowState = WindowState.Normal;
-                this.Left = point.X - this.Width / 2;
-                this.Top = point.Y;
-                this.DragMove();
+                if (this.WindowState == WindowState.Maximized)
+                {
+                    var point = Mouse.GetPosition(this);
+                    this.WindowState = WindowState.Normal;
+                    this.Left = point.X - this.Width / 2;
+                    this.Top = point.Y;
+                    this.DragMove();
+                }
+
+                break;
             }
+            case MouseButtonState.Released:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 

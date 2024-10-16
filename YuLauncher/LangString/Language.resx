@@ -1,183 +1,291 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="GameList" xml:space="preserve">
-        <value>Game List</value>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="GameListWeb" xml:space="preserve">
-        <value>Game List(Web)</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
     </data>
-    <data name="SimpleSetting" xml:space="preserve">
-        <value>Setting</value>
-    </data>
-    <data name="LoginHistory" xml:space="preserve">
-        <value>LoginHistory</value>
-    </data>
-    <data name="FavoriteGame" xml:space="preserve">
-        <value>FavGames</value>
-    </data>
-    <data name="SimpleExit" xml:space="preserve">
-        <value>Exit</value>
-    </data>
-    <data name="SimpleFullScreen" xml:space="preserve">
-        <value>FullScreen</value>
-    </data>
-    <data name="SimpleResChange" xml:space="preserve">
-        <value>Resolution Change</value>
-    </data>
-    <data name="SimpleLanguage" xml:space="preserve">
-        <value>Language</value>
-    </data>
-    <data name="SimpleEnglish" xml:space="preserve">
-        <value>English</value>
-    </data>
-    <data name="SimpleJapanese" xml:space="preserve">
-        <value>Japanese</value>
-    </data>
-    <data name="SimpleSave" xml:space="preserve">
-        <value>Save</value>
-    </data>
-    <data name="SettingResChange" xml:space="preserve">
-        <value>SettingPage Resolution Change</value>
-    </data>
-    <data name="MainWindowResChange" xml:space="preserve">
-        <value>Menu Resolution Change</value>
-    </data>
-    <data name="GameWindowResChange" xml:space="preserve">
-        <value>GameWindow Resolution Change</value>
-    </data>
-    <data name="NameInput" xml:space="preserve">
-        <value>Please input name</value>
-    </data>
-    <data name="ErrPickPath" xml:space="preserve">
-        <value>Please Pick FilePath</value>
-    </data>
-    <data name="AddGame" xml:space="preserve">
-        <value>Add</value>
-    </data>
-    <data name="DeleteGame" xml:space="preserve">
-        <value>Delete</value>
-    </data>
-    <data name="SelectFileLabel" xml:space="preserve">
-        <value>Select File</value>
-    </data>
-    <data name="SelectFileErrorMessage" xml:space="preserve">
-        <value>Please select a file (have you selected a file with no extension?)</value>
-    </data>
-    <data name="ExtensionLabel" xml:space="preserve">
-        <value>Extension: </value>
-    </data>
-    <data name="NotSelectFileError" xml:space="preserve">
-        <value>Nothing selected</value>
-    </data>
-    <data name="CreateButton" xml:space="preserve">
-        <value>Create</value>
-    </data>
-    <data name="PleaseSelectGenre" xml:space="preserve">
-        <value>Please Select Genre</value>
-    </data>
-    <data name="GenreApplication" xml:space="preserve">
-        <value>ApplicationFile(exe,text,png etc)</value>
-    </data>
-    <data name="GenreWebsite" xml:space="preserve">
-        <value>Website(https:/, http:/)</value>
-    </data>
-    <data name="SelectGenreError" xml:space="preserve">
-        <value>Please Select Genre</value>
-    </data>
-    <data name="PleaseURL" xml:space="preserve">
-        <value>Please input URL</value>
-    </data>
-    <data name="NotContainsHttpError" xml:space="preserve">
-        <value>Please enter the appropriate web address</value>
-    </data>
-    <data name="GenreAllComboBoxItem" xml:space="preserve">
-        <value>ALL</value>
-    </data>
-    <data name="GenreExeExtension" xml:space="preserve">
-        <value>EXE Files</value>
-    </data>
-    <data name="GenreWebsiteExtension" xml:space="preserve">
-        <value>Web</value>
-    </data>
-    <data name="MemoCtxHeader" xml:space="preserve">
-        <value>Memo</value>
-    </data>
-    <data name="EditModeButton" xml:space="preserve">
-        <value>Go to edit mode</value>
-    </data>
-    <data name="MemoWindowResChange" xml:space="preserve">
-        <value>Memo Resolution Change</value>
-    </data>
-    <data name="SimpleRes" xml:space="preserve">
-        <value>Resolution</value>
-    </data>
-    <data name="SimpleFontSize" xml:space="preserve">
-        <value>Font Size</value>
-    </data>
-    <data name="GenreWebGame" xml:space="preserve">
-        <value>WebGame</value>
-    </data>
-    <data name="PropertyCtxHeader" xml:space="preserve">
-        <value>Property</value>
-    </data>
-    <data name="SimpleName" xml:space="preserve">
-        <value>Name</value>
-    </data>
-    <data name="SimpleExePathLabel" xml:space="preserve">
-        <value>EXE PATH</value>
-    </data>
-    <data name="SimpleFileNotFound" xml:space="preserve">
-        <value>File Not Found,Please check exe path for property</value>
-    </data>
-    <data name="FileCantOpen" xml:space="preserve">
-        <value>This file type is cant open</value>
-    </data>
-    <data name="SimpleAddress" xml:space="preserve">
-        <value>WebAddress</value>
-    </data>
-    <data name="SimpleUseWebview" xml:space="preserve">
-        <value>Using webview</value>
-    </data>
-    <data name="WebSaver" xml:space="preserve">
-        <value>WebSaver</value>
-    </data>
-    <data name="GenreWebSaver" xml:space="preserve">
-        <value>WebSaver</value>
-    </data>
-    <data name="AppLogButton" xml:space="preserve">
-        <value>ApplicationLog</value>
-    </data>
-    <data name="MultipleLaunchText" xml:space="preserve">
-        <value>MultipleLaunch</value>
-    </data>
-    <data name="SimpleBack" xml:space="preserve">
-        <value>Back</value>
-    </data>
-    <data name="SimpleControlMenu" xml:space="preserve">
-        <value>ControlMenu</value>
-    </data>
-    <data name="SimpleForward" xml:space="preserve">
-        <value>Forward</value>
-    </data>
-    <data name="SimpleReload" xml:space="preserve">
-        <value>Reload</value>
-    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GameList" xml:space="preserve">
+    <value>Game List</value>
+  </data>
+  <data name="GameListWeb" xml:space="preserve">
+    <value>Game List(Web)</value>
+  </data>
+  <data name="SimpleSetting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="LoginHistory" xml:space="preserve">
+    <value>LoginHistory</value>
+  </data>
+  <data name="FavoriteGame" xml:space="preserve">
+    <value>FavGames</value>
+  </data>
+  <data name="SimpleExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="SimpleFullScreen" xml:space="preserve">
+    <value>FullScreen</value>
+  </data>
+  <data name="SimpleResChange" xml:space="preserve">
+    <value>Resolution Change</value>
+  </data>
+  <data name="SimpleLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SimpleEnglish" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SimpleJapanese" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="SimpleSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SettingResChange" xml:space="preserve">
+    <value>SettingPage Resolution Change</value>
+  </data>
+  <data name="MainWindowResChange" xml:space="preserve">
+    <value>Menu Resolution Change</value>
+  </data>
+  <data name="GameWindowResChange" xml:space="preserve">
+    <value>GameWindow Resolution Change</value>
+  </data>
+  <data name="NameInput" xml:space="preserve">
+    <value>Please input name</value>
+  </data>
+  <data name="ErrPickPath" xml:space="preserve">
+    <value>Please Pick FilePath</value>
+  </data>
+  <data name="AddGame" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DeleteGame" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="SelectFileLabel" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="SelectFileErrorMessage" xml:space="preserve">
+    <value>Please select a file (have you selected a file with no extension?)</value>
+  </data>
+  <data name="ExtensionLabel" xml:space="preserve">
+    <value>Extension: </value>
+  </data>
+  <data name="NotSelectFileError" xml:space="preserve">
+    <value>Nothing selected</value>
+  </data>
+  <data name="CreateButton" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="PleaseSelectGenre" xml:space="preserve">
+    <value>Please Select Genre</value>
+  </data>
+  <data name="GenreApplication" xml:space="preserve">
+    <value>ApplicationFile(exe,text,png etc)</value>
+  </data>
+  <data name="GenreWebsite" xml:space="preserve">
+    <value>Website(https:/, http:/)</value>
+  </data>
+  <data name="SelectGenreError" xml:space="preserve">
+    <value>Please Select Genre</value>
+  </data>
+  <data name="PleaseURL" xml:space="preserve">
+    <value>Please input URL</value>
+  </data>
+  <data name="NotContainsHttpError" xml:space="preserve">
+    <value>Please enter the appropriate web address</value>
+  </data>
+  <data name="GenreAllComboBoxItem" xml:space="preserve">
+    <value>ALL</value>
+  </data>
+  <data name="GenreExeExtension" xml:space="preserve">
+    <value>EXE Files</value>
+  </data>
+  <data name="GenreWebsiteExtension" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="MemoCtxHeader" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="EditModeButton" xml:space="preserve">
+    <value>Go to edit mode</value>
+  </data>
+  <data name="MemoWindowResChange" xml:space="preserve">
+    <value>Memo Resolution Change</value>
+  </data>
+  <data name="SimpleRes" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="SimpleFontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="GenreWebGame" xml:space="preserve">
+    <value>WebGame</value>
+  </data>
+  <data name="PropertyCtxHeader" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="SimpleName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SimpleExePathLabel" xml:space="preserve">
+    <value>EXE PATH</value>
+  </data>
+  <data name="SimpleFileNotFound" xml:space="preserve">
+    <value>File Not Found,Please check exe path for property</value>
+  </data>
+  <data name="FileCantOpen" xml:space="preserve">
+    <value>This file type is cant open</value>
+  </data>
+  <data name="SimpleAddress" xml:space="preserve">
+    <value>WebAddress</value>
+  </data>
+  <data name="SimpleUseWebview" xml:space="preserve">
+    <value>Using webview</value>
+  </data>
+  <data name="WebSaver" xml:space="preserve">
+    <value>WebSaver</value>
+  </data>
+  <data name="GenreWebSaver" xml:space="preserve">
+    <value>WebSaver</value>
+  </data>
+  <data name="AppLogButton" xml:space="preserve">
+    <value>ApplicationLog</value>
+  </data>
+  <data name="MultipleLaunchText" xml:space="preserve">
+    <value>MultipleLaunch</value>
+  </data>
+  <data name="SimpleBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="SimpleControlMenu" xml:space="preserve">
+    <value>ControlMenu</value>
+  </data>
+  <data name="SimpleForward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="SimpleReload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="SimpleMute" xml:space="preserve">
+    <value>Mute</value>
+  </data>
+  <data name="SimpleMuteEnable" xml:space="preserve">
+    <value>Mute(Enable)</value>
+  </data>
+  <data name="SimpleMuteDisable" xml:space="preserve">
+    <value>Mute(Disable)</value>
+  </data>
 </root>

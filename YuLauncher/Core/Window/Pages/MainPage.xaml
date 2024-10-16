@@ -11,8 +11,12 @@
     lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
     lex:ResxLocalizationProvider.DefaultDictionary="Language"
     mc:Ignorable="d">
-    <Grid>
-        <ui:NavigationView PaneDisplayMode="LeftMinimal">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          Drop="Main_OnDrop"
+          AllowDrop="True"
+          DragEnter="Main_OnDragEnter"
+          >
+        <ui:NavigationView x:Name="View" PaneDisplayMode="LeftMinimal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <ui:NavigationView.MenuItems>
         <ui:NavigationViewItem x:Name="GameListBtn" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="GameListBtn_OnClick">
             <ui:NavigationViewItem.Icon>
@@ -52,7 +56,10 @@
         </ui:NavigationViewItem>
     </ui:NavigationView.MenuItems>
             <ui:NavigationView.Header>
-                <Frame x:Name="Frame" Source="GameList.xaml" NavigationUIVisibility="Hidden"/>
+                <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Frame x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
+                </Grid>
+                
             </ui:NavigationView.Header>
         </ui:NavigationView>
     </Grid>

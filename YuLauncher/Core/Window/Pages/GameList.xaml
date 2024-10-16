@@ -11,8 +11,12 @@
       xmlns:local="clr-namespace:YuLauncher.Core.Window.Pages"
       mc:Ignorable="d"
       PreviewMouseRightButtonDown="GameList_OnPreviewMouseRightButtonDown">
-    <Grid>
-       <StackPanel Orientation="Vertical">
+    <Grid x:Name="MainGrid" 
+          AllowDrop="True"
+          DragEnter="Main_OnDragEnter"
+          >
+       <StackPanel x:Name="MainPanel" 
+                    Orientation="Vertical">
            <StackPanel Orientation="Horizontal">
                <ui:Button x:Name="AddButton" Click="AddButton_OnClick">
                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe710;" FontSize="20"/>
@@ -24,8 +28,8 @@
             </ComboBox>
            </StackPanel>
            
-           <ScrollViewer x:Name="Viewer">
-               <WrapPanel  x:Name="Panel" Orientation="Horizontal">
+           <ScrollViewer x:Name="Viewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+               <WrapPanel  x:Name="Panel" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                </WrapPanel>
               </ScrollViewer>
                </StackPanel>

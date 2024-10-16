@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,21 +10,46 @@ namespace YuLauncher.Core.lib;
 
 public static class JsonControl
 {
-    public struct ApplicationJsonData
+    public struct ApplicationJsonData : IEquatable<ApplicationJsonData>
     {
         public string FilePath { get; set; }
         
         public string JsonPath { get; set; }
         
         public string Name { get; set; }
-        public string FileExtension { get; set; }
+        public string? FileExtension { get; set; }
         public string Memo { get; set; }
-        public bool IsWebView { get; set; }
-        public bool IsUseLog { get; set; }
+        public bool? IsWebView { get; set; }
+        public bool? IsUseLog { get; set; }
         
         public string Url { get; set;}
         
         public string[] MultipleLaunch { get; set; }
+
+        public bool Equals(ApplicationJsonData other)
+        {
+            return FilePath == other.FilePath && JsonPath == other.JsonPath && Name == other.Name && FileExtension == other.FileExtension && Memo == other.Memo && IsWebView == other.IsWebView && IsUseLog == other.IsUseLog && Url == other.Url && MultipleLaunch.Equals(other.MultipleLaunch);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ApplicationJsonData other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            hashCode.Add(FilePath);
+            hashCode.Add(JsonPath);
+            hashCode.Add(Name);
+            hashCode.Add(FileExtension);
+            hashCode.Add(Memo);
+            hashCode.Add(IsWebView);
+            hashCode.Add(IsUseLog);
+            hashCode.Add(Url);
+            hashCode.Add(MultipleLaunch);
+            return hashCode.ToHashCode();
+        }
     }
     
     public static async ValueTask CreateExeJson(string path,ApplicationJsonData applicationJsonData)
@@ -45,11 +71,54 @@ public static class JsonControl
 
     public static async ValueTask CheckJsonData(string jsonPath,ApplicationJsonData data)
     {
-        if (data.MultipleLaunch == null)
+        switch (data)
         {
-            data = data with { MultipleLaunch = new string[0] };
-            await CreateExeJson(jsonPath,data);
+            case { FilePath: null }:
+                data = data with { FilePath = "" };
+                    await CreateExeJson(jsonPath, data);
+                    break;
+            
+            case {JsonPath: null}:
+                data = data with { JsonPath = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case {Name:  null}:
+                data = data with { Name = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { FileExtension: null }:
+                data = data with { FileExtension = "Unknown" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { Memo: null }:
+                data = data with { Memo = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { IsWebView: null }:
+                data = data with { IsWebView = false };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { IsUseLog: null }:
+                data = data with { IsUseLog = false };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { Url: null }:
+                data = data with { Url = "" };
+                await CreateExeJson(jsonPath, data);
+                break;
+
+            case { MultipleLaunch: null }:
+                data = data with { MultipleLaunch = new string[0] };
+                await CreateExeJson(jsonPath, data);
+                break;
         }
+
     }
 
 }
