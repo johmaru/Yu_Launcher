@@ -18,26 +18,21 @@
             <ui:Button x:Name="AddButton" Click="AddButton_OnClick">
                 <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe710;" FontSize="20"/>
             </ui:Button>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <Grid>
-       
-                <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                </Grid.RowDefinitions>
-        
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" x:Name="NewsPanel" Orientation="Horizontal">
-                </StackPanel>
-                    <StackPanel Grid.Row="1" x:Name="NewsIcon" Orientation="Horizontal">
-                        
-                    </StackPanel>
-                </Grid>
+           
+            <Grid x:Name="NewsGrid">
+                <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding NewsItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <Image Source="{Binding IconSource}" Width="40" Height="40" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Title}" Tag="{Binding Url}" FontStretch="Condensed" Foreground="{Binding TextTheme}" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ui:DynamicScrollViewer>
             </Grid>  
-        </ScrollViewer>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <WrapPanel x:Name="WebGameListPanel" Orientation="Horizontal">
                     

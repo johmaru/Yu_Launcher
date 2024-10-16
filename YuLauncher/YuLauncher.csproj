@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <Configurations>Debug;Release;kireinaRelease</Configurations>
-        <LangVersion>13</LangVersion>
+        <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
     </PropertyGroup>

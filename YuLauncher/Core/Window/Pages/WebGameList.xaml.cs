@@ -1,6 +1,9 @@
-﻿using System;
-using System.Drawing;
+﻿﻿using System;
+ using System.Collections.ObjectModel;
+ using System.Diagnostics;
+ using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using HtmlAgilityPack;
 using Wpf.Ui;
 using Wpf.Ui.Appearance;
@@ -20,20 +24,36 @@ using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace YuLauncher.Core.Window.Pages;
 
+public class NewsItem
+{
+    public string Title { get; set; }
+    public string IconSource { get; set; }
+    public SolidColorBrush? TextTheme { get; set; }
+    public string Url { get; set; }
+}
 public partial class WebGameList : Page
 {
     private static string[]? _files;
     private readonly GameButton _gameButton = new();
+    public ObservableCollection<NewsItem> NewsItems { get; set; }
+    private ThemeService _theme = new();
     public WebGameList()
     {
         InitializeComponent();
         GameList.GameControl();
         LoggerController.LogInfo("WebGameList Initialized");
+        NewsItems = new ObservableCollection<NewsItem>();
+        DataContext = this;
         Task.Run(NewsParserAsync);
         
         PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
         CreateGameDialog.CloseObservable.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
         PropertyDialog.AllGameListPanelUpdate.Subscribe( _ => GameList_OnFileUpdate(this, EventArgs.Empty));
+        
+        this.SizeChanged += (sender, args) =>
+        {
+            NewsGrid.Height = this.WindowHeight * 0.3;
+        };
     }
     
 
@@ -45,63 +65,46 @@ public partial class WebGameList : Page
             HtmlWeb web = new HtmlWeb();
             var doc = await web.LoadFromWebAsync(url);
             var nodes = doc.DocumentNode.SelectNodes("//h2[@class='article-title']/a[@title]");
-            var nodeIcon = doc.DocumentNode.SelectNodes("//div[@class='article-img']/a/img[contains(@src, '.jpg') or contains(@src, '.png')]");
-            ThemeService themeService = new();
-            var theme = themeService.GetTheme();
+            var urlnodes = doc.DocumentNode.SelectNodes("//h2[@class='article-title']/a[@href]");
+            var nodeIcon = doc.DocumentNode.SelectNodes("//div[@class='article-img']/a/img"); 
+            var theme = _theme.GetTheme();
+          
 
-            foreach (var node in nodes)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+          
+                for (int i = 0; i < nodes.Count; i++)
                 {
+                    var title = nodes[i].InnerText;
+                    var iconSource = nodeIcon[i].GetAttributeValue("src", "");
+                    var contentUrl = urlnodes[i].GetAttributeValue("href", "");
+
+                    if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(iconSource)) continue;
                     if (theme == ApplicationTheme.Dark)
                     {
-                        NewsPanel.Children.Add(new TextBlock()
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
-                            Text = node.InnerText,
-                            Foreground = System.Windows.Media.Brushes.White,
-                            HorizontalAlignment= HorizontalAlignment.Stretch,
-                            VerticalAlignment= VerticalAlignment.Stretch,
-                            Margin = new Thickness(0, 0, 20, 0)
+                            NewsItems.Add(new NewsItem
+                            {
+                                Title = title,
+                                IconSource = iconSource,
+                                Url = contentUrl,
+                                TextTheme = new SolidColorBrush(Colors.White)
+                            });
                         });
                     }
                     else
                     {
-                        NewsPanel.Children.Add(new TextBlock()
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
-                            Text = node.InnerText,
-                            Foreground = System.Windows.Media.Brushes.Black,
-                            HorizontalAlignment= HorizontalAlignment.Stretch,
-                            VerticalAlignment= VerticalAlignment.Stretch,
-                            Margin = new Thickness(0, 0, 20, 0)
+                            NewsItems.Add(new NewsItem
+                            {
+                                Title = title,
+                                IconSource = iconSource,
+                                Url = contentUrl,
+                                TextTheme = new SolidColorBrush(Colors.Black)
+                            });
                         });
                     }
-                });
-            }
-
-            foreach (var node in nodeIcon)
-            {
-                var nodeValue = node.Attributes["src"].Value;
-                await Application.Current.Dispatcher.Invoke(() =>
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(nodeValue, UriKind.Absolute);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.DownloadCompleted += (sender, args) =>
-                    {
-                    };
-                    bitmap.EndInit();
-                    
-                    NewsIcon.Children.Add(new Image()
-                    {
-                        Source = bitmap,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Margin = new Thickness(0, 0, 20, 0)
-                    });
-                    return Task.CompletedTask;
-                });
-            }
+                }
         }
         catch (Exception ex)
         {
@@ -200,5 +203,40 @@ public partial class WebGameList : Page
     {
         CreateGameDialog createGameDialog = new CreateGameDialog();
         createGameDialog.Show();
+    }
+    
+    private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
+    {
+        if (sender is System.Windows.Controls.TextBlock text)
+        {
+            text.Foreground = new SolidColorBrush(Colors.GreenYellow);
+        }
+    }
+
+    private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
+    {
+        if (sender is System.Windows.Controls.TextBlock text)
+        {
+            text.Foreground = _theme.GetTheme() switch
+            {
+                ApplicationTheme.Dark => new SolidColorBrush(Colors.White),
+                ApplicationTheme.Light => new SolidColorBrush(Colors.Black),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
+
+    private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.TextBlock text) return;
+        if (text.Tag is string url)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+            
+        }
     }
 }
