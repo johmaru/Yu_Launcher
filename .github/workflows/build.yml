@@ -17,6 +17,11 @@ jobs:
               shell: bash
               run: echo "version=$(grep -oE '<Version>[^<]+' YuLauncher/YuLauncher.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
 
+            - name: Get Now Time
+              id: get-time
+              shell: bash
+              run: echo "time=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
             - name: Install .NET
               uses: actions/setup-dotnet@v4
               with:
@@ -30,5 +35,5 @@ jobs:
               run: |
                     dotnet tool install -g vpk
                     vpk download github --repoUrl https://github.com/johmaru/Yu_Launcher
-                    vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish
+                    vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher-${{ steps.get-version.outputs.version }}-${{ steps.get-time.outputs.time }}
                     vpk upload github --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
