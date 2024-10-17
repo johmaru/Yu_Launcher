@@ -9,22 +9,7 @@
         <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
-        <PublishSingleFile>true</PublishSingleFile>
-        <SelfContained>true</SelfContained>
-        <PublishTrimmed>false</PublishTrimmed>
-        <PublishReadyToRun>false</PublishReadyToRun>
     </PropertyGroup>
-
-    <ItemGroup>
-        <TrimmerRootAssembly Include="NLog" />
-        <TrimmerRootAssembly Include="Velopack" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="linker.xml">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
 
 
     <ItemGroup>
@@ -113,12 +98,6 @@
       <Resource Include="image\404-error-3060993_640.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="NLog.config">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
 </Project>
