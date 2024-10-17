@@ -36,4 +36,4 @@ jobs:
                     dotnet tool install -g vpk
                     vpk download github --repoUrl https://github.com/johmaru/Yu_Launcher
                     vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher-${{ steps.get-version.outputs.version }}-${{ steps.get-time.outputs.time }}
-                    vpk upload github --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+                    vpk upload github --token ${{ secrets.TOKEN }}  --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
