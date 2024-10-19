@@ -55,12 +55,12 @@
             <ui:TextBlock Text="{lex:Loc SimpleExit}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
         </ui:NavigationViewItem>
     </ui:NavigationView.MenuItems>
-            <ui:NavigationView.Header>
+            <ui:NavigationView.ContentOverlay>
                 <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Frame x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
                 </Grid>
                 
-            </ui:NavigationView.Header>
+            </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
     </Grid>
 </Page>

@@ -29,15 +29,24 @@ namespace YuLauncher
        public LanguageUpdater? LanguageUpdater { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         { 
-           await FirstLunch();
+            try
+            {
+                await FirstLunch();
 
-           await LanguageCheck();
+                await LanguageCheck();
 
-           await Initialize();
+                await Initialize();
 
-           await JsonCheck();
-           
-           _ = UpdateCheck();
+                await JsonCheck();
+
+                _ = UpdateCheck();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                LoggerController.LogError($"{exception}");
+                throw;
+            }
            
            LoggerController.LogInfo("Application Start");
         }

@@ -477,6 +477,33 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ミュート.
+        /// </summary>
+        public static string SimpleMute {
+            get {
+                return ResourceManager.GetString("SimpleMute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mute(無効).
+        /// </summary>
+        public static string SimpleMuteDisable {
+            get {
+                return ResourceManager.GetString("SimpleMuteDisable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ミュート(有効化).
+        /// </summary>
+        public static string SimpleMuteEnable {
+            get {
+                return ResourceManager.GetString("SimpleMuteEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 名前.
         /// </summary>
         public static string SimpleName {
@@ -537,6 +564,15 @@ namespace YuLauncher.LangString {
         public static string SimpleUseWebview {
             get {
                 return ResourceManager.GetString("SimpleUseWebview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ビデオ/グラフィック/ディスプレイ.
+        /// </summary>
+        public static string VideoGraphics {
+            get {
+                return ResourceManager.GetString("VideoGraphics", resourceCulture);
             }
         }
         

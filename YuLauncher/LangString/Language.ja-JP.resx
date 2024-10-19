@@ -292,4 +292,7 @@
   <data name="SimpleMuteDisable" xml:space="preserve">
     <value>Mute(無効)</value>
   </data>
+  <data name="VideoGraphics" xml:space="preserve">
+    <value>ビデオ/グラフィック/ディスプレイ</value>
+  </data>
 </root>

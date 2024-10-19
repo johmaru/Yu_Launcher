@@ -12,6 +12,7 @@ namespace YuLauncher.Core.Window;
 public partial class SettingWindow : FluentWindow
 {
     private readonly ManualTomlSettings _manualTomlSettings = new();
+    public static double WindowWidth = new SettingWindow().Width;
     public SettingWindow()
     {
         InitializeComponent();

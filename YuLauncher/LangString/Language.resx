@@ -145,7 +145,7 @@
     <value>Language</value>
   </data>
   <data name="SimpleEnglish" xml:space="preserve">
-    <value />
+    <value>English</value>
   </data>
   <data name="SimpleJapanese" xml:space="preserve">
     <value>Japanese</value>
@@ -287,5 +287,8 @@
   </data>
   <data name="SimpleMuteDisable" xml:space="preserve">
     <value>Mute(Disable)</value>
+  </data>
+  <data name="VideoGraphics" xml:space="preserve">
+    <value>Video/Graphic/display</value>
   </data>
 </root>
