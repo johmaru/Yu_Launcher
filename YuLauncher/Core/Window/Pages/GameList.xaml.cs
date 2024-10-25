@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,6 @@ public partial class GameList : Page
     private readonly GameButton _gameButton = new GameButton();
     private static string[]? _files;
     
-    
     public GameList()
     {
         InitializeComponent();
@@ -31,6 +31,7 @@ public partial class GameList : Page
         PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
         CreateGameDialog.CloseObservable.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
         PropertyDialog.AllGameListPanelUpdate.Subscribe( n => PropertyDialogOnAllGamePanelUpdate(this, EventArgs.Empty,n));
+        MainPage.SettingWindowClose.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
     }
     
     private async void PropertyDialogOnAllGamePanelUpdate(object? sender, EventArgs e, int n)
@@ -40,6 +41,7 @@ public partial class GameList : Page
             case 0:
                 // App Update
                 _files = null;
+                if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
         
                 await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
@@ -48,6 +50,7 @@ public partial class GameList : Page
             case 1:
                 // Web Update
                 _files = null;
+                if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
         
                 await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
@@ -60,6 +63,7 @@ public partial class GameList : Page
     private async void PropertyDialogPanelUpdate(object? sender, EventArgs e)
     {
         _files = null;
+        if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
         
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         

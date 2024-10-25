@@ -23,9 +23,19 @@ namespace YuLauncher.Core.Window.Pages
             LoggerController.LogInfo("SettingPage Initialized");
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void VideoVisualItem_OnClick(object sender, RoutedEventArgs e)
         {
             ContentFrame.Source = new Uri("Settings/VideoGraphics.xaml", UriKind.Relative);
+        }
+
+        private void GeneralItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Source = new Uri("Settings/General.xaml", UriKind.Relative);
+        }
+
+        private void SettingPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+           ContentFrame.Source = new Uri("Settings/General.xaml", UriKind.Relative);
         }
     }
     }

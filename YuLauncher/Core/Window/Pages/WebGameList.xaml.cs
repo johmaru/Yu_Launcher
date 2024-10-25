@@ -73,9 +73,6 @@ public partial class WebGameList : Page
             var subNodeIcon = doc.DocumentNode.SelectNodes("//div[@class='SecondaryCard_media__KSLGm undefined']/a/div/img");
             var theme = _theme.GetTheme();
             
-            Console.WriteLine(primalNodeIcon.Count);
-            Console.WriteLine(subNodeIcon.Count);
-            
             
             
                 for (int i = 0; i < primalNodes.Count; i++)

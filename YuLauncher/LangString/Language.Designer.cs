@@ -375,11 +375,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AppData.
+        /// </summary>
+        public static string SimpleAppData {
+            get {
+                return ResourceManager.GetString("SimpleAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string SimpleBack {
             get {
                 return ResourceManager.GetString("SimpleBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complated.
+        /// </summary>
+        public static string SimpleCompleted {
+            get {
+                return ResourceManager.GetString("SimpleCompleted", resourceCulture);
             }
         }
         
@@ -420,6 +438,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string SimpleExport {
+            get {
+                return ResourceManager.GetString("SimpleExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Not Found,Please check exe path for property.
         /// </summary>
         public static string SimpleFileNotFound {
@@ -452,6 +479,24 @@ namespace YuLauncher.LangString {
         public static string SimpleFullScreen {
             get {
                 return ResourceManager.GetString("SimpleFullScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string SimpleGeneral {
+            get {
+                return ResourceManager.GetString("SimpleGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string SimpleImport {
+            get {
+                return ResourceManager.GetString("SimpleImport", resourceCulture);
             }
         }
         

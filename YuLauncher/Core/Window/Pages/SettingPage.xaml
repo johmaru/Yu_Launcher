@@ -11,13 +11,15 @@
       lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
       lex:ResxLocalizationProvider.DefaultDictionary="Language"
       MinWidth="800" MinHeight="400"
+      Loaded="SettingPage_OnLoaded"
       mc:Ignorable="d">
     
 
     <Grid>
         <ui:NavigationView PaneDisplayMode="LeftMinimal" IsPaneOpen="False">
-          <ui:NavigationView.MenuItems>
-              <ui:NavigationViewItem Click="ButtonBase_OnClick" Icon="{ui:SymbolIcon Video16}"/>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem x:Name="GeneralItem" Click="GeneralItem_OnClick" Icon="{ui:SymbolIcon WindowDevTools16}"/>
+                <ui:NavigationViewItem x:Name="VideoVisualItem" Click="VideoVisualItem_OnClick" Icon="{ui:SymbolIcon Video16}"/>
           </ui:NavigationView.MenuItems>
             <ui:NavigationView.ContentOverlay>
                 <Frame x:Name="ContentFrame"/>

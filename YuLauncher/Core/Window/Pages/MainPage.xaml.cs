@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reactive.Subjects;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -22,6 +23,9 @@ namespace YuLauncher.Core.Window.Pages
     public partial class MainPage : Page
     {
         private ApplicationTheme _theme = new ThemeService().GetTheme();
+        private static Subject<int> _settingWindowClose = new Subject<int>();
+        public static IObservable<int> SettingWindowClose => _settingWindowClose;
+        
         public MainPage()
         {
             InitializeComponent();
@@ -52,6 +56,12 @@ namespace YuLauncher.Core.Window.Pages
             {
                 Owner = Application.Current.MainWindow
             };
+            
+            settingWindow.Closed += (o, args) =>
+            {
+                _settingWindowClose.OnNext(0);
+            };
+            
             settingWindow.Show();
         }
 
