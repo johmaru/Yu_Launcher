@@ -16,7 +16,7 @@
           AllowDrop="True"
           DragEnter="Main_OnDragEnter"
           >
-        <ui:NavigationView x:Name="View" PaneDisplayMode="LeftMinimal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ui:NavigationView x:Name="View" PaneDisplayMode="LeftMinimal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsPaneOpen="False">
             <ui:NavigationView.MenuItems>
         <ui:NavigationViewItem x:Name="GameListBtn" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="GameListBtn_OnClick">
             <ui:NavigationViewItem.Icon>
@@ -55,12 +55,12 @@
             <ui:TextBlock Text="{lex:Loc SimpleExit}" TextWrapping="Wrap" Width="{Binding RelativeSource={RelativeSource AncestorType=ui:NavigationView}, Path=ActualWidth}"/>
         </ui:NavigationViewItem>
     </ui:NavigationView.MenuItems>
-            <ui:NavigationView.Header>
+            <ui:NavigationView.ContentOverlay>
                 <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Frame x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
                 </Grid>
                 
-            </ui:NavigationView.Header>
+            </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
     </Grid>
 </Page>

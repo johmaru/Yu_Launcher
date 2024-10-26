@@ -375,11 +375,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to アプリケーションデータ.
+        /// </summary>
+        public static string SimpleAppData {
+            get {
+                return ResourceManager.GetString("SimpleAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 戻る.
         /// </summary>
         public static string SimpleBack {
             get {
                 return ResourceManager.GetString("SimpleBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 完了.
+        /// </summary>
+        public static string SimpleCompleted {
+            get {
+                return ResourceManager.GetString("SimpleCompleted", resourceCulture);
             }
         }
         
@@ -421,6 +439,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to エクスポート.
+        /// </summary>
+        public static string SimpleExport {
+            get {
+                return ResourceManager.GetString("SimpleExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ファイルが見つかりません、プロパティーの実行アプリケーション場所を確認してください.
         /// </summary>
         public static string SimpleFileNotFound {
@@ -458,6 +485,24 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 一般.
+        /// </summary>
+        public static string SimpleGeneral {
+            get {
+                return ResourceManager.GetString("SimpleGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to インポート.
+        /// </summary>
+        public static string SimpleImport {
+            get {
+                return ResourceManager.GetString("SimpleImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 日本語
         ///.
         /// </summary>
@@ -473,6 +518,33 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ミュート.
+        /// </summary>
+        public static string SimpleMute {
+            get {
+                return ResourceManager.GetString("SimpleMute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mute(無効).
+        /// </summary>
+        public static string SimpleMuteDisable {
+            get {
+                return ResourceManager.GetString("SimpleMuteDisable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ミュート(有効化).
+        /// </summary>
+        public static string SimpleMuteEnable {
+            get {
+                return ResourceManager.GetString("SimpleMuteEnable", resourceCulture);
             }
         }
         
@@ -537,6 +609,15 @@ namespace YuLauncher.LangString {
         public static string SimpleUseWebview {
             get {
                 return ResourceManager.GetString("SimpleUseWebview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ビデオ/グラフィック/ディスプレイ.
+        /// </summary>
+        public static string VideoGraphics {
+            get {
+                return ResourceManager.GetString("VideoGraphics", resourceCulture);
             }
         }
         

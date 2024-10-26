@@ -145,7 +145,7 @@
     <value>Language</value>
   </data>
   <data name="SimpleEnglish" xml:space="preserve">
-    <value />
+    <value>English</value>
   </data>
   <data name="SimpleJapanese" xml:space="preserve">
     <value>Japanese</value>
@@ -287,5 +287,23 @@
   </data>
   <data name="SimpleMuteDisable" xml:space="preserve">
     <value>Mute(Disable)</value>
+  </data>
+  <data name="VideoGraphics" xml:space="preserve">
+    <value>Video/Graphic/display</value>
+  </data>
+  <data name="SimpleGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SimpleImport" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="SimpleAppData" xml:space="preserve">
+    <value>AppData</value>
+  </data>
+  <data name="SimpleExport" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="SimpleCompleted" xml:space="preserve">
+    <value>Complated</value>
   </data>
 </root>

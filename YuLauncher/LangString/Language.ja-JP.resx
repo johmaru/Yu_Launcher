@@ -292,4 +292,22 @@
   <data name="SimpleMuteDisable" xml:space="preserve">
     <value>Mute(無効)</value>
   </data>
+  <data name="VideoGraphics" xml:space="preserve">
+    <value>ビデオ/グラフィック/ディスプレイ</value>
+  </data>
+  <data name="SimpleGeneral" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="SimpleImport" xml:space="preserve">
+    <value>インポート</value>
+  </data>
+  <data name="SimpleAppData" xml:space="preserve">
+    <value>アプリケーションデータ</value>
+  </data>
+  <data name="SimpleExport" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="SimpleCompleted" xml:space="preserve">
+    <value>完了</value>
+  </data>
 </root>

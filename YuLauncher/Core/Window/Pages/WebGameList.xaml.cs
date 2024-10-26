@@ -61,23 +61,30 @@ public partial class WebGameList : Page
     {
         try
         {
-            var url = @"https://app.famitsu.com/category/news/";
+            var url = @"https://app.famitsu.com/group/news/page/1";
             HtmlWeb web = new HtmlWeb();
             var doc = await web.LoadFromWebAsync(url);
-            var nodes = doc.DocumentNode.SelectNodes("//h2[@class='article-title']/a[@title]");
-            var urlnodes = doc.DocumentNode.SelectNodes("//h2[@class='article-title']/a[@href]");
-            var nodeIcon = doc.DocumentNode.SelectNodes("//div[@class='article-img']/a/img"); 
+            var primalNodes = doc.DocumentNode.SelectNodes("//div[@class='PrimaryCardInner_cardText__P7Lcc']/p/a");
+            var primalUrlNodes = doc.DocumentNode.SelectNodes("//div[@class='PrimaryCardInner_cardText__P7Lcc']/p/a");
+            var primalNodeIcon = doc.DocumentNode.SelectNodes("//div[@class='PrimaryCard_cardMedia__ufh2C  undefined']/a/div/img"); 
+            
+            var subNodes = doc.DocumentNode.SelectNodes("//div[@class='SecondaryCard_body__FOIoi ']");
+            var subUrlNodes = doc.DocumentNode.SelectNodes("//div[@class='SecondaryCard_body__FOIoi ']/p/a");
+            var subNodeIcon = doc.DocumentNode.SelectNodes("//div[@class='SecondaryCard_media__KSLGm undefined']/a/div/img");
             var theme = _theme.GetTheme();
-          
-
-          
-                for (int i = 0; i < nodes.Count; i++)
+            
+            
+            
+                for (int i = 0; i < primalNodes.Count; i++)
                 {
-                    var title = nodes[i].InnerText;
-                    var iconSource = nodeIcon[i].GetAttributeValue("src", "");
-                    var contentUrl = urlnodes[i].GetAttributeValue("href", "");
+                    var title = primalNodes[i].InnerText;
+                    var iconSource = primalNodeIcon[i].GetAttributeValue("src", "");
+                    var contentUrl = "https://app.famitsu.com/" + primalUrlNodes[i].GetAttributeValue("href", "");
+                    var mainAncestor = primalNodes[i].Ancestors("main").FirstOrDefault();
 
                     if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(iconSource)) continue;
+
+                    if (mainAncestor == null) continue;
                     if (theme == ApplicationTheme.Dark)
                     {
                         Application.Current.Dispatcher.Invoke(() =>
@@ -104,6 +111,47 @@ public partial class WebGameList : Page
                             });
                         });
                     }
+                }
+                
+                Console.WriteLine(subNodeIcon.Count);
+
+                for (int i = 0; i < subNodes.Count; i++)
+                {
+                        var title = subNodes[i].InnerText;
+                        var iconSource = subNodeIcon[i].GetAttributeValue("src", "");
+                        var contentUrl = "https://app.famitsu.com/" + subUrlNodes[i].GetAttributeValue("href", "");
+                        var mainAncestor = subNodes[i].Ancestors("main").FirstOrDefault();
+                        
+                        if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(iconSource)) continue;
+
+                        if (mainAncestor == null) continue;
+                        if (theme == ApplicationTheme.Dark)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                NewsItems.Add(new NewsItem
+                                {
+                                    Title = title,
+                                    IconSource = iconSource,
+                                    Url = contentUrl,
+                                    TextTheme = new SolidColorBrush(Colors.White)
+                                });
+                            });
+                        }
+                        else
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                NewsItems.Add(new NewsItem
+                                {
+                                    Title = title,
+                                    IconSource = iconSource,
+                                    Url = contentUrl,
+                                    TextTheme = new SolidColorBrush(Colors.Black)
+                                });
+                            });
+                        }
+                    
                 }
         }
         catch (Exception ex)
