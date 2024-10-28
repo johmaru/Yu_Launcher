@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,6 +23,7 @@ using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
+using Button = Wpf.Ui.Controls.Button;
 
 namespace YuLauncher.Game.Window
 {
@@ -105,6 +107,13 @@ namespace YuLauncher.Game.Window
                null,
                CoreWebView2ContextMenuItemKind.Command
            );
+           
+           var volumeMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+               LocalizeControl.GetLocalize<string>("SimpleVolume"),
+               null,
+               CoreWebView2ContextMenuItemKind.Command
+           );
+           
            // Event
            menuForward.CustomItemSelected += (_,_) => { WebView.GoForward(); };
            
@@ -112,12 +121,77 @@ namespace YuLauncher.Game.Window
            
            menuReload.CustomItemSelected += (_,_) => { WebView.Reload(); };
            
+              volumeMenu.CustomItemSelected += (_,_) =>
+              {
+                  var stackPanel = new StackPanel()
+                  {
+                      Orientation = Orientation.Vertical,
+                      HorizontalAlignment = HorizontalAlignment.Center,
+                      VerticalAlignment = VerticalAlignment.Center
+                  };
+                  var button = new Button()
+                  {
+                      Content = LocalizeControl.GetLocalize<string>("SimpleSave"),
+                      Margin = new Thickness(10, 10, 10, 10),
+                      Width = 80,
+                      Height = 30
+                  };
+                  
+                  
+                  var slider = new Slider()
+                  {
+                      Minimum = 0,
+                      Maximum = 1,
+                      Value = _data.Volume ?? 1,
+                      IsSnapToTickEnabled = true,
+                      TickFrequency = 0.1,
+                      TickPlacement = TickPlacement.BottomRight,
+                      IsDirectionReversed = true,
+                      VerticalAlignment = VerticalAlignment.Center,
+                      HorizontalAlignment = HorizontalAlignment.Center,
+                      Margin = new Thickness(10, 10, 10, 10),
+                      Width = 80,
+                      Height = 100,
+                      Orientation = Orientation.Vertical
+                  };
+                  
+                  slider.ValueChanged += (_,_) =>
+                  {
+                      
+                  };
+                  
+                  var volumeWindow = new FluentWindow()
+                  {
+                      Height = 200,
+                      Width = 100,
+                      ResizeMode = ResizeMode.NoResize,
+                      WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                      Title = LocalizeControl.GetLocalize<string>("SimpleVolume"),
+                      Content = stackPanel
+                  };
+                    volumeWindow.Show();
+                    
+                    //event 
+                    button.Click += (_,_) =>
+                    {
+                        _data = _data with { Volume =  slider.Value = Math.Round(slider.Value, 1) };
+                        _ = JsonControl.CreateExeJson(_data.JsonPath, _data);
+                        SetWebViewVolume();
+                        volumeWindow.Close();
+                    };
+                  
+                    stackPanel.Children.Add(slider);
+                    stackPanel.Children.Add(button);
+              };
+           
            // Add
            controlMenu.Children.Add(menuForward);
            
            controlMenu.Children.Add(menuBack);
            
            controlMenu.Children.Add(menuReload);
+           
+              controlMenu.Children.Add(volumeMenu);
            
            //ControlMenu Add
            e.MenuItems.Add(controlMenu);
@@ -237,11 +311,19 @@ namespace YuLauncher.Game.Window
             this.WindowState = WindowState.Minimized;
         }
         
-        private void SetWebViewVolume()
+        private async void SetWebViewVolume()
         {
             if (_data.Volume == null) return;
-            string script = $"document.getElementsByTagName('video')[0].volume = {_data.Volume}";
-            WebView.CoreWebView2.ExecuteScriptAsync(script);
+
+            string script = $@"
+            document.addEventListener('DOMContentLoaded', function() {{
+            var video = document.getElementsByTagName('video')[0];
+            if (video) {{
+                video.volume = {_data.Volume};
+                }}
+                }});
+                    ";
+            await WebView.CoreWebView2.ExecuteScriptAsync(script);
         }
 
         private void WebView_OnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)

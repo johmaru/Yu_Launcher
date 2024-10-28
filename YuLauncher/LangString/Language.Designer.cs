@@ -609,6 +609,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string SimpleVolume {
+            get {
+                return ResourceManager.GetString("SimpleVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video/Graphic/display.
         /// </summary>
         public static string VideoGraphics {

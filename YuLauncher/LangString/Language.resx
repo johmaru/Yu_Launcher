@@ -306,4 +306,7 @@
   <data name="SimpleCompleted" xml:space="preserve">
     <value>Complated</value>
   </data>
+  <data name="SimpleVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>

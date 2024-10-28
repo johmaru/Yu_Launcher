@@ -310,4 +310,7 @@
   <data name="SimpleCompleted" xml:space="preserve">
     <value>完了</value>
   </data>
+  <data name="SimpleVolume" xml:space="preserve">
+    <value>ボリューム</value>
+  </data>
 </root>
