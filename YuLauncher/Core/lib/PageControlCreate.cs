@@ -401,7 +401,7 @@ public class GameButton : Button
 
                         break;
                     case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data);
+                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
                         gameWindow.Show();
                         break;
                     case "WebSaver":
@@ -418,8 +418,8 @@ public class GameButton : Button
                     if (data.MultipleLaunch == null) return;
                     foreach (var multipleLaunch in data.MultipleLaunch)
                     {
-                        JsonControl.ApplicationJsonData multipleData =
-                            await JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
+                        JsonControl.ApplicationJsonData multipleData = 
+                          await  JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
                         switch (multipleData.FileExtension)
                         {
                             case "exe":
@@ -492,7 +492,7 @@ public class GameButton : Button
 
                                 break;
                             case "WebGame":
-                                GameWindow gameWindow = new GameWindow(multipleData.Url, multipleData);
+                                GameWindow gameWindow = new GameWindow(multipleData.Url, multipleData.JsonPath);
                                 gameWindow.Show();
                                 break;
                             case "WebSaver":
@@ -580,7 +580,7 @@ public class GameButton : Button
 
                         break;
                     case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data);
+                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
                         gameWindow.Show();
                         break;
                     case "WebSaver":

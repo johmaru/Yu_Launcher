@@ -171,6 +171,8 @@ public partial class CreateGameDialog : FluentWindow
                     Memo = "",
                     IsWebView = false,
                     IsUseLog = false,
+                    IsMute = false,
+                    Volume = 1.0,
                     MultipleLaunch = new []{""}
                 };
                 await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);

@@ -43,7 +43,7 @@
             </ui:Button>
             </StackPanel>
         </Grid>
-        <wv2:WebView2 Name="WebView" CoreWebView2InitializationCompleted="WebView_OnCoreWebView2InitializationCompleted"/>
+        <wv2:WebView2 Name="WebView"/>
     </DockPanel>
     </Grid>
 </ui:FluentWindow>

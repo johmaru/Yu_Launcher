@@ -31,12 +31,29 @@ namespace YuLauncher.Game.Window
     public partial class GameWindow : FluentWindow
     {
         private JsonControl.ApplicationJsonData _data;
+        
         private GameWindow ThisGameWindow { get; }
-        public GameWindow(string url,JsonControl.ApplicationJsonData data)
+        public GameWindow(string url,string jsonPath)
         {
             InitializeComponent();
+            
+           _data = JsonControl.LoadJson(jsonPath);
+            
+            WebView.CoreWebView2InitializationCompleted += WebView_OnCoreWebView2InitializationCompleted;   
 
-            this._data = data;
+            try
+            {
+                if (_data is { FileExtension: "WebGame", Volume: null })
+                {
+                    JsonControl.ApplicationJsonData newData = _data with { Volume = 1.0 };
+                    _ = JsonControl.CreateExeJson(_data.JsonPath, newData);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
             ThisGameWindow = this;
 
@@ -122,6 +139,8 @@ namespace YuLauncher.Game.Window
                     true => false,
                     _ => true
                 };
+                var newData = _data with { IsMute = WebView.CoreWebView2.IsMuted };
+                _ = JsonControl.CreateExeJson(_data.JsonPath, newData);
             };
 
             e.MenuItems.Add(muteMenu);
@@ -189,6 +208,8 @@ namespace YuLauncher.Game.Window
         {
             WebView.Stop();
             WebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
+            WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
+            WebView.CoreWebView2InitializationCompleted -= WebView_OnCoreWebView2InitializationCompleted;
             WebView.Dispose();
         }
 
@@ -215,6 +236,13 @@ namespace YuLauncher.Game.Window
         {
             this.WindowState = WindowState.Minimized;
         }
+        
+        private void SetWebViewVolume()
+        {
+            if (_data.Volume == null) return;
+            string script = $"document.getElementsByTagName('video')[0].volume = {_data.Volume}";
+            WebView.CoreWebView2.ExecuteScriptAsync(script);
+        }
 
         private void WebView_OnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
@@ -222,6 +250,14 @@ namespace YuLauncher.Game.Window
             {
                 WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
                 WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
+                
+                WebView.CoreWebView2.IsMuted = _data.IsMute;
+                
+                if (_data.Volume != null)
+                {
+                  SetWebViewVolume();
+                }
+                
             }
             else
             {
@@ -233,7 +269,7 @@ namespace YuLauncher.Game.Window
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
             e.Handled = true;
-            GameWindow gameWindow = new GameWindow(e.Uri, _data)
+            GameWindow gameWindow = new GameWindow(e.Uri, _data.JsonPath)
             {
                 
             };

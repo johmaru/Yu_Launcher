@@ -68,6 +68,8 @@ public partial class GameList : Page
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
         GenreAllUpdate();
+
+        Application.Current.MainWindow?.Activate();
     }
 
     private async void Initialize()
