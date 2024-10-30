@@ -68,6 +68,11 @@ public partial class General : Page
             {
                 MessageBox.Show("settings.toml not found");
             }
+
+            if (Directory.Exists("YuLauncher.exe.WebView2"))
+            {
+                FileControl.CopyDirectory("YuLauncher.exe.WebView2", Path.Combine(dialog.FolderName, "YuLauncher.exe.WebView2"));
+            }
         }
         catch (Exception exception)
         {
@@ -125,6 +130,11 @@ public partial class General : Page
             else
             {
                 MessageBox.Show("settings.toml not found");
+            }
+            
+            if (Directory.Exists(dialog.FolderName + "/YuLauncher.exe.WebView2"))
+            {
+                FileControl.CopyDirectory(dialog.FolderName + "/YuLauncher.exe.WebView2", "YuLauncher.exe.WebView2");
             }
         }
         catch (Exception exception)
