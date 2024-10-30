@@ -97,24 +97,32 @@ public partial class GameList : Page
             foreach (var file in _files)
             {
                 string name = Path.GetFileNameWithoutExtension(file);
-                var jsonData = await JsonControl.ReadExeJson(file);
-                try
+
+                if (Path.GetExtension(file) == ".txt")
                 {
-                    if (jsonData.FileExtension == "WebGame")
+                   LoggerController.LogError($"{file}: is not a valid file");
+                }
+                else
+                {
+                    var jsonData = await JsonControl.ReadExeJson(file);
+                    try
                     {
-                        continue;
+                        if (jsonData.FileExtension == "WebGame")
+                        {
+                            continue;
+                        }
+
+                        Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
+                    }
+                    catch (System.IO.IOException ex)
+                    {
+                        Console.WriteLine("An I/O error occurred: " + ex.Message);
+                        LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                        throw;
                     }
 
-                    Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
+                    LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
                 }
-                catch (System.IO.IOException ex)
-                {
-                    Console.WriteLine("An I/O error occurred: " + ex.Message);
-                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                    throw;
-                }
-
-                LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
             }
 
         Viewer.Content = null;

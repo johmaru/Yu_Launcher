@@ -20,29 +20,63 @@ public partial class General : Page
        ThemePagePatcher.PatchTheme(this);
     }
 
-    private void ImportBtn_OnClick(object sender, RoutedEventArgs e)
+    private void ExportBtn_OnClick(object sender, RoutedEventArgs e)
     {
         var dialog = new OpenFolderDialog()
         {
             
-            Title = "Select new Game Folder",
+            Title = "Select new YuLauncher Folder",
         };
 
         if (dialog.ShowDialog() != true) return;
-        if (dialog.SafeFolderName != "Games") MessageBox.Show("this Folder is not Games");
-        if (Directory.Exists("./Games"))
+        
+        try
         {
-            Directory.GetFiles("./Games").ToList().ForEach(x =>
+            if (Directory.Exists("./Games"))
             {
-                string destFileName = Path.Combine(dialog.FolderName, Path.GetFileName(x));
-                File.Copy(x, destFileName, true);
-            });
-            MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleCompleted"));
+                Directory.GetFiles("./Games").ToList().ForEach(x =>
+                {
+                    string destFileName = Path.Combine(dialog.FolderName + "/Games", Path.GetFileName(x));
+                    File.Copy(x, destFileName, true);
+                });
+            }
+            else
+            {
+                Directory.CreateDirectory("./Games");
+            }
+            
+            if (Directory.Exists("./html"))
+            {
+                Directory.GetFiles("./html").ToList().ForEach(x =>
+                {
+                    string destFileName = Path.Combine(dialog.FolderName + "/html", Path.GetFileName(x));
+                    File.Copy(x, destFileName, true);
+                });
+
+            }
+            else
+            {
+                Directory.CreateDirectory("./html");
+            }
+            
+            if (File.Exists("settings.toml"))
+            {
+                string destFileName = Path.Combine(dialog.FolderName, "settings.toml");
+                File.Copy("settings.toml", destFileName, true);
+            }
+            else
+            {
+                MessageBox.Show("settings.toml not found");
+            }
         }
-        else
+        catch (Exception exception)
         {
-            Directory.CreateDirectory("./Games");
+            Console.WriteLine(exception);
+            throw;
         }
+        
+        MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleCompleted"));
+        
     }
 
     private void AppImportBtn_OnClick(object sender, RoutedEventArgs e)
@@ -53,19 +87,50 @@ public partial class General : Page
         };
 
         if (dialog.ShowDialog() != true) return;
-        if (dialog.SafeFolderName != "Games") MessageBox.Show("this Folder is not Games");
-        if (Directory.Exists("./Games"))
+
+        try
         {
-            Directory.GetFiles(dialog.FolderName).ToList().ForEach(x =>
+            if (Directory.Exists(dialog.FolderName + "/Games"))
             {
-                string destFileName = Path.Combine("./Games", Path.GetFileName(x));
-                File.Copy(x, destFileName, true);
-            });
-            MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleCompleted"));
+                Directory.GetFiles(dialog.FolderName + "/Games").ToList().ForEach(x =>
+                {
+                    string destFileName = Path.Combine("./Games", Path.GetFileName(x));
+                    File.Copy(x, destFileName, true);
+                });
+            }
+            else
+            {
+                MessageBox.Show("Games Folder not found");
+            }
+            
+            if (Directory.Exists(dialog.FolderName + "/html"))
+            {
+                Directory.GetFiles(dialog.FolderName + "/html").ToList().ForEach(x =>
+                {
+                    string destFileName = Path.Combine("./html", Path.GetFileName(x));
+                    File.Copy(x, destFileName, true);
+                });
+
+            }
+            else
+            {
+                MessageBox.Show("html Folder not found");
+            }
+            
+            if (File.Exists(dialog.FolderName + "/settings.toml"))
+            {
+                string destFileName = Path.Combine("./settings.toml");
+                File.Copy(dialog.FolderName + "/settings.toml", destFileName, true);
+            }
+            else
+            {
+                MessageBox.Show("settings.toml not found");
+            }
         }
-        else
+        catch (Exception exception)
         {
-            Directory.CreateDirectory("./Games");
+            Console.WriteLine(exception);
+            throw;
         }
     }
 }
