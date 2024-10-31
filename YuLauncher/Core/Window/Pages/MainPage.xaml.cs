@@ -8,8 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using Wpf.Ui;
-using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using YuLauncher.Properties;
@@ -22,7 +20,6 @@ namespace YuLauncher.Core.Window.Pages
     /// </summary>
     public partial class MainPage : Page
     {
-        private ApplicationTheme _theme = new ThemeService().GetTheme();
         private static Subject<int> _settingWindowClose = new Subject<int>();
         public static IObservable<int> SettingWindowClose => _settingWindowClose;
         
@@ -88,7 +85,7 @@ namespace YuLauncher.Core.Window.Pages
                 string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
                 if (files.Length > 0)
                 {
-                    string fileExtension = System.IO.Path.GetExtension(files[0]);
+                    string fileExtension = Path.GetExtension(files[0]);
                     if (fileExtension == ".exe")
                     {
                         e.Effects = DragDropEffects.Copy;

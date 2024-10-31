@@ -33,14 +33,14 @@ public partial class CreateGameDialog : FluentWindow
     {
         InitializeComponent();
         LoggerController.LogInfo("CreateGameDialog Loaded");
-        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
 
     public CreateGameDialog(string path)
     {
         InitializeComponent();
         LoggerController.LogInfo("CreateGameDialog Loaded");
-        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
         PathLabel.Content = path;
         Label.Text = Path.GetFileNameWithoutExtension(path);
     }
@@ -61,7 +61,7 @@ public partial class CreateGameDialog : FluentWindow
                         _openFileDialog = ofd.FileName;
                         PathLabel.Content = _openFileDialog;
                         Label.Text = Path.GetFileNameWithoutExtension(_openFileDialog);
-                        this.Activate();
+                        Activate();
                     }
                     catch (Exception exception)
                     {
@@ -77,11 +77,11 @@ public partial class CreateGameDialog : FluentWindow
                     Timer timer = new Timer(3000);
                     timer.Elapsed += (_,_) =>
                     {
-                        this.Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
+                        Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
                         timer.Stop();
                     };
                     timer.Start();
-                    this.Activate();
+                    Activate();
                 }
 
                 ;
@@ -97,14 +97,14 @@ public partial class CreateGameDialog : FluentWindow
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
         LoggerController.LogInfo("CreateGameDialog Closed");
     }
 
     private void CreateGameDialog_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
-            this.DragMove();
+            DragMove();
     }
 
     private async void CreateButton_OnClick(object sender, RoutedEventArgs e)
@@ -148,7 +148,7 @@ public partial class CreateGameDialog : FluentWindow
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
 
                     _onClose.OnNext(0);
-                    this.Close();
+                    Close();
                 }
             }
             catch (Exception exception)
@@ -187,7 +187,7 @@ public partial class CreateGameDialog : FluentWindow
             }
 
             _onClose.OnNext(0);
-            this.Close();
+            Close();
         }
         
         else if (GenreSelectComboBox.SelectedItem == GenreWebGameComboBoxItem)
@@ -214,7 +214,7 @@ public partial class CreateGameDialog : FluentWindow
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             _onClose.OnNext(0);
-            this.Close();
+            Close();
         }
         
         else if (GenreSelectComboBox.SelectedItem == GenreWebSaverComboBoxItem)
@@ -257,7 +257,7 @@ public partial class CreateGameDialog : FluentWindow
                    LoggerController.LogError(exception.Message);
                 }
                 _onClose.OnNext(0);
-                this.Close();
+                Close();
             }
             else
             {
@@ -316,7 +316,7 @@ public partial class CreateGameDialog : FluentWindow
             Timer timer = new Timer(3000);
             timer.Elapsed += (_,_) =>
             {
-                this.Dispatcher.Invoke(() => { GenreLabel.Visibility = Visibility.Collapsed; });
+                Dispatcher.Invoke(() => { GenreLabel.Visibility = Visibility.Collapsed; });
                 timer.Stop();
             };
             timer.Start();

@@ -25,9 +25,9 @@ public partial class MemoWindow : FluentWindow
       
         InitializeComponent();
         
-        this._fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
-        this.Width = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Width"));
-        this.Height = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Height"));
+        _fontSize = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoFontSize"));
+        Width = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Width"));
+        Height = double.Parse(TomlControl.GetTomlString("./settings.toml", "MemoResolution", "Height"));
         
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
 
@@ -64,14 +64,14 @@ public partial class MemoWindow : FluentWindow
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
-       this.Close();
+       Close();
     }
 
     private void MemoWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
         {
-           this.DragMove();
+           DragMove();
         }
     }
 
@@ -159,6 +159,6 @@ public partial class MemoWindow : FluentWindow
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Minimized;
+        WindowState = WindowState.Minimized;
     }
 }

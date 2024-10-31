@@ -13,8 +13,6 @@ namespace YuLauncher.Core.Window.Pages.XamlCreateGameDialogInterface;
 public interface IDialogInterface
 {
     public JsonControl.ApplicationJsonData Data { get; set; }
-    public string NewPath { get; }
-    public string NowName { get; }
 }
 
 public partial class InterFaceClass

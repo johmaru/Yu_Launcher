@@ -61,22 +61,20 @@ namespace YuLauncher.Game.Window
 
             WebView.Source = new Uri(url);
 
-           ManualTomlSettings manualTomlSettings = new ManualTomlSettings();
-            var tomlWidth = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
-           var tomlHeight = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+           var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
 
-            this.Width = double.Parse(tomlWidth);
-            this.Height = double.Parse(tomlHeight);
+            Width = double.Parse(tomlWidth);
+            Height = double.Parse(tomlHeight);
         }
         
         private void Resize()
         {
-            ManualTomlSettings manualTomlSettings = new ManualTomlSettings();
-            var tomlWidth = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Width");
-            var tomlHeight = manualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Height");
+            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Width");
+            var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Height");
             
-            this.Width = double.Parse(tomlWidth);
-            this.Height = double.Parse(tomlHeight);
+            Width = double.Parse(tomlWidth);
+            Height = double.Parse(tomlHeight);
         }
 
         private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
@@ -230,7 +228,6 @@ namespace YuLauncher.Game.Window
            settingMenu.CustomItemSelected += (_,_) =>
            {
                 var settingWindow = new SettingWindow();
-                var url = WebView.Source.ToString();
                 settingWindow.Closed += (_,_) =>
                 {
                    Resize();
@@ -244,18 +241,18 @@ namespace YuLauncher.Game.Window
 
         private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Maximized;
+            WindowState = WindowState.Maximized;
             WindowStateIcon.Glyph = "\uE73F";
         }
 
         private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Normal;
+            WindowState = WindowState.Normal;
             WindowStateIcon.Glyph = "\uE740";
         }
 
@@ -298,17 +295,17 @@ namespace YuLauncher.Game.Window
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
-            if (this.WindowState != WindowState.Maximized) return;
+            if (WindowState != WindowState.Maximized) return;
             var point = Mouse.GetPosition(this);
-            this.WindowState = WindowState.Normal;
-            this.Left = point.X - this.Width / 2;
-            this.Top = point.Y;
-            this.DragMove();
+            WindowState = WindowState.Normal;
+            Left = point.X - Width / 2;
+            Top = point.Y;
+            DragMove();
         }
 
         private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
         
         private async void SetWebViewVolume()

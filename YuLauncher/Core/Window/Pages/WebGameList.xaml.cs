@@ -50,9 +50,9 @@ public partial class WebGameList : Page
         CreateGameDialog.CloseObservable.Subscribe(_ => GameList_OnFileUpdate(this, EventArgs.Empty));
         PropertyDialog.AllGameListPanelUpdate.Subscribe( _ => GameList_OnFileUpdate(this, EventArgs.Empty));
         
-        this.SizeChanged += (sender, args) =>
+        SizeChanged += (sender, args) =>
         {
-            NewsGrid.Height = this.WindowHeight * 0.3;
+            NewsGrid.Height = WindowHeight * 0.3;
         };
     }
     
@@ -189,18 +189,6 @@ public partial class WebGameList : Page
         LoggerController.LogInfo("WebGameList Reloaded");
     }
 
-    
-
-    private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)
-    {
-        if (NavigationService is {CanGoBack: true})
-        {
-            NavigationService.GoBack();
-        }
-        {
-            NavigationService?.Navigate(new MainPage());
-        }
-    }
 
     private void WebGameList_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -212,12 +200,12 @@ public partial class WebGameList : Page
 
         if (source is Button button)
         {
-            this.ContextMenu = button.ContextMenu;
+            ContextMenu = button.ContextMenu;
         }
         else
         {
             Console.WriteLine("false");
-            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
+            ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
         }
     }
 
@@ -230,7 +218,6 @@ public partial class WebGameList : Page
         if (_files == null) return;
         foreach (var file in _files)
         {
-            string name = Path.GetFileNameWithoutExtension(file);
             JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {

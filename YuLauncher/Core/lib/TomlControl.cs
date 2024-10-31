@@ -66,7 +66,7 @@ public class TomlControl
         }
     }
 
-    public void EditToml(string path,string dat,string value)
+    public static void EditToml(string path,string dat,string value)
     {
         try
         {
@@ -88,7 +88,7 @@ public class TomlControl
         }
     }
     
-    public void EditToml(string path, string dat,string dat2, string value)
+    public static void EditToml(string path, string dat,string dat2, string value)
     {
         try
         {
@@ -165,7 +165,7 @@ public class TomlControl
 
 public class ManualTomlSettings
 {
-    public string GetSettingWindowResolution(string path, string data, string res)
+    public static string GetSettingWindowResolution(string path, string data, string res)
     {
         try
         {

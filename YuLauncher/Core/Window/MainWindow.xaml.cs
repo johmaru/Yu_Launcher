@@ -31,7 +31,7 @@ public partial class MainWindow : FluentWindow
     
     private void Initialize()
     {
-        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
     }
     
@@ -39,8 +39,8 @@ public partial class MainWindow : FluentWindow
     {
                var width = TomlControl.GetTomlString("./settings.toml", "WindowResolution", "Width");
                var height = TomlControl.GetTomlString("./settings.toml", "WindowResolution", "Height");
-               this.Width = double.Parse(width);
-               this.Height = double.Parse(height);
+               Width = double.Parse(width);
+               Height = double.Parse(height);
     }
     private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
@@ -55,19 +55,19 @@ public partial class MainWindow : FluentWindow
     private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
        if(e.ChangedButton == MouseButton.Left)
-           this.DragMove();
+           DragMove();
     }
 
     private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Maximized;
+        WindowState = WindowState.Maximized;
         WindowStateIcon.Glyph = "\uE73F";
         
     }
 
     private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Normal;
+        WindowState = WindowState.Normal;
         WindowStateIcon.Glyph = "\uE740";
     }
 
@@ -96,13 +96,13 @@ public partial class MainWindow : FluentWindow
         {
             case MouseButtonState.Pressed:
             {
-                if (this.WindowState == WindowState.Maximized)
+                if (WindowState == WindowState.Maximized)
                 {
                     var point = Mouse.GetPosition(this);
-                    this.WindowState = WindowState.Normal;
-                    this.Left = point.X - this.Width / 2;
-                    this.Top = point.Y;
-                    this.DragMove();
+                    WindowState = WindowState.Normal;
+                    Left = point.X - Width / 2;
+                    Top = point.Y;
+                    DragMove();
                 }
 
                 break;
@@ -116,6 +116,6 @@ public partial class MainWindow : FluentWindow
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Minimized;
+        WindowState = WindowState.Minimized;
     }
 }

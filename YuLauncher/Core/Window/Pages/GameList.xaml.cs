@@ -114,7 +114,7 @@ public partial class GameList : Page
 
                         Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
                     }
-                    catch (System.IO.IOException ex)
+                    catch (IOException ex)
                     {
                         Console.WriteLine("An I/O error occurred: " + ex.Message);
                         LoggerController.LogError("An I/O error occurred: " + ex.Message);
@@ -215,11 +215,11 @@ public partial class GameList : Page
 
        if (source is Button button)
        {
-           this.ContextMenu = button.ContextMenu;
+           ContextMenu = button.ContextMenu;
        }
        else
        {
-           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
+           ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
        }
 
     }
@@ -266,7 +266,7 @@ public partial class GameList : Page
             string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
             if (files.Length > 0)
             {
-                string fileExtension = System.IO.Path.GetExtension(files[0]);
+                string fileExtension = Path.GetExtension(files[0]);
                 if (fileExtension == ".exe")
                 {
                     e.Effects = DragDropEffects.Copy;

@@ -18,9 +18,7 @@ public partial class PropertyDialog : FluentWindow
     
     private static Subject<int> OnAllGameListPanelUpdate = new();
     public static IObservable<int> AllGameListPanelUpdate => OnAllGameListPanelUpdate;
-    
-    private JsonControl.ApplicationJsonData _data;
-    
+
     private Application? _application;
     private Web? _web;
     private WebGame? _webGame;
@@ -29,8 +27,6 @@ public partial class PropertyDialog : FluentWindow
     {
         InitializeComponent();
         Grid.Background = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? Brushes.DimGray : Brushes.LightGray;
-        
-        _data = data;
 
         switch (data.FileExtension)
         {
@@ -51,7 +47,7 @@ public partial class PropertyDialog : FluentWindow
                 Frame.NavigationService.Navigate(_webSaver);
                 break;
             default:
-                this.Close();
+                Close();
             break;
         }
 
@@ -70,28 +66,28 @@ public partial class PropertyDialog : FluentWindow
         if (value == 0)
         {
             OnAllGameListPanelUpdate.OnNext(0);
-            this.Close();
+            Close();
         }
         else if (value == 1)
         {
             OnAllGameListPanelUpdate.OnNext(1);
-            this.Close();
+            Close();
         }
         else if (value == 2)
         {
             OnAllGameListPanelUpdate.OnNext(2);
-            this.Close();
+            Close();
         }
         else if (value == 3)
         {
             OnAllGameListPanelUpdate.OnNext(3);
-            this.Close();
+            Close();
         }
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
 
     private void PropertyDialog_OnMouseDown(object sender, MouseButtonEventArgs e)

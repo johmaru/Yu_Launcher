@@ -44,7 +44,6 @@ public partial class WebSaverList : Page
         if (_files == null) return;
         foreach (var file in _files)
         {
-            string name = Path.GetFileNameWithoutExtension(file);
             JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {
@@ -68,14 +67,6 @@ public partial class WebSaverList : Page
         SaverListLoad();
     }
 
-    private void MainWindow_OnBackBtnClick(object sender, RoutedEventArgs e)
-    {
-        if (NavigationService is { CanGoBack: true })
-        {
-            NavigationService.GoBack();
-        }
-    }
-
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
     {
         CreateGameDialog createGameDialog = new CreateGameDialog();
@@ -92,11 +83,11 @@ public partial class WebSaverList : Page
 
         if (source is Button button)
         {
-            this.ContextMenu = button.ContextMenu;
+            ContextMenu = button.ContextMenu;
         }
         else
         {
-            this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
+            ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
         }
     }
 }

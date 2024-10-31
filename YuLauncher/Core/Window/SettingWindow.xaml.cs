@@ -12,7 +12,7 @@ namespace YuLauncher.Core.Window;
 public partial class SettingWindow : FluentWindow
 {
     private readonly ManualTomlSettings _manualTomlSettings = new();
-    public static double WindowWidth = new SettingWindow().Width;
+
     public SettingWindow()
     {
         InitializeComponent();
@@ -61,34 +61,34 @@ public partial class SettingWindow : FluentWindow
     
     private void GetResolution()
     {
-           var width = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Width");
-           var height = _manualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Height");
+           var width = ManualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Width");
+           var height = ManualTomlSettings.GetSettingWindowResolution("./settings.toml", "SettingResolution", "Height");
            
-            this.Width = double.Parse(width);
-            this.Height = double.Parse(height);
+            Width = double.Parse(width);
+            Height = double.Parse(height);
     }
 
     private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
     {
-       this.Close();
+       Close();
        LoggerController.LogInfo("Setting Window Closed!");
     }
 
     private void SettingWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
-            this.DragMove();
+            DragMove();
     }
 
     private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Maximized;
+        WindowState = WindowState.Maximized;
         WindowStateIcon.Glyph = "\uE73F";
     }
 
     private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Normal;
+        WindowState = WindowState.Normal;
         WindowStateIcon.Glyph = "\uE740";
     }
 
@@ -113,21 +113,17 @@ public partial class SettingWindow : FluentWindow
 
     private void Grid_OnMouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                var point = Mouse.GetPosition(this);
-                this.WindowState = WindowState.Normal;
-                this.Left = point.X - this.Width / 2;
-                this.Top = point.Y;
-                this.DragMove();
-            }
-        }
+        if (e.LeftButton != MouseButtonState.Pressed) return;
+        if (WindowState != WindowState.Maximized) return;
+        var point = Mouse.GetPosition(this);
+        WindowState = WindowState.Normal;
+        Left = point.X - Width / 2;
+        Top = point.Y;
+        DragMove();
     }
 
     private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        this.WindowState = WindowState.Minimized;
+        WindowState = WindowState.Minimized;
     }
 }
