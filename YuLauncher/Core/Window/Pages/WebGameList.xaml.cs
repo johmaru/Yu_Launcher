@@ -170,7 +170,7 @@ public partial class WebGameList : Page
         if (_files != null)
             foreach (var file in _files)
             {
-                string name = Path.GetFileNameWithoutExtension(file);
+                if (Path.GetExtension(file) != ".json") continue;
                 JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
                 try
                 {
@@ -218,6 +218,7 @@ public partial class WebGameList : Page
         if (_files == null) return;
         foreach (var file in _files)
         {
+            if (Path.GetExtension(file) != ".json") continue;
             JsonControl.ApplicationJsonData data = await JsonControl.ReadExeJson(file);
             try
             {

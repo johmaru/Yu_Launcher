@@ -98,12 +98,8 @@ public partial class GameList : Page
             {
                 string name = Path.GetFileNameWithoutExtension(file);
 
-                if (Path.GetExtension(file) == ".txt")
-                {
-                   LoggerController.LogError($"{file}: is not a valid file");
-                }
-                else
-                {
+                if (Path.GetExtension(file) != ".json") continue;
+                
                     var jsonData = await JsonControl.ReadExeJson(file);
                     try
                     {
@@ -122,7 +118,7 @@ public partial class GameList : Page
                     }
 
                     LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
-                }
+                
             }
 
         Viewer.Content = null;

@@ -313,4 +313,10 @@
   <data name="SimpleVolume" xml:space="preserve">
     <value>ボリューム</value>
   </data>
+  <data name="SimpleApplication" xml:space="preserve">
+    <value>アプリケーション</value>
+  </data>
+  <data name="SimpleBrowser" xml:space="preserve">
+    <value>ブラウザ</value>
+  </data>
 </root>

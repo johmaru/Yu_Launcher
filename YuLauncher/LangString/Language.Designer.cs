@@ -384,11 +384,29 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        public static string SimpleApplication {
+            get {
+                return ResourceManager.GetString("SimpleApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string SimpleBack {
             get {
                 return ResourceManager.GetString("SimpleBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browser.
+        /// </summary>
+        public static string SimpleBrowser {
+            get {
+                return ResourceManager.GetString("SimpleBrowser", resourceCulture);
             }
         }
         

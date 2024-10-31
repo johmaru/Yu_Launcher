@@ -362,6 +362,32 @@ namespace YuLauncher.Game.Window
             };
             gameWindow.Show();
         }
+
+        private void SettingItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow
+            {
+                Owner = this
+            };
+            settingWindow.Show();
+        }
+
+        private void BackItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!WebView.CanGoBack) return;
+            WebView.GoBack();
+        }
+
+        private void ReloadItem_OnClick(object sender, RoutedEventArgs e)
+        {
+           WebView.Reload();
+        }
+
+        private void ForwardItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!WebView.CanGoForward) return;
+            WebView.GoForward();
+        }
     }
 }
 
