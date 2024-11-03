@@ -68,6 +68,8 @@ public partial class GameList : Page
         await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
         
         GenreAllUpdate();
+
+        Application.Current.MainWindow?.Activate();
     }
 
     private async void Initialize()
@@ -95,24 +97,28 @@ public partial class GameList : Page
             foreach (var file in _files)
             {
                 string name = Path.GetFileNameWithoutExtension(file);
-                var jsonData = await JsonControl.ReadExeJson(file);
-                try
-                {
-                    if (jsonData.FileExtension == "WebGame")
+
+                if (Path.GetExtension(file) != ".json") continue;
+                
+                    var jsonData = await JsonControl.ReadExeJson(file);
+                    try
                     {
-                        continue;
+                        if (jsonData.FileExtension == "WebGame")
+                        {
+                            continue;
+                        }
+
+                        Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
+                    }
+                    catch (IOException ex)
+                    {
+                        Console.WriteLine("An I/O error occurred: " + ex.Message);
+                        LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                        throw;
                     }
 
-                    Panel.Children.Add(_gameButton.GameButtonShow(jsonData.Name, jsonData));
-                }
-                catch (System.IO.IOException ex)
-                {
-                    Console.WriteLine("An I/O error occurred: " + ex.Message);
-                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                    throw;
-                }
-
-                LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
+                    LoggerController.LogInfo($"FileUpdate {name} Extension: {jsonData.FileExtension}");
+                
             }
 
         Viewer.Content = null;
@@ -205,11 +211,11 @@ public partial class GameList : Page
 
        if (source is Button button)
        {
-           this.ContextMenu = button.ContextMenu;
+           ContextMenu = button.ContextMenu;
        }
        else
        {
-           this.ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
+           ContextMenu = PageControlCreate.GameListShowContextMenu(false,new JsonControl.ApplicationJsonData());
        }
 
     }
@@ -256,7 +262,7 @@ public partial class GameList : Page
             string[]? files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? throw new InvalidOperationException();
             if (files.Length > 0)
             {
-                string fileExtension = System.IO.Path.GetExtension(files[0]);
+                string fileExtension = Path.GetExtension(files[0]);
                 if (fileExtension == ".exe")
                 {
                     e.Effects = DragDropEffects.Copy;

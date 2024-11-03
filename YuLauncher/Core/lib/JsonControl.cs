@@ -25,10 +25,24 @@ public static class JsonControl
         public string Url { get; set;}
         
         public string[] MultipleLaunch { get; set; }
+        
+        public bool IsMute { get; set; }
+        
+        public double? Volume { get; set; }
 
         public bool Equals(ApplicationJsonData other)
         {
-            return FilePath == other.FilePath && JsonPath == other.JsonPath && Name == other.Name && FileExtension == other.FileExtension && Memo == other.Memo && IsWebView == other.IsWebView && IsUseLog == other.IsUseLog && Url == other.Url && MultipleLaunch.Equals(other.MultipleLaunch);
+            return FilePath == other.FilePath && 
+                   JsonPath == other.JsonPath && 
+                   Name == other.Name && 
+                   FileExtension == other.FileExtension && 
+                   Memo == other.Memo && 
+                   IsWebView == other.IsWebView && 
+                   IsUseLog == other.IsUseLog && 
+                   Url == other.Url && 
+                   IsMute == other.IsMute &&
+                   Volume.Equals(other.Volume) &&
+                   MultipleLaunch.Equals(other.MultipleLaunch);
         }
 
         public override bool Equals(object? obj)
@@ -47,6 +61,7 @@ public static class JsonControl
             hashCode.Add(IsWebView);
             hashCode.Add(IsUseLog);
             hashCode.Add(Url);
+            hashCode.Add(IsMute);
             hashCode.Add(MultipleLaunch);
             return hashCode.ToHashCode();
         }
@@ -59,13 +74,23 @@ public static class JsonControl
         await File.WriteAllTextAsync(path, json);
     }
     
-    public static async ValueTask<ApplicationJsonData> ReadExeJson(string path)
+    public static async Task<ApplicationJsonData> ReadExeJson(string path)
     {
         if (path == ".json")
         {
             LoggerController.LogWarn("This is not exist an application error. this is not critical error");
         }
         string json = await File.ReadAllTextAsync(path);
+        return JsonSerializer.Deserialize<ApplicationJsonData>(json);
+    }
+    
+    public static ApplicationJsonData LoadJson(string path)
+    {
+        if (path == ".json")
+        {
+            LoggerController.LogWarn("This is not exist an application error. this is not critical error");
+        }
+        string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<ApplicationJsonData>(json);
     }
 

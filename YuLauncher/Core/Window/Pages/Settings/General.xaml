@@ -20,7 +20,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
                         <TextBlock Text="{lex:Loc SimpleAppData}" FontSize="15" Margin="0,0,20,0"/>
-                        <Button x:Name="AppExportBtn" Margin="0,0,20,0" Content="{lex:Loc SimpleExport}" Click="ImportBtn_OnClick"/>
+                        <Button x:Name="AppExportBtn" Margin="0,0,20,0" Content="{lex:Loc SimpleExport}" Click="ExportBtn_OnClick"/>
                         <Button x:Name="AppImportBtn" Content="{lex:Loc SimpleImport}" Click="AppImportBtn_OnClick"/>
                     </StackPanel>
                 </StackPanel>

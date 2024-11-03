@@ -94,7 +94,7 @@ namespace YuLauncher
             }
         }
         
-        private ValueTask FirstLunch()
+        private static ValueTask FirstLunch()
         {
                 bool path = File.Exists("./settings.toml");
                 if (!path)
@@ -131,7 +131,7 @@ namespace YuLauncher
             LoggerController.LogInfo("Json Check Complete");
         }
 
-        private ValueTask LanguageCheck()
+        private static ValueTask LanguageCheck()
         {
            var result = TomlControl.GetTomlString("./settings.toml", "Language");
            switch (result)

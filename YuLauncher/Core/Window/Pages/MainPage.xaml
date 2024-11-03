@@ -11,7 +11,7 @@
     lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
     lex:ResxLocalizationProvider.DefaultDictionary="Language"
     mc:Ignorable="d">
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+    <Grid
           Drop="Main_OnDrop"
           AllowDrop="True"
           DragEnter="Main_OnDragEnter"
@@ -56,9 +56,7 @@
         </ui:NavigationViewItem>
     </ui:NavigationView.MenuItems>
             <ui:NavigationView.ContentOverlay>
-                <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Frame x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-                </Grid>
                 
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>

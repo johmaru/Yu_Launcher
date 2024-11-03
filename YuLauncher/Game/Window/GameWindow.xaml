@@ -23,12 +23,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Menu PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown" Grid.Column="0">
-                <MenuItem Header="機能">
-                    <MenuItem Header="Wiki"/>
+            <Menu Grid.Column="0" PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown">
+                <MenuItem Header="{lex:Loc SimpleBrowser}">
+                    <MenuItem x:Name="BackItem" Header="{lex:Loc SimpleBack}" Click="BackItem_OnClick"/>
+                    <MenuItem x:Name="ReloadItem" Header="{lex:Loc SimpleReload}" Click="ReloadItem_OnClick"/>
+                    <MenuItem x:Name="ForwardItem" Header="{lex:Loc SimpleForward}" Click="ForwardItem_OnClick"/>
                 </MenuItem>
-                <MenuItem Header="アプリケーション">
-                    <MenuItem Header="設定"/>
+                <MenuItem Header="{lex:Loc SimpleApplication}">
+                    <MenuItem x:Name="SettingItem" Header="{lex:Loc SimpleSetting}" Click="SettingItem_OnClick"/>
                 </MenuItem>
             </Menu>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -43,7 +45,7 @@
             </ui:Button>
             </StackPanel>
         </Grid>
-        <wv2:WebView2 Name="WebView" CoreWebView2InitializationCompleted="WebView_OnCoreWebView2InitializationCompleted"/>
+        <wv2:WebView2 Name="WebView"/>
     </DockPanel>
     </Grid>
 </ui:FluentWindow>

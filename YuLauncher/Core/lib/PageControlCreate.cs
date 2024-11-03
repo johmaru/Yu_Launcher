@@ -164,7 +164,7 @@ public class GameButton : Button
 {
     public bool IsMouseEntered { get; private set; }
     
-    private void EnsureLogDirectories(string name)
+    private static void EnsureLogDirectories(string name)
     {
         if (!Directory.Exists("./AppLogs"))
         {
@@ -262,23 +262,21 @@ public class GameButton : Button
 
         if (appData.FileExtension != "web")
         {
-            if (File.Exists(appData.FilePath))
+            if (!File.Exists(appData.FilePath)) return null;
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
-                    if (icon != null) icon.Save(memoryStream);
-                    memoryStream.Position = 0;
+                Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
+                if (icon != null) icon.Save(memoryStream);
+                memoryStream.Position = 0;
 
-                    BitmapImage? bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.EndInit();
-                    bitmapImage.Freeze();
+                BitmapImage? bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
 
-                    return bitmapImage;
-                }
+                return bitmapImage;
             }
         }
         else
@@ -294,8 +292,7 @@ public class GameButton : Button
     }
     public Button GameButtonShow(string name,JsonControl.ApplicationJsonData data)
     {
-        string thisFile = "./Games/" + name + ".json";
-            Image image = new Image
+        Image image = new Image
             {
                 Source = GetImage(data)
             };
@@ -401,7 +398,7 @@ public class GameButton : Button
 
                         break;
                     case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data);
+                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
                         gameWindow.Show();
                         break;
                     case "WebSaver":
@@ -418,8 +415,8 @@ public class GameButton : Button
                     if (data.MultipleLaunch == null) return;
                     foreach (var multipleLaunch in data.MultipleLaunch)
                     {
-                        JsonControl.ApplicationJsonData multipleData =
-                            await JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
+                        JsonControl.ApplicationJsonData multipleData = 
+                          await  JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
                         switch (multipleData.FileExtension)
                         {
                             case "exe":
@@ -492,7 +489,7 @@ public class GameButton : Button
 
                                 break;
                             case "WebGame":
-                                GameWindow gameWindow = new GameWindow(multipleData.Url, multipleData);
+                                GameWindow gameWindow = new GameWindow(multipleData.Url, multipleData.JsonPath);
                                 gameWindow.Show();
                                 break;
                             case "WebSaver":
@@ -580,7 +577,7 @@ public class GameButton : Button
 
                         break;
                     case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data);
+                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
                         gameWindow.Show();
                         break;
                     case "WebSaver":
