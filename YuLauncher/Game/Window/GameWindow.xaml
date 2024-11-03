@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Menu Grid.Column="0">
+            <Menu Grid.Column="0" PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown">
                 <MenuItem Header="{lex:Loc SimpleBrowser}">
                     <MenuItem x:Name="BackItem" Header="{lex:Loc SimpleBack}" Click="BackItem_OnClick"/>
                     <MenuItem x:Name="ReloadItem" Header="{lex:Loc SimpleReload}" Click="ReloadItem_OnClick"/>

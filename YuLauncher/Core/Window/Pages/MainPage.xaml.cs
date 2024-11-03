@@ -36,7 +36,6 @@ namespace YuLauncher.Core.Window.Pages
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                MainGrid.Height = MainWindow.WindowHeight;
                 Frame.Source = new Uri("GameList.xaml", UriKind.Relative);
             });
         }

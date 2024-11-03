@@ -36,7 +36,7 @@
                     </StackPanel>
         </Grid>
             <Grid Grid.Row="1">
-            <Frame Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+            <Frame Source="Pages/MainPage.xaml" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
     </Grid>
 </ui:FluentWindow>
