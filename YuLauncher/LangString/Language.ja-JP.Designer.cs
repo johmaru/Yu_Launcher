@@ -231,6 +231,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to YuLauncherのインストールが完了しました.
+        /// </summary>
+        public static string InstallComplete {
+            get {
+                return ResourceManager.GetString("InstallComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ログイン履歴.
         /// </summary>
         public static string LoginHistory {
@@ -285,6 +294,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 新しいバージョンがあります.
+        /// </summary>
+        public static string NewVersionAb {
+            get {
+                return ResourceManager.GetString("NewVersionAb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 適切なウェブアドレスを入力してください.
         /// </summary>
         public static string NotContainsHttpError {
@@ -299,6 +317,15 @@ namespace YuLauncher.LangString {
         public static string NotSelectFileError {
             get {
                 return ResourceManager.GetString("NotSelectFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 現在のバージョン.
+        /// </summary>
+        public static string NowVersion {
+            get {
+                return ResourceManager.GetString("NowVersion", resourceCulture);
             }
         }
         

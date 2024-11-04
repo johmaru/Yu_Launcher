@@ -319,4 +319,13 @@
   <data name="SimpleBrowser" xml:space="preserve">
     <value>ブラウザ</value>
   </data>
+  <data name="InstallComplete" xml:space="preserve">
+    <value>YuLauncherのインストールが完了しました</value>
+  </data>
+  <data name="NewVersionAb" xml:space="preserve">
+    <value>新しいバージョンがあります</value>
+  </data>
+  <data name="NowVersion" xml:space="preserve">
+    <value>現在のバージョン</value>
+  </data>
 </root>

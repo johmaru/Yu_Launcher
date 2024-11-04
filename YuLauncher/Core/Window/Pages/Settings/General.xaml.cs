@@ -4,15 +4,31 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
+using Velopack;
+using Velopack.Sources;
 using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.Settings;
+
+public class Data()
+{
+    public string NowVersion { get; set; }
+}
 
 public partial class General : Page
 {
     public General()
     {
         InitializeComponent();
+        var mgr = new UpdateManager(new GithubSource(@"https://github.com/johmaru/Yu_Launcher", null, false),
+            new UpdateOptions
+            {
+                AllowVersionDowngrade = true
+            });
+        DataContext = new Data()
+        {
+            NowVersion = $"{LocalizeControl.GetLocalize<string>("NowVersion")} : {mgr.CurrentVersion}"
+        };
     }
 
     private void General_OnLoaded(object sender, RoutedEventArgs e)
