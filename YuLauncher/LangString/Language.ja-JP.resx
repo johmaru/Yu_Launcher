@@ -328,4 +328,16 @@
   <data name="NowVersion" xml:space="preserve">
     <value>現在のバージョン</value>
   </data>
+  <data name="SimpleGenreManage" xml:space="preserve">
+    <value>ジャンル管理</value>
+  </data>
+  <data name="SimpleManage" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="GenreNameInput" xml:space="preserve">
+    <value>新しいジャンル名を入力してください。</value>
+  </data>
+  <data name="GenreAdd" xml:space="preserve">
+    <value>ジャンルを追加しました</value>
+  </data>
 </root>

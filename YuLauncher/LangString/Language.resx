@@ -324,4 +324,16 @@
   <data name="NowVersion" xml:space="preserve">
     <value> Now Version</value>
   </data>
+  <data name="SimpleGenreManage" xml:space="preserve">
+    <value>Genre Manage</value>
+  </data>
+  <data name="SimpleManage" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="GenreNameInput" xml:space="preserve">
+    <value>Please input new genre name</value>
+  </data>
+  <data name="GenreAdd" xml:space="preserve">
+    <value>Genre add Completed</value>
+  </data>
 </root>

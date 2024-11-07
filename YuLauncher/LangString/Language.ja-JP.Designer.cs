@@ -168,6 +168,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ジャンルを追加しました.
+        /// </summary>
+        public static string GenreAdd {
+            get {
+                return ResourceManager.GetString("GenreAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to すべて.
         /// </summary>
         public static string GenreAllComboBoxItem {
@@ -191,6 +200,15 @@ namespace YuLauncher.LangString {
         public static string GenreExeExtension {
             get {
                 return ResourceManager.GetString("GenreExeExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新しいジャンル名を入力してください。.
+        /// </summary>
+        public static string GenreNameInput {
+            get {
+                return ResourceManager.GetString("GenreNameInput", resourceCulture);
             }
         }
         
@@ -539,6 +557,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ジャンル管理.
+        /// </summary>
+        public static string SimpleGenreManage {
+            get {
+                return ResourceManager.GetString("SimpleGenreManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to インポート.
         /// </summary>
         public static string SimpleImport {
@@ -563,6 +590,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 管理.
+        /// </summary>
+        public static string SimpleManage {
+            get {
+                return ResourceManager.GetString("SimpleManage", resourceCulture);
             }
         }
         

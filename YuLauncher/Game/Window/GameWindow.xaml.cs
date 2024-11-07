@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
@@ -38,8 +39,10 @@ namespace YuLauncher.Game.Window
         public GameWindow(string url,string jsonPath)
         {
             InitializeComponent();
-            
-           _data = JsonControl.LoadJson(jsonPath);
+
+
+            _data = JsonControl.LoadJson(jsonPath);
+        
             
             WebView.CoreWebView2InitializationCompleted += WebView_OnCoreWebView2InitializationCompleted;   
 
@@ -329,6 +332,10 @@ namespace YuLauncher.Game.Window
             {
                 WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
                 WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
+                WebView.CoreWebView2.DocumentTitleChanged += (_, _) =>
+                {
+                    Title = WebView.CoreWebView2.DocumentTitle;
+                };
                 
                 WebView.CoreWebView2.IsMuted = _data.IsMute;
                 
