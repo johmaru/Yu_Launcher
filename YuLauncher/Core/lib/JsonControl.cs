@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -31,6 +32,8 @@ public static class JsonControl
         public double? Volume { get; set; }
         
         public string[] Genre { get; set; }
+        
+        public Dictionary<string,string> WikiData { get; set;}
 
         public bool Equals(ApplicationJsonData other)
         {
@@ -44,6 +47,7 @@ public static class JsonControl
                    Url == other.Url && 
                    IsMute == other.IsMute &&
                    Genre == other.Genre &&
+                   WikiData == other.WikiData &&
                    Volume.Equals(other.Volume) &&
                    MultipleLaunch.Equals(other.MultipleLaunch);
         }
@@ -68,6 +72,7 @@ public static class JsonControl
             hashCode.Add(MultipleLaunch);
             hashCode.Add(Volume);
             hashCode.Add(Genre);
+            hashCode.Add(WikiData);
             return hashCode.ToHashCode();
         }
     }
@@ -195,6 +200,11 @@ public static class JsonControl
                     }
                 }
                 
+                break;
+            
+            case {WikiData: null}:
+                data = data with { WikiData = new Dictionary<string, string>() };
+                await CreateExeJson(jsonPath, data);
                 break;
         }
 

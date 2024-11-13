@@ -340,4 +340,16 @@
   <data name="GenreAdd" xml:space="preserve">
     <value>ジャンルを追加しました</value>
   </data>
+  <data name="SimpleWikiDataManage" xml:space="preserve">
+    <value>データ管理</value>
+  </data>
+  <data name="WikiData" xml:space="preserve">
+    <value>Wikiデータ</value>
+  </data>
+  <data name="SimpleUrlError" xml:space="preserve">
+    <value>URLが不正です</value>
+  </data>
+  <data name="SimpleDuplicateKey" xml:space="preserve">
+    <value>同じキーが存在します</value>
+  </data>
 </root>

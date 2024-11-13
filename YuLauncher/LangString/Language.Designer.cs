@@ -474,6 +474,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate keys exist.
+        /// </summary>
+        public static string SimpleDuplicateKey {
+            get {
+                return ResourceManager.GetString("SimpleDuplicateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string SimpleEnglish {
@@ -681,6 +690,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is not a valid URL.
+        /// </summary>
+        public static string SimpleUrlError {
+            get {
+                return ResourceManager.GetString("SimpleUrlError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Using webview.
         /// </summary>
         public static string SimpleUseWebview {
@@ -699,6 +717,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataManage.
+        /// </summary>
+        public static string SimpleWikiDataManage {
+            get {
+                return ResourceManager.GetString("SimpleWikiDataManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video/Graphic/display.
         /// </summary>
         public static string VideoGraphics {
@@ -713,6 +740,15 @@ namespace YuLauncher.LangString {
         public static string WebSaver {
             get {
                 return ResourceManager.GetString("WebSaver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wiki Data.
+        /// </summary>
+        public static string WikiData {
+            get {
+                return ResourceManager.GetString("WikiData", resourceCulture);
             }
         }
     }

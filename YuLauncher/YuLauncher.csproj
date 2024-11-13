@@ -9,7 +9,7 @@
         <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
-        <Version>0.3.4</Version>    
+        <Version>0.3.5</Version>    
     </PropertyGroup>
 
 
@@ -31,7 +31,7 @@
         <SubType>Code</SubType>
         <DependentUpon>WebSaverWindow.xaml</DependentUpon>
       </Compile>
-      <None Update="C:\Users\Administrator\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
+      <None Update="C:\Users\jOHMA\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <Link>NLog.config</Link>
       </None>

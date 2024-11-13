@@ -474,6 +474,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 同じキーが存在します.
+        /// </summary>
+        public static string SimpleDuplicateKey {
+            get {
+                return ResourceManager.GetString("SimpleDuplicateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 英語
         ///.
         /// </summary>
@@ -685,6 +694,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to URLが不正です.
+        /// </summary>
+        public static string SimpleUrlError {
+            get {
+                return ResourceManager.GetString("SimpleUrlError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ウェブビューを使う.
         /// </summary>
         public static string SimpleUseWebview {
@@ -703,6 +721,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to データ管理.
+        /// </summary>
+        public static string SimpleWikiDataManage {
+            get {
+                return ResourceManager.GetString("SimpleWikiDataManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ビデオ/グラフィック/ディスプレイ.
         /// </summary>
         public static string VideoGraphics {
@@ -717,6 +744,15 @@ namespace YuLauncher.LangString {
         public static string WebSaver {
             get {
                 return ResourceManager.GetString("WebSaver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wikiデータ.
+        /// </summary>
+        public static string WikiData {
+            get {
+                return ResourceManager.GetString("WikiData", resourceCulture);
             }
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -25,6 +26,8 @@ using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
 using YuLauncher.Properties;
 using Button = Wpf.Ui.Controls.Button;
+using MenuItem = Wpf.Ui.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Game.Window
 {
@@ -69,6 +72,30 @@ namespace YuLauncher.Game.Window
 
             Width = double.Parse(tomlWidth);
             Height = double.Parse(tomlHeight);
+
+            foreach (var wikidata in _data.WikiData)
+            {
+                var menuItem = new MenuItem()
+                {
+                    Header = wikidata.Key
+                };
+                menuItem.Click += (_, _) =>
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = wikidata.Value,
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
+                    }
+                };
+                WikiDataContentItem.Items.Add(menuItem);
+            }
         }
         
         private void Resize()
@@ -394,6 +421,46 @@ namespace YuLauncher.Game.Window
         {
             if (!WebView.CanGoForward) return;
             WebView.GoForward();
+        }
+
+        private void WikiDataItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            WikiDataManageWindow wikiDataManageWindow = new WikiDataManageWindow(_data)
+            {
+                Owner = this
+            };
+            wikiDataManageWindow.Closed += (o, args) =>
+            {
+               var  data = JsonControl.LoadJson(_data.JsonPath);
+                _data = data;
+                
+                WikiDataContentItem.Items.Clear();
+                
+                foreach (var wikidata in _data.WikiData)
+                {
+                    var menuItem = new MenuItem()
+                    {
+                        Header = wikidata.Key
+                    };
+                    menuItem.Click += (_, _) =>
+                    {
+                        try
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = wikidata.Value,
+                                UseShellExecute = true
+                            });
+                        }
+                        catch (Exception exception)
+                        {
+                          MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
+                        }
+                    };
+                    WikiDataContentItem.Items.Add(menuItem);
+                }
+            };
+            wikiDataManageWindow.Show();
         }
     }
 }

@@ -336,4 +336,16 @@
   <data name="GenreAdd" xml:space="preserve">
     <value>Genre add Completed</value>
   </data>
+  <data name="SimpleWikiDataManage" xml:space="preserve">
+    <value>DataManage</value>
+  </data>
+  <data name="WikiData" xml:space="preserve">
+    <value>Wiki Data</value>
+  </data>
+  <data name="SimpleUrlError" xml:space="preserve">
+    <value>This is not a valid URL</value>
+  </data>
+  <data name="SimpleDuplicateKey" xml:space="preserve">
+    <value>Duplicate keys exist</value>
+  </data>
 </root>
