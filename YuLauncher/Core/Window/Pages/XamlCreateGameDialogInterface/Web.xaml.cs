@@ -58,28 +58,41 @@ public partial class Web : DialogInterface
                 break;
         }
         
-        var data = await JsonControl.ReadExeJson(Data.JsonPath);
-        var checkBox = MultiplePanel.Children.OfType<CheckBox>();
-        foreach (var CB in checkBox)
+        var checkBoxTrue = MultiplePanel.Children.OfType<CheckBox>()
+            .Where(cb => cb.IsChecked == true);
+                
+        var checkBoxFalse = MultiplePanel.Children.OfType<CheckBox>()
+            .Where(cb => cb.IsChecked == false);
+        var data =JsonControl.LoadJson(Data.JsonPath);
+                
+        foreach (var cb in checkBoxTrue)
         {
-            if (CB.IsChecked == true)
-            {
-                if (!data.MultipleLaunch.Contains(CB.Content.ToString()))
-                {
-                    data = data with { MultipleLaunch = data.MultipleLaunch.Append(CB.Content.ToString()).ToArray() };
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            else
-            {
-                data = data with { MultipleLaunch = data.MultipleLaunch.Where(x => x == (string)CB.Content).ToArray() };
-            }
+            string[] tag = (string[])cb.Tag;
+            Console.WriteLine($"Processing true checkbox with tag: {tag[1]}");
 
-            await JsonControl.CreateExeJson(data.JsonPath, data);
+            if (!data.MultipleLaunch.Contains(tag[1]))
+            {
+                data = data with
+                {
+                    MultipleLaunch = data.MultipleLaunch.Append(tag[1]).ToArray()
+                };
+                Console.WriteLine($"Added {tag[1]} to MultipleLaunch");
+            }
+               
         }
+
+        foreach (var cb in checkBoxFalse)
+        {
+            string[] tag = (string[])cb.Tag;
+            Console.WriteLine($"Processing false checkbox with tag: {tag[1]}");
+
+            data = data with
+            {
+                MultipleLaunch = data.MultipleLaunch.Where(x => x != tag[1]).ToArray()
+            };
+            Console.WriteLine($"Removed {tag[1]} from MultipleLaunch");
+        }
+        await JsonControl.CreateExeJson(data.JsonPath, data);
         
         _nameChangeSaveClicked.OnNext(1);
     }
@@ -99,18 +112,23 @@ public partial class Web : DialogInterface
                {
                    continue;
                }
+               
+               if (MultiplePanel.Children.OfType<CheckBox>().Any(cb => ((string[])cb.Tag)[1] == data.Name))
+               {
+                   continue;
+               }
 
                TextBlock text = new TextBlock()
                {
                    Text = data.Name,
                    FontSize = 20
                };
-
+               string[] tag = [data.FilePath, data.Name];
                var checkBox = new CheckBox()
                {
                    Content = text,
                    IsChecked = Data.MultipleLaunch.Contains(data.Name),
-                   Tag = data.FilePath,
+                   Tag = tag
                };
 
                checkBox.SetBinding(WidthProperty, new Binding("ActualWidth")
@@ -138,5 +156,11 @@ public partial class Web : DialogInterface
     {
         UrlBox.Width = e.NewSize.Width - UrlTextBlock.ActualWidth - 50;
         NameBox.Width = e.NewSize.Width - NameTextBlock.ActualWidth - 50;
+    }
+
+    private void GenreManageButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var genreManageWindow = new GenreManageWindow(Data);
+        genreManageWindow.Show();
     }
 }

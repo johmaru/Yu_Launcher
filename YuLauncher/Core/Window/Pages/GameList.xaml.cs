@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -27,11 +28,90 @@ public partial class GameList : Page
         InitializeComponent();
         GameControl();
         LoggerController.LogInfo("GameList Page Loaded");
+        _ = LoadGenre();
         
         PageControlCreate.DeleteFileMenuClicked.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
         CreateGameDialog.CloseObservable.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
         PropertyDialog.AllGameListPanelUpdate.Subscribe( n => PropertyDialogOnAllGamePanelUpdate(this, EventArgs.Empty,n));
         MainPage.SettingWindowClose.Subscribe(_ => PropertyDialogPanelUpdate(this, EventArgs.Empty));
+    }
+
+    private async ValueTask LoadGenre()
+    {
+        _files = null;
+        if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
+        
+        await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
+        
+        List<string> genreList = new();
+
+        if (_files != null)
+            foreach (var file in _files)
+            {
+                if (Path.GetExtension(file) != ".json") continue;
+                
+                var data = await JsonControl.ReadExeJson(file);
+                
+                data.Genre.ToList().ForEach(x =>
+                {
+                    if (!genreList.Contains(x))
+                    {
+                        genreList.Add(x);
+                    }
+                });
+            }
+
+        if (!genreList.Exists(GenreComboBox.Items.Contains)) GenreComboBox.Items.OfType<ComboBoxItem>().ToList().Where(x => x != GenreAllComboBoxItem).ToList().ForEach(x => GenreComboBox.Items.Remove(x));
+      
+        
+        genreList.ForEach(x =>
+        {
+            var genre = GenreComboBox.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content.ToString() == x);
+            if (genre != null && (string)genre.Content == x) return;
+                ComboBoxItem comboBoxItem = new()
+                {
+                    Content = x
+                };
+                comboBoxItem.Selected += async (sender, args) =>
+                {
+                    GenreComboBox.SelectedItem = comboBoxItem; 
+                    GameList_OnFileUpdate(this, EventArgs.Empty);
+                    if (_files != null)
+                        foreach (var file in _files)
+                        {
+                            string name = Path.GetFileNameWithoutExtension(file);
+                
+                            if (Path.GetExtension(file) != ".json") continue;
+                            var data = await JsonControl.ReadExeJson(file);
+
+                            try
+                            {
+                                if (data.Genre.Contains(x))
+                                {
+                                    Panel.Children.Add(_gameButton.GameButtonShow(data.Name, data));
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex);
+                                LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                                throw;
+                            }
+
+                            LoggerController.LogInfo($"FileUpdate {name} Extension: {data.FileExtension}");
+                        }
+
+                    Viewer.Content = null;
+                    Viewer.Content = Panel;
+                };
+                GenreComboBox.Items.Add(comboBoxItem);
+            
+        });
     }
     
     private async void PropertyDialogOnAllGamePanelUpdate(object? sender, EventArgs e, int n)
@@ -44,7 +124,7 @@ public partial class GameList : Page
                 if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
         
                 await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
-        
+                await LoadGenre();
                 GenreAllUpdate();
                 break;
             case 1:
@@ -53,7 +133,7 @@ public partial class GameList : Page
                 if (!Panel.Children.Count.Equals(0)) Panel.Children.Clear();
         
                 await Task.Run(() => _files = Directory.GetFiles(FileControl.Main.Directory));
-        
+                await LoadGenre();
                 GenreAllUpdate();
                 break;
         }
@@ -227,14 +307,6 @@ public partial class GameList : Page
             if (Equals(GenreComboBox.SelectedItem, GenreAllComboBoxItem))
             {
                 Initialize();
-            }
-            else if (Equals(GenreComboBox.SelectedItem, GenreExeComboBoxItem))
-            {
-               GenreExeUpdate();
-            }
-            else if (Equals(GenreComboBox.SelectedItem, GenreWebsiteComboBoxItem))
-            {
-               GenreWebUpdate();
             }
         }
         catch (Exception exception)

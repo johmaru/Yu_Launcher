@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -44,7 +45,13 @@
                 <TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}" />
             </StackPanel>
             </Grid>
-        <Grid Grid.Row="4" HorizontalAlignment="Right">
+        <Grid Grid.Row="4">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{lex:Loc SimpleGenreManage}"/>
+                <ui:Button x:Name="GenreManageButton" Content="{lex:Loc SImpleManage}" Click="GenreManageButton_OnClick"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="5" HorizontalAlignment="Right">
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick"/>
 
         </Grid>

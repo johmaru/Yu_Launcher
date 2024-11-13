@@ -17,6 +17,8 @@
             <StackPanel>
                 <ui:TextBlock x:Name="GeneralTextBlock" Text="{lex:Loc SimpleGeneral}"  Margin="0,0,0,30" HorizontalAlignment="Center"
                               FontSize="20" FontWeight="Bold" />
+                <ui:TextBlock x:Name="VersionTextBlock" Text="{Binding NowVersion}" Margin="0,0,0,30" HorizontalAlignment="Center"
+                              FontSize="15" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
                         <TextBlock Text="{lex:Loc SimpleAppData}" FontSize="15" Margin="0,0,20,0"/>

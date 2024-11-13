@@ -319,4 +319,37 @@
   <data name="SimpleBrowser" xml:space="preserve">
     <value>ブラウザ</value>
   </data>
+  <data name="InstallComplete" xml:space="preserve">
+    <value>YuLauncherのインストールが完了しました</value>
+  </data>
+  <data name="NewVersionAb" xml:space="preserve">
+    <value>新しいバージョンがあります</value>
+  </data>
+  <data name="NowVersion" xml:space="preserve">
+    <value>現在のバージョン</value>
+  </data>
+  <data name="SimpleGenreManage" xml:space="preserve">
+    <value>ジャンル管理</value>
+  </data>
+  <data name="SimpleManage" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="GenreNameInput" xml:space="preserve">
+    <value>新しいジャンル名を入力してください。</value>
+  </data>
+  <data name="GenreAdd" xml:space="preserve">
+    <value>ジャンルを追加しました</value>
+  </data>
+  <data name="SimpleWikiDataManage" xml:space="preserve">
+    <value>データ管理</value>
+  </data>
+  <data name="WikiData" xml:space="preserve">
+    <value>Wikiデータ</value>
+  </data>
+  <data name="SimpleUrlError" xml:space="preserve">
+    <value>URLが不正です</value>
+  </data>
+  <data name="SimpleDuplicateKey" xml:space="preserve">
+    <value>同じキーが存在します</value>
+  </data>
 </root>

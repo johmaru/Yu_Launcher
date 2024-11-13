@@ -168,6 +168,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ジャンルを追加しました.
+        /// </summary>
+        public static string GenreAdd {
+            get {
+                return ResourceManager.GetString("GenreAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to すべて.
         /// </summary>
         public static string GenreAllComboBoxItem {
@@ -191,6 +200,15 @@ namespace YuLauncher.LangString {
         public static string GenreExeExtension {
             get {
                 return ResourceManager.GetString("GenreExeExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新しいジャンル名を入力してください。.
+        /// </summary>
+        public static string GenreNameInput {
+            get {
+                return ResourceManager.GetString("GenreNameInput", resourceCulture);
             }
         }
         
@@ -227,6 +245,15 @@ namespace YuLauncher.LangString {
         public static string GenreWebsiteExtension {
             get {
                 return ResourceManager.GetString("GenreWebsiteExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YuLauncherのインストールが完了しました.
+        /// </summary>
+        public static string InstallComplete {
+            get {
+                return ResourceManager.GetString("InstallComplete", resourceCulture);
             }
         }
         
@@ -285,6 +312,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 新しいバージョンがあります.
+        /// </summary>
+        public static string NewVersionAb {
+            get {
+                return ResourceManager.GetString("NewVersionAb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 適切なウェブアドレスを入力してください.
         /// </summary>
         public static string NotContainsHttpError {
@@ -299,6 +335,15 @@ namespace YuLauncher.LangString {
         public static string NotSelectFileError {
             get {
                 return ResourceManager.GetString("NotSelectFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 現在のバージョン.
+        /// </summary>
+        public static string NowVersion {
+            get {
+                return ResourceManager.GetString("NowVersion", resourceCulture);
             }
         }
         
@@ -429,6 +474,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 同じキーが存在します.
+        /// </summary>
+        public static string SimpleDuplicateKey {
+            get {
+                return ResourceManager.GetString("SimpleDuplicateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 英語
         ///.
         /// </summary>
@@ -512,6 +566,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ジャンル管理.
+        /// </summary>
+        public static string SimpleGenreManage {
+            get {
+                return ResourceManager.GetString("SimpleGenreManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to インポート.
         /// </summary>
         public static string SimpleImport {
@@ -536,6 +599,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 管理.
+        /// </summary>
+        public static string SimpleManage {
+            get {
+                return ResourceManager.GetString("SimpleManage", resourceCulture);
             }
         }
         
@@ -622,6 +694,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to URLが不正です.
+        /// </summary>
+        public static string SimpleUrlError {
+            get {
+                return ResourceManager.GetString("SimpleUrlError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ウェブビューを使う.
         /// </summary>
         public static string SimpleUseWebview {
@@ -640,6 +721,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to データ管理.
+        /// </summary>
+        public static string SimpleWikiDataManage {
+            get {
+                return ResourceManager.GetString("SimpleWikiDataManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ビデオ/グラフィック/ディスプレイ.
         /// </summary>
         public static string VideoGraphics {
@@ -654,6 +744,15 @@ namespace YuLauncher.LangString {
         public static string WebSaver {
             get {
                 return ResourceManager.GetString("WebSaver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wikiデータ.
+        /// </summary>
+        public static string WikiData {
+            get {
+                return ResourceManager.GetString("WikiData", resourceCulture);
             }
         }
     }

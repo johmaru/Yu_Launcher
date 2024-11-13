@@ -23,8 +23,6 @@
                </ui:Button>
                <ComboBox x:Name="GenreComboBox" HorizontalContentAlignment="Center" Width="400" Loaded="GenreComboBox_OnLoaded" SelectionChanged="GenreComboBox_OnSelectionChanged">
                <ComboBoxItem x:Name="GenreAllComboBoxItem" Content="{lex:Loc GenreAllComboBoxItem}"/>
-               <ComboBoxItem x:Name="GenreExeComboBoxItem" Content="{lex:Loc GenreExeExtension}"/>
-               <ComboBoxItem x:Name="GenreWebsiteComboBoxItem" Content="{lex:Loc GenreWebsiteExtension}"/>
             </ComboBox>
            </StackPanel>
            

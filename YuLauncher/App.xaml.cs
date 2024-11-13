@@ -79,7 +79,7 @@ namespace YuLauncher
                 var newVersionCheck = await mgr.CheckForUpdatesAsync();
                 if (newVersionCheck == null) return;
 
-                var result = MessageBox.Show("New Version Available", "Update", MessageBoxButton.YesNo);
+                var result = MessageBox.Show(LocalizeControl.GetLocalize<string>("NewVersionAb"), "Update", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     await mgr.DownloadUpdatesAsync(newVersionCheck);

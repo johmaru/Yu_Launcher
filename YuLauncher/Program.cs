@@ -22,7 +22,7 @@ namespace YuLauncher
                 LogManager.Configuration = config;
                 VelopackApp.Build().WithBeforeUninstallFastCallback((v) => { }).WithFirstRun((v) =>
                 {
-                    MessageBox.Show("Thanks for installing my application!");
+                    MessageBox.Show(LocalizeControl.GetLocalize<string>("InstallComplete"));
                 }).Run();
                 
                 

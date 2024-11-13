@@ -9,7 +9,7 @@
         <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
-        <Version>0.3.4</Version>    
+        <Version>0.3.5</Version>    
     </PropertyGroup>
 
 
@@ -31,7 +31,7 @@
         <SubType>Code</SubType>
         <DependentUpon>WebSaverWindow.xaml</DependentUpon>
       </Compile>
-      <None Update="C:\Users\Administrator\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
+      <None Update="C:\Users\jOHMA\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <Link>NLog.config</Link>
       </None>
@@ -39,8 +39,8 @@
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="6.5.1" />
-      <PackageReference Include="HtmlAgilityPack" Version="1.11.67" />
-      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2839-prerelease" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2895-prerelease" />
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="NLog.Config" Version="4.7.15" />
       <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
@@ -51,7 +51,7 @@
       <PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
       <PackageReference Include="Tommy" Version="3.1.2" />
       <PackageReference Include="ValueTaskSupplement" Version="1.1.0" />
-      <PackageReference Include="Velopack" Version="0.0.783-g8c9c649" />
+      <PackageReference Include="Velopack" Version="0.0.869" />
       <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />

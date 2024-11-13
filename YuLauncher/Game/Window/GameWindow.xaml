@@ -23,14 +23,16 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Menu Grid.Column="0" PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown">
+            <Menu Grid.Column="0">
                 <MenuItem Header="{lex:Loc SimpleBrowser}">
                     <MenuItem x:Name="BackItem" Header="{lex:Loc SimpleBack}" Click="BackItem_OnClick"/>
                     <MenuItem x:Name="ReloadItem" Header="{lex:Loc SimpleReload}" Click="ReloadItem_OnClick"/>
                     <MenuItem x:Name="ForwardItem" Header="{lex:Loc SimpleForward}" Click="ForwardItem_OnClick"/>
+                    <MenuItem x:Name="WikiDataContentItem" Header="{lex:Loc WikiData}"/>
                 </MenuItem>
                 <MenuItem Header="{lex:Loc SimpleApplication}">
                     <MenuItem x:Name="SettingItem" Header="{lex:Loc SimpleSetting}" Click="SettingItem_OnClick"/>
+                    <MenuItem x:Name="WikiDataItem" Header="{lex:Loc SimpleWikiDataManage}" Click="WikiDataItem_OnClick"/>
                 </MenuItem>
             </Menu>
             <StackPanel Grid.Column="1" Orientation="Horizontal">

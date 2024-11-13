@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -48,6 +49,12 @@
             </StackPanel>
             </Grid>
         <Grid Grid.Row="3">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{lex:Loc SimpleGenreManage}"/>
+                <ui:Button x:Name="GenreManageButton" Content="{lex:Loc SImpleManage}" Click="GenreManageButton_OnClick"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="4">
         <ui:Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
         </Grid>

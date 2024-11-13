@@ -168,6 +168,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Genre add Completed.
+        /// </summary>
+        public static string GenreAdd {
+            get {
+                return ResourceManager.GetString("GenreAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ALL.
         /// </summary>
         public static string GenreAllComboBoxItem {
@@ -191,6 +200,15 @@ namespace YuLauncher.LangString {
         public static string GenreExeExtension {
             get {
                 return ResourceManager.GetString("GenreExeExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please input new genre name.
+        /// </summary>
+        public static string GenreNameInput {
+            get {
+                return ResourceManager.GetString("GenreNameInput", resourceCulture);
             }
         }
         
@@ -227,6 +245,15 @@ namespace YuLauncher.LangString {
         public static string GenreWebsiteExtension {
             get {
                 return ResourceManager.GetString("GenreWebsiteExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YuLauncher Install Completed.
+        /// </summary>
+        public static string InstallComplete {
+            get {
+                return ResourceManager.GetString("InstallComplete", resourceCulture);
             }
         }
         
@@ -285,6 +312,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Version Available.
+        /// </summary>
+        public static string NewVersionAb {
+            get {
+                return ResourceManager.GetString("NewVersionAb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter the appropriate web address.
         /// </summary>
         public static string NotContainsHttpError {
@@ -299,6 +335,15 @@ namespace YuLauncher.LangString {
         public static string NotSelectFileError {
             get {
                 return ResourceManager.GetString("NotSelectFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Now Version.
+        /// </summary>
+        public static string NowVersion {
+            get {
+                return ResourceManager.GetString("NowVersion", resourceCulture);
             }
         }
         
@@ -429,6 +474,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate keys exist.
+        /// </summary>
+        public static string SimpleDuplicateKey {
+            get {
+                return ResourceManager.GetString("SimpleDuplicateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string SimpleEnglish {
@@ -510,6 +564,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Genre Manage.
+        /// </summary>
+        public static string SimpleGenreManage {
+            get {
+                return ResourceManager.GetString("SimpleGenreManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string SimpleImport {
@@ -533,6 +596,15 @@ namespace YuLauncher.LangString {
         public static string SimpleLanguage {
             get {
                 return ResourceManager.GetString("SimpleLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage.
+        /// </summary>
+        public static string SimpleManage {
+            get {
+                return ResourceManager.GetString("SimpleManage", resourceCulture);
             }
         }
         
@@ -618,6 +690,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is not a valid URL.
+        /// </summary>
+        public static string SimpleUrlError {
+            get {
+                return ResourceManager.GetString("SimpleUrlError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Using webview.
         /// </summary>
         public static string SimpleUseWebview {
@@ -636,6 +717,15 @@ namespace YuLauncher.LangString {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataManage.
+        /// </summary>
+        public static string SimpleWikiDataManage {
+            get {
+                return ResourceManager.GetString("SimpleWikiDataManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video/Graphic/display.
         /// </summary>
         public static string VideoGraphics {
@@ -650,6 +740,15 @@ namespace YuLauncher.LangString {
         public static string WebSaver {
             get {
                 return ResourceManager.GetString("WebSaver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wiki Data.
+        /// </summary>
+        public static string WikiData {
+            get {
+                return ResourceManager.GetString("WikiData", resourceCulture);
             }
         }
     }
