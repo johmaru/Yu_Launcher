@@ -15,6 +15,7 @@ using Velopack.Locators;
 using Velopack.Sources;
 using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
+using YuLauncher.Game.Window;
 using Application = System.Windows.Application;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 

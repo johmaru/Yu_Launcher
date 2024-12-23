@@ -462,6 +462,20 @@ namespace YuLauncher.Game.Window
             };
             wikiDataManageWindow.Show();
         }
+
+        private void UIElement_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ChangedButton == MouseButton.Left)
+                DragMove();
+        }
+
+        private void menu_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
     }
 }
 

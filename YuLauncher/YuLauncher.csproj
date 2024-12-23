@@ -9,7 +9,7 @@
         <LangVersion>12</LangVersion>
         <ApplicationIcon>Core\Assets\YuIcon.ico</ApplicationIcon>
 		<StartupObject>YuLauncher.Program</StartupObject>
-        <Version>0.3.6</Version>    
+        <Version>0.3.7</Version>    
     </PropertyGroup>
 
 
@@ -39,21 +39,21 @@
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="6.5.1" />
-      <PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
-      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2895-prerelease" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2950-prerelease" />
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="NLog.Config" Version="4.7.15" />
-      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
+      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
       <PackageReference Include="NLog.Schema" Version="5.3.4" />
       <PackageReference Include="NLog.WindowsEventLog" Version="5.3.4" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
       <PackageReference Include="System.Reactive" Version="6.0.1" />
-      <PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
+      <PackageReference Include="System.Text.Json" Version="9.0.0" />
       <PackageReference Include="Tommy" Version="3.1.2" />
       <PackageReference Include="ValueTaskSupplement" Version="1.1.0" />
-      <PackageReference Include="Velopack" Version="0.0.869" />
+      <PackageReference Include="Velopack" Version="0.0.1015" />
       <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
-      <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
+      <PackageReference Include="WPF-UI" Version="4.0.0-rc.3" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     </ItemGroup>
 	

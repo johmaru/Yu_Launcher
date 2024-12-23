@@ -9,6 +9,7 @@ using NLog;
 using NLog.Config;
 using Velopack;
 using YuLauncher.Core.lib;
+using YuLauncher.Game.Window;
 
 namespace YuLauncher
 {
@@ -28,9 +29,9 @@ namespace YuLauncher
                 
                Thread thread = new Thread(() =>
                 {
-                    var app = new App();
-                    app.InitializeComponent();
-                    app.Run();
+                        var app = new App();
+                        app.InitializeComponent();
+                        app.Run();
                 });
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
