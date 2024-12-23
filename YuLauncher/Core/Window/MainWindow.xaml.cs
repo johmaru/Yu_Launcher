@@ -118,4 +118,9 @@ public partial class MainWindow : FluentWindow
     {
         WindowState = WindowState.Minimized;
     }
+
+    private void Grid_MouseLeftButtonDown()
+    {
+
+    }
 }
