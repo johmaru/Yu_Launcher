@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -234,11 +235,32 @@ public partial class CreateGameDialog : FluentWindow
                     using (HttpClient client = new HttpClient(handler))
                     {
                         var response = client.GetAsync(UrlBlock.Text).Result;
-                        var content = response.Content.ReadAsStringAsync().Result;
-                        using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.html"))
-                        {
-                            await writer.WriteLineAsync(content);
-                        }
+                        var  contentBytes = response.Content.ReadAsByteArrayAsync().Result;
+                        var contentType = GetEncodingFromMetaTag(contentBytes);
+                        var content = contentType.GetString(contentBytes);
+                       if (IsShtml(UrlBlock.Text))
+                       {
+                           try
+                           {
+                               using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.shtml", false, contentType))
+                               {
+                                   await writer.WriteLineAsync(content);
+                               }
+                           }
+                           catch (Exception exception)
+                           {
+                               Console.WriteLine(exception);
+                               throw;
+                           }
+                       }
+                       else
+                       {
+                           using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.html", false, contentType))
+                           {
+                               await writer.WriteLineAsync(content);
+                           }
+                       }
+                     
                     }
                     JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                     {
@@ -253,6 +275,12 @@ public partial class CreateGameDialog : FluentWindow
                         IsUseLog = false,
                         Genre = ["WebSaver"]
                     };
+
+                    if (UrlBlock.Text.EndsWith(".shtml"))
+                    {
+                        data = data with { FilePath = $"{htmlPath}/{Label.Text}.shtml" };
+                    }
+                    
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
                     
                 }
@@ -275,6 +303,60 @@ public partial class CreateGameDialog : FluentWindow
             MessageBox.Show(LocalizeControl.GetLocalize<string>("SelectGenreError"), "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    private bool IsShtml(string url)
+    {
+        return url.EndsWith(".shtml", StringComparison.OrdinalIgnoreCase);
+    }
+    
+    private Encoding GetEncodingFromContentType(string contentType)
+    {
+        if (string.IsNullOrEmpty(contentType))
+        {
+            return null;
+        }
+        try
+        {
+            return Encoding.GetEncoding(contentType);
+        }
+        catch (ArgumentException)
+        {
+            return null;
+        }
+    }
+    
+    private Encoding GetEncodingFromMetaTag(byte[] contentBytes)
+    {
+        var content = Encoding.UTF8.GetString(contentBytes);
+        var doc = new HtmlDocument();
+        doc.LoadHtml(content);
+        var meta = doc.DocumentNode.SelectSingleNode("//meta[@http-equiv='Content-Type']");
+        if (meta != null)
+        {
+            var contentAttr = meta.GetAttributeValue("content", "");
+            var charset = contentAttr.Split(';').FirstOrDefault(s => s.Trim().StartsWith("charset=", StringComparison.OrdinalIgnoreCase));
+            if (charset != null)
+            {
+                var encodingName = charset.Split('=')[1].Trim();
+                try
+                {
+                    if (encodingName.Equals("x-sjis", StringComparison.OrdinalIgnoreCase) || encodingName.Equals("shift_jis", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine("Shift-JIS detected");
+                      EncodingProvider provider = CodePagesEncodingProvider.Instance;
+                      var encoding = provider.GetEncoding("shift_jis");
+                      if (encoding != null) return encoding;
+                    }
+                    return Encoding.GetEncoding(encodingName);
+                }
+                catch (ArgumentException)
+                {
+                    return Encoding.UTF8;
+                }
+            }
+        }
+        return Encoding.UTF8;
     }
 
     private void GenreSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

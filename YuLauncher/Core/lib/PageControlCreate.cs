@@ -402,9 +402,22 @@ public class GameButton : Button
                         gameWindow.Show();
                         break;
                     case "WebSaver":
-                        WebSaverWindow.WebSaverWindow webSaverWindow = new WebSaverWindow.WebSaverWindow(name,data);
-                        webSaverWindow.Show();
-                        break;
+                       if (data.Url.EndsWith(".shtml"))
+                       {
+                         ProcessStartInfo websiteInfo = new ProcessStartInfo
+                         {
+                             FileName = data.FilePath,
+                             UseShellExecute = true,
+                         };
+                            Process.Start(websiteInfo);
+                       }
+                       else
+                       {
+                           WebSaverWindow.WebSaverWindow webSaverWindow =
+                               new WebSaverWindow.WebSaverWindow(data.Name, data);
+                           webSaverWindow.Show();
+                       }
+                       break;
                     case "":
                         break;
                 }
