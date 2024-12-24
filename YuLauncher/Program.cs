@@ -27,7 +27,7 @@ namespace YuLauncher
                     MessageBox.Show(LocalizeControl.GetLocalize<string>("InstallComplete"));
                 }).Run();
                 
-                
+                TempCheckStart();
              
             }
             catch (Exception e)
