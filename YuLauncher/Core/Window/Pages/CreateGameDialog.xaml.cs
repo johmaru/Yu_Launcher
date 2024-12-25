@@ -229,6 +229,12 @@ public partial class CreateGameDialog : FluentWindow
                 {
                     string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                     string htmlPath = Path.Combine(baseDirectory, "html");
+                    string contentHtmlPath = Path.Combine(htmlPath, $"{Label.Text}");
+                    string completePath = Path.GetFullPath(contentHtmlPath);
+                    if(!Directory.Exists(completePath))
+                    {
+                        Directory.CreateDirectory(completePath);
+                    }
                     var handler = new HttpClientHandler();
                     handler.UseCookies = true;
                     handler.CookieContainer = new CookieContainer();
@@ -238,11 +244,43 @@ public partial class CreateGameDialog : FluentWindow
                         var  contentBytes = response.Content.ReadAsByteArrayAsync().Result;
                         var contentType = GetEncodingFromMetaTag(contentBytes);
                         var content = contentType.GetString(contentBytes);
+
+                        var doc = new HtmlDocument();
+                        doc.LoadHtml(content);
+                        
+                        var imageNodes = doc.DocumentNode.SelectNodes("//img[@src]");
+                        if (imageNodes != null)
+                        {
+                            foreach (var img in imageNodes)
+                            {
+                                try
+                                {
+                                    var imageUrl = img.GetAttributeValue("src", "");
+                                    if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
+                                    {
+                                        var baseUrl = new Uri(UrlBlock.Text);
+                                        imageUrl = new Uri(new Uri(UrlBlock.Text), imageUrl).AbsoluteUri;
+                                    }
+                                    var imgBytes = await client.GetByteArrayAsync(imageUrl);
+                                    var imgFileName = Path.GetFileName(new Uri(imageUrl).LocalPath);
+                                    
+                                    await File.WriteAllBytesAsync($"{completePath}/{imgFileName}", imgBytes);
+                                    
+                                    img.SetAttributeValue("src", imgFileName);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex);
+                                    throw;
+                                }
+                            }
+                        }
+                        
                        if (IsShtml(UrlBlock.Text))
                        {
                            try
                            {
-                               using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.shtml", false, contentType))
+                               using (var writer = new StreamWriter($"{completePath}/{Label.Text}.shtml", false, contentType))
                                {
                                    await writer.WriteLineAsync(content);
                                }
@@ -255,7 +293,7 @@ public partial class CreateGameDialog : FluentWindow
                        }
                        else
                        {
-                           using (var writer = new StreamWriter($"{htmlPath}/{Label.Text}.html", false, contentType))
+                           using (var writer = new StreamWriter($"{completePath}/{Label.Text}.html", false, contentType))
                            {
                                await writer.WriteLineAsync(content);
                            }
@@ -264,7 +302,7 @@ public partial class CreateGameDialog : FluentWindow
                     }
                     JsonControl.ApplicationJsonData data = new JsonControl.ApplicationJsonData()
                     {
-                        FilePath = $"{htmlPath}/{Label.Text}.html",
+                        FilePath = $"{completePath}/{Label.Text}.html",
                         JsonPath = $"{FileControl.Main.Directory}\\{Label.Text}.json",
                         FileExtension = "WebSaver",
                         Name = Label.Text,
@@ -278,7 +316,7 @@ public partial class CreateGameDialog : FluentWindow
 
                     if (UrlBlock.Text.EndsWith(".shtml"))
                     {
-                        data = data with { FilePath = $"{htmlPath}/{Label.Text}.shtml" };
+                        data = data with { FilePath = $"{completePath}/{Label.Text}.shtml" };
                     }
                     
                     await JsonControl.CreateExeJson($"{FileControl.Main.Directory}\\{Label.Text}.json", data);
