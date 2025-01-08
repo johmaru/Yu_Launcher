@@ -83,8 +83,8 @@ namespace YuLauncher
                 var result = MessageBox.Show(LocalizeControl.GetLocalize<string>("NewVersionAb"), "Update", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    await mgr.DownloadUpdatesAsync(newVersionCheck);
                     await temp_file();
+                    await mgr.DownloadUpdatesAsync(newVersionCheck);
                     mgr.ApplyUpdatesAndRestart(newVersionCheck);
                 }
             }
@@ -100,7 +100,7 @@ namespace YuLauncher
         {
             string temp = Path.Combine("..", "Temp");
             string fullTemp = Path.GetFullPath(temp);   
-            if (Directory.Exists(fullTemp))
+            if (!Directory.Exists(fullTemp))
             {
                 string relativePath = Path.Combine("..", "Temp", "YuLauncher.exe.WebView2");
                 string fullPath = Path.GetFullPath(relativePath);
