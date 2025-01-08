@@ -20,14 +20,13 @@ namespace YuLauncher
         {
             try
             {
+                TempCheckStart();
                 var config = new XmlLoggingConfiguration("NLog.config");
                 LogManager.Configuration = config;
                 VelopackApp.Build().WithBeforeUninstallFastCallback((v) => { }).WithFirstRun((v) =>
                 {
                     MessageBox.Show(LocalizeControl.GetLocalize<string>("InstallComplete"));
                 }).Run();
-                
-                TempCheckStart();
              
             }
             catch (Exception e)
@@ -62,23 +61,51 @@ namespace YuLauncher
             {
                 string webviewData = Path.Combine(fullPath, "YuLauncher.exe.WebView2");
                 string webviewDataFullPath = Path.GetFullPath(webviewData);
-                
-                Directory.Move(webviewDataFullPath, "YuLauncher.exe.WebView2");
-                
+
+                if (Directory.Exists("YuLauncher.exe.WebView2"))
+                {
+                    Directory.Delete(webviewDataFullPath, true);
+                }
+                else
+                {
+                    Directory.Move(webviewDataFullPath, "YuLauncher.exe.WebView2");
+                }
+
                 string games = Path.Combine(fullPath, "Games");
                 string gamesFullPath = Path.GetFullPath(games);
-                
-                Directory.Move(gamesFullPath, "Games");
+
+                if (Directory.Exists("Games"))
+                {
+                  Directory.Delete(gamesFullPath, true);   
+                }
+                else
+                {
+                    Directory.Move(gamesFullPath, "Games");
+                }
                 
                 string html = Path.Combine(fullPath, "html");
                 string htmlFullPath = Path.GetFullPath(html);
                 
-                Directory.Move(htmlFullPath, "html");
+                if (Directory.Exists("html"))
+                {
+                    Directory.Delete(htmlFullPath, true);
+                }
+                else
+                {
+                    Directory.Move(htmlFullPath, "html");
+                }
                 
                 string settings = Path.Combine(fullPath, "settings.toml");
                 string settingsFullPath = Path.GetFullPath(settings);
                 
-                File.Move(settingsFullPath, "settings.toml");
+                if (File.Exists("settings.toml"))
+                {
+                    File.Delete(settingsFullPath);
+                }
+                else
+                {
+                    File.Move(settingsFullPath, "settings.toml");
+                }
                 
                 Directory.Delete(fullPath);
             }

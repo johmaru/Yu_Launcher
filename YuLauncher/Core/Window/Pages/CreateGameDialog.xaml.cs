@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
+using System.Text.Unicode;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ using HtmlAgilityPack;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using UtfUnknown;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using MessageBox = System.Windows.MessageBox;
@@ -241,12 +243,19 @@ public partial class CreateGameDialog : FluentWindow
                     using (HttpClient client = new HttpClient(handler))
                     {
                         var response = client.GetAsync(UrlBlock.Text).Result;
-                        var  contentBytes = response.Content.ReadAsByteArrayAsync().Result;
-                        var contentType = GetEncodingFromMetaTag(contentBytes);
-                        var content = contentType.GetString(contentBytes);
+                        var  contentBytes = await response.Content.ReadAsByteArrayAsync();
+                        var contentType = CharsetDetector.DetectFromBytes(contentBytes);
+                        var encoding = contentType.Detected.Encoding;
+                        var type = contentType.Detected.Encoding.EncodingName;
+                        Console.WriteLine(type);
+                        var content = encoding.GetString(contentBytes);
 
                         var doc = new HtmlDocument();
                         doc.LoadHtml(content);
+
+                       
+                        Console.WriteLine(contentType);
+                        
                         
                         var imageNodes = doc.DocumentNode.SelectNodes("//img[@src]");
                         if (imageNodes != null)
@@ -261,7 +270,7 @@ public partial class CreateGameDialog : FluentWindow
                                         var baseUrl = new Uri(UrlBlock.Text);
                                         imageUrl = new Uri(new Uri(UrlBlock.Text), imageUrl).AbsoluteUri;
                                     }
-                                    var imgBytes = await client.GetByteArrayAsync(imageUrl);
+                                    byte[] imgBytes= await client.GetByteArrayAsync(imageUrl);
                                     var imgFileName = Path.GetFileName(new Uri(imageUrl).LocalPath);
                                     
                                     await File.WriteAllBytesAsync($"{completePath}/{imgFileName}", imgBytes);
@@ -270,8 +279,14 @@ public partial class CreateGameDialog : FluentWindow
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine(ex);
-                                    throw;
+                                    switch (ex)
+                                    {
+                                        case NotSupportedException _:
+                                            break;
+                                        default: 
+                                            Console.WriteLine(ex);
+                                            throw;
+                                    }
                                 }
                             }
                         }
@@ -280,7 +295,7 @@ public partial class CreateGameDialog : FluentWindow
                        {
                            try
                            {
-                               using (var writer = new StreamWriter($"{completePath}/{Label.Text}.shtml", false, contentType))
+                               using (var writer = new StreamWriter($"{completePath}/{Label.Text}.shtml", false, encoding))
                                {
                                    await writer.WriteLineAsync(content);
                                }
@@ -293,7 +308,7 @@ public partial class CreateGameDialog : FluentWindow
                        }
                        else
                        {
-                           using (var writer = new StreamWriter($"{completePath}/{Label.Text}.html", false, contentType))
+                           using (var writer = new StreamWriter($"{completePath}/{Label.Text}.html", false, encoding))
                            {
                                await writer.WriteLineAsync(content);
                            }
@@ -346,55 +361,6 @@ public partial class CreateGameDialog : FluentWindow
     private bool IsShtml(string url)
     {
         return url.EndsWith(".shtml", StringComparison.OrdinalIgnoreCase);
-    }
-    
-    private Encoding GetEncodingFromContentType(string contentType)
-    {
-        if (string.IsNullOrEmpty(contentType))
-        {
-            return null;
-        }
-        try
-        {
-            return Encoding.GetEncoding(contentType);
-        }
-        catch (ArgumentException)
-        {
-            return null;
-        }
-    }
-    
-    private Encoding GetEncodingFromMetaTag(byte[] contentBytes)
-    {
-        var content = Encoding.UTF8.GetString(contentBytes);
-        var doc = new HtmlDocument();
-        doc.LoadHtml(content);
-        var meta = doc.DocumentNode.SelectSingleNode("//meta[@http-equiv='Content-Type']");
-        if (meta != null)
-        {
-            var contentAttr = meta.GetAttributeValue("content", "");
-            var charset = contentAttr.Split(';').FirstOrDefault(s => s.Trim().StartsWith("charset=", StringComparison.OrdinalIgnoreCase));
-            if (charset != null)
-            {
-                var encodingName = charset.Split('=')[1].Trim();
-                try
-                {
-                    if (encodingName.Equals("x-sjis", StringComparison.OrdinalIgnoreCase) || encodingName.Equals("shift_jis", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Console.WriteLine("Shift-JIS detected");
-                      EncodingProvider provider = CodePagesEncodingProvider.Instance;
-                      var encoding = provider.GetEncoding("shift_jis");
-                      if (encoding != null) return encoding;
-                    }
-                    return Encoding.GetEncoding(encodingName);
-                }
-                catch (ArgumentException)
-                {
-                    return Encoding.UTF8;
-                }
-            }
-        }
-        return Encoding.UTF8;
     }
 
     private void GenreSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

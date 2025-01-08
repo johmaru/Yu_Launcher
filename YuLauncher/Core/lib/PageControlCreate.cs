@@ -410,6 +410,14 @@ public class GameButton : Button
                              UseShellExecute = true,
                          };
                             Process.Start(websiteInfo);
+                       } else if (data.Url.EndsWith(""))
+                       {
+                           ProcessStartInfo websiteInfo = new ProcessStartInfo
+                           {
+                               FileName = data.FilePath,
+                               UseShellExecute = true,
+                           };
+                            Process.Start(websiteInfo);
                        }
                        else
                        {
