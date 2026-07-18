@@ -354,3 +354,8 @@ MigrationBackup/
 /.vs/
 /.idea/.idea.YuLauncher/.idea
 wpfui/
+
+# Debug files
+Games/Syani.json
+gameList.toml
+settings.toml
