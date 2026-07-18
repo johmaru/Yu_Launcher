@@ -119,95 +119,29 @@ public static class JsonControl
         return new ValueTask<bool>(false);
     }
 
-    public static async ValueTask CheckJsonData(string jsonPath,ApplicationJsonData data)
+    public static async ValueTask CheckJsonData(string jsonPath, ApplicationJsonData data)
     {
-        switch (data)
+        data = data with
         {
-            case { FilePath: null }:
-                data = data with { FilePath = "" };
-                    await CreateExeJson(jsonPath, data);
-                    break;
-            
-            case {JsonPath: null}:
-                data = data with { JsonPath = "" };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case {Name:  null}:
-                data = data with { Name = "" };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { FileExtension: null }:
-                data = data with { FileExtension = "Unknown" };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { Memo: null }:
-                data = data with { Memo = "" };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { IsWebView: null }:
-                data = data with { IsWebView = false };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { IsUseLog: null }:
-                data = data with { IsUseLog = false };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { Url: null }:
-                data = data with { Url = "" };
-                await CreateExeJson(jsonPath, data);
-                break;
-
-            case { MultipleLaunch: null }:
-                data = data with { MultipleLaunch = new string[0] };
-                await CreateExeJson(jsonPath, data);
-                break;
-            case {Genre: null}:
-                if (data.FileExtension == null)
-                {
-                    data = data with { Genre = new string[] { "Unknown" } };
-                    await CreateExeJson(jsonPath, data);
-                }
-                else
-                {
-                    switch (data.FileExtension)
-                    {
-                        case "exe":
-                            data = data with { Genre = new string[] { "Application" } };
-                            await CreateExeJson(jsonPath, data);
-                            break;
-                        case "web":
-                            data = data with { Genre = new string[] { "WebSite" } };
-                            await CreateExeJson(jsonPath, data);
-                            break;
-                        case "WebGame":
-                            data = data with { Genre = new string[] { "WebGame" } };
-                            await CreateExeJson(jsonPath, data);
-                            break;
-                        case "WebSaver":
-                            data = data with { Genre = new string[] { "WebSaver" } };
-                            await CreateExeJson(jsonPath, data);
-                            break;
-                        default: 
-                            data = data with { Genre = new string[] { "Unknown" } };
-                            await CreateExeJson(jsonPath, data);
-                            break;
-                    }
-                }
-                
-                break;
-            
-            case {WikiData: null}:
-                data = data with { WikiData = new Dictionary<string, string>() };
-                await CreateExeJson(jsonPath, data);
-                break;
-        }
-
+            FilePath       = data.FilePath ?? "",
+            JsonPath       = data.JsonPath ?? "",
+            Name           = data.Name ?? "",
+            FileExtension  = data.FileExtension ?? "Unknown",
+            Memo           = data.Memo ?? "",
+            IsWebView      = data.IsWebView ?? false,
+            IsUseLog       = data.IsUseLog ?? false,
+            Url            = data.Url ?? "",
+            MultipleLaunch = data.MultipleLaunch ?? [],
+            WikiData       = data.WikiData ?? new(),
+            Genre          = data.Genre ?? (data.FileExtension switch {
+                                "exe"      => ["Application"],
+                                "web"      => ["WebSite"],
+                                "WebGame"  => ["WebGame"],
+                                "WebSaver" => ["WebSaver"],
+                                _          => ["Unknown"],
+                            }),
+        };
+        await CreateExeJson(jsonPath, data);
     }
 
 }

@@ -14,7 +14,6 @@ using System.Windows.Input;
 using HtmlAgilityPack;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using UtfUnknown;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
@@ -52,49 +51,47 @@ public partial class CreateGameDialog : FluentWindow
     {
         try
         {
-            using (var ofd = new CommonOpenFileDialog())
+            var ofd = new OpenFileDialog
             {
-                ofd.Title = LocalizeControl.GetLocalize<string>("SelectFileLabel");
-                ofd.IsFolderPicker = false;
-                ofd.RestoreDirectory = true;
-                if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
+                Title = LocalizeControl.GetLocalize<string>("SelectFileLabel"),
+                RestoreDirectory = true
+            };
+
+            if (ofd.ShowDialog() == true)
+            {
+                try
                 {
-                    try
-                    {
-                        _openFileDialog = ofd.FileName;
-                        PathLabel.Content = _openFileDialog;
-                        Label.Text = Path.GetFileNameWithoutExtension(_openFileDialog);
-                        Activate();
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        LoggerController.LogError("An I/O error occurred: " + exception.Message);
-                        throw;
-                    }
-                }
-                else
-                {
-                    LoggerController.LogWarn("User Cancelled File Selection");
-                    ErrLabel.Visibility = Visibility.Visible;
-                    Timer timer = new Timer(3000);
-                    timer.Elapsed += (_,_) =>
-                    {
-                        Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
-                        timer.Stop();
-                    };
-                    timer.Start();
+                    _openFileDialog = ofd.FileName;
+                    PathLabel.Content = _openFileDialog;
+                    Label.Text = Path.GetFileNameWithoutExtension(_openFileDialog);
                     Activate();
                 }
-
-                ;
+                catch (Exception exception)
+                {
+                    LoggerController.LogError($"{exception}");
+                    LoggerController.LogError("An I/O error occurred: " + exception.Message);
+                    
+                }
+            }
+            else
+            {
+                LoggerController.LogWarn("User Cancelled File Selection");
+                ErrLabel.Visibility = Visibility.Visible;
+                Timer timer = new Timer(3000);
+                timer.Elapsed += (_,_) =>
+                {
+                    Dispatcher.Invoke(() => { ErrLabel.Visibility = Visibility.Collapsed; });
+                    timer.Stop();
+                };
+                timer.Start();
+                Activate();
             }
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            LoggerController.LogError($"{exception}");
             LoggerController.LogError("An I/O error occurred: " + exception.Message);
-            throw;
+            
         }
     }
 
@@ -157,8 +154,8 @@ public partial class CreateGameDialog : FluentWindow
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                LoggerController.LogError($"{exception}");
+                
             }
         }
         else if (GenreSelectComboBox.SelectedItem == GenreWebSiteComboBoxItem)
@@ -247,14 +244,14 @@ public partial class CreateGameDialog : FluentWindow
                         var contentType = CharsetDetector.DetectFromBytes(contentBytes);
                         var encoding = contentType.Detected.Encoding;
                         var type = contentType.Detected.Encoding.EncodingName;
-                        Console.WriteLine(type);
+                        
                         var content = encoding.GetString(contentBytes);
 
                         var doc = new HtmlDocument();
                         doc.LoadHtml(content);
 
                        
-                        Console.WriteLine(contentType);
+                        
                         
                         
                         var imageNodes = doc.DocumentNode.SelectNodes("//img[@src]");
@@ -283,9 +280,9 @@ public partial class CreateGameDialog : FluentWindow
                                     {
                                         case NotSupportedException _:
                                             break;
-                                        default: 
-                                            Console.WriteLine(ex);
-                                            throw;
+                                        default:
+                                            LoggerController.LogError($"{ex}");
+                                            break;
                                     }
                                 }
                             }
@@ -302,8 +299,8 @@ public partial class CreateGameDialog : FluentWindow
                            }
                            catch (Exception exception)
                            {
-                               Console.WriteLine(exception);
-                               throw;
+                               LoggerController.LogError($"{exception}");
+                               
                            }
                        }
                        else
@@ -413,8 +410,8 @@ public partial class CreateGameDialog : FluentWindow
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
-            throw;
+            LoggerController.LogError($"{exception}");
+            
         }
         OpenNum += 1;
     }

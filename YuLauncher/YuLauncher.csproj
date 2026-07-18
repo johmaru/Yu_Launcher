@@ -14,14 +14,6 @@
 
 
     <ItemGroup>
-      <Compile Remove="Data\**" />
-      <Compile Remove="Game\Window\Pages\**" />
-      <EmbeddedResource Remove="Data\**" />
-      <EmbeddedResource Remove="Game\Window\Pages\**" />
-      <None Remove="Data\**" />
-      <None Remove="Game\Window\Pages\**" />
-      <Page Remove="Data\**" />
-      <Page Remove="Game\Window\Pages\**" />
       <Page Update="Core\WebSaverWindow\WebSaverWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
@@ -31,31 +23,22 @@
         <SubType>Code</SubType>
         <DependentUpon>WebSaverWindow.xaml</DependentUpon>
       </Compile>
-      <None Update="C:\Users\jOHMA\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
+      <None Update="NLog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        <Link>NLog.config</Link>
       </None>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="EntityFramework" Version="6.5.1" />
-      <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
-      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2950-prerelease" />
-      <PackageReference Include="NLog" Version="5.3.4" />
-      <PackageReference Include="NLog.Config" Version="4.7.15" />
-      <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
-      <PackageReference Include="NLog.Schema" Version="5.3.4" />
-      <PackageReference Include="NLog.WindowsEventLog" Version="5.3.4" />
-      <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
-      <PackageReference Include="System.Reactive" Version="6.0.1" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
+      <PackageReference Include="NLog" Version="6.1.4" />
+      <PackageReference Include="System.Reactive" Version="6.1.0" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
       <PackageReference Include="System.Text.Json" Version="9.0.0" />
       <PackageReference Include="Tommy" Version="3.1.2" />
-      <PackageReference Include="UTF.Unknown" Version="2.5.1" />
-      <PackageReference Include="ValueTaskSupplement" Version="1.1.0" />
-      <PackageReference Include="Velopack" Version="0.0.1015" />
-      <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
-      <PackageReference Include="WPF-UI" Version="4.0.0-rc.3" />
+      <PackageReference Include="UTF.Unknown" Version="2.6.0" />
+      <PackageReference Include="Velopack" Version="1.2.0" />
+      <PackageReference Include="WPF-UI" Version="4.3.0" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     </ItemGroup>
 	

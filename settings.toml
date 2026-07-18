@@ -1,0 +1,25 @@
+Language = "en"
+FullScreen = "false"
+AutoUpdate = "false"
+Theme = "Dark"
+MemoFontSize = 20
+
+[GameResolution]
+Width = 1920
+Height = 1080
+
+[WebViewResolution]
+Width = 1280
+Height = 720
+
+[WindowResolution]
+Width = 800
+Height = 400
+
+[SettingResolution]
+Width = 800
+Height = 400
+
+[MemoResolution]
+Width = 600
+Height = 200

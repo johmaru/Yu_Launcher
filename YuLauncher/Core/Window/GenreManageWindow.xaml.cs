@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
@@ -104,42 +103,4 @@ public partial class GenreManageWindow : FluentWindow
         MessageBox.Show(LocalizeControl.GetLocalize<string>("GenreAdd"));
     }
 
-    private void Grid_OnMouseMove(object sender, MouseEventArgs e)
-    {
-        if (e.LeftButton != MouseButtonState.Pressed) return;
-        if (WindowState != WindowState.Maximized) return;
-        var point = Mouse.GetPosition(this);
-        WindowState = WindowState.Normal;
-        Left = point.X - Width / 2;
-        Top = point.Y;
-        DragMove();
-    }
-
-    private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
-    private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Maximized;
-        WindowStateIcon.Glyph = "\uE73F";
-    }
-
-    private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Normal;
-        WindowStateIcon.Glyph = "\uE740";
-    }
-
-    private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
-
-    private void GenreManageWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ChangedButton == MouseButton.Left)
-            DragMove();
-    }
 }

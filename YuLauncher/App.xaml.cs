@@ -17,7 +17,6 @@ using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using YuLauncher.Game.Window;
 using Application = System.Windows.Application;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace YuLauncher
 {
@@ -44,12 +43,10 @@ namespace YuLauncher
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
                 LoggerController.LogError($"{exception}");
-                throw;
             }
-           
-           LoggerController.LogInfo("Application Start");
+
+            LoggerController.LogInfo("Application Start");
         }
         
         private async ValueTask Initialize()
@@ -62,7 +59,6 @@ namespace YuLauncher
 
         private static async Task UpdateCheck()
         {
-           
             try
             {
                 var mgr = new UpdateManager(new GithubSource(@"https://github.com/johmaru/Yu_Launcher", null, false),
@@ -90,33 +86,31 @@ namespace YuLauncher
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 LoggerController.LogError($"{e}");
-                throw;
             }
         }
 
         private static ValueTask temp_file()
         {
             string temp = Path.Combine("..", "Temp");
-            string fullTemp = Path.GetFullPath(temp);   
+            string fullTemp = Path.GetFullPath(temp);
             if (!Directory.Exists(fullTemp))
             {
                 string relativePath = Path.Combine("..", "Temp", "YuLauncher.exe.WebView2");
                 string fullPath = Path.GetFullPath(relativePath);
                 FileControl.CopyDirectory("YuLauncher.exe.WebView2", fullPath);
-                
+
                 string gamesPath = Path.Combine("..", "Temp", "Games");
                 string fullGamesPath = Path.GetFullPath(gamesPath);
                 FileControl.CopyDirectory("Games", fullGamesPath);
-                
+
                 string htmlPath = Path.Combine("..", "Temp", "html");
                 string fullHtmlPath = Path.GetFullPath(htmlPath);
                 FileControl.CopyDirectory("html", fullHtmlPath);
-                
+
                 string settingsPath = Path.Combine("..", "Temp", "settings.toml");
                 string fullSettingsPath = Path.GetFullPath(settingsPath);
-                
+
                 File.Copy("settings.toml", fullSettingsPath, true);
             }
             return ValueTask.CompletedTask;

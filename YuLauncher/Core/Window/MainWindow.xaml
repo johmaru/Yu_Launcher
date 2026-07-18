@@ -14,28 +14,18 @@
     lex:LocalizeDictionary.DesignCulture="ja-JP"
     lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
     WindowStartupLocation="CenterScreen"
-    MouseDown="MainWindow_OnMouseDown"
-    SizeChanged="MainWindow_OnSizeChanged"
-    lex:ResxLocalizationProvider.DefaultDictionary="LangString" Closing="MetroWindow_Closing">
-    <Grid>
+    lex:ResxLocalizationProvider.DefaultDictionary="LangString" Closing="MetroWindow_Closing"
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica">
+    <Grid x:Name="Grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-            <Grid Grid.Row="0"  x:Name="Grid" MouseMove="Grid_OnMouseMove">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                   <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
-                       <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
-                   </ui:Button>
-                    <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
-                        <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
-                    </ToggleButton>
-                    <ui:Button x:Name="ExitBtn" VerticalAlignment="Center" Click="ExitBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
-                </ui:Button>
-                    </StackPanel>
-        </Grid>
-            <Grid Grid.Row="1">
+        <ui:TitleBar Grid.Row="0"
+                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                     Height="48"/>
+        <Grid Grid.Row="1">
             <Frame Source="Pages/MainPage.xaml" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
     </Grid>

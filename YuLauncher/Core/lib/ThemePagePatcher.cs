@@ -19,14 +19,17 @@ public static class VisualTreeHelperExtensions
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                if (child != null && child is T)
+                if (child is T typedChild)
                 {
-                    yield return (T)child;
+                    yield return typedChild;
                 }
 
-                foreach (T childOfChild in FindVisualChildren<T>(child))
+                if (child != null)
                 {
-                    yield return childOfChild;
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
                 }
             }
         }
@@ -35,13 +38,6 @@ public static class VisualTreeHelperExtensions
 
 public class ThemePagePatcher
 {
-
-    struct ThemeControl
-    {
-        private TextBlock _textBlock;
-        private TextBox _textBox;
-    }
-    
     public static void PatchTheme(Page page)
     {
         var themeControl = new ThemeService().GetTheme();

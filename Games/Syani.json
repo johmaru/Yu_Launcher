@@ -1,0 +1,19 @@
+{
+  "FilePath": "",
+  "JsonPath": "./Games\\Syani.json",
+  "Name": "Syani",
+  "FileExtension": "web",
+  "Memo": "",
+  "IsWebView": true,
+  "IsUseLog": false,
+  "Url": "https://shinycolors.enza.fun/?_in=ad\u0026_in_param=010010wb",
+  "MultipleLaunch": [
+    ""
+  ],
+  "IsMute": false,
+  "Volume": 1,
+  "Genre": [
+    "WebSite"
+  ],
+  "WikiData": {}
+}

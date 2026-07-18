@@ -348,4 +348,37 @@
   <data name="SimpleDuplicateKey" xml:space="preserve">
     <value>Duplicate keys exist</value>
   </data>
+  <data name="SelectGamePrompt" xml:space="preserve">
+    <value>Please select a game</value>
+  </data>
+  <data name="DetailPlay" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="DetailProperty" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="DetailMemo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="DetailWikiManage" xml:space="preserve">
+    <value>Wiki Manage</value>
+  </data>
+  <data name="DetailGenreManage" xml:space="preserve">
+    <value>Genre Manage</value>
+  </data>
+  <data name="DetailNoMemo" xml:space="preserve">
+    <value>No memo</value>
+  </data>
+  <data name="DetailNoWiki" xml:space="preserve">
+    <value>No wiki data</value>
+  </data>
+  <data name="DetailNoGames" xml:space="preserve">
+    <value>No games</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="DetailLaunchOptions" xml:space="preserve">
+    <value>Launch Options</value>
+  </data>
 </root>

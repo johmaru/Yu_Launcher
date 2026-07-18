@@ -9,32 +9,23 @@
         lex:LocalizeDictionary.DesignCulture="ja-JP"
         lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
         lex:ResxLocalizationProvider.DefaultDictionary="Language"
-        MouseDown="WikiDataManageWindow_OnMouseDown"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="WikiDataManageWindow" Height="400" Width="200">
+        Title="WikiDataManageWindow" Height="400" Width="200"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        
-        <Grid Row="0" MouseMove="Grid_OnMouseMove">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
-                </ui:Button>
-                <ToggleButton x:Name="WindowStateBtn" VerticalAlignment="Center" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
-                    <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
-                </ToggleButton>
-                <ui:Button x:Name="ExitBtn" Click="ExitBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
-                </ui:Button>
-            </StackPanel>
-    </Grid>
-        
-        <Grid Row="1">
+
+        <ui:TitleBar Grid.Row="0"
+                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                     Height="48"/>
+
+        <Grid Grid.Row="1">
             <StackPanel Orientation="Vertical">
                     <Button x:Name="AddButton" Content="{lex:Loc AddGame}" Click="AddButton_OnClick"/>
                 <ScrollViewer>
@@ -44,7 +35,7 @@
                 </ScrollViewer>
             </StackPanel>
         </Grid>
-        <Grid Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+        <Grid Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="SaveButton" Content="{lex:Loc SimpleSave}" Click="SaveButton_OnClick"/>
                 <Button x:Name="ExitButton" Content="{lex:Loc SimpleExit}" Click="ExitButton_OnClick"/>

@@ -21,14 +21,15 @@ using Image = System.Windows.Controls.Image;
 
 namespace YuLauncher.Core.lib;
 
-public class PageControlCreate : Page
+public static class PageControlCreate
 {
-    private static Subject<int> _deleteFileMenuClicked = new Subject<int>();
+    private static readonly Subject<int> _deleteFileMenuClicked = new();
     public static IObservable<int> DeleteFileMenuClicked => _deleteFileMenuClicked;
-    public static ContextMenu GameListShowContextMenu(bool isGameButton,JsonControl.ApplicationJsonData data)
+
+    public static ContextMenu GameListShowContextMenu(bool isGameButton, JsonControl.ApplicationJsonData data)
     {
         ContextMenu contextMenu = new ContextMenu();
-        
+
         switch (isGameButton)
         {
             case true:
@@ -37,25 +38,25 @@ public class PageControlCreate : Page
                 {
                     Header = LocalizeControl.GetLocalize<string>("AddGame"),
                 };
-                addCtx.Click += (_,_) =>
+                addCtx.Click += (_, _) =>
                 {
-                  try
-                  {
-                      CreateGameDialog createGameDialog = new CreateGameDialog();
-                      createGameDialog.Show();
-                  }
-                  catch (Exception e)
-                  {
-                      LoggerController.LogError(e.Message);
-                  }
+                    try
+                    {
+                        CreateGameDialog createGameDialog = new CreateGameDialog();
+                        createGameDialog.Show();
+                    }
+                    catch (Exception e)
+                    {
+                        LoggerController.LogError(e.Message);
+                    }
                 };
                 contextMenu.Items.Add(addCtx);
-                
+
                 MenuItem deleteCtx = new MenuItem()
                 {
                     Header = LocalizeControl.GetLocalize<string>("DeleteGame"),
                 };
-                deleteCtx.Click += (_,_) =>
+                deleteCtx.Click += (_, _) =>
                 {
                     try
                     {
@@ -65,8 +66,7 @@ public class PageControlCreate : Page
                         {
                             File.Delete(htmlPath);
                             File.Delete(data.JsonPath);
-                           _deleteFileMenuClicked.OnNext(0);
-                            
+                            _deleteFileMenuClicked.OnNext(0);
                         }
                         else
                         {
@@ -74,28 +74,26 @@ public class PageControlCreate : Page
                             {
                                 File.Delete(data.JsonPath);
                                 LoggerController.LogWarn($"delete file: {data.JsonPath}");
-                               _deleteFileMenuClicked.OnNext(0);
+                                _deleteFileMenuClicked.OnNext(0);
                             }
                             else
                             {
-                                Console.WriteLine("file not found");
-                                Console.WriteLine(data.JsonPath);
-                                LoggerController.LogError("file not found");
+                                LoggerController.LogError($"file not found: {data.JsonPath}");
                             }
                         }
                     }
                     catch (Exception e)
                     {
                         LoggerController.LogError(e.Message);
-                        throw;
                     }
                 };
                 contextMenu.Items.Add(deleteCtx);
+
                 MenuItem memoCtx = new MenuItem()
                 {
                     Header = LocalizeControl.GetLocalize<string>("MemoCtxHeader")
                 };
-                memoCtx.Click += (_,_) =>
+                memoCtx.Click += (_, _) =>
                 {
                     if (!File.Exists(data.JsonPath)) return;
                     try
@@ -105,11 +103,11 @@ public class PageControlCreate : Page
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
-                        throw;
+                        LoggerController.LogError(e.Message);
                     }
                 };
                 contextMenu.Items.Add(memoCtx);
+
                 MenuItem propertyCtx = new MenuItem()
                 {
                     Header = LocalizeControl.GetLocalize<string>("PropertyCtxHeader")
@@ -124,8 +122,7 @@ public class PageControlCreate : Page
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
-                        throw;
+                        LoggerController.LogError(e.Message);
                     }
                 };
                 contextMenu.Items.Add(propertyCtx);
@@ -146,9 +143,7 @@ public class PageControlCreate : Page
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
                         LoggerController.LogError(e.Message);
-                        throw;
                     }
                 };
 
@@ -163,7 +158,7 @@ public class PageControlCreate : Page
 public class GameButton : Button
 {
     public bool IsMouseEntered { get; private set; }
-    
+
     private static void EnsureLogDirectories(string name)
     {
         if (!Directory.Exists("./AppLogs"))
@@ -176,8 +171,50 @@ public class GameButton : Button
             Directory.CreateDirectory($"./AppLogs/{name}");
         }
     }
-    
-    private ValueTask StartProcessWithLogging(string fileName, string name)
+
+    private static async Task LaunchExe(JsonControl.ApplicationJsonData data)
+    {
+        if (!File.Exists(data.FilePath))
+        {
+            MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
+            LoggerController.LogError($"file not found: {data.FilePath}");
+            return;
+        }
+
+        if (data.IsUseLog == true)
+        {
+            await StartProcessWithLogging(data.FilePath, data.Name);
+            return;
+        }
+
+        ProcessStartInfo startInfo = new ProcessStartInfo
+        {
+            FileName = data.FilePath,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+        };
+        Process process = new Process { StartInfo = startInfo };
+        process.OutputDataReceived += (_, e) => LoggerController.LogDebug($"Output: {e.Data}");
+        process.ErrorDataReceived += (_, e) => LoggerController.LogWarn($"Error: {e.Data}");
+
+        try
+        {
+            process.Start();
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
+            LoggerController.LogError(e.Message);
+            return;
+        }
+
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+        await process.WaitForExitAsync();
+    }
+
+    private static async Task StartProcessWithLogging(string fileName, string name)
     {
         EnsureLogDirectories(name);
 
@@ -210,7 +247,7 @@ public class GameButton : Button
                 output.AppendLine($"Error :{e.Data}");
             }
         };
-        process.Exited += (_,_) =>
+        process.Exited += (_, _) =>
         {
             string logPath = $"./AppLogs/{name}/{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt";
             File.WriteAllLines(logPath, output.ToString().Split('\n').Where(x => x != "").ToArray());
@@ -222,81 +259,93 @@ public class GameButton : Button
         }
         catch (ObjectDisposedException)
         {
-            LoggerController.LogInfo("Process has already been disposed(In most cases, this is normal behavior)");
+            LoggerController.LogInfo("Process has already been disposed (in most cases, this is normal behavior)");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
             MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
-            throw;
+            LoggerController.LogError(e.Message);
+            return;
         }
 
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
-
-        process.WaitForExit();
-        return ValueTask.CompletedTask;
+        await process.WaitForExitAsync();
     }
 
-    private static BitmapImage? GetImage(JsonControl.ApplicationJsonData appData)
+    private static void LaunchWeb(JsonControl.ApplicationJsonData data)
     {
-        switch (appData.FileExtension)
+        if (data.IsWebView == true)
         {
-            case "WebGame":
-            {
-                BitmapImage? bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
-                bitmap.EndInit();
-                return bitmap;
-            }
-            case "WebSaver":
-            {
-                BitmapImage? bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
-                bitmap.EndInit();
-                return bitmap;
-            }
-        }
-
-        if (appData.FileExtension != "web")
-        {
-            if (!File.Exists(appData.FilePath)) return null;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
-                if (icon != null) icon.Save(memoryStream);
-                memoryStream.Position = 0;
-
-                BitmapImage? bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memoryStream;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
-            }
+            WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
+            webViewWindow.Show();
         }
         else
         {
-            BitmapImage? bitmap = new BitmapImage();
+            ProcessStartInfo websiteInfo = new ProcessStartInfo
+            {
+                FileName = data.Url,
+                UseShellExecute = true,
+            };
+            Process.Start(websiteInfo);
+        }
+    }
+
+    internal static async Task LaunchApplication(JsonControl.ApplicationJsonData data)
+    {
+        switch (data.FileExtension)
+        {
+            case "exe":
+                await LaunchExe(data);
+                break;
+            case "web":
+                LaunchWeb(data);
+                break;
+            case "WebGame":
+                new GameWindow(data.Url, data.JsonPath).Show();
+                break;
+            case "WebSaver":
+                new WebSaverWindow.WebSaverWindow(data.Name, data).Show();
+                break;
+            case "":
+                break;
+        }
+    }
+
+    internal static BitmapImage? GetImage(JsonControl.ApplicationJsonData appData)
+    {
+        // WebGame, WebSaver, web all use favicon from URL
+        if (appData.FileExtension is "WebGame" or "WebSaver" or "web")
+        {
+            BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
             bitmap.EndInit();
             return bitmap;
         }
 
-        return null;
+        if (!File.Exists(appData.FilePath)) return null;
+        using (MemoryStream memoryStream = new MemoryStream())
+        {
+            Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
+            if (icon != null) icon.Save(memoryStream);
+            memoryStream.Position = 0;
+
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = memoryStream;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+
+            return bitmapImage;
+        }
     }
-    public Button GameButtonShow(string name,JsonControl.ApplicationJsonData data)
+
+    public Button GameButtonShow(string name, JsonControl.ApplicationJsonData data)
     {
-        Image image = new Image
-            {
-                Source = GetImage(data)
-            };
- 
+        Image image = new Image { Source = GetImage(data) };
+
         TextBlock textBlock = new TextBlock
         {
             Text = name + $" : {data.FileExtension}",
@@ -307,12 +356,10 @@ public class GameButton : Button
             Margin = new Thickness(5, 0, 0, 0)
         };
 
-        StackPanel stackPanel = new StackPanel
-        {
-            Orientation = Orientation.Horizontal
-        };
+        StackPanel stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
         stackPanel.Children.Add(image);
         stackPanel.Children.Add(textBlock);
+
         Button gameButton = new Button()
         {
             Content = stackPanel,
@@ -320,310 +367,34 @@ public class GameButton : Button
             Height = ObjectProperty.GameListObjectHeight,
             Width = ObjectProperty.GameListObjectWidth,
             HorizontalAlignment = HorizontalAlignment.Center,
-            ContextMenu = PageControlCreate.GameListShowContextMenu(true,data),
+            ContextMenu = PageControlCreate.GameListShowContextMenu(true, data),
         };
-        gameButton.Click += async (_,_) => {
+
+        gameButton.Click += async (_, _) =>
+        {
             try
             {
-                switch (data.FileExtension)
+                await LaunchApplication(data);
+
+                if (data.MultipleLaunch is { Length: > 0 })
                 {
-                    case "exe":
-                        if (!File.Exists(data.FilePath))
-                        {
-                            MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
-                            LoggerController.LogError("File not found");
-                        }
-
-                        if ((bool)data.IsUseLog!)
-                        {
-                                await StartProcessWithLogging(data.FilePath, data.Name);
-                        }
-
-                        else
-                        {
-                            
-                            ProcessStartInfo startInfo = new ProcessStartInfo
-                            {
-                                FileName = data.FilePath,
-                                RedirectStandardOutput = true,
-                                RedirectStandardError = true,
-                                UseShellExecute = false,
-                            };
-                            Process process = new Process
-                            {
-                                StartInfo = startInfo,
-                            };
-                            process.OutputDataReceived += (_, e) =>
-                            {
-                                LoggerController.LogDebug("Output: " + e.Data);
-                            };
-                            process.ErrorDataReceived += (_, e) =>
-                            {
-                                LoggerController.LogWarn("Error: " + e.Data);
-                            };
-                            try
-                            {
-                                process.Start();
-
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                                MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
-                                throw;
-                            }
-
-                            process.BeginOutputReadLine();
-                            process.BeginErrorReadLine();
-
-                            await process.WaitForExitAsync();
-                        }
-
-                        break;
-                    case "web":
-                        if ((bool)data.IsWebView!)
-                        {
-                            WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
-                            webViewWindow.Show();
-                        }
-                        else
-                        {
-                            ProcessStartInfo websiteInfo = new ProcessStartInfo
-                            {
-                                FileName = data.Url,
-                                UseShellExecute = true,
-                            };
-                            Process.Start(websiteInfo);
-                        }
-
-                        break;
-                    case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
-                        gameWindow.Show();
-                        break;
-                    case "WebSaver":
-                       if (data.Url.EndsWith(".shtml"))
-                       {
-                         ProcessStartInfo websiteInfo = new ProcessStartInfo
-                         {
-                             FileName = data.FilePath,
-                             UseShellExecute = true,
-                         };
-                            Process.Start(websiteInfo);
-                       } else if (data.Url.EndsWith(""))
-                       {
-                           ProcessStartInfo websiteInfo = new ProcessStartInfo
-                           {
-                               FileName = data.FilePath,
-                               UseShellExecute = true,
-                           };
-                            Process.Start(websiteInfo);
-                       }
-                       else
-                       {
-                           WebSaverWindow.WebSaverWindow webSaverWindow =
-                               new WebSaverWindow.WebSaverWindow(data.Name, data);
-                           webSaverWindow.Show();
-                       }
-                       break;
-                    case "":
-                        break;
-                }
-                
-                
-                if (data.MultipleLaunch != null || data.MultipleLaunch is not { Length: 0 })
-                {
-                    if (data.MultipleLaunch == null) return;
                     foreach (var multipleLaunch in data.MultipleLaunch)
                     {
-                        JsonControl.ApplicationJsonData multipleData = 
-                          await  JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
-                        switch (multipleData.FileExtension)
-                        {
-                            case "exe":
-                                if (!File.Exists(multipleData.FilePath))
-                                {
-                                    MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
-                                    LoggerController.LogError("File not found");
-                                }
-
-                                if ((bool)multipleData.IsUseLog!)
-                                {
-                                    await StartProcessWithLogging(multipleData.FilePath, multipleData.Name);
-                                }
-
-                                else
-                                {
-                                    ProcessStartInfo startInfo = new ProcessStartInfo
-                                    {
-                                        FileName = multipleData.FilePath,
-                                        RedirectStandardOutput = true,
-                                        RedirectStandardError = true,
-                                        UseShellExecute = false,
-                                    };
-                                    Process process = new Process
-                                    {
-                                        StartInfo = startInfo,
-                                    };
-                                    process.OutputDataReceived += (_, e) =>
-                                    {
-                                        LoggerController.LogDebug("Output: " + e.Data);
-                                    };
-                                    process.ErrorDataReceived += (sender, e) =>
-                                    {
-                                        LoggerController.LogWarn("Error: " + e.Data);
-                                    };
-                                    try
-                                    {
-                                        process.Start();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e);
-                                        MessageBox.Show(
-                                            $"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
-                                        throw;
-                                    }
-
-                                    process.BeginOutputReadLine();
-                                    process.BeginErrorReadLine();
-
-                                    await process.WaitForExitAsync();
-                                }
-
-                                break;
-                            case "web":
-                                if (multipleData.IsWebView == true)
-                                {
-                                    WebViewWindow webViewWindow = new WebViewWindow(multipleData.Url, multipleData);
-                                    webViewWindow.Show();
-                                }
-                                else
-                                {
-                                    ProcessStartInfo websiteInfo = new ProcessStartInfo
-                                    {
-                                        FileName = multipleData.Url,
-                                        UseShellExecute = true,
-                                    };
-                                    Process.Start(websiteInfo);
-                                }
-
-                                break;
-                            case "WebGame":
-                                GameWindow gameWindow = new GameWindow(multipleData.Url, multipleData.JsonPath);
-                                gameWindow.Show();
-                                break;
-                            case "WebSaver":
-                                WebSaverWindow.WebSaverWindow webSaverWindow =
-                                    new WebSaverWindow.WebSaverWindow(multipleData.Name, multipleData);
-                                webSaverWindow.Show();
-                                break;
-                            case "":
-                                break;
-                        }
+                        if (string.IsNullOrEmpty(multipleLaunch)) continue;
+                        var multipleData = await JsonControl.ReadExeJson($"./Games/{multipleLaunch}.json");
+                        await LaunchApplication(multipleData);
                     }
-                }
-                else
-                {
-                     switch (data.FileExtension)
-                {
-                    case "exe":
-                        if (!File.Exists(data.FilePath))
-                        {
-                            MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleFileNotFound"));
-                            LoggerController.LogError("File not found");
-                        }
-
-                        if ((bool)data.IsUseLog!)
-                        {
-                                await StartProcessWithLogging(data.FilePath, data.Name);
-                        }
-
-                        else
-                        {
-                            
-                            ProcessStartInfo startInfo = new ProcessStartInfo
-                            {
-                                FileName = data.FilePath,
-                                RedirectStandardOutput = true,
-                                RedirectStandardError = true,
-                                UseShellExecute = false,
-                            };
-                            Process process = new Process
-                            {
-                                StartInfo = startInfo,
-                            };
-                            process.OutputDataReceived += (_, e) =>
-                            {
-                                LoggerController.LogDebug("Output: " + e.Data);
-                            };
-                            process.ErrorDataReceived += (_, e) =>
-                            {
-                                LoggerController.LogWarn("Error: " + e.Data);
-                            };
-                            try
-                            {
-                                process.Start();
-
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                                MessageBox.Show($"{LocalizeControl.GetLocalize<string>("FileCantOpen")} :{e.Message}");
-                                throw;
-                            }
-
-                            process.BeginOutputReadLine();
-                            process.BeginErrorReadLine();
-
-                            await process.WaitForExitAsync();
-                        }
-
-                        break;
-                    case "web":
-                        if ((bool)data.IsWebView!)
-                        {
-                            WebViewWindow webViewWindow = new WebViewWindow(data.Url, data);
-                            webViewWindow.Show();
-                        }
-                        else
-                        {
-                            ProcessStartInfo websiteInfo = new ProcessStartInfo
-                            {
-                                FileName = data.Url,
-                                UseShellExecute = true,
-                            };
-                            Process.Start(websiteInfo);
-                        }
-
-                        break;
-                    case "WebGame":
-                        GameWindow gameWindow = new GameWindow(data.Url, data.JsonPath);
-                        gameWindow.Show();
-                        break;
-                    case "WebSaver":
-                        WebSaverWindow.WebSaverWindow webSaverWindow = new WebSaverWindow.WebSaverWindow(name,data);
-                        webSaverWindow.Show();
-                        break;
-                    case "":
-                        break;
-                }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 LoggerController.LogError(e.Message);
             }
         };
-        gameButton.MouseEnter += (_, _) =>
-        {
-            IsMouseEntered = true;
-        };
-        gameButton.MouseLeave += (_,_) =>
-        {
-            IsMouseEntered = false;
-        };
+
+        gameButton.MouseEnter += (_, _) => IsMouseEntered = true;
+        gameButton.MouseLeave += (_, _) => IsMouseEntered = false;
+
         return gameButton;
     }
 }

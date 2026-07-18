@@ -49,7 +49,7 @@ public partial class WebSaver : DialogInterface
         foreach (var cb in checkBoxTrue)
         {
             string[] tag = (string[])cb.Tag;
-            Console.WriteLine($"Processing true checkbox with tag: {tag[1]}");
+            
 
             if (!data.MultipleLaunch.Contains(tag[1]))
             {
@@ -57,7 +57,7 @@ public partial class WebSaver : DialogInterface
                 {
                     MultipleLaunch = data.MultipleLaunch.Append(tag[1]).ToArray()
                 };
-                Console.WriteLine($"Added {tag[1]} to MultipleLaunch");
+                
             }
                
         }
@@ -65,13 +65,13 @@ public partial class WebSaver : DialogInterface
         foreach (var cb in checkBoxFalse)
         {
             string[] tag = (string[])cb.Tag;
-            Console.WriteLine($"Processing false checkbox with tag: {tag[1]}");
+            
 
             data = data with
             {
                 MultipleLaunch = data.MultipleLaunch.Where(x => x != tag[1]).ToArray()
             };
-            Console.WriteLine($"Removed {tag[1]} from MultipleLaunch");
+            
         }
         await JsonControl.CreateExeJson(data.JsonPath, data);
         

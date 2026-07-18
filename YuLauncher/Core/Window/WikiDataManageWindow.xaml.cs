@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using Button = System.Windows.Controls.Button;
 using MessageBox = System.Windows.MessageBox;
-using TextBlock = Wpf.Ui.Controls.TextBlock;
 using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace YuLauncher.Core.Window;
@@ -61,7 +58,13 @@ public partial class WikiDataManageWindow : FluentWindow
                 };
                 deleteButton.Click += async (_, _) =>
                 {
-                    wikiData.Remove(deleteButton.Tag.ToString());
+                    var tagString = deleteButton.Tag as string;
+                    if (string.IsNullOrEmpty(tagString))
+                    {
+                        return;
+                    }
+
+                    wikiData.Remove(tagString);
                     Data = Data with { WikiData = wikiData };
                     await JsonControl.CreateExeJson(Data.JsonPath, Data);
                     await RefreshContents();
@@ -99,7 +102,13 @@ public partial class WikiDataManageWindow : FluentWindow
                 
                 deleteButton.Click += async (_, _) =>
                 {
-                    wikiData.Remove(deleteButton.Tag.ToString());
+                    var tagString = deleteButton.Tag as string;
+                    if (string.IsNullOrEmpty(tagString))
+                    {
+                        return;
+                    }
+
+                    wikiData.Remove(tagString);
                     Data = Data with { WikiData = wikiData };
                     await JsonControl.CreateExeJson(Data.JsonPath, Data);
                     await RefreshContents();
@@ -131,33 +140,6 @@ public partial class WikiDataManageWindow : FluentWindow
             Data = await JsonControl.ReadExeJson(Data.JsonPath);
     }
 
-    private void Grid_OnMouseMove(object sender, MouseEventArgs e)
-    {
-        if (e.LeftButton != MouseButtonState.Pressed) return;
-        if (WindowState != WindowState.Maximized) return;
-        var point = Mouse.GetPosition(this);
-        WindowState = WindowState.Normal;
-        Left = point.X - Width / 2;
-        Top = point.Y;
-        DragMove();
-    }
-
-    private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
-    private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Maximized;
-        WindowStateIcon.Glyph = "\uE73F";
-    }
-
-    private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Normal;
-        WindowStateIcon.Glyph = "\uE740";
-    }
 
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
     {
@@ -173,7 +155,7 @@ public partial class WikiDataManageWindow : FluentWindow
             Margin = new Thickness(5),
         };
         
-        deleteButton.Click += async (_, _) =>
+        deleteButton.Click += (_, _) =>
         {
             WrapPanel.Children.Remove(stackPanel);
         };
@@ -229,14 +211,4 @@ public partial class WikiDataManageWindow : FluentWindow
         Close();
     }
 
-    private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-       Close();
-    }
-
-    private void WikiDataManageWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ChangedButton == MouseButton.Left)
-            DragMove();
-    }
 }

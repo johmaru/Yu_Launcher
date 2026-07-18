@@ -13,34 +13,26 @@
                  lex:LocalizeDictionary.DesignCulture="ja-JP"
                  lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
                  Closing="GameWindow_OnClosing"
-                 SizeChanged="GameWindow_OnSizeChanged"
-                 Title="WebSaver" WindowStartupLocation="CenterScreen">
+                 Title="WebSaver" WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica">
 
 <Grid>
-    <DockPanel x:Name="gamedock">
-        <Grid DockPanel.Dock="Top" MouseMove="UIElement_OnMouseMove">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Menu PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown" Grid.Column="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="48"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <ui:TitleBar Grid.Row="0"
+                 Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                 Height="48">
+        <ui:TitleBar.Header>
+            <Menu FontSize="12">
                 <MenuItem Header="アプリケーション">
                     <MenuItem Header="設定"/>
                 </MenuItem>
             </Menu>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <ui:Button x:Name="MinimizeBtn" Click="MinimizeBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe921;" FontSize="20"/>
-                </ui:Button>
-                <ToggleButton Grid.Column="1" x:Name="WindowStateBtn" Checked="WindowStateBtn_OnChecked" Unchecked="WindowStateBtn_OnUnchecked" IsChecked="False">
-                <ui:FontIcon x:Name="WindowStateIcon" FontFamily="Segoe Fluent Icons" FontSize="20"/>
-            </ToggleButton>
-            <ui:Button x:Name="ExitBtn" Grid.Column="1" Click="ExitBtn_OnClick">
-                <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xf78a;" FontSize="20"/>
-            </ui:Button>
-            </StackPanel>
-        </Grid>
-        <wv2:WebView2 Name="webView"/>
-    </DockPanel>
+        </ui:TitleBar.Header>
+    </ui:TitleBar>
+    <wv2:WebView2 Grid.Row="1" Name="webView"/>
     </Grid>
 </ui:FluentWindow>

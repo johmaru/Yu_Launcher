@@ -14,7 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -59,8 +58,8 @@ namespace YuLauncher.Game.Window
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                LoggerController.LogError($"{e}");
+                
             }
 
             ThisGameWindow = this;
@@ -89,12 +88,20 @@ namespace YuLauncher.Game.Window
                             UseShellExecute = true
                         });
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
                     }
                 };
                 WikiDataContentItem.Items.Add(menuItem);
+            }
+        }
+
+        private async void GameWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (WebView.CoreWebView2 == null)
+            {
+                await WebView.EnsureCoreWebView2Async();
             }
         }
         
@@ -109,6 +116,7 @@ namespace YuLauncher.Game.Window
 
         private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
         {
+           LoggerController.LogInfo("CoreWebView2_ContextMenuRequested fired");
            e.MenuItems.Clear();
            
            // ControlMenu Object
@@ -265,45 +273,10 @@ namespace YuLauncher.Game.Window
                 settingWindow.Show();
            };
            
-           e.MenuItems.Add(settingMenu);
+            e.MenuItems.Add(settingMenu);
 
         }
 
-        private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void WindowStateBtn_OnChecked(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Maximized;
-            WindowStateIcon.Glyph = "\uE73F";
-        }
-
-        private void WindowStateBtn_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Normal;
-            WindowStateIcon.Glyph = "\uE740";
-        }
-
-        private void GameWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            switch (WindowState)
-            {
-                case WindowState.Maximized:
-                    WindowStateIcon.Glyph = "\uE73F";
-                    WindowStateBtn.IsChecked = true;
-                    break;
-                case WindowState.Normal:
-                    WindowStateIcon.Glyph = "\uE740";
-                    WindowStateBtn.IsChecked = false;
-                    break;
-                case WindowState.Minimized:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
 
         private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
         {
@@ -314,29 +287,6 @@ namespace YuLauncher.Game.Window
             WebView.Dispose();
         }
 
-        private void Menu_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
-
-        private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) return;
-            if (WindowState != WindowState.Maximized) return;
-            var point = Mouse.GetPosition(this);
-            WindowState = WindowState.Normal;
-            Left = point.X - Width / 2;
-            Top = point.Y;
-            DragMove();
-        }
-
-        private void MinimizeBtn_OnClick(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
         
         private async void SetWebViewVolume()
         {
@@ -357,6 +307,7 @@ namespace YuLauncher.Game.Window
         {
             if (e.IsSuccess)
             {
+                LoggerController.LogInfo("WebView2 initialized, registering handlers");
                 WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
                 WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
                 WebView.CoreWebView2.DocumentTitleChanged += (_, _) =>
@@ -452,7 +403,7 @@ namespace YuLauncher.Game.Window
                                 UseShellExecute = true
                             });
                         }
-                        catch (Exception exception)
+                        catch (Exception)
                         {
                           MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
                         }
@@ -463,19 +414,6 @@ namespace YuLauncher.Game.Window
             wikiDataManageWindow.Show();
         }
 
-        private void UIElement_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if(e.ChangedButton == MouseButton.Left)
-                DragMove();
-        }
-
-        private void menu_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.DragMove();
-            }
-        }
     }
 }
 

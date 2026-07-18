@@ -48,8 +48,8 @@ public partial class VideoGraphics : Page
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                LoggerController.LogError($"{e}");
+                
             }
         }
         
@@ -73,8 +73,8 @@ public partial class VideoGraphics : Page
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                LoggerController.LogError($"{e}");
+                
             }
         }
 

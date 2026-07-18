@@ -83,7 +83,7 @@ public class TomlControl
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
@@ -105,7 +105,7 @@ public class TomlControl
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
@@ -122,7 +122,7 @@ public class TomlControl
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
@@ -139,7 +139,7 @@ public class TomlControl
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
@@ -156,7 +156,7 @@ public class TomlControl
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
@@ -177,7 +177,7 @@ public class ManualTomlSettings
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LoggerController.LogError($"{e}");
             throw;
         }
     }
