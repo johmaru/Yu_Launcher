@@ -29,71 +29,23 @@ public static class JsonControl
         public Dictionary<string, string> WikiData { get; set; }
     }
     
-    public static async ValueTask CreateExeJson(string path,ApplicationJsonData applicationJsonData)
+    public static ValueTask CreateExeJson(string path, ApplicationJsonData applicationJsonData)
     {
-        JsonSerializerOptions options = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)};
-        string json = JsonSerializer.Serialize(applicationJsonData, options);
-        await File.WriteAllTextAsync(path, json);
+        var dataWith = applicationJsonData with { JsonPath = path };
+        if (GameRepository.ExistsByJsonPath(path))
+            GameRepository.UpdateGame(dataWith);
+        else
+            GameRepository.InsertGame(dataWith);
+        return ValueTask.CompletedTask;
     }
-    
-    public static async ValueTask<ApplicationJsonData> ReadExeJson(string path)
+
+    public static ValueTask<ApplicationJsonData> ReadExeJson(string path)
     {
-        if (path == ".json")
-        {
-            LoggerController.LogWarn("This is not exist an application error. this is not critical error");
-        }
-        string json = await File.ReadAllTextAsync(path);
-        return JsonSerializer.Deserialize<ApplicationJsonData>(json);
+        return new ValueTask<ApplicationJsonData>(GameRepository.GetByJsonPath(path) ?? default);
     }
-    
-    
-    
+
     public static ApplicationJsonData LoadJson(string path)
     {
-        if (path == ".json")
-        {
-            LoggerController.LogWarn("This is not exist an application error. this is not critical error");
-        }
-        string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<ApplicationJsonData>(json);
+        return GameRepository.GetByJsonPath(path) ?? default;
     }
-
-    public static ValueTask<bool> CheckAppDataContent(string[] content, string genre)
-    {
-        foreach (var item in content)
-        {
-            if (item == genre)
-            {
-                return new ValueTask<bool>(true);
-            }
-        }
-
-        return new ValueTask<bool>(false);
-    }
-
-    public static async ValueTask CheckJsonData(string jsonPath, ApplicationJsonData data)
-    {
-        data = data with
-        {
-            FilePath       = data.FilePath ?? "",
-            JsonPath       = data.JsonPath ?? "",
-            Name           = data.Name ?? "",
-            FileExtension  = data.FileExtension ?? "Unknown",
-            Memo           = data.Memo ?? "",
-            IsWebView      = data.IsWebView ?? false,
-            IsUseLog       = data.IsUseLog ?? false,
-            Url            = data.Url ?? "",
-            MultipleLaunch = data.MultipleLaunch ?? [],
-            WikiData       = data.WikiData ?? new(),
-            Genre          = data.Genre ?? (data.FileExtension switch {
-                                "exe"      => ["Application"],
-                                "web"      => ["WebSite"],
-                                "WebGame"  => ["WebGame"],
-                                "WebSaver" => ["WebSaver"],
-                                _          => ["Unknown"],
-                            }),
-        };
-        await CreateExeJson(jsonPath, data);
-    }
-
 }

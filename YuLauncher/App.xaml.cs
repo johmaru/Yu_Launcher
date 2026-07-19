@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
+using System.Text.Json;
 using System.Windows;
 using NLog;
 using Velopack;
@@ -36,8 +37,7 @@ namespace YuLauncher
                 await LanguageCheck();
 
                 await Initialize();
-
-                await JsonCheck();
+                await InitializeDatabase();
 
                 _ = UpdateCheck();
             }
@@ -142,15 +142,95 @@ namespace YuLauncher
                 return ValueTask.CompletedTask;
         }
 
-        private static async ValueTask JsonCheck()
+        private static async ValueTask InitializeDatabase()
         {
-            var json = Directory.GetFiles("./Games", "*.json");
-            foreach (var t in json)
+            try
             {
-                var data = await JsonControl.ReadExeJson(t);
-                await JsonControl.CheckJsonData(t, data);
+                string appDataDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "YuLauncher");
+                if (!Directory.Exists(appDataDir))
+                    Directory.CreateDirectory(appDataDir);
+
+                GameRepository.RunMigrations();
+                LoggerController.LogInfo("Database migrations complete");
+
+                await ImportExistingJsonFiles();
             }
-            LoggerController.LogInfo("Json Check Complete");
+            catch (Exception e)
+            {
+                LoggerController.LogError($"InitializeDatabase failed: {e}");
+            }
+        }
+
+        private static async ValueTask ImportExistingJsonFiles()
+        {
+            var jsonFiles = Directory.GetFiles("./Games", "*.json");
+            if (jsonFiles.Length == 0) return;
+
+            var importedFiles = new List<string>();
+            foreach (var file in jsonFiles)
+            {
+                try
+                {
+                    string json = await File.ReadAllTextAsync(file);
+                    var data = JsonSerializer.Deserialize<JsonControl.ApplicationJsonData>(json);
+                    if (data.Name == null) continue;
+
+                    // CheckJsonData と同等の正規化（null フィールド補完、Genre デフォルト判定）
+                    data = data with
+                    {
+                        FilePath       = data.FilePath ?? "",
+                        JsonPath       = data.JsonPath ?? "",
+                        Name           = data.Name ?? "",
+                        FileExtension  = data.FileExtension ?? "Unknown",
+                        Memo           = data.Memo ?? "",
+                        IsWebView      = data.IsWebView ?? false,
+                        IsUseLog       = data.IsUseLog ?? false,
+                        Url            = data.Url ?? "",
+                        MultipleLaunch = data.MultipleLaunch ?? [],
+                        WikiData       = data.WikiData ?? new(),
+                        Genre          = data.Genre ?? (data.FileExtension switch {
+                                            "exe"      => ["Application"],
+                                            "web"      => ["WebSite"],
+                                            "WebGame"  => ["WebGame"],
+                                            "WebSaver" => ["WebSaver"],
+                                            _          => ["Unknown"],
+                                        }),
+                    };
+
+                    string relPath = Path.GetFileName(file);
+                    var dataWithPath = data with { JsonPath = $"./Games/{relPath}" };
+
+                    if (!GameRepository.ExistsByJsonPath(dataWithPath.JsonPath))
+                    {
+                        GameRepository.InsertGame(dataWithPath);
+                        importedFiles.Add(file);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LoggerController.LogError($"Failed to import {file}: {e}");
+                    // 失敗したファイルは importedFiles に入れない → backup/ に移動されず残る
+                }
+            }
+
+            if (importedFiles.Count > 0)
+            {
+                LoggerController.LogInfo($"Imported {importedFiles.Count} games from JSON to SQLite");
+
+                string backupDir = Path.Combine("./Games", "backup");
+                if (!Directory.Exists(backupDir))
+                    Directory.CreateDirectory(backupDir);
+
+                foreach (var file in importedFiles)
+                {
+                    string dest = Path.Combine(backupDir, Path.GetFileName(file));
+                    File.Move(file, dest, overwrite: true);
+                }
+
+                LoggerController.LogInfo($"Moved {importedFiles.Count} imported JSON files to {backupDir}");
+            }
         }
 
         private static ValueTask LanguageCheck()
