@@ -72,27 +72,20 @@ public partial class GameListPaneControl : UserControl
 
     private async ValueTask LoadGenre()
     {
-        string[]? files = null;
-        await Task.Run(() => files = Directory.GetFiles(FileControl.Main.Directory));
-
         List<string> genreList = new();
 
-        if (files != null)
-            foreach (var file in files)
+        var games = await Task.Run(() => GameRepository.GetAll());
+        foreach (var data in games)
+        {
+            if (!MatchesFilter(data)) continue;
+            data.Genre?.ToList().ForEach(x =>
             {
-                if (Path.GetExtension(file) != ".json") continue;
-
-                var data = await JsonControl.ReadExeJson(file);
-                if (!MatchesFilter(data)) continue;
-
-                data.Genre?.ToList().ForEach(x =>
+                if (!genreList.Contains(x))
                 {
-                    if (!genreList.Contains(x))
-                    {
-                        genreList.Add(x);
-                    }
-                });
-            }
+                    genreList.Add(x);
+                }
+            });
+        }
 
         GenreComboBox.Items.OfType<ComboBoxItem>()
             .Where(x => x != GenreAllComboBoxItem)
@@ -121,28 +114,22 @@ public partial class GameListPaneControl : UserControl
         _allGames.Clear();
         _gameItems.Clear();
 
-        string[]? files = null;
-        await Task.Run(() => files = Directory.GetFiles(FileControl.Main.Directory));
-
-        if (files != null)
-            foreach (var file in files)
+        var games = await Task.Run(() => GameRepository.GetAll());
+        foreach (var data in games)
+        {
+            try
             {
-                if (Path.GetExtension(file) != ".json") continue;
-                var data = await JsonControl.ReadExeJson(file);
-                try
-                {
-                    if (!MatchesFilter(data)) continue;
-
-                    var item = CreateGameListItem(data);
-                    _allGames.Add(item);
-                    _gameItems.Add(item);
-                }
-                catch (Exception ex)
-                {
-                    LoggerController.LogError($"{ex}");
-                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                }
+                if (!MatchesFilter(data)) continue;
+                var item = CreateGameListItem(data);
+                _allGames.Add(item);
+                _gameItems.Add(item);
             }
+            catch (Exception ex)
+            {
+                LoggerController.LogError($"{ex}");
+                LoggerController.LogError("An I/O error occurred: " + ex.Message);
+            }
+        }
     }
 
     private async Task LoadGamesByGenre(string genre)
@@ -150,29 +137,22 @@ public partial class GameListPaneControl : UserControl
         _allGames.Clear();
         _gameItems.Clear();
 
-        string[]? files = null;
-        await Task.Run(() => files = Directory.GetFiles(FileControl.Main.Directory));
-
-        if (files != null)
-            foreach (var file in files)
+        var games = await Task.Run(() => GameRepository.GetByGenre(genre));
+        foreach (var data in games)
+        {
+            try
             {
-                if (Path.GetExtension(file) != ".json") continue;
-                var data = await JsonControl.ReadExeJson(file);
-                try
-                {
-                    if (MatchesFilter(data) && data.Genre != null && data.Genre.Contains(genre))
-                    {
-                        var item = CreateGameListItem(data);
-                        _allGames.Add(item);
-                        _gameItems.Add(item);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LoggerController.LogError($"{ex}");
-                    LoggerController.LogError("An I/O error occurred: " + ex.Message);
-                }
+                if (!MatchesFilter(data)) continue;
+                var item = CreateGameListItem(data);
+                _allGames.Add(item);
+                _gameItems.Add(item);
             }
+            catch (Exception ex)
+            {
+                LoggerController.LogError($"{ex}");
+                LoggerController.LogError("An I/O error occurred: " + ex.Message);
+            }
+        }
     }
 
     private static GameListItem CreateGameListItem(JsonControl.ApplicationJsonData data)
@@ -392,7 +372,7 @@ public partial class GameListPaneControl : UserControl
     private void PropertyButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (PropertyButton.Tag is not JsonControl.ApplicationJsonData data) return;
-        if (!File.Exists(data.JsonPath)) return;
+        if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
         try
         {
             PropertyDialog propertyDialog = new PropertyDialog(data);
@@ -407,7 +387,7 @@ public partial class GameListPaneControl : UserControl
     private void MemoButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (MemoButton.Tag is not JsonControl.ApplicationJsonData data) return;
-        if (!File.Exists(data.JsonPath)) return;
+        if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
         try
         {
             MemoWindow memoWindow = new MemoWindow(data);
@@ -422,7 +402,7 @@ public partial class GameListPaneControl : UserControl
     private void WikiManageButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (WikiManageButton.Tag is not JsonControl.ApplicationJsonData data) return;
-        if (!File.Exists(data.JsonPath)) return;
+        if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
         try
         {
             WikiDataManageWindow wikiWindow = new WikiDataManageWindow(data);
@@ -437,7 +417,7 @@ public partial class GameListPaneControl : UserControl
     private void GenreManageButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (GenreManageButton.Tag is not JsonControl.ApplicationJsonData data) return;
-        if (!File.Exists(data.JsonPath)) return;
+        if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
         try
         {
             GenreManageWindow genreWindow = new GenreManageWindow(data);
