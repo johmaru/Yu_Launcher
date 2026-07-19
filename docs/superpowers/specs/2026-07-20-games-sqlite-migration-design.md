@@ -342,6 +342,7 @@ public static class JsonControl
 | `PageControlCreate.cs:73` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
 | `PageControlCreate.cs:75` | `File.Delete(data.JsonPath)` | `GameRepository.DeleteGameByJsonPath(data.JsonPath)` |
 | `PageControlCreate.cs:98` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
+| `PageControlCreate.cs:117` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
 | `Interface.cs:46` | `Directory.GetFiles("./Games", "*.json")` | `GameRepository.GetAll()` |
 | `Interface.cs:54` | `ReadExeJson(jf)` | 46行が `GetAll()` になるのに伴いループ変数 `jf` が `ApplicationJsonData` 型になる。`ReadExeJson` 呼び出し不要で `jf` をそのまま使用 |
 | `General.xaml.cs:66-73` (`ExportBtn_OnClick`) | `./Games` のJSONファイルコピー | `games.db` のコピー処理を追加 |
