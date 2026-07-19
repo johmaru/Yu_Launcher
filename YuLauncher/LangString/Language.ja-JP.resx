@@ -388,6 +388,12 @@
   <data name="DetailLaunchOptions" xml:space="preserve">
     <value>起動オプション</value>
   </data>
+  <data name="GenreManageWindowTitle" xml:space="preserve">
+    <value>ジャンル管理</value>
+  </data>
+  <data name="WikiDataManageWindowTitle" xml:space="preserve">
+    <value>Wikiデータ管理</value>
+  </data>
   <data name="PropertyOldSystemError" xml:space="preserve">
     <value>旧形式のファイルです。ファイルを新しい形式に更新してください。</value>
   </data>

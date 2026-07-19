@@ -1,214 +1,129 @@
-﻿using System;
+using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
-using Button = System.Windows.Controls.Button;
-using MessageBox = System.Windows.MessageBox;
-using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace YuLauncher.Core.Window;
 
 public partial class WikiDataManageWindow : FluentWindow
 {
-    private  JsonControl.ApplicationJsonData Data { get; set; }
+    private JsonControl.ApplicationJsonData _data;
+    public ObservableCollection<WikiEntry> WikiEntries { get; } = new();
+
     public WikiDataManageWindow(JsonControl.ApplicationJsonData data)
     {
         InitializeComponent();
-        ApplicationThemeManager.Apply(this);
-        
-        Data = data;
-        
-        Initialize();
+        _data = data;
+        LoadEntries();
     }
 
-    private void Initialize()
+    private void LoadEntries()
     {
-        if (Data.WikiData != null){
-            Dictionary<string,string> wikiData = Data.WikiData;
-            
-            foreach (var (key, value) in wikiData)
-            {
-                StackPanel stackPanel = new()
-                {
-                    Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(5),
-                };
-                
-                Button deleteButton = new()
-                {
-                    Content = LocalizeControl.GetLocalize<string>("DeleteGame"),
-                    Tag = key,
-                    Margin = new Thickness(5),
-                };
-                
-                TextBox keyTextBox = new()
-                {
-                    Text = key,
-                    Margin = new Thickness(5),
-                };
-                TextBox valueTextBox = new()
-                {
-                    Text = value,
-                    Margin = new Thickness(5),
-                };
-                deleteButton.Click += async (_, _) =>
-                {
-                    var tagString = deleteButton.Tag as string;
-                    if (string.IsNullOrEmpty(tagString))
-                    {
-                        return;
-                    }
-
-                    wikiData.Remove(tagString);
-                    Data = Data with { WikiData = wikiData };
-                    await JsonControl.CreateExeJson(Data.JsonPath, Data);
-                    await RefreshContents();
-                    await RefreshControl();
-                };
-                stackPanel.Children.Add(deleteButton);
-                stackPanel.Children.Add(keyTextBox);
-                stackPanel.Children.Add(valueTextBox);
-                WrapPanel.Children.Add(stackPanel);
-            }
-        }
-    }
-
-    private ValueTask RefreshControl()
-    {
-        WrapPanel.Children.Clear();
-        if (Data.WikiData != null)
+        WikiEntries.Clear();
+        if (_data.WikiData == null) return;
+        foreach (var (key, value) in _data.WikiData)
         {
-            Dictionary<string,string> wikiData = Data.WikiData;
-            
-            foreach (var (key, value) in wikiData)
-            {
-                StackPanel stackPanel = new()
-                {
-                    Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(5),
-                };
-                
-                Button deleteButton = new()
-                {
-                    Content =  LocalizeControl.GetLocalize<string>("DeleteGame"),
-                    Tag = key,
-                    Margin = new Thickness(5),
-                };
-                
-                deleteButton.Click += async (_, _) =>
-                {
-                    var tagString = deleteButton.Tag as string;
-                    if (string.IsNullOrEmpty(tagString))
-                    {
-                        return;
-                    }
-
-                    wikiData.Remove(tagString);
-                    Data = Data with { WikiData = wikiData };
-                    await JsonControl.CreateExeJson(Data.JsonPath, Data);
-                    await RefreshContents();
-                    await RefreshControl();
-                };
-                
-                TextBox keyTextBox = new()
-                {
-                    Text = key,
-                    Margin = new Thickness(5),
-                };
-                TextBox valueTextBox = new()
-                {
-                    Text = value,
-                    Margin = new Thickness(5),
-                };
-                stackPanel.Children.Add(deleteButton);
-                stackPanel.Children.Add(keyTextBox);
-                stackPanel.Children.Add(valueTextBox);
-                WrapPanel.Children.Add(stackPanel);
-            }
+            WikiEntries.Add(new WikiEntry(key, value));
         }
-        return ValueTask.CompletedTask;
     }
-    
-    private async ValueTask RefreshContents()
-    {
-       
-            Data = await JsonControl.ReadExeJson(Data.JsonPath);
-    }
-
 
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
     {
-        StackPanel stackPanel = new()
-        {
-            Orientation = Orientation.Horizontal,
-            Margin = new Thickness(5),
-        };
-        
-        Button deleteButton = new()
-        {
-            Content = "Delete",
-            Margin = new Thickness(5),
-        };
-        
-        deleteButton.Click += (_, _) =>
-        {
-            WrapPanel.Children.Remove(stackPanel);
-        };
-        
-        TextBox keyTextBox = new()
-        {
-            Text = "Key",
-            Margin = new Thickness(5),
-        };
-        
-        TextBox valueTextBox = new()
-        {
-            Text = "Value",
-            Margin = new Thickness(5),
-        };
-        stackPanel.Children.Add(deleteButton);
-        stackPanel.Children.Add(keyTextBox);
-        stackPanel.Children.Add(valueTextBox);
-        WrapPanel.Children.Add(stackPanel);
+        WikiEntries.Add(new WikiEntry(string.Empty, string.Empty));
+    }
+
+    private void DeleteEntry_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Wpf.Ui.Controls.Button btn) return;
+        if (btn.Tag is not WikiEntry entry) return;
+        WikiEntries.Remove(entry);
     }
 
     private async void SaveButton_OnClick(object sender, RoutedEventArgs e)
     {
-        var stackPanels = WrapPanel.Children.OfType<StackPanel>().ToList();
-        
-        Dictionary<string,string> distinct = new();
-        foreach (var stackPanel in stackPanels)
+        var distinct = new Dictionary<string, string>();
+        foreach (var entry in WikiEntries)
         {
-            var key = stackPanel.Children.OfType<TextBox>().First().Text;
-            var value = stackPanel.Children.OfType<TextBox>().Last().Text;
+            if (string.IsNullOrEmpty(entry.Key)) continue;
             try
             {
-                distinct.Add(key,value);
+                distinct.Add(entry.Key, entry.Value);
             }
             catch (ArgumentException)
             {
-                MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleDuplicateKey"));
+                ShowError(LocalizeControl.GetLocalize<string>("SimpleDuplicateKey"));
                 return;
             }
         }
 
-        await JsonControl.CreateExeJson( Data.JsonPath, Data with { WikiData = distinct });
-
-        await RefreshContents();
-
-          await RefreshControl();
-          
-          MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleComplete"));
+        try
+        {
+            _data = _data with { WikiData = distinct };
+            await JsonControl.CreateExeJson(_data.JsonPath, _data);
+            LoadEntries();
+            ShowInfo(LocalizeControl.GetLocalize<string>("SimpleCompleted"));
+        }
+        catch (Exception ex)
+        {
+            LoggerController.LogError($"{ex}");
+            ShowError(ex.Message);
+        }
     }
 
-    private void ExitButton_OnClick(object sender, RoutedEventArgs e)
+    private static void ShowError(string message)
     {
-        Close();
+        var title = LocalizeControl.GetLocalize<string>("WikiDataManageWindowTitle");
+        System.Windows.MessageBox.Show(message, title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
     }
 
+    private static void ShowInfo(string message)
+    {
+        var title = LocalizeControl.GetLocalize<string>("WikiDataManageWindowTitle");
+        System.Windows.MessageBox.Show(message, title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+    }
+}
+
+public sealed class WikiEntry : INotifyPropertyChanged
+{
+    private string _key;
+    private string _value;
+
+    public string Key
+    {
+        get => _key;
+        set
+        {
+            if (_key == value) return;
+            _key = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public WikiEntry(string key, string value)
+    {
+        _key = key;
+        _value = value;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

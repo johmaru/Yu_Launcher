@@ -1,106 +1,118 @@
-﻿using System;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
-using MessageBox = System.Windows.MessageBox;
 
 namespace YuLauncher.Core.Window;
 
 public partial class GenreManageWindow : FluentWindow
 {
-   private  JsonControl.ApplicationJsonData Data { get; set; }
+    private JsonControl.ApplicationJsonData _data;
+    public ObservableCollection<GenreItem> Genres { get; } = new();
+
     public GenreManageWindow(JsonControl.ApplicationJsonData data)
     {
         InitializeComponent();
-        
-        ApplicationThemeManager.Apply(this);
-        
-        Data = data;
-        
-       Initialize();
+        _data = data;
+        LoadGenres();
     }
-    
-    private void Initialize()
+
+    private void LoadGenres()
     {
-        foreach (var genre in Data.Genre)
+        Genres.Clear();
+        foreach (var genre in _data.Genre)
         {
-            CheckBox checkBox = new()
-            {
-                Content = genre,
-                Margin = new Thickness(5),
-                IsChecked = Data.Genre.Contains(genre)
-            };
-            checkBox.Checked += async (_, _) =>
-            {
-                string[] newGenre = Data.Genre.ToList().Append(checkBox.Content.ToString()).ToArray()!;
-                Data = Data with { Genre = newGenre };
-                await   JsonControl.CreateExeJson(Data.JsonPath, Data);
-            };
-            checkBox.Unchecked +=async (_, _) =>
-            {
-                var newGenre = Data.Genre.ToList().Where(x => x != checkBox.Content.ToString()).ToArray();
-                Data = Data with { Genre = newGenre };
-                await   JsonControl.CreateExeJson(Data.JsonPath, Data);
-            };
-            
-            WrapPanel.Children.Add(checkBox);
+            Genres.Add(new GenreItem(genre, isChecked: true, OnItemChanged));
         }
     }
 
-    private async ValueTask RefreshContents()
+    private async Task SaveGenresAsync()
     {
-        if (JsonControl.ReadExeJson(Data.JsonPath).IsCompleted)
+        var newGenres = Genres.Where(g => g.IsChecked).Select(g => g.Name).ToArray();
+        _data = _data with { Genre = newGenres };
+        await JsonControl.CreateExeJson(_data.JsonPath, _data);
+    }
+
+    private async void OnItemChanged()
+    {
+        try
         {
-            Data = JsonControl.ReadExeJson(Data.JsonPath).Result;
+            await SaveGenresAsync();
         }
-        else
+        catch (Exception ex)
         {
-            Data = await JsonControl.ReadExeJson(Data.JsonPath);
-        }
-        WrapPanel.Children.Clear();
-        foreach (var genre in Data.Genre)
-        {
-            CheckBox checkBox = new()
-            {
-                Content = genre,
-                Margin = new Thickness(5),
-                IsChecked = Data.Genre.Contains(genre)
-            };
-            checkBox.Checked += async (_, _) =>
-            {
-                string[] newGenre = Data.Genre.ToList().Append(checkBox.Content.ToString()).ToArray()!;
-                Data = Data with { Genre = newGenre };
-             await   JsonControl.CreateExeJson(Data.JsonPath, Data);
-            };
-            checkBox.Unchecked +=async (_, _) =>
-            {
-                var newGenre = Data.Genre.ToList().Where(x => x != checkBox.Content.ToString()).ToArray();
-                Data = Data with { Genre = newGenre };
-             await   JsonControl.CreateExeJson(Data.JsonPath, Data);
-            };
-            
-            WrapPanel.Children.Add(checkBox);
+            LoggerController.LogError($"{ex}");
         }
     }
 
     private async void AddButton_OnClick(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrEmpty(GenreText.Text) || JsonControl.CheckAppDataContent(Data.Genre, GenreText.Text).Result)
+        var name = GenreText.Text?.Trim();
+        if (string.IsNullOrEmpty(name))
         {
-            MessageBox.Show(LocalizeControl.GetLocalize<string>("GenreNameInput"));
+            ShowWarning(LocalizeControl.GetLocalize<string>("GenreNameInput"));
             return;
         }
 
-        var newGenre = Data.Genre.ToList().Append(GenreText.Text).ToArray();
-        Data = Data with { Genre = newGenre };
-        await JsonControl.CreateExeJson(Data.JsonPath, Data);
-        
-        await RefreshContents();
-        MessageBox.Show(LocalizeControl.GetLocalize<string>("GenreAdd"));
+        if (Genres.Any(g => string.Equals(g.Name, name, StringComparison.Ordinal)))
+        {
+            ShowWarning(LocalizeControl.GetLocalize<string>("SimpleDuplicateKey"));
+            return;
+        }
+
+        var item = new GenreItem(name, isChecked: true, OnItemChanged);
+        Genres.Add(item);
+        await SaveGenresAsync();
+
+        GenreText.Text = string.Empty;
+        ShowInfo(LocalizeControl.GetLocalize<string>("GenreAdd"));
     }
 
+    private static void ShowWarning(string message)
+    {
+        var title = LocalizeControl.GetLocalize<string>("GenreManageWindowTitle");
+        System.Windows.MessageBox.Show(message, title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+    }
+
+    private static void ShowInfo(string message)
+    {
+        var title = LocalizeControl.GetLocalize<string>("GenreManageWindowTitle");
+        System.Windows.MessageBox.Show(message, title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+    }
+}
+
+public sealed class GenreItem : INotifyPropertyChanged
+{
+    private bool _isChecked;
+    public string Name { get; }
+    private readonly Action _onChange;
+
+    public bool IsChecked
+    {
+        get => _isChecked;
+        set
+        {
+            if (_isChecked == value) return;
+            _isChecked = value;
+            OnPropertyChanged();
+            _onChange?.Invoke();
+        }
+    }
+
+    public GenreItem(string name, bool isChecked, Action onChange)
+    {
+        Name = name;
+        _isChecked = isChecked;
+        _onChange = onChange;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
