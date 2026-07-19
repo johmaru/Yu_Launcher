@@ -230,6 +230,21 @@ namespace YuLauncher
                 }
 
                 LoggerController.LogInfo($"Moved {importedFiles.Count} imported JSON files to {backupDir}");
+
+                // セカンドパス: 全ゲームインポート後にMultipleLaunchリンクを再解決
+                // （1件目インポート時点で対象ゲームが未登録の場合、リンクが欠落するため）
+                var allGames = GameRepository.GetAll();
+                int relinked = 0;
+                foreach (var game in allGames)
+                {
+                    if (game.MultipleLaunch is { Length: > 0 })
+                    {
+                        GameRepository.UpdateGame(game);
+                        relinked++;
+                    }
+                }
+                if (relinked > 0)
+                    LoggerController.LogInfo($"Re-linked MultipleLaunch for {relinked} games");
             }
         }
 
