@@ -30,20 +30,14 @@ jobs:
         id: version-changed
         shell: bash
         run: |
-          # 直前のコミットで YuLauncher.csproj の Version が変更されたか確認
-          if git diff --name-only HEAD~1 HEAD | grep -q "YuLauncher/YuLauncher.csproj"; then
-            OLD_VERSION=$(git show HEAD~1:YuLauncher/YuLauncher.csproj | grep -oE '<Version>[^<]+' | sed 's/<Version>//' || echo "")
-            NEW_VERSION="${{ steps.get-version.outputs.version }}"
-            if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
-              echo "changed=true" >> $GITHUB_OUTPUT
-              echo "Version changed: $OLD_VERSION -> $NEW_VERSION"
-            else
-              echo "changed=false" >> $GITHUB_OUTPUT
-              echo "Version unchanged ($NEW_VERSION), skipping release"
-            fi
-          else
+          # タグ v{VERSION} が既に存在する場合はスキップ（冪等性保証）
+          VERSION="${{ steps.get-version.outputs.version }}"
+          if git rev-parse "v${VERSION}" >/dev/null 2>&1; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "YuLauncher.csproj not modified, skipping release"
+            echo "Tag v${VERSION} already exists, skipping release"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Tag v${VERSION} does not exist, creating release"
           fi
 
       - name: Install .NET
