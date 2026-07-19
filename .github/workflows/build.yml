@@ -165,14 +165,14 @@ jobs:
       - name: Upload to GitHub Releases
         if: steps.version-changed.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          vpk upload github --token ${{ secrets.TOKEN }} --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+          vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
 
       - name: Update Release Notes
         if: steps.version-changed.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           # vpk upload が作成したリリースのノートを更新
