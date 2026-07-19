@@ -461,19 +461,62 @@ public static class GameRepository
                    g.url AS Url, g.is_mute AS IsMute, g.volume AS Volume
             FROM games g
             """;
-        var rows = conn.Query<GameRow>(baseSql + " " + where + ";", param);
+        var rows = conn.Query<GameRow>(baseSql + " " + where + ";", param).ToList();
+        if (rows.Count == 0) return new List<ApplicationJsonData>();
 
-        var result = new List<ApplicationJsonData>();
+        var ids = rows.Select(r => r.Id).ToList();
+
+        // バッチ取得: ジャンル
+        var genreRows = conn.Query<(long GameId, string Name)>(
+            """
+            SELECT gg.game_id AS GameId, gr.name AS Name
+            FROM game_genres gg
+            JOIN genres gr ON gr.id = gg.genre_id
+            WHERE gg.game_id IN @ids
+            ORDER BY gr.name;
+            """,
+            new { ids }).ToLookup(x => x.GameId, x => x.Name);
+
+        // バッチ取得: WikiData
+        var wikiRows = conn.Query<(long GameId, string Key, string Value)>(
+            """
+            SELECT game_id AS GameId, key AS Key, value AS Value
+            FROM wiki_data
+            WHERE game_id IN @ids;
+            """,
+            new { ids });
+        var wikiLookup = wikiRows
+            .GroupBy(x => x.GameId)
+            .ToDictionary(g => g.Key, g => g.ToDictionary(x => x.Key, x => x.Value));
+
+        // バッチ取得: MultipleLaunch
+        var mlRows = conn.Query<(long GameId, string Name, int SortOrder)>(
+            """
+            SELECT ml.game_id AS GameId, g.name AS Name, ml.sort_order AS SortOrder
+            FROM game_multiple_launch ml
+            JOIN games g ON g.id = ml.target_game_id
+            WHERE ml.game_id IN @ids
+            ORDER BY ml.game_id, ml.sort_order;
+            """,
+            new { ids });
+        var mlLookup = mlRows
+            .GroupBy(x => x.GameId)
+            .ToDictionary(g => g.Key, g => g.Select(x => x.Name).ToArray());
+
+        var result = new List<ApplicationJsonData>(rows.Count);
         foreach (var r in rows)
         {
-            var genres = conn.Query<string>(
-                "SELECT gr.name FROM game_genres gg JOIN genres gr ON gr.id = gg.genre_id WHERE gg.game_id = @id ORDER BY gr.name;",
-                new { id = r.Id }).ToArray();
+            var genres = genreRows.Contains(r.Id)
+                ? genreRows[r.Id].ToArray()
+                : Array.Empty<string>();
 
-            var wiki = conn.Query<(string Key, string Value)>(
-                "SELECT key AS Key, value AS Value FROM wiki_data WHERE game_id = @id;",
-                new { id = r.Id })
-                .ToDictionary(x => x.Key, x => x.Value);
+            var wiki = wikiLookup.TryGetValue(r.Id, out var w)
+                ? w
+                : new Dictionary<string, string>();
+
+            var multipleLaunch = mlLookup.TryGetValue(r.Id, out var ml)
+                ? ml
+                : Array.Empty<string>();
 
             result.Add(new ApplicationJsonData
             {
@@ -490,7 +533,7 @@ public static class GameRepository
                 Volume = r.Volume,
                 Genre = genres,
                 WikiData = wiki,
-                MultipleLaunch = GetMultipleLaunchTargetNames(r.Id)
+                MultipleLaunch = multipleLaunch
             });
         }
         return result;
