@@ -171,6 +171,9 @@
   <data name="AddGame" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="CreateGameDialogTitle" xml:space="preserve">
+    <value>Add Game</value>
+  </data>
   <data name="DeleteGame" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -380,5 +383,8 @@
   </data>
   <data name="DetailLaunchOptions" xml:space="preserve">
     <value>Launch Options</value>
+  </data>
+  <data name="PropertyOldSystemError" xml:space="preserve">
+    <value>This file uses the old format. Please update the file to the new format.</value>
   </data>
 </root>
