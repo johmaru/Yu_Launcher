@@ -315,16 +315,24 @@ public class GameButton : Button
     internal static BitmapImage? GetImage(JsonControl.ApplicationJsonData appData)
     {
         // WebGame, WebSaver, web all use favicon from URL
+        // sz=128 で高解像度版を要求（デフォルトは 16x16 でガビガビになる）
         if (appData.FileExtension is "WebGame" or "WebSaver" or "web")
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url);
+            bitmap.UriSource = new Uri("https://www.google.com/s2/favicons?domain=" + appData.Url + "&sz=128");
             bitmap.EndInit();
             return bitmap;
         }
 
         if (!File.Exists(appData.FilePath)) return null;
+
+        // 高解像度アイコン(256x256)を優先取得。ExtractAssociatedIcon は 32x32 しか返さず、
+        // 128px の HeroImage に拡大表示するとガビガビになるため。
+        BitmapImage? hiRes = TryExtractHighResIcon(appData.FilePath, 256);
+        if (hiRes != null) return hiRes;
+
+        // フォールバック: ExtractAssociatedIcon (32x32)
         using (MemoryStream memoryStream = new MemoryStream())
         {
             Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
@@ -341,6 +349,49 @@ public class GameButton : Button
             return bitmapImage;
         }
     }
+
+    /// <summary>
+    /// PrivateExtractIcons (user32.dll) を使って指定サイズのアイコンを抽出する。
+    /// ExtractAssociatedIcon と違い 256x256 などの高解像度アイコンも取れる。
+    /// 対応サイズがない場合はシステムがスケールするが、32x32 から拡大するより高画質。
+    /// </summary>
+    private static BitmapImage? TryExtractHighResIcon(string filePath, int size)
+    {
+        IntPtr[] phicon = new IntPtr[1];
+        uint[] piconid = new uint[1];
+
+        // flags=0 は LR_DEFAULTCOLOR 相当
+        bool success = PrivateExtractIcons(filePath, 0, size, size, phicon, piconid, 1, 0);
+        if (!success || phicon[0] == IntPtr.Zero) return null;
+
+        try
+        {
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(phicon[0]);
+            using MemoryStream ms = new MemoryStream();
+            icon.Save(ms);
+            ms.Position = 0;
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = ms;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+        finally
+        {
+            DestroyIcon(phicon[0]);
+        }
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static extern bool PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon, IntPtr[] phicon, uint[] piconid, uint nIcons, uint flags);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static extern bool DestroyIcon(IntPtr hIcon);
 
     public Button GameButtonShow(string name, JsonControl.ApplicationJsonData data)
     {
