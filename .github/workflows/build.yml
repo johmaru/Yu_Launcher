@@ -8,32 +8,184 @@ on:
 jobs:
   deploy-to-github-releases:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 全履歴を取得（コミットログ解析用）
 
-            - name: Get Version from Project File
-              id: get-version
-              shell: bash
-              run: echo "version=$(grep -oE '<Version>[^<]+' YuLauncher/YuLauncher.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+      - name: Get Version from Project File
+        id: get-version
+        shell: bash
+        run: echo "version=$(grep -oE '<Version>[^<]+' YuLauncher/YuLauncher.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
 
-            - name: Get Now Time
-              id: get-time
-              shell: bash
-              run: echo "time=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      - name: Get Now Time
+        id: get-time
+        shell: bash
+        run: echo "time=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
-            - name: Install .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                    dotnet-version: 9.0.x
+      - name: Check Version Changed
+        id: version-changed
+        shell: bash
+        run: |
+          # 直前のコミットで YuLauncher.csproj の Version が変更されたか確認
+          if git diff --name-only HEAD~1 HEAD | grep -q "YuLauncher/YuLauncher.csproj"; then
+            OLD_VERSION=$(git show HEAD~1:YuLauncher/YuLauncher.csproj | grep -oE '<Version>[^<]+' | sed 's/<Version>//' || echo "")
+            NEW_VERSION="${{ steps.get-version.outputs.version }}"
+            if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+              echo "Version changed: $OLD_VERSION -> $NEW_VERSION"
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+              echo "Version unchanged ($NEW_VERSION), skipping release"
+            fi
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "YuLauncher.csproj not modified, skipping release"
+          fi
+
+      - name: Install .NET
+        if: steps.version-changed.outputs.changed == 'true'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Generate Release Notes
+        if: steps.version-changed.outputs.changed == 'true'
+        id: release-notes
+        shell: bash
+        run: |
+          VERSION="${{ steps.get-version.outputs.version }}"
+          TAG="v${VERSION}"
+          NOTES_FILE="release_notes.md"
+
+          # 前回のリリースタグを取得（v* パターンの最新）
+          PREV_TAG=$(git tag --list "v*" --sort=-version:refname | head -1 || echo "")
+
+          if [ -z "$PREV_TAG" ]; then
+            # 初回リリース: 全コミットを取得
+            COMMIT_RANGE="HEAD"
+            echo "# YuLauncher ${VERSION}" > "$NOTES_FILE"
+            echo "" >> "$NOTES_FILE"
+            echo "初回リリース" >> "$NOTES_FILE"
+          else
+            COMMIT_RANGE="${PREV_TAG}..HEAD"
+            echo "# YuLauncher ${VERSION}" > "$NOTES_FILE"
+            echo "" >> "$NOTES_FILE"
+            echo "## Changes since ${PREV_TAG}" >> "$NOTES_FILE"
+            echo "" >> "$NOTES_FILE"
+          fi
+
+          # Conventional Commits 形式でコミットを分類
+          declare -A CATEGORIES=(
+            ["feat"]="New Features"
+            ["fix"]="Bug Fixes"
+            ["refactor"]="Refactor"
+            ["perf"]="Performance"
+            ["docs"]="Documentation"
+            ["style"]="Style"
+            ["test"]="Tests"
+            ["chore"]="Chore"
+            ["revert"]="Revert"
+            ["build"]="Build"
+            ["ci"]="CI"
+          )
+
+          declare -A SECTION_CONTENT
+          for key in "${!CATEGORIES[@]}"; do
+            SECTION_CONTENT[$key]=""
+          done
+
+          OTHER_CONTENT=""
+
+          # コミットログを解析（マージコミットは除外）
+          if [ "$COMMIT_RANGE" = "HEAD" ]; then
+            COMMITS=$(git log --no-merges --pretty=format:"%s")
+          else
+            COMMITS=$(git log --no-merges --pretty=format:"%s" "$COMMIT_RANGE")
+          fi
+
+          while IFS= read -r commit_msg; do
+            [ -z "$commit_msg" ] && continue
+
+            # Conventional Commits 形式を解析
+            # 例: "feat(lib): add ..." → type=feat
+            # 例: "fix: guard ..." → type=fix
+            TYPE=$(echo "$commit_msg" | grep -oE '^[a-z]+' | head -1)
+
+            DESCRIPTION="$commit_msg"
 
 
-            - name: Publish Application
-              run: dotnet publish YuLauncher/YuLauncher.csproj -c Release -o publish -r win-x64 --self-contained true
+            MATCHED=false
+            for key in "${!CATEGORIES[@]}"; do
+              if [ "$TYPE" = "$key" ]; then
+                SECTION_CONTENT[$key]+="- ${DESCRIPTION}"$'\n'
+                MATCHED=true
+                break
+              fi
+            done
 
-            - name: Create Velopack Release
-              run: |
-                    dotnet tool install -g vpk
-                    vpk download github --repoUrl https://github.com/johmaru/Yu_Launcher
-                    vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher-${{ steps.get-version.outputs.version }}-${{ steps.get-time.outputs.time }}
-                    vpk upload github --token ${{ secrets.TOKEN }}  --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+            if [ "$MATCHED" = "false" ]; then
+              OTHER_CONTENT+="- ${DESCRIPTION}"$'\n'
+            fi
+          done <<< "$COMMITS"
+
+          # カテゴリ順に出力
+          for key in feat fix perf refactor revert docs style test build ci chore; do
+            if [ -n "${SECTION_CONTENT[$key]}" ]; then
+              echo "### ${CATEGORIES[$key]}" >> "$NOTES_FILE"
+              echo "" >> "$NOTES_FILE"
+              echo -n "${SECTION_CONTENT[$key]}" >> "$NOTES_FILE"
+              echo "" >> "$NOTES_FILE"
+            fi
+          done
+
+          if [ -n "$OTHER_CONTENT" ]; then
+            echo "### Other Changes" >> "$NOTES_FILE"
+            echo "" >> "$NOTES_FILE"
+            echo -n "$OTHER_CONTENT" >> "$NOTES_FILE"
+            echo "" >> "$NOTES_FILE"
+          fi
+
+          echo "" >> "$NOTES_FILE"
+          echo "---" >> "$NOTES_FILE"
+          echo "**Full Changelog**: https://github.com/johmaru/Yu_Launcher/compare/${PREV_TAG:-$(git rev-list --max-parents=0 HEAD | head -1)}...v${VERSION}" >> "$NOTES_FILE"
+
+          echo "notes_file=$NOTES_FILE" >> $GITHUB_OUTPUT
+          echo "--- Generated Release Notes ---"
+          cat "$NOTES_FILE"
+
+      - name: Publish Application
+        if: steps.version-changed.outputs.changed == 'true'
+        run: dotnet publish YuLauncher/YuLauncher.csproj -c Release -o publish -r win-x64 --self-contained true
+
+      - name: Create Velopack Release
+        if: steps.version-changed.outputs.changed == 'true'
+        run: |
+          dotnet tool install -g vpk
+          vpk download github --repoUrl https://github.com/johmaru/Yu_Launcher
+          vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher-${{ steps.get-version.outputs.version }}-${{ steps.get-time.outputs.time }}
+
+      - name: Upload to GitHub Releases
+        if: steps.version-changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          vpk upload github --token ${{ secrets.TOKEN }} --repoUrl https://github.com/johmaru/Yu_Launcher --publish --releaseName "YuLauncher ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+
+      - name: Update Release Notes
+        if: steps.version-changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+        shell: bash
+        run: |
+          # vpk upload が作成したリリースのノートを更新
+          gh release edit "v${{ steps.get-version.outputs.version }}" \
+            --repo johmaru/Yu_Launcher \
+            --notes-file release_notes.md
+
+      - name: Skip Release
+        if: steps.version-changed.outputs.changed == 'false'
+        run: echo "No version change detected. Skipping release creation."
