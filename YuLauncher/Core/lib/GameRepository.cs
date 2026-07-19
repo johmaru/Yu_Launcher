@@ -356,10 +356,18 @@ public static class GameRepository
     // ===== 履歴 =====
     public static void RecordPlay(long gameId)
     {
-        using var conn = CreateConnection();
-        conn.Execute(
-            "INSERT INTO play_history (game_id) VALUES (@gameId);",
-            new { gameId });
+        if (gameId <= 0) return;
+        try
+        {
+            using var conn = CreateConnection();
+            conn.Execute(
+                "INSERT INTO play_history (game_id) VALUES (@gameId);",
+                new { gameId });
+        }
+        catch (Exception e)
+        {
+            LoggerController.LogError($"RecordPlay failed for gameId={gameId}: {e}");
+        }
     }
 
     public static List<PlayHistoryEntry> GetPlayHistory(long gameId, int limit = 50)
