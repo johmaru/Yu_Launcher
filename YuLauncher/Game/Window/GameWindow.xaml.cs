@@ -1,419 +1,312 @@
-﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Threading.Tasks;
 using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Core.Raw;
 using Wpf.Ui.Controls;
 using YuLauncher.Core.lib;
 using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
-using YuLauncher.Properties;
-using Button = Wpf.Ui.Controls.Button;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
-using MessageBox = System.Windows.MessageBox;
 
-namespace YuLauncher.Game.Window
+namespace YuLauncher.Game.Window;
+
+public partial class GameWindow : FluentWindow
 {
-    /// <summary>
-    /// GameWindow.xaml の相互作用ロジック
-    /// </summary>
-    public partial class GameWindow : FluentWindow
+    private JsonControl.ApplicationJsonData _data;
+    private GameWindow ThisGameWindow { get; }
+
+    public GameWindow(string url, string jsonPath)
     {
-        private JsonControl.ApplicationJsonData _data;
-        
-        private GameWindow ThisGameWindow { get; }
-        public GameWindow(string url,string jsonPath)
+        InitializeComponent();
+
+        _data = JsonControl.LoadJson(jsonPath);
+
+        WebView.CoreWebView2InitializationCompleted += WebView_OnCoreWebView2InitializationCompleted;
+
+        try
         {
-            InitializeComponent();
-
-
-            _data = JsonControl.LoadJson(jsonPath);
-        
-            
-            WebView.CoreWebView2InitializationCompleted += WebView_OnCoreWebView2InitializationCompleted;   
-
-            try
+            if (_data is { FileExtension: "WebGame", Volume: null })
             {
-                if (_data is { FileExtension: "WebGame", Volume: null })
-                {
-                    JsonControl.ApplicationJsonData newData = _data with { Volume = 1.0 };
-                    _ = JsonControl.CreateExeJson(_data.JsonPath, newData);
-                }
-            }
-            catch (Exception e)
-            {
-                LoggerController.LogError($"{e}");
-                
-            }
-
-            ThisGameWindow = this;
-
-            WebView.Source = new Uri(url);
-
-            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
-           var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
-
-            Width = double.Parse(tomlWidth);
-            Height = double.Parse(tomlHeight);
-
-            foreach (var wikidata in _data.WikiData)
-            {
-                var menuItem = new MenuItem()
-                {
-                    Header = wikidata.Key
-                };
-                menuItem.Click += (_, _) =>
-                {
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = wikidata.Value,
-                            UseShellExecute = true
-                        });
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
-                    }
-                };
-                WikiDataContentItem.Items.Add(menuItem);
+                _data = _data with { Volume = 1.0 };
+                _ = PersistAsync();
             }
         }
-
-        private async void GameWindow_OnLoaded(object sender, RoutedEventArgs e)
+        catch (Exception e)
         {
-            if (WebView.CoreWebView2 == null)
-            {
-                await WebView.EnsureCoreWebView2Async();
-            }
-        }
-        
-        private void Resize()
-        {
-            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Width");
-            var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings,"GameResolution","Height");
-            
-            Width = double.Parse(tomlWidth);
-            Height = double.Parse(tomlHeight);
+            LoggerController.LogError($"{e}");
         }
 
-        private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
+        ThisGameWindow = this;
+        WebView.Source = new Uri(url);
+
+        var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+        var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+        Width = double.Parse(tomlWidth);
+        Height = double.Parse(tomlHeight);
+
+        RebuildWikiDataMenu();
+    }
+
+    private async Task PersistAsync()
+    {
+        try
         {
-           LoggerController.LogInfo("CoreWebView2_ContextMenuRequested fired");
-           e.MenuItems.Clear();
-           
-           // ControlMenu Object
-           var controlMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               LocalizeControl.GetLocalize<string>("SimpleControlMenu"),
-               null,
-               CoreWebView2ContextMenuItemKind.Submenu
-           );
-           
-           var menuForward = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               LocalizeControl.GetLocalize<string>("SimpleForward"),
-               null,
-               CoreWebView2ContextMenuItemKind.Command
-           );
-           
-           var menuBack = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-                LocalizeControl.GetLocalize<string>("SimpleBack"),
-                null,
-                CoreWebView2ContextMenuItemKind.Command
-            );
-           
-           var menuReload = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               LocalizeControl.GetLocalize<string>("SimpleReload"),
-               null,
-               CoreWebView2ContextMenuItemKind.Command
-           );
-           
-           var volumeMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               LocalizeControl.GetLocalize<string>("SimpleVolume"),
-               null,
-               CoreWebView2ContextMenuItemKind.Command
-           );
-           
-           // Event
-           menuForward.CustomItemSelected += (_,_) => { WebView.GoForward(); };
-           
-           menuBack.CustomItemSelected += (_,_) => { WebView.GoBack(); };
-           
-           menuReload.CustomItemSelected += (_,_) => { WebView.Reload(); };
-           
-              volumeMenu.CustomItemSelected += (_,_) =>
-              {
-                  var stackPanel = new StackPanel()
-                  {
-                      Orientation = Orientation.Vertical,
-                      HorizontalAlignment = HorizontalAlignment.Center,
-                      VerticalAlignment = VerticalAlignment.Center
-                  };
-                  var button = new Button()
-                  {
-                      Content = LocalizeControl.GetLocalize<string>("SimpleSave"),
-                      Margin = new Thickness(10, 10, 10, 10),
-                      Width = 80,
-                      Height = 30
-                  };
-                  
-                  
-                  var slider = new Slider()
-                  {
-                      Minimum = 0,
-                      Maximum = 1,
-                      Value = _data.Volume ?? 1,
-                      IsSnapToTickEnabled = true,
-                      TickFrequency = 0.1,
-                      TickPlacement = TickPlacement.BottomRight,
-                      IsDirectionReversed = true,
-                      VerticalAlignment = VerticalAlignment.Center,
-                      HorizontalAlignment = HorizontalAlignment.Center,
-                      Margin = new Thickness(10, 10, 10, 10),
-                      Width = 80,
-                      Height = 100,
-                      Orientation = Orientation.Vertical
-                  };
-                  
-                  slider.ValueChanged += (_,_) =>
-                  {
-                      
-                  };
-                  
-                  var volumeWindow = new FluentWindow()
-                  {
-                      Height = 200,
-                      Width = 100,
-                      ResizeMode = ResizeMode.NoResize,
-                      WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                      Title = LocalizeControl.GetLocalize<string>("SimpleVolume"),
-                      Content = stackPanel
-                  };
-                    volumeWindow.Show();
-                    
-                    //event 
-                    button.Click += (_,_) =>
-                    {
-                        _data = _data with { Volume =  slider.Value = Math.Round(slider.Value, 1) };
-                        _ = JsonControl.CreateExeJson(_data.JsonPath, _data);
-                        SetWebViewVolume();
-                        volumeWindow.Close();
-                    };
-                  
-                    stackPanel.Children.Add(slider);
-                    stackPanel.Children.Add(button);
-              };
-           
-           // Add
-           controlMenu.Children.Add(menuForward);
-           
-           controlMenu.Children.Add(menuBack);
-           
-           controlMenu.Children.Add(menuReload);
-           
-              controlMenu.Children.Add(volumeMenu);
-           
-           //ControlMenu Add
-           e.MenuItems.Add(controlMenu);
+            await JsonControl.CreateExeJson(_data.JsonPath, _data);
+        }
+        catch (Exception ex)
+        {
+            LoggerController.LogError($"{ex}");
+        }
+    }
 
-            //Mute Object
+    private void RebuildWikiDataMenu()
+    {
+        WikiDataContentItem.Items.Clear();
+        if (_data.WikiData == null) return;
 
-            var label = LocalizeControl.GetLocalize<string>(WebView.CoreWebView2.IsMuted ? "SimpleMuteEnable" : "SimpleMuteDisable");
+        foreach (var wiki in _data.WikiData)
+        {
+            var menuItem = new MenuItem { Header = wiki.Key };
+            menuItem.Click += (_, _) => OpenWikiUrl(wiki.Value);
+            WikiDataContentItem.Items.Add(menuItem);
+        }
+    }
 
-            var muteMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               label ,
-                null,
-                CoreWebView2ContextMenuItemKind.Command
-            );
-
-            muteMenu.CustomItemSelected += (_, _) =>
+    private void OpenWikiUrl(string url)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo
             {
-                WebView.CoreWebView2.IsMuted = WebView.CoreWebView2.IsMuted switch
-                {
-                    true => false,
-                    _ => true
-                };
-                var newData = _data with { IsMute = WebView.CoreWebView2.IsMuted };
-                _ = JsonControl.CreateExeJson(_data.JsonPath, newData);
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception)
+        {
+            System.Windows.MessageBox.Show(
+                LocalizeControl.GetLocalize<string>("SimpleUrlError"),
+                LocalizeControl.GetLocalize<string>("SimpleBrowser"),
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning);
+        }
+    }
+
+    private async void GameWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (WebView.CoreWebView2 == null)
+        {
+            await WebView.EnsureCoreWebView2Async();
+        }
+    }
+
+    private void Resize()
+    {
+        var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+        var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+        Width = double.Parse(tomlWidth);
+        Height = double.Parse(tomlHeight);
+    }
+
+    private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
+    {
+        LoggerController.LogInfo("CoreWebView2_ContextMenuRequested fired");
+        e.MenuItems.Clear();
+
+        var controlMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleControlMenu"),
+            null,
+            CoreWebView2ContextMenuItemKind.Submenu
+        );
+
+        var menuForward = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleForward"),
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
+
+        var menuBack = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleBack"),
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
+
+        var menuReload = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleReload"),
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
+
+        var volumeMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleVolume"),
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
+
+        menuForward.CustomItemSelected += (_, _) => WebView.GoForward();
+        menuBack.CustomItemSelected += (_, _) => WebView.GoBack();
+        menuReload.CustomItemSelected += (_, _) => WebView.Reload();
+
+        volumeMenu.CustomItemSelected += (_, _) =>
+        {
+            var volumeWindow = new VolumeWindow(_data, OnVolumeSaved)
+            {
+                Owner = this
             };
+            volumeWindow.Show();
+        };
 
-            e.MenuItems.Add(muteMenu);
+        controlMenu.Children.Add(menuForward);
+        controlMenu.Children.Add(menuBack);
+        controlMenu.Children.Add(menuReload);
+        controlMenu.Children.Add(volumeMenu);
+        e.MenuItems.Add(controlMenu);
 
-            // SettingMenu Object
+        var muteLabel = LocalizeControl.GetLocalize<string>(WebView.CoreWebView2.IsMuted ? "SimpleMuteEnable" : "SimpleMuteDisable");
+        var muteMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            muteLabel,
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
 
-            var settingMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
-               LocalizeControl.GetLocalize<string>("SimpleSetting"),
-               null,
-               CoreWebView2ContextMenuItemKind.Command
-           );
-
-           settingMenu.CustomItemSelected += (_,_) =>
-           {
-                var settingWindow = new SettingWindow();
-                settingWindow.Closed += (_,_) =>
-                {
-                   Resize();
-                };
-                settingWindow.Show();
-           };
-           
-            e.MenuItems.Add(settingMenu);
-
-        }
-
-
-        private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
+        muteMenu.CustomItemSelected += async (_, _) =>
         {
-            WebView.Stop();
+            WebView.CoreWebView2.IsMuted = !WebView.CoreWebView2.IsMuted;
+            _data = _data with { IsMute = WebView.CoreWebView2.IsMuted };
+            await PersistAsync();
+        };
+
+        e.MenuItems.Add(muteMenu);
+
+        var settingMenu = WebView.CoreWebView2.Environment.CreateContextMenuItem(
+            LocalizeControl.GetLocalize<string>("SimpleSetting"),
+            null,
+            CoreWebView2ContextMenuItemKind.Command
+        );
+
+        settingMenu.CustomItemSelected += (_, _) =>
+        {
+            var settingWindow = new SettingWindow
+            {
+                Owner = this
+            };
+            settingWindow.Closed += (_, _) => Resize();
+            settingWindow.Show();
+        };
+
+        e.MenuItems.Add(settingMenu);
+    }
+
+    private void OnVolumeSaved(JsonControl.ApplicationJsonData updated)
+    {
+        _data = updated;
+        SetWebViewVolume();
+    }
+
+    private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        WebView.Stop();
+        if (WebView.CoreWebView2 != null)
+        {
             WebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
             WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
-            WebView.CoreWebView2InitializationCompleted -= WebView_OnCoreWebView2InitializationCompleted;
-            WebView.Dispose();
         }
+        WebView.CoreWebView2InitializationCompleted -= WebView_OnCoreWebView2InitializationCompleted;
+        WebView.Dispose();
+    }
 
-        
-        private async void SetWebViewVolume()
+    private async void SetWebViewVolume()
+    {
+        if (_data.Volume == null) return;
+        if (WebView.CoreWebView2 == null) return;
+
+        string script = $@"
+        document.addEventListener('DOMContentLoaded', function() {{
+        var video = document.getElementsByTagName('video')[0];
+        if (video) {{
+            video.volume = {_data.Volume};
+            }}
+            }});
+                ";
+        await WebView.CoreWebView2.ExecuteScriptAsync(script);
+    }
+
+    private void WebView_OnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+    {
+        if (e.IsSuccess)
         {
-            if (_data.Volume == null) return;
-
-            string script = $@"
-            document.addEventListener('DOMContentLoaded', function() {{
-            var video = document.getElementsByTagName('video')[0];
-            if (video) {{
-                video.volume = {_data.Volume};
-                }}
-                }});
-                    ";
-            await WebView.CoreWebView2.ExecuteScriptAsync(script);
-        }
-
-        private void WebView_OnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
-        {
-            if (e.IsSuccess)
+            LoggerController.LogInfo("WebView2 initialized, registering handlers");
+            WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+            WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
+            WebView.CoreWebView2.DocumentTitleChanged += (_, _) =>
             {
-                LoggerController.LogInfo("WebView2 initialized, registering handlers");
-                WebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
-                WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
-                WebView.CoreWebView2.DocumentTitleChanged += (_, _) =>
-                {
-                    Title = WebView.CoreWebView2.DocumentTitle;
-                };
-                
-                WebView.CoreWebView2.IsMuted = _data.IsMute;
-                
-                if (_data.Volume != null)
-                {
-                  SetWebViewVolume();
-                }
-                
-            }
-            else
+                Title = WebView.CoreWebView2.DocumentTitle;
+            };
+
+            WebView.CoreWebView2.IsMuted = _data.IsMute;
+
+            if (_data.Volume != null)
             {
-                LoggerController.LogError("WebView2 Initialization Failed");
-                throw new Exception("WebView2 Initialization Failed");
+                SetWebViewVolume();
             }
         }
-
-        private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+        else
         {
-            e.Handled = true;
-            GameWindow gameWindow = new GameWindow(e.Uri, _data.JsonPath)
-            {
-                
-            };
-            gameWindow.Loaded += (_, _) =>
-            {
-                Activate();
-            };
-            gameWindow.Closing += (_, _) =>
-            {
-                ThisGameWindow.Activate();
-            };
-            gameWindow.Show();
+            LoggerController.LogError("WebView2 Initialization Failed");
+            throw new Exception("WebView2 Initialization Failed");
         }
+    }
 
-        private void SettingItem_OnClick(object sender, RoutedEventArgs e)
+    private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+    {
+        e.Handled = true;
+        var gameWindow = new GameWindow(e.Uri, _data.JsonPath);
+        gameWindow.Loaded += (_, _) => Activate();
+        gameWindow.Closing += (_, _) => ThisGameWindow.Activate();
+        gameWindow.Show();
+    }
+
+    private void SettingItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        var settingWindow = new SettingWindow
         {
-            SettingWindow settingWindow = new SettingWindow
-            {
-                Owner = this
-            };
-            settingWindow.Show();
-        }
+            Owner = this
+        };
+        settingWindow.Closed += (_, _) => Resize();
+        settingWindow.Show();
+    }
 
-        private void BackItem_OnClick(object sender, RoutedEventArgs e)
+    private void BackItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (!WebView.CanGoBack) return;
+        WebView.GoBack();
+    }
+
+    private void ReloadItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        WebView.Reload();
+    }
+
+    private void ForwardItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (!WebView.CanGoForward) return;
+        WebView.GoForward();
+    }
+
+    private void WikiDataItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        var wikiWindow = new WikiDataManageWindow(_data)
         {
-            if (!WebView.CanGoBack) return;
-            WebView.GoBack();
-        }
-
-        private void ReloadItem_OnClick(object sender, RoutedEventArgs e)
+            Owner = this
+        };
+        wikiWindow.Closed += (_, _) =>
         {
-           WebView.Reload();
-        }
-
-        private void ForwardItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (!WebView.CanGoForward) return;
-            WebView.GoForward();
-        }
-
-        private void WikiDataItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            WikiDataManageWindow wikiDataManageWindow = new WikiDataManageWindow(_data)
-            {
-                Owner = this
-            };
-            wikiDataManageWindow.Closed += (o, args) =>
-            {
-               var  data = JsonControl.LoadJson(_data.JsonPath);
-                _data = data;
-                
-                WikiDataContentItem.Items.Clear();
-                
-                foreach (var wikidata in _data.WikiData)
-                {
-                    var menuItem = new MenuItem()
-                    {
-                        Header = wikidata.Key
-                    };
-                    menuItem.Click += (_, _) =>
-                    {
-                        try
-                        {
-                            Process.Start(new ProcessStartInfo
-                            {
-                                FileName = wikidata.Value,
-                                UseShellExecute = true
-                            });
-                        }
-                        catch (Exception)
-                        {
-                          MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleUrlError"));
-                        }
-                    };
-                    WikiDataContentItem.Items.Add(menuItem);
-                }
-            };
-            wikiDataManageWindow.Show();
-        }
-
+            _data = JsonControl.LoadJson(_data.JsonPath);
+            RebuildWikiDataMenu();
+        };
+        wikiWindow.Show();
     }
 }
-

@@ -349,9 +349,8 @@ public partial class GameListPaneControl : UserControl
         LaunchOptionsPanel.Children.Add(panel);
     }
 
-    private async void PlayButton_OnClick(object sender, RoutedEventArgs e)
+    private async Task LaunchAsync(JsonControl.ApplicationJsonData data)
     {
-        if (PlayButton.Tag is not JsonControl.ApplicationJsonData data) return;
         try
         {
             await GameButton.LaunchApplication(data);
@@ -369,6 +368,25 @@ public partial class GameListPaneControl : UserControl
         {
             LoggerController.LogError(ex.Message);
         }
+    }
+
+    private async void PlayButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (PlayButton.Tag is not JsonControl.ApplicationJsonData data) return;
+        await LaunchAsync(data);
+    }
+
+    private async void GameListBox_OnMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        var element = e.OriginalSource as System.Windows.DependencyObject;
+        while (element != null && element is not ListBoxItem)
+        {
+            element = System.Windows.Media.VisualTreeHelper.GetParent(element);
+        }
+
+        if (element is not ListBoxItem item) return;
+        if (item.Tag is not JsonControl.ApplicationJsonData data) return;
+        await LaunchAsync(data);
     }
 
     private void PropertyButton_OnClick(object sender, RoutedEventArgs e)

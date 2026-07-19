@@ -34,7 +34,7 @@
                 </ComboBox>
                 <ui:TextBox x:Name="SearchBox" PlaceholderText="{lex:Loc SearchPlaceholder}" TextChanged="SearchBox_OnTextChanged" Margin="0,0,0,4"/>
             </StackPanel>
-            <ListBox x:Name="GameListBox" Grid.Row="1" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="GameListBox_OnSelectionChanged">
+            <ListBox x:Name="GameListBox" Grid.Row="1" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="GameListBox_OnSelectionChanged" MouseDoubleClick="GameListBox_OnMouseDoubleClick">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Tag" Value="{Binding Data}"/>
