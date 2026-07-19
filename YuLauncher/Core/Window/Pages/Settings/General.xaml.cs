@@ -104,6 +104,16 @@ public partial class General : Page
             {
                 FileControl.CopyDirectory("YuLauncher.exe.WebView2", Path.Combine(dialog.FolderName, "YuLauncher.exe.WebView2"));
             }
+            string dbPath = GameRepository.DbPath;
+            if (File.Exists(dbPath))
+            {
+                string destDb = Path.Combine(dialog.FolderName, "games.db");
+                File.Copy(dbPath, destDb, true);
+            }
+            else
+            {
+                LoggerController.LogError("games.db not found at: " + dbPath);
+            }
         }
         catch (Exception exception)
         {
@@ -153,6 +163,19 @@ public partial class General : Page
                 MessageBox.Show("html Folder not found");
             }
             
+            string srcDb = Path.Combine(dialog.FolderName, "games.db");
+            if (File.Exists(srcDb))
+            {
+                string destDb = GameRepository.DbPath;
+                Directory.CreateDirectory(Path.GetDirectoryName(destDb)!);
+                File.Copy(srcDb, destDb, true);
+                LoggerController.LogInfo("Imported games.db from " + srcDb);
+            }
+            else
+            {
+                MessageBox.Show("games.db not found in selected folder");
+            }
+
             if (File.Exists(dialog.FolderName + "/settings.toml"))
             {
                 string destFileName = Path.Combine("./settings.toml");
