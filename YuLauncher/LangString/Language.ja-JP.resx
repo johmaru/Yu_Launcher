@@ -174,6 +174,9 @@
   <data name="AddGame" xml:space="preserve">
     <value>追加</value>
   </data>
+  <data name="CreateGameDialogTitle" xml:space="preserve">
+    <value>ゲームを追加</value>
+  </data>
   <data name="DeleteGame" xml:space="preserve">
     <value>削除</value>
   </data>
@@ -351,5 +354,47 @@
   </data>
   <data name="SimpleDuplicateKey" xml:space="preserve">
     <value>同じキーが存在します</value>
+  </data>
+  <data name="SelectGamePrompt" xml:space="preserve">
+    <value>ゲームを選択してください</value>
+  </data>
+  <data name="DetailPlay" xml:space="preserve">
+    <value>再生</value>
+  </data>
+  <data name="DetailProperty" xml:space="preserve">
+    <value>プロパティ</value>
+  </data>
+  <data name="DetailMemo" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="DetailWikiManage" xml:space="preserve">
+    <value>Wiki管理</value>
+  </data>
+  <data name="DetailGenreManage" xml:space="preserve">
+    <value>ジャンル管理</value>
+  </data>
+  <data name="DetailNoMemo" xml:space="preserve">
+    <value>メモなし</value>
+  </data>
+  <data name="DetailNoWiki" xml:space="preserve">
+    <value>Wikiデータなし</value>
+  </data>
+  <data name="DetailNoGames" xml:space="preserve">
+    <value>ゲームがありません</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>検索...</value>
+  </data>
+  <data name="DetailLaunchOptions" xml:space="preserve">
+    <value>起動オプション</value>
+  </data>
+  <data name="GenreManageWindowTitle" xml:space="preserve">
+    <value>ジャンル管理</value>
+  </data>
+  <data name="WikiDataManageWindowTitle" xml:space="preserve">
+    <value>Wikiデータ管理</value>
+  </data>
+  <data name="PropertyOldSystemError" xml:space="preserve">
+    <value>旧形式のファイルです。ファイルを新しい形式に更新してください。</value>
   </data>
 </root>

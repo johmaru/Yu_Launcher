@@ -12,7 +12,7 @@ namespace YuLauncher.Core.Window.Pages.Settings;
 
 public class Data()
 {
-    public string NowVersion { get; set; }
+    public string NowVersion { get; set; } = string.Empty;
 }
 
 public partial class General : Page
@@ -20,14 +20,29 @@ public partial class General : Page
     public General()
     {
         InitializeComponent();
-        var mgr = new UpdateManager(new GithubSource(@"https://github.com/johmaru/Yu_Launcher", null, false),
-            new UpdateOptions
+        var fallbackVersion = typeof(General).Assembly.GetName().Version?.ToString() ?? "dev";
+        var currentVersion = fallbackVersion;
+
+        try
+        {
+            var mgr = new UpdateManager(new GithubSource(@"https://github.com/johmaru/Yu_Launcher", null, false),
+                new UpdateOptions
+                {
+                    AllowVersionDowngrade = true
+                });
+
+            if (mgr.IsInstalled && mgr.CurrentVersion != null)
             {
-                AllowVersionDowngrade = true
-            });
+                currentVersion = mgr.CurrentVersion.ToString();
+            }
+        }
+        catch (Exception exception)
+        {
+            LoggerController.LogWarn("Velopack is not available in this session: " + exception.Message);
+        }
         DataContext = new Data()
         {
-            NowVersion = $"{LocalizeControl.GetLocalize<string>("NowVersion")} : {mgr.CurrentVersion}"
+            NowVersion = $"{LocalizeControl.GetLocalize<string>("NowVersion")} : {currentVersion}"
         };
     }
 
@@ -89,11 +104,21 @@ public partial class General : Page
             {
                 FileControl.CopyDirectory("YuLauncher.exe.WebView2", Path.Combine(dialog.FolderName, "YuLauncher.exe.WebView2"));
             }
+            string dbPath = GameRepository.DbPath;
+            if (File.Exists(dbPath))
+            {
+                string destDb = Path.Combine(dialog.FolderName, "games.db");
+                File.Copy(dbPath, destDb, true);
+            }
+            else
+            {
+                LoggerController.LogError("games.db not found at: " + dbPath);
+            }
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
-            throw;
+            LoggerController.LogError($"{exception}");
+            
         }
         
         MessageBox.Show(LocalizeControl.GetLocalize<string>("SimpleCompleted"));
@@ -138,6 +163,19 @@ public partial class General : Page
                 MessageBox.Show("html Folder not found");
             }
             
+            string srcDb = Path.Combine(dialog.FolderName, "games.db");
+            if (File.Exists(srcDb))
+            {
+                string destDb = GameRepository.DbPath;
+                Directory.CreateDirectory(Path.GetDirectoryName(destDb)!);
+                File.Copy(srcDb, destDb, true);
+                LoggerController.LogInfo("Imported games.db from " + srcDb);
+            }
+            else
+            {
+                MessageBox.Show("games.db not found in selected folder");
+            }
+
             if (File.Exists(dialog.FolderName + "/settings.toml"))
             {
                 string destFileName = Path.Combine("./settings.toml");
@@ -155,8 +193,8 @@ public partial class General : Page
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
-            throw;
+            LoggerController.LogError($"{exception}");
+            
         }
     }
 }

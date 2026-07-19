@@ -1,4 +1,4 @@
-﻿<ui:FluentWindow x:Name="GameWindow1"
+<ui:FluentWindow x:Name="GameWindow1"
                  x:Class="YuLauncher.Game.Window.GameWindow"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -14,78 +14,51 @@
                  xmlns:lex="http://wpflocalizeextension.codeplex.com"
                  lex:LocalizeDictionary.DesignCulture="ja-JP"
                  lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
+                 lex:ResxLocalizationProvider.DefaultDictionary="Language"
                  Closing="GameWindow_OnClosing"
-                 SizeChanged="GameWindow_OnSizeChanged"
-                 MouseDown="UIElement_OnPreviewMouseLeftButtonDown"
-                 Title="GameWindow"
-                 WindowStartupLocation="CenterScreen">
+                 Loaded="GameWindow_OnLoaded"
+                 Title="{lex:Loc SimpleBrowser}"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <ui:TitleBar Grid.Row="0"
+                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                     Height="48">
+            <ui:TitleBar.Header>
+                <Menu FontSize="12">
+                    <MenuItem Header="{lex:Loc SimpleBrowser}">
+                        <MenuItem x:Name="BackItem"
+                                  Header="{lex:Loc SimpleBack}"
+                                  Click="BackItem_OnClick"/>
+                        <MenuItem x:Name="ReloadItem"
+                                  Header="{lex:Loc SimpleReload}"
+                                  Click="ReloadItem_OnClick"/>
+                        <MenuItem x:Name="ForwardItem"
+                                  Header="{lex:Loc SimpleForward}"
+                                  Click="ForwardItem_OnClick"/>
+                        <MenuItem x:Name="WikiDataContentItem"
+                                  Header="{lex:Loc WikiData}"/>
+                    </MenuItem>
+                    <MenuItem Header="{lex:Loc SimpleApplication}">
+                        <MenuItem x:Name="SettingItem"
+                                  Header="{lex:Loc SimpleSetting}"
+                                  Click="SettingItem_OnClick"/>
+                        <MenuItem x:Name="WikiDataItem"
+                                  Header="{lex:Loc SimpleWikiDataManage}"
+                                  Click="WikiDataItem_OnClick"/>
+                    </MenuItem>
+                </Menu>
+            </ui:TitleBar.Header>
+        </ui:TitleBar>
 
-        <Grid Grid.Row="0"
-              MouseDown="menu_OnMouseMove">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1"
-                        Orientation="Horizontal">
-                <ui:Button x:Name="MinimizeBtn"
-                           Click="MinimizeBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons"
-                                 Glyph="&#xe921;"
-                                 FontSize="20"/>
-                </ui:Button>
-                <ToggleButton x:Name="WindowStateBtn"
-                              Checked="WindowStateBtn_OnChecked"
-                              Unchecked="WindowStateBtn_OnUnchecked"
-                              IsChecked="False">
-                    <ui:FontIcon x:Name="WindowStateIcon"
-                                 FontFamily="Segoe Fluent Icons"
-                                 FontSize="20"/>
-                </ToggleButton>
-                <ui:Button x:Name="ExitBtn"
-                           Click="ExitBtn_OnClick">
-                    <ui:FontIcon FontFamily="Segoe Fluent Icons"
-                                 Glyph="&#xf78a;"
-                                 FontSize="20"/>
-                </ui:Button>
-            </StackPanel>
-        </Grid>
-        
-        <Grid Grid.Row="1">
-            <Menu Grid.Column="0">
-                <MenuItem Header="{lex:Loc SimpleBrowser}">
-                    <MenuItem x:Name="BackItem"
-                              Header="{lex:Loc SimpleBack}"
-                              Click="BackItem_OnClick"/>
-                    <MenuItem x:Name="ReloadItem"
-                              Header="{lex:Loc SimpleReload}"
-                              Click="ReloadItem_OnClick"/>
-                    <MenuItem x:Name="ForwardItem"
-                              Header="{lex:Loc SimpleForward}"
-                              Click="ForwardItem_OnClick"/>
-                    <MenuItem x:Name="WikiDataContentItem"
-                              Header="{lex:Loc WikiData}"/>
-                </MenuItem>
-                <MenuItem Header="{lex:Loc SimpleApplication}">
-                    <MenuItem x:Name="SettingItem"
-                              Header="{lex:Loc SimpleSetting}"
-                              Click="SettingItem_OnClick"/>
-                    <MenuItem x:Name="WikiDataItem"
-                              Header="{lex:Loc SimpleWikiDataManage}"
-                              Click="WikiDataItem_OnClick"/>
-                </MenuItem>
-            </Menu>
-        </Grid>
-
-            <wv2:WebView2 Grid.Row="2"
-                          Name="WebView"/>
+        <wv2:WebView2 Grid.Row="1"
+                      Name="WebView"/>
     </Grid>
 </ui:FluentWindow>

@@ -9,6 +9,7 @@ public abstract class FileControl
     {
         public const string Directory = "./Games";
         public const string Settings = "./settings.toml";
+        public const string DocumentsMain = "./YuLauncher";
     }
    
     public static void CopyDirectory(string sourceDir, string destDir)
