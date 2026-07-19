@@ -266,25 +266,26 @@ public record PlayHistoryEntry(long Id, long GameId, DateTime PlayedAt);
 
 ### 非同期の扱い
 
-既存 `JsonControl` は `async ValueTask`。リポジトリ内部は同期（Dapperの同期API）。`JsonControl` のシグネチャは `async ValueTask` を維持するが、内部で同期待ち。`Task.FromResult` で包むのは既存アンチパターン（memory lesson）なので、`ValueTask` を維持しつつ内部で同期待ち。
+既存 `JsonControl` の `ReadExeJson` / `CreateExeJson` は `async ValueTask` シグネチャ。リポジトリ内部は同期（Dapperの同期API）。
 
-## 既存API互換の `JsonControl`
+**選定**: `async` キーワードを外し、`ValueTask<T>` を直接 `new ValueTask<T>(...)` で返す（A案）。`async` を残すと内部に `await` が無く CS1998 警告が出る上、不要なステートマシンを確保する。`Task.FromResult` で包むのは既存アンチパターン（memory lesson）。呼び出し元の `await JsonControl.ReadExeJson(...)` はそのまま動く（`ValueTask<T>` は `await` 可能）。
 
 ```csharp
 public static class JsonControl
 {
-    public static async ValueTask<ApplicationJsonData> ReadExeJson(string path)
+    public static ValueTask<ApplicationJsonData> ReadExeJson(string path)
     {
-        return GameRepository.GetByJsonPath(path) ?? default;
+        return new ValueTask<ApplicationJsonData>(GameRepository.GetByJsonPath(path) ?? default);
     }
 
-    public static async ValueTask CreateExeJson(string path, ApplicationJsonData data)
+    public static ValueTask CreateExeJson(string path, ApplicationJsonData data)
     {
         var dataWith = data with { JsonPath = path };
         if (GameRepository.ExistsByJsonPath(path))
             GameRepository.UpdateGame(dataWith);
         else
             GameRepository.InsertGame(dataWith);
+        return ValueTask.CompletedTask;
     }
 
     public static ApplicationJsonData LoadJson(string path)
@@ -295,6 +296,11 @@ public static class JsonControl
     // 廃止: CheckJsonData, CheckAppDataContent
 }
 ```
+
+## 既存API互換の `JsonControl`（詳細）
+
+上記コードブロックを参照。`LoadJson` は元々同期メソッドなのでそのまま。
+
 
 ## 呼び出し元への影響（全件精査）
 
@@ -314,6 +320,8 @@ public static class JsonControl
 | `GameWindow.xaml.cs:57` | `CreateExeJson(_data.JsonPath, _data)` | 同上 |
 | `GameWindow.xaml.cs:307` | `LoadJson(_data.JsonPath)` | 同上 |
 | `VolumeWindow.xaml.cs:26` | `CreateExeJson(_data.JsonPath, _data)` | 同上 |
+| `GameListPaneControl.xaml.cs:362` | `ReadExeJson($"./Games/{multipleLaunch}.json")` | `JsonControl.ReadExeJson` は `GameRepository.GetByJsonPath` にリダイレクトされるためそのまま動作。パス区切り文字は境界で正規化 |
+| `PageControlCreate.cs:435` | `ReadExeJson($"./Games/{multipleLaunch}.json")` | 同上 |
 | `GameListPaneControl.xaml.cs:50-55` (`GameControl`) | `Directory.CreateDirectory("./Games")` | `./Games` は exe/html 参照先パス解決用に維持 |
 | `FileControl.Main.Directory` | `./Games` 定数 | 変更なし |
 
@@ -326,7 +334,6 @@ public static class JsonControl
 | `GameListPaneControl.xaml.cs:73-117` (`LoadGenre`) | `Directory.GetFiles` + `ReadExeJson` | `GameRepository.GetAll()` に置換。`data.Genre` は戻り値から直接取得 |
 | `GameListPaneControl.xaml.cs:119-146` (`LoadAllGames`) | 同上 | `GameRepository.GetAll()` |
 | `GameListPaneControl.xaml.cs:148-176` (`LoadGamesByGenre`) | 同上 + `data.Genre.Contains` | `GameRepository.GetByGenre(genre)` |
-| `GameListPaneControl.xaml.cs:362` | `ReadExeJson($"./Games/{multipleLaunch}.json")` | `GameRepository.GetByName(multipleLaunch)` で List から先頭1件取得。0件時はスキップ（既存の `string.IsNullOrEmpty` ガードと同様） |
 | `GameListPaneControl.xaml.cs:395` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
 | `GameListPaneControl.xaml.cs:410` | 同上 | 同上 |
 | `GameListPaneControl.xaml.cs:425` | 同上 | 同上 |
@@ -335,9 +342,8 @@ public static class JsonControl
 | `PageControlCreate.cs:73` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
 | `PageControlCreate.cs:75` | `File.Delete(data.JsonPath)` | `GameRepository.DeleteGameByJsonPath(data.JsonPath)` |
 | `PageControlCreate.cs:98` | `File.Exists(data.JsonPath)` | `GameRepository.ExistsByJsonPath(data.JsonPath)` |
-| `PageControlCreate.cs:117` | 同上 | 同上 |
-| `PageControlCreate.cs:435` | `ReadExeJson($"./Games/{multipleLaunch}.json")` | `GameRepository.GetByName(multipleLaunch)` で List から先頭1件取得。0件時はスキップ |
 | `Interface.cs:46` | `Directory.GetFiles("./Games", "*.json")` | `GameRepository.GetAll()` |
+| `Interface.cs:54` | `ReadExeJson(jf)` | 46行が `GetAll()` になるのに伴いループ変数 `jf` が `ApplicationJsonData` 型になる。`ReadExeJson` 呼び出し不要で `jf` をそのまま使用 |
 | `General.xaml.cs:66-73` (`ExportBtn_OnClick`) | `./Games` のJSONファイルコピー | `games.db` のコピー処理を追加 |
 | `General.xaml.cs:129-136` (`AppImportBtn_OnClick`) | `./Games` からのJSONコピー | `games.db` のコピー処理を追加 + 旧JSON形式インポート対応 |
 | `JsonControl.cs:14` | `public struct : IEquatable<>` | `public record struct` |
