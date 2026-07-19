@@ -11,70 +11,22 @@ namespace YuLauncher.Core.lib;
 
 public static class JsonControl
 {
-    public struct ApplicationJsonData : IEquatable<ApplicationJsonData>
+    public record struct ApplicationJsonData
     {
+        public long Id { get; set; }
         public string FilePath { get; set; }
-        
         public string JsonPath { get; set; }
-        
         public string Name { get; set; }
         public string? FileExtension { get; set; }
         public string Memo { get; set; }
         public bool? IsWebView { get; set; }
         public bool? IsUseLog { get; set; }
-        
-        public string Url { get; set;}
-        
+        public string Url { get; set; }
         public string[] MultipleLaunch { get; set; }
-        
         public bool IsMute { get; set; }
-        
         public double? Volume { get; set; }
-        
         public string[] Genre { get; set; }
-        
-        public Dictionary<string,string> WikiData { get; set;}
-
-        public bool Equals(ApplicationJsonData other)
-        {
-            return FilePath == other.FilePath && 
-                   JsonPath == other.JsonPath && 
-                   Name == other.Name && 
-                   FileExtension == other.FileExtension && 
-                   Memo == other.Memo && 
-                   IsWebView == other.IsWebView && 
-                   IsUseLog == other.IsUseLog && 
-                   Url == other.Url && 
-                   IsMute == other.IsMute &&
-                   Genre == other.Genre &&
-                   WikiData == other.WikiData &&
-                   Volume.Equals(other.Volume) &&
-                   MultipleLaunch.Equals(other.MultipleLaunch);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is ApplicationJsonData other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = new HashCode();
-            hashCode.Add(FilePath);
-            hashCode.Add(JsonPath);
-            hashCode.Add(Name);
-            hashCode.Add(FileExtension);
-            hashCode.Add(Memo);
-            hashCode.Add(IsWebView);
-            hashCode.Add(IsUseLog);
-            hashCode.Add(Url);
-            hashCode.Add(IsMute);
-            hashCode.Add(MultipleLaunch);
-            hashCode.Add(Volume);
-            hashCode.Add(Genre);
-            hashCode.Add(WikiData);
-            return hashCode.ToHashCode();
-        }
+        public Dictionary<string, string> WikiData { get; set; }
     }
     
     public static async ValueTask CreateExeJson(string path,ApplicationJsonData applicationJsonData)
