@@ -113,7 +113,7 @@ jobs:
             # Conventional Commits 形式を解析
             # 例: "feat(lib): add ..." → type=feat
             # 例: "fix: guard ..." → type=fix
-            TYPE=$(echo "$commit_msg" | grep -oE '^[a-z]+' | head -1)
+            TYPE=$(echo "$commit_msg" | grep -oE '^[a-z]+' | head -1 || echo "")
 
             DESCRIPTION="$commit_msg"
 
