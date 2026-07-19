@@ -65,14 +65,14 @@ public static class PageControlCreate
                         if (data.FileExtension == "WebSaver")
                         {
                             File.Delete(htmlPath);
-                            File.Delete(data.JsonPath);
+                            GameRepository.DeleteGameByJsonPath(data.JsonPath);
                             _deleteFileMenuClicked.OnNext(0);
                         }
                         else
                         {
-                            if (File.Exists(data.JsonPath))
+                            if (GameRepository.ExistsByJsonPath(data.JsonPath))
                             {
-                                File.Delete(data.JsonPath);
+                                GameRepository.DeleteGameByJsonPath(data.JsonPath);
                                 LoggerController.LogWarn($"delete file: {data.JsonPath}");
                                 _deleteFileMenuClicked.OnNext(0);
                             }
@@ -95,7 +95,7 @@ public static class PageControlCreate
                 };
                 memoCtx.Click += (_, _) =>
                 {
-                    if (!File.Exists(data.JsonPath)) return;
+                    if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
                     try
                     {
                         MemoWindow memoWindow = new MemoWindow(data);
@@ -114,7 +114,7 @@ public static class PageControlCreate
                 };
                 propertyCtx.Click += (_, _) =>
                 {
-                    if (!File.Exists(data.JsonPath)) return;
+                    if (!GameRepository.ExistsByJsonPath(data.JsonPath)) return;
                     try
                     {
                         PropertyDialog propertyDialog = new PropertyDialog(data);
@@ -297,15 +297,19 @@ public class GameButton : Button
         {
             case "exe":
                 await LaunchExe(data);
+                GameRepository.RecordPlay(data.Id);
                 break;
             case "web":
                 LaunchWeb(data);
+                GameRepository.RecordPlay(data.Id);
                 break;
             case "WebGame":
                 new GameWindow(data.Url, data.JsonPath).Show();
+                GameRepository.RecordPlay(data.Id);
                 break;
             case "WebSaver":
                 new WebSaverWindow.WebSaverWindow(data.Name, data).Show();
+                GameRepository.RecordPlay(data.Id);
                 break;
             case "":
                 break;
