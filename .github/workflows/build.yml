@@ -160,7 +160,7 @@ jobs:
         run: |
           dotnet tool install -g vpk
           vpk download github --repoUrl https://github.com/johmaru/Yu_Launcher
-          vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher-${{ steps.get-version.outputs.version }}-${{ steps.get-time.outputs.time }}
+          vpk pack --mainExe YuLauncher.exe -v ${{ steps.get-version.outputs.version }} -p publish --packId YuLauncher
 
       - name: Upload to GitHub Releases
         if: steps.version-changed.outputs.changed == 'true'
