@@ -43,15 +43,14 @@ public abstract class DialogInterface : UserControl, IDialogInterface
     {
         try
         {
-            var jsonFiles = Directory.GetFiles("./Games", "*.json");
+            var allGames = await Task.Run(() => GameRepository.GetAll());
             var existing = new HashSet<string>(
                 Candidates.Select(c => c.Name),
                 StringComparer.Ordinal
             );
 
-            foreach (var jf in jsonFiles)
+            foreach (var candidate in allGames)
             {
-                var candidate = await JsonControl.ReadExeJson(jf);
                 if (candidate.Name == Data.Name) continue;
                 if (existing.Contains(candidate.Name)) continue;
 
