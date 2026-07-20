@@ -5,12 +5,14 @@ using System.Linq;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.UIA3;
+using YuLauncher.Core.lib;
+using ApplicationJsonData = YuLauncher.Core.lib.JsonControl.ApplicationJsonData;
 
 namespace YHuLauncherBackEndTestUnit;
 
 /// <summary>
 /// FlaUI テスト共通ヘルパー。
-/// 各テストクラスはこのクラスを継承してアプリ起動・終了・ウィンドウ検索を利用する。
+/// アプリ起動・終了・ウィンドウ検索・DB操作・NLog検査を提供。
 /// </summary>
 public abstract class TestAppBase : IDisposable
 {
@@ -38,9 +40,23 @@ public abstract class TestAppBase : IDisposable
             throw new FileNotFoundException($"NLog.config not found in exe dir: {nlogSrc}");
         File.Copy(nlogSrc, Path.Combine(WorkDir, "NLog.config"), overwrite: true);
 
-        // NLogログの読み取り開始位置を記憶（起動前のログを除外するため）
         if (File.Exists(NLogPath))
             _logReadOffset = new FileInfo(NLogPath).Length;
+
+        // テストプロセス側でも GameRepository が同一の隔離DBを参照するように環境変数を設定。
+        // アプリプロセスには ProcessStartInfo 経由でも同じ値を渡す。
+        Environment.SetEnvironmentVariable("YULAUNCHER_TEST_DB", TestDbPath);
+    }
+
+    /// <summary>
+    /// 隔離DBにマイグレーションを実行し、指定ゲームを挿入する。
+    /// 環境変数はコンストラクタで設定済み。アプリ起動前に呼ぶこと。
+    /// </summary>
+    protected void SeedDatabase(params ApplicationJsonData[] games)
+    {
+        GameRepository.RunMigrations();
+        foreach (var g in games)
+            GameRepository.InsertGame(g);
     }
 
     protected Application LaunchApp()
@@ -106,12 +122,9 @@ public abstract class TestAppBase : IDisposable
         }
         catch { }
         _app = null;
+        Environment.SetEnvironmentVariable("YULAUNCHER_TEST_DB", null);
     }
 
-    /// <summary>
-    /// 起動後に追加された NLog ログを読み取る。
-    /// ページ遷移やウィンドウ初期化の確認に使用。
-    /// </summary>
     protected string ReadNewLogLines()
     {
         if (!File.Exists(NLogPath))
@@ -123,20 +136,47 @@ public abstract class TestAppBase : IDisposable
         return reader.ReadToEnd();
     }
 
-    /// <summary>
-    /// 指定文字列が新規ログに含まれるまで待つ。
-    /// </summary>
     protected bool WaitForLogContains(string substring, TimeSpan? timeout = null)
     {
         var deadline = DateTime.UtcNow.Add(timeout ?? TimeSpan.FromSeconds(10));
         while (DateTime.UtcNow < deadline)
         {
-            var log = ReadNewLogLines();
-            if (log.Contains(substring))
+            if (ReadNewLogLines().Contains(substring))
                 return true;
             Thread.Sleep(300);
         }
         return false;
+    }
+
+    /// <summary>
+    /// NavigationView のペインを開く。
+    /// MainPage.xaml で PaneDisplayMode="LeftMinimal" IsPaneOpen="False" のため必須。
+    /// </summary>
+    protected static void OpenNavigationViewPane(Window main)
+    {
+        var toggle = main.FindFirstDescendant(cf => cf.ByAutomationId("PaneToggleButton"))
+                  ?? main.FindFirstDescendant(cf => cf.ByName("TogglePane"));
+        if (toggle != null)
+        {
+            try { toggle.AsListBoxItem().Select(); } catch { }
+            toggle.Focus();
+            Thread.Sleep(300);
+            FlaUI.Core.Input.Keyboard.TypeVirtualKeyCode((ushort)FlaUI.Core.WindowsAPI.VirtualKeyShort.RETURN);
+            Thread.Sleep(800);
+        }
+    }
+
+    /// <summary>
+    /// NavigationViewItem をアクティブ化する。
+    /// Click がルーティングされないため Select + Enter を使う。
+    /// </summary>
+    protected static void ActivateNavItem(FlaUI.Core.AutomationElements.AutomationElement item)
+    {
+        try { item.AsListBoxItem().Select(); } catch { }
+        item.Focus();
+        Thread.Sleep(300);
+        FlaUI.Core.Input.Keyboard.TypeVirtualKeyCode((ushort)FlaUI.Core.WindowsAPI.VirtualKeyShort.RETURN);
+        Thread.Sleep(1000);
     }
 
     public virtual void Dispose()

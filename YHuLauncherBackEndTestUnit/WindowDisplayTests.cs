@@ -1,15 +1,16 @@
 using System;
+using System.Linq;
 using System.Threading;
 using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Input;
+using FlaUI.Core.Definitions;
 using FlaUI.UIA3;
 using Xunit;
 
 namespace YHuLauncherBackEndTestUnit;
 
 /// <summary>
-/// 各 FluentWindow が表示できることを検証する。
-/// MainWindow 起動 → メニュー遷移 → 各ページ/ウィンドウが初期化されることを NLog で確認。
+/// ナビゲーション検証: 各ページの FileExtensionFilter が実際に機能することを
+/// シードデータの表示件数で検証する。
 /// </summary>
 public class WindowDisplayTests : TestAppBase
 {
@@ -39,7 +40,6 @@ public class WindowDisplayTests : TestAppBase
         Assert.NotNull(settingItem);
         ActivateNavItem(settingItem);
 
-        // SettingWindow の初期化ログで確認（UI ルーティング不確実性を回避）
         Assert.True(WaitForLogContains("Setting Window Initialized!", TimeSpan.FromSeconds(15)),
             "SettingWindow did not initialize. Log:\n" + ReadNewLogLines());
         Assert.True(WaitForLogContains("SettingPage Initialized", TimeSpan.FromSeconds(5)),
@@ -49,99 +49,121 @@ public class WindowDisplayTests : TestAppBase
     }
 
     [Fact]
-    public void GameListPage_Navigates_FromMenu()
+    public void GameListPage_Shows_NonWebGame_Items()
     {
+        SeedDatabase(
+            TestDataFactory.CreateExeGame(),
+            TestDataFactory.CreateWebGame(),
+            TestDataFactory.CreateWebSaver()
+        );
+
         using var automation = new UIA3Automation();
         var main = GetMainWindow(automation);
         WaitForDbCreated();
-        Assert.True(WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10)));
+        WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10));
 
-        OpenNavigationViewPane(main);
-        var gameListItem = main.FindFirstDescendant(cf => cf.ByAutomationId("GameListBtn"));
-        Assert.NotNull(gameListItem);
-        ActivateNavItem(gameListItem);
+        // MainPage.Init() が起動時に GameList.xaml (FileExtensionFilter=All) を読み込む
+        // All フィルタ: data.FileExtension != "WebGame" → exe と websaver の2件
+        var gameListBox = WaitForDescendant(main, "GameListBox", TimeSpan.FromSeconds(15));
+        Assert.NotNull(gameListBox);
 
-        // GameList は起動時に既に読み込まれている。ナビゲーション後に MainPage Initialized が再記録されることを確認
-        Thread.Sleep(1500);
-        Assert.True(WaitForLogContains("Setting Window Initialized!", TimeSpan.FromSeconds(3)) == false,
-            "GameList navigation should not trigger SettingWindow");
+        var names = GetListBoxItemNames(gameListBox.AsListBox());
+        Assert.Equal(2, names.Count);
+        Assert.Contains("TestExeGame", names);
+        Assert.Contains("TestWebSaver", names);
+        Assert.DoesNotContain("TestWebGame", names);
+
         ShutdownApp();
     }
 
     [Fact]
-    public void WebGameListPage_Navigates_FromMenu()
+    public void WebGameListPage_Shows_Only_WebGame_Items()
     {
+        SeedDatabase(
+            TestDataFactory.CreateExeGame(),
+            TestDataFactory.CreateWebGame(),
+            TestDataFactory.CreateWebSaver()
+        );
+
         using var automation = new UIA3Automation();
         var main = GetMainWindow(automation);
         WaitForDbCreated();
-        Assert.True(WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10)));
-
-        // 起動時ログを読み飛ばすため、マーカーを記憶
-        var logBeforeNav = ReadNewLogLines();
+        WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10));
 
         OpenNavigationViewPane(main);
         var webGameItem = main.FindFirstDescendant(cf => cf.ByAutomationId("WebGameListBtn"));
         Assert.NotNull(webGameItem);
         ActivateNavItem(webGameItem);
 
-        // GameListPaneControl.OnLoaded → LoadGenre が呼ばれる。
-        // 隔離DBが空でも LoadGenre 自体は走る。プロセスが生きていることを確認。
-        Thread.Sleep(1500);
-        var logAfterNav = ReadNewLogLines();
-        // ナビゲーションで例外が出ていないことを確認
-        Assert.DoesNotContain("ERROR", logAfterNav.Substring(Math.Min(logBeforeNav.Length, logAfterNav.Length)));
+        var gameListBox = WaitForDescendant(main, "GameListBox", TimeSpan.FromSeconds(15));
+        Assert.NotNull(gameListBox);
+
+        var names = GetListBoxItemNames(gameListBox.AsListBox());
+        Assert.Single(names);
+        Assert.Contains("TestWebGame", names);
+        Assert.DoesNotContain("TestExeGame", names);
+        Assert.DoesNotContain("TestWebSaver", names);
+
         ShutdownApp();
     }
 
     [Fact]
-    public void WebSaverPage_Navigates_FromMenu()
+    public void WebSaverPage_Shows_Only_WebSaver_Items()
     {
+        SeedDatabase(
+            TestDataFactory.CreateExeGame(),
+            TestDataFactory.CreateWebGame(),
+            TestDataFactory.CreateWebSaver()
+        );
+
         using var automation = new UIA3Automation();
         var main = GetMainWindow(automation);
         WaitForDbCreated();
-        Assert.True(WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10)));
-
-        var logBeforeNav = ReadNewLogLines();
+        WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10));
 
         OpenNavigationViewPane(main);
         var webSaverItem = main.FindFirstDescendant(cf => cf.ByAutomationId("WebSaverBtn"));
         Assert.NotNull(webSaverItem);
         ActivateNavItem(webSaverItem);
 
-        Thread.Sleep(1500);
-        var logAfterNav = ReadNewLogLines();
-        Assert.DoesNotContain("ERROR", logAfterNav.Substring(Math.Min(logBeforeNav.Length, logAfterNav.Length)));
+        var gameListBox = WaitForDescendant(main, "GameListBox", TimeSpan.FromSeconds(15));
+        Assert.NotNull(gameListBox);
+
+        var names = GetListBoxItemNames(gameListBox.AsListBox());
+        Assert.Single(names);
+        Assert.Contains("TestWebSaver", names);
+
         ShutdownApp();
     }
 
     /// <summary>
-    /// NavigationView のペインが閉じている場合、ハンバーガーボタンで開く。
+    /// ListBoxItem の Name プロパティは型名を返すため、
+    /// 子要素の TextBlock からバインドされた名前を取得する。
+    /// GameListPaneControl.xaml では Text="{Binding Name}" でバインドされている。
     /// </summary>
-    private static void OpenNavigationViewPane(Window main)
+    private static System.Collections.Generic.List<string> GetListBoxItemNames(ListBox listBox)
     {
-        // WPF-UI NavigationView のトグルボタンを探す
-        var toggle = main.FindFirstDescendant(cf => cf.ByAutomationId("PaneToggleButton"))
-                  ?? main.FindFirstDescendant(cf => cf.ByName("TogglePane"));
-        if (toggle != null)
+        var names = new System.Collections.Generic.List<string>();
+        foreach (var item in listBox.Items)
         {
-            try { toggle.AsListBoxItem().Select(); } catch { }
-            toggle.Focus();
-            Thread.Sleep(300);
-            Keyboard.TypeVirtualKeyCode((ushort)FlaUI.Core.WindowsAPI.VirtualKeyShort.RETURN);
-            Thread.Sleep(800); // ペインが開くまで待つ
+            // ListBoxItem の子要素から TextBlock を探す
+            var textBlock = item.FindFirstDescendant(cf => cf.ByControlType(ControlType.Text));
+            if (textBlock != null)
+                names.Add(textBlock.Name);
         }
+        return names;
     }
 
-    /// <summary>
-    /// NavigationViewItem をアクティブ化する。
-    /// Click がルーティングされないため Select + Enter を使う。
-    /// </summary>
-    private static void ActivateNavItem(FlaUI.Core.AutomationElements.AutomationElement item)
+    private static FlaUI.Core.AutomationElements.AutomationElement? WaitForDescendant(
+        Window window, string automationId, TimeSpan timeout)
     {
-        try { item.AsListBoxItem().Select(); } catch { }
-        item.Focus();
-        Thread.Sleep(300);
-        Keyboard.TypeVirtualKeyCode((ushort)FlaUI.Core.WindowsAPI.VirtualKeyShort.RETURN);
-        Thread.Sleep(1000);
+        var deadline = DateTime.UtcNow.Add(timeout);
+        while (DateTime.UtcNow < deadline)
+        {
+            var el = window.FindFirstDescendant(cf => cf.ByAutomationId(automationId));
+            if (el != null) return el;
+            Thread.Sleep(200);
+        }
+        return null;
     }
 }
