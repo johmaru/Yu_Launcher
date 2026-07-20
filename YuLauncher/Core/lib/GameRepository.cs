@@ -11,9 +11,17 @@ namespace YuLauncher.Core.lib;
 
 public static class GameRepository
 {
-    public static string DbPath =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                     "YuLauncher", "games.db");
+    public static string DbPath
+    {
+        get
+        {
+            var envOverride = Environment.GetEnvironmentVariable("YULAUNCHER_TEST_DB");
+            if (!string.IsNullOrWhiteSpace(envOverride))
+                return envOverride;
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                "YuLauncher", "games.db");
+        }
+    }
 
     public static SqliteConnection CreateConnection()
     {
