@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using FlaUI.Core.AutomationElements;
@@ -85,19 +86,40 @@ public class CrudTests : TestAppBase
         WaitForDbCreated();
         WaitForLogContains("MainPage Initialized", TimeSpan.FromSeconds(10));
 
-        var gameListBox = WaitForDescendant(main, "GameListBox", TimeSpan.FromSeconds(15));
-        Assert.NotNull(gameListBox);
-
-        var names = GetListBoxItemNames(gameListBox.AsListBox());
+        // 非同期ロード完了後に1件表示されるまで待つ
+        var names = WaitForListBoxItems(main, expectedCount: 1, TimeSpan.FromSeconds(20));
         Assert.Single(names);
         Assert.Contains("TestExeGame", names);
 
         ShutdownApp();
     }
 
-    private static System.Collections.Generic.List<string> GetListBoxItemNames(ListBox listBox)
+    /// <summary>
+    /// GameListBox が表示され、指定件数のアイテムがロードされるまで待つ。
+    /// </summary>
+    private static List<string> WaitForListBoxItems(Window main, int expectedCount, TimeSpan timeout)
     {
-        var names = new System.Collections.Generic.List<string>();
+        var deadline = DateTime.UtcNow.Add(timeout);
+        while (DateTime.UtcNow < deadline)
+        {
+            var listBox = main.FindFirstDescendant(cf => cf.ByAutomationId("GameListBox"));
+            if (listBox != null)
+            {
+                var items = listBox.AsListBox().Items;
+                if (items.Length == expectedCount)
+                    return GetListBoxItemNames(listBox.AsListBox());
+            }
+            Thread.Sleep(300);
+        }
+        var finalListBox = main.FindFirstDescendant(cf => cf.ByAutomationId("GameListBox"));
+        return finalListBox != null
+            ? GetListBoxItemNames(finalListBox.AsListBox())
+            : new List<string>();
+    }
+
+    private static List<string> GetListBoxItemNames(ListBox listBox)
+    {
+        var names = new List<string>();
         foreach (var item in listBox.Items)
         {
             var textBlock = item.FindFirstDescendant(cf => cf.ByControlType(ControlType.Text));
@@ -105,18 +127,5 @@ public class CrudTests : TestAppBase
                 names.Add(textBlock.Name);
         }
         return names;
-    }
-
-    private static FlaUI.Core.AutomationElements.AutomationElement? WaitForDescendant(
-        Window window, string automationId, TimeSpan timeout)
-    {
-        var deadline = DateTime.UtcNow.Add(timeout);
-        while (DateTime.UtcNow < deadline)
-        {
-            var el = window.FindFirstDescendant(cf => cf.ByAutomationId(automationId));
-            if (el != null) return el;
-            Thread.Sleep(200);
-        }
-        return null;
     }
 }

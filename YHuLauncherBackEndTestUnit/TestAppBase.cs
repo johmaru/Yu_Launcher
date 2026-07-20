@@ -5,6 +5,7 @@ using System.Linq;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.UIA3;
+using Microsoft.Data.Sqlite;
 using YuLauncher.Core.lib;
 using ApplicationJsonData = YuLauncher.Core.lib.JsonControl.ApplicationJsonData;
 
@@ -100,13 +101,37 @@ public abstract class TestAppBase : IDisposable
                ?? throw new InvalidOperationException("Failed to get MainWindow");
     }
 
+    /// <summary>
+    /// DBファイルが作成され、games テーブルが存在するまで待つ。
+    /// Application_Startup が Initialize(ウィンドウ表示) → InitializeDatabase(DB作成) の順なので
+    /// ウィンドウ表示直後はDB未作成の可能性がある。
+    /// </summary>
     protected void WaitForDbCreated(TimeSpan? timeout = null)
     {
-        var deadline = DateTime.UtcNow.Add(timeout ?? TimeSpan.FromSeconds(15));
-        while (DateTime.UtcNow < deadline && !File.Exists(TestDbPath))
+        var deadline = DateTime.UtcNow.Add(timeout ?? TimeSpan.FromSeconds(30));
+        while (DateTime.UtcNow < deadline)
+        {
+            if (File.Exists(TestDbPath) && TableExists("games"))
+                return;
             Thread.Sleep(200);
-        if (!File.Exists(TestDbPath))
-            throw new TimeoutException($"Test DB was not created at {TestDbPath}");
+        }
+        throw new TimeoutException($"Test DB or 'games' table not created at {TestDbPath}");
+    }
+
+    private static bool TableExists(string tableName)
+    {
+        var dbPath = Environment.GetEnvironmentVariable("YULAUNCHER_TEST_DB");
+        if (string.IsNullOrEmpty(dbPath) || !File.Exists(dbPath))
+            return false;
+        try
+        {
+            using var conn = new SqliteConnection($"Data Source={dbPath}");
+            conn.Open();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}'";
+            return cmd.ExecuteScalar() != null;
+        }
+        catch { return false; }
     }
 
     protected void ShutdownApp()
@@ -122,7 +147,9 @@ public abstract class TestAppBase : IDisposable
         }
         catch { }
         _app = null;
-        Environment.SetEnvironmentVariable("YULAUNCHER_TEST_DB", null);
+        // 環境変数はクリアしない: ShutdownApp 後に GameRepository.GetAll() 等で
+        // テストプロセスから隔離DBを参照するテストがあるため。
+        // 次テストのコンストラクタで新規 TestDbPath に上書きされるので漏れはない。
     }
 
     protected string ReadNewLogLines()
