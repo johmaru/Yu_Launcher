@@ -122,7 +122,7 @@
         </Grid>
 
         <!-- 保存ボタン -->
-        <StackPanel Grid.Row="8"
+        <StackPanel Grid.Row="7"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <ui:Button x:Name="SaveButton"
