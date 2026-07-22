@@ -42,10 +42,18 @@ public partial class GameWindow : FluentWindow
         ThisGameWindow = this;
         WebView.Source = new Uri(url);
 
-        var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
-        var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
-        Width = double.Parse(tomlWidth);
-        Height = double.Parse(tomlHeight);
+        if (_data.WindowWidth.HasValue && _data.WindowHeight.HasValue)
+        {
+            Width = _data.WindowWidth.Value;
+            Height = _data.WindowHeight.Value;
+        }
+        else
+        {
+            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+            var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+            Width = double.Parse(tomlWidth);
+            Height = double.Parse(tomlHeight);
+        }
 
         RebuildWikiDataMenu();
     }
@@ -105,10 +113,18 @@ public partial class GameWindow : FluentWindow
 
     private void Resize()
     {
-        var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
-        var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
-        Width = double.Parse(tomlWidth);
-        Height = double.Parse(tomlHeight);
+        if (_data.WindowWidth.HasValue && _data.WindowHeight.HasValue)
+        {
+            Width = _data.WindowWidth.Value;
+            Height = _data.WindowHeight.Value;
+        }
+        else
+        {
+            var tomlWidth = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Width");
+            var tomlHeight = ManualTomlSettings.GetSettingWindowResolution(FileControl.Main.Settings, "GameResolution", "Height");
+            Width = double.Parse(tomlWidth);
+            Height = double.Parse(tomlHeight);
+        }
     }
 
     private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)

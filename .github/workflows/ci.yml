@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - Dev*
+  pull_request:
+    branches:
+      - main
+      - Dev*
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build Solution
+        run: dotnet build YuLauncher.sln -c Debug
+
+      - name: Run UI Tests
+        run: dotnet test YHuLauncherBackEndTestUnit/YHuLauncherBackEndTestUnit.csproj -c Debug --logger "console;verbosity=normal"

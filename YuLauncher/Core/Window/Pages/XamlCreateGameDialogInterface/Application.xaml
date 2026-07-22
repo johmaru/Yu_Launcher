@@ -68,17 +68,18 @@
                           Text="{lex:Loc MultipleLaunchText}"
                           Margin="0,0,0,4"
                           Appearance="Primary"/>
-            <ItemsControl Grid.Row="1"
-                          x:Name="MultipleLaunchList"
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                <ItemsControl x:Name="MultipleLaunchList"
                           ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox Margin="0,2,0,2"
-                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                  Content="{Binding Name}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Margin="0,2,0,2"
+                                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                      Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
 
         <!-- ジャンル管理 -->

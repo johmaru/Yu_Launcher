@@ -25,6 +25,8 @@ public static class JsonControl
         public string[] MultipleLaunch { get; set; }
         public bool IsMute { get; set; }
         public double? Volume { get; set; }
+        public double? WindowWidth { get; set; }
+        public double? WindowHeight { get; set; }
         public string[] Genre { get; set; }
         public Dictionary<string, string> WikiData { get; set; }
     }

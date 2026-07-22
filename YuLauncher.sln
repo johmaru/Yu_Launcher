@@ -5,19 +5,57 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YuLauncher", "YuLauncher\YuLauncher.csproj", "{2362BF88-2760-439C-AF32-CE3C9528D1F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YHuLauncherBackEndTestUnit", "YHuLauncherBackEndTestUnit\YHuLauncherBackEndTestUnit.csproj", "{6A52C2D4-30C6-4906-8483-32A237DACC6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		kireinaRelease|Any CPU = kireinaRelease|Any CPU
+		kireinaRelease|x64 = kireinaRelease|x64
+		kireinaRelease|x86 = kireinaRelease|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|x64.Build.0 = Debug|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Debug|x86.Build.0 = Debug|Any CPU
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|Any CPU.ActiveCfg = kireinaRelease|Any CPU
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|Any CPU.Build.0 = kireinaRelease|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|x64.ActiveCfg = kireinaRelease|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|x64.Build.0 = kireinaRelease|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|x86.ActiveCfg = kireinaRelease|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.kireinaRelease|x86.Build.0 = kireinaRelease|Any CPU
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|x64.ActiveCfg = Release|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|x64.Build.0 = Release|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|x86.ActiveCfg = Release|Any CPU
+		{2362BF88-2760-439C-AF32-CE3C9528D1F8}.Release|x86.Build.0 = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|Any CPU.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|x64.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|x64.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|x86.ActiveCfg = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.kireinaRelease|x86.Build.0 = Debug|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|x64.Build.0 = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A52C2D4-30C6-4906-8483-32A237DACC6B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

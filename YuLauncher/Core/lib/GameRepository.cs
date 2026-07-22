@@ -11,9 +11,17 @@ namespace YuLauncher.Core.lib;
 
 public static class GameRepository
 {
-    public static string DbPath =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                     "YuLauncher", "games.db");
+    public static string DbPath
+    {
+        get
+        {
+            var envOverride = Environment.GetEnvironmentVariable("YULAUNCHER_TEST_DB");
+            if (!string.IsNullOrWhiteSpace(envOverride))
+                return envOverride;
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                "YuLauncher", "games.db");
+        }
+    }
 
     public static SqliteConnection CreateConnection()
     {
@@ -142,6 +150,21 @@ public static class GameRepository
             verCmd.CommandText = "INSERT INTO schema_versions (version) VALUES (1)";
             verCmd.ExecuteNonQuery();
         }
+        if (currentVersion < 2)
+        {
+            using var c2 = conn.CreateCommand();
+            c2.Transaction = tx;
+            c2.CommandText = """
+                ALTER TABLE games ADD COLUMN window_width REAL;
+                ALTER TABLE games ADD COLUMN window_height REAL;
+                """;
+            c2.ExecuteNonQuery();
+
+            using var verCmd2 = conn.CreateCommand();
+            verCmd2.Transaction = tx;
+            verCmd2.CommandText = "INSERT INTO schema_versions (version) VALUES (2)";
+            verCmd2.ExecuteNonQuery();
+        }
 
         tx.Commit();
     }
@@ -165,9 +188,11 @@ public static class GameRepository
         var gameId = conn.ExecuteScalar<long>(
             """
             INSERT INTO games (name, file_path, original_json_path, file_extension, memo,
-                               is_web_view, is_use_log, url, is_mute, volume)
+                               is_web_view, is_use_log, url, is_mute, volume,
+                               window_width, window_height)
             VALUES (@Name, @FilePath, @JsonPath, @FileExtension, @Memo,
-                    @IsWebView, @IsUseLog, @Url, @IsMute, @Volume);
+                    @IsWebView, @IsUseLog, @Url, @IsMute, @Volume,
+                    @WindowWidth, @WindowHeight);
             SELECT last_insert_rowid();
             """,
             new
@@ -181,7 +206,9 @@ public static class GameRepository
                 IsUseLog = (data.IsUseLog ?? false) ? 1 : 0,
                 Url = data.Url ?? "",
                 data.IsMute,
-                data.Volume
+                data.Volume,
+                data.WindowWidth,
+                data.WindowHeight
             }, tx);
 
         SetGenres(conn, tx, gameId, data.Genre ?? Array.Empty<string>());
@@ -282,6 +309,8 @@ public static class GameRepository
                 url = @Url,
                 is_mute = @IsMute,
                 volume = @Volume,
+                window_width = @WindowWidth,
+                window_height = @WindowHeight,
                 updated_at = datetime('now')
             WHERE id = @Id;
             """,
@@ -297,7 +326,9 @@ public static class GameRepository
                 IsUseLog = (data.IsUseLog ?? false) ? 1 : 0,
                 Url = data.Url ?? "",
                 data.IsMute,
-                data.Volume
+                data.Volume,
+                data.WindowWidth,
+                data.WindowHeight
             }, tx);
 
         if (affected == 0)
@@ -458,7 +489,8 @@ public static class GameRepository
             SELECT g.id AS Id, g.name AS Name, g.file_path AS FilePath, g.original_json_path AS JsonPath,
                    g.file_extension AS FileExtension, g.memo AS Memo,
                    g.is_web_view AS IsWebViewRaw, g.is_use_log AS IsUseLogRaw,
-                   g.url AS Url, g.is_mute AS IsMute, g.volume AS Volume
+                   g.url AS Url, g.is_mute AS IsMute, g.volume AS Volume,
+                   g.window_width AS WindowWidth, g.window_height AS WindowHeight
             FROM games g
             """;
         var rows = conn.Query<GameRow>(baseSql + " " + where + ";", param).ToList();
@@ -531,6 +563,8 @@ public static class GameRepository
                 Url = r.Url ?? "",
                 IsMute = r.IsMute,
                 Volume = r.Volume,
+                WindowWidth = r.WindowWidth,
+                WindowHeight = r.WindowHeight,
                 Genre = genres,
                 WikiData = wiki,
                 MultipleLaunch = multipleLaunch
@@ -552,6 +586,8 @@ public static class GameRepository
         public string Url { get; set; } = "";
         public bool IsMute { get; set; }
         public double? Volume { get; set; }
+        public double? WindowWidth { get; set; }
+        public double? WindowHeight { get; set; }
     }
 }
 

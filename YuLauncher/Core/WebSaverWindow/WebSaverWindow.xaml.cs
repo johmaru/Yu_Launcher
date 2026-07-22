@@ -16,8 +16,21 @@ namespace YuLauncher.Core.WebSaverWindow
             InitializeComponent();
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string htmlPath = Path.Combine(baseDirectory, $"html/{name}.html");
-            
+
             webView.Source = new Uri("file:///" + htmlPath);
+
+            if (data.WindowWidth.HasValue && data.WindowHeight.HasValue)
+            {
+                Width = data.WindowWidth.Value;
+                Height = data.WindowHeight.Value;
+            }
+            else
+            {
+                string width = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Width");
+                string height = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Height");
+                Width = Convert.ToDouble(width);
+                Height = Convert.ToDouble(height);
+            }
         }
 
 

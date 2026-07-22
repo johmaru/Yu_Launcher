@@ -11,7 +11,6 @@
         lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Loaded="WebViewWindow_OnLoaded"
         Closing="WebViewWindow_OnClosing"
         Title="WebViewWindow"
         ExtendsContentIntoTitleBar="True"

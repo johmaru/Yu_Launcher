@@ -15,6 +15,8 @@ public partial class Web : DialogInterface
         InitializeComponent();
         NameBox.Text = data.Name;
         UrlBox.Text = data.Url;
+        WindowWidthBox.Value = data.WindowWidth;
+        WindowHeightBox.Value = data.WindowHeight;
     }
 
     private async void Web_OnLoaded(object sender, RoutedEventArgs e)
@@ -40,6 +42,8 @@ public partial class Web : DialogInterface
             Data = Data with
             {
                 IsWebView = WebviewSwitch.IsChecked,
+                WindowWidth = WindowWidthBox.Value,
+                WindowHeight = WindowHeightBox.Value,
                 MultipleLaunch = BuildMultipleLaunchFromCandidates()
             };
 

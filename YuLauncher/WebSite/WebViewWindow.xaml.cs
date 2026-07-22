@@ -12,6 +12,19 @@ public partial class WebViewWindow : FluentWindow
     {
         InitializeComponent();
         webView.Source = new Uri(url);
+
+        if (data.WindowWidth.HasValue && data.WindowHeight.HasValue)
+        {
+            Width = data.WindowWidth.Value;
+            Height = data.WindowHeight.Value;
+        }
+        else
+        {
+            string width = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Width");
+            string height = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Height");
+            Width = Convert.ToDouble(width);
+            Height = Convert.ToDouble(height);
+        }
     }
 
 
@@ -19,15 +32,6 @@ public partial class WebViewWindow : FluentWindow
     {
         webView.Stop();
         webView.Dispose();
-    }
-
-    private void WebViewWindow_OnLoaded(object sender, RoutedEventArgs e)
-    {
-       string height = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Height");
-       string width = TomlControl.GetTomlString(FileControl.Main.Settings, "WebViewResolution", "Width");
-
-       Width = Convert.ToDouble(width);
-       Height = Convert.ToDouble(height);
     }
 
 }
