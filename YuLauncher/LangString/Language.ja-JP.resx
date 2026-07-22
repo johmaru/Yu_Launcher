@@ -397,4 +397,13 @@
   <data name="PropertyOldSystemError" xml:space="preserve">
     <value>旧形式のファイルです。ファイルを新しい形式に更新してください。</value>
   </data>
+  <data name="SimpleWindowWidth" xml:space="preserve">
+    <value>ウィンドウ幅</value>
+  </data>
+  <data name="SimpleWindowHeight" xml:space="preserve">
+    <value>ウィンドウ高さ</value>
+  </data>
+  <data name="SimpleWindowSize" xml:space="preserve">
+    <value>ウィンドウサイズ (空欄=デフォルト)</value>
+  </data>
 </root>

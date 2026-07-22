@@ -15,6 +15,8 @@ public partial class WebGame : DialogInterface
         InitializeComponent();
         NameBox.Text = data.Name;
         UrlBox.Text = data.Url;
+        WindowWidthBox.Value = data.WindowWidth;
+        WindowHeightBox.Value = data.WindowHeight;
     }
 
     private async void WebGame_OnLoaded(object sender, RoutedEventArgs e)
@@ -38,6 +40,8 @@ public partial class WebGame : DialogInterface
 
             Data = Data with
             {
+                WindowWidth = WindowWidthBox.Value,
+                WindowHeight = WindowHeightBox.Value,
                 MultipleLaunch = BuildMultipleLaunchFromCandidates()
             };
 

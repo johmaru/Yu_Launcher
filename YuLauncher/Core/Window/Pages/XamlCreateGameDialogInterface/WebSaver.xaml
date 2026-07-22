@@ -18,6 +18,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -67,16 +69,17 @@
                           Text="{lex:Loc MultipleLaunchText}"
                           Margin="0,0,0,4"
                           Appearance="Primary"/>
-            <ItemsControl Grid.Row="1"
-                          ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox Margin="0,2,0,2"
-                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                  Content="{Binding Name}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                <ItemsControl ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Margin="0,2,0,2"
+                                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                      Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
 
         <!-- ジャンル管理 -->
@@ -95,8 +98,34 @@
                        Click="GenreManageButton_OnClick"/>
         </Grid>
 
+        <!-- ウィンドウサイズ -->
+        <Grid Grid.Row="5" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleWindowWidth}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,8,0"
+                          Appearance="Primary"/>
+            <ui:NumberBox Grid.Column="1" x:Name="WindowWidthBox"
+                          PlaceholderText="{lex:Loc SimpleWindowSize}"
+                          ClearButtonEnabled="True"
+                          Minimum="800"/>
+            <ui:TextBlock Grid.Column="2" Text="{lex:Loc SimpleWindowHeight}"
+                          VerticalAlignment="Center"
+                          Margin="16,0,8,0"
+                          Appearance="Primary"/>
+            <ui:NumberBox Grid.Column="3" x:Name="WindowHeightBox"
+                          PlaceholderText="{lex:Loc SimpleWindowSize}"
+                          ClearButtonEnabled="True"
+                          Minimum="400"/>
+        </Grid>
+
         <!-- 保存ボタン -->
-        <StackPanel Grid.Row="6"
+        <StackPanel Grid.Row="8"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <ui:Button x:Name="SaveButton"
