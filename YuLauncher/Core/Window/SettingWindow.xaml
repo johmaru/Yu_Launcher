@@ -11,19 +11,20 @@
         lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
         lex:ResxLocalizationProvider.DefaultDictionary="LangString"
         WindowStartupLocation="CenterScreen"
-        Title="SettingWindow"
+        Width="800" Height="500"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica">
-    <Grid x:Name="Grid">
+    <Grid x:Name="RootGrid" Margin="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0"
-                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                     Height="48"/>
-        <Grid Grid.Row="1" Margin="0,5">
-            <Frame Source="Pages/SettingPage.xaml" NavigationUIVisibility="Hidden"></Frame>
-        </Grid>
+        <Border x:Name="TitleBarBorder" Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                         Height="48"/>
+        </Border>
+        <Frame Grid.Row="1" Source="Pages/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
 </ui:FluentWindow>

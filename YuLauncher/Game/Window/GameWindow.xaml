@@ -28,35 +28,38 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0"
-                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                     Height="48">
-            <ui:TitleBar.Header>
-                <Menu FontSize="12">
-                    <MenuItem Header="{lex:Loc SimpleBrowser}">
-                        <MenuItem x:Name="BackItem"
-                                  Header="{lex:Loc SimpleBack}"
-                                  Click="BackItem_OnClick"/>
-                        <MenuItem x:Name="ReloadItem"
-                                  Header="{lex:Loc SimpleReload}"
-                                  Click="ReloadItem_OnClick"/>
-                        <MenuItem x:Name="ForwardItem"
-                                  Header="{lex:Loc SimpleForward}"
-                                  Click="ForwardItem_OnClick"/>
-                        <MenuItem x:Name="WikiDataContentItem"
-                                  Header="{lex:Loc WikiData}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc SimpleApplication}">
-                        <MenuItem x:Name="SettingItem"
-                                  Header="{lex:Loc SimpleSetting}"
-                                  Click="SettingItem_OnClick"/>
-                        <MenuItem x:Name="WikiDataItem"
-                                  Header="{lex:Loc SimpleWikiDataManage}"
-                                  Click="WikiDataItem_OnClick"/>
-                    </MenuItem>
-                </Menu>
-            </ui:TitleBar.Header>
-        </ui:TitleBar>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                         Height="48">
+                <ui:TitleBar.Header>
+                    <Menu FontSize="12">
+                        <MenuItem Header="{lex:Loc SimpleBrowser}">
+                            <MenuItem x:Name="BackItem"
+                                      Header="{lex:Loc SimpleBack}"
+                                      Click="BackItem_OnClick"/>
+                            <MenuItem x:Name="ReloadItem"
+                                      Header="{lex:Loc SimpleReload}"
+                                      Click="ReloadItem_OnClick"/>
+                            <MenuItem x:Name="ForwardItem"
+                                      Header="{lex:Loc SimpleForward}"
+                                      Click="ForwardItem_OnClick"/>
+                            <MenuItem x:Name="WikiDataContentItem"
+                                      Header="{lex:Loc WikiData}"/>
+                        </MenuItem>
+                        <MenuItem Header="{lex:Loc SimpleApplication}">
+                            <MenuItem x:Name="SettingItem"
+                                      Header="{lex:Loc SimpleSetting}"
+                                      Click="SettingItem_OnClick"/>
+                            <MenuItem x:Name="WikiDataItem"
+                                      Header="{lex:Loc SimpleWikiDataManage}"
+                                      Click="WikiDataItem_OnClick"/>
+                        </MenuItem>
+                    </Menu>
+                </ui:TitleBar.Header>
+            </ui:TitleBar>
+        </Border>
 
         <wv2:WebView2 Grid.Row="1"
                       Name="WebView"/>

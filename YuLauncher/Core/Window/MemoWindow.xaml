@@ -22,17 +22,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0"
-                     Title="{lex:Loc MemoCtxHeader}"
-                     Height="48">
-            <ui:TitleBar.Header>
-                <ToggleButton x:Name="ModeButton"
-                              IsChecked="False"
-                              Content="{lex:Loc EditModeButton}"
-                              Checked="ModeButton_OnChecked"
-                              Unchecked="ModeButton_OnUnchecked"/>
-            </ui:TitleBar.Header>
-        </ui:TitleBar>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{lex:Loc MemoCtxHeader}"
+                         Height="48">
+                <ui:TitleBar.Header>
+                    <ToggleButton x:Name="ModeButton"
+                                  IsChecked="False"
+                                  Content="{lex:Loc EditModeButton}"
+                                  Checked="ModeButton_OnChecked"
+                                  Unchecked="ModeButton_OnUnchecked"/>
+                </ui:TitleBar.Header>
+            </ui:TitleBar>
+        </Border>
 
         <Grid Grid.Row="1" Margin="12,4,12,12">
             <!-- 閲覧モード -->

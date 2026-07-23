@@ -10,7 +10,6 @@
       lex:LocalizeDictionary.DesignCulture="ja-JP"
       lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
       lex:ResxLocalizationProvider.DefaultDictionary="Language"
-      MinWidth="800" MinHeight="400"
       Loaded="SettingPage_OnLoaded"
       mc:Ignorable="d">
     
@@ -20,10 +19,10 @@
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem x:Name="GeneralItem" Content="{lex:Loc SimpleGeneral}" Click="GeneralItem_OnClick" Icon="{ui:SymbolIcon WindowDevTools16}"/>
                 <ui:NavigationViewItem x:Name="VideoVisualItem" Content="{lex:Loc VideoGraphics}" Click="VideoVisualItem_OnClick" Icon="{ui:SymbolIcon Video16}"/>
-          </ui:NavigationView.MenuItems>
+            </ui:NavigationView.MenuItems>
             <ui:NavigationView.ContentOverlay>
                 <Frame x:Name="ContentFrame"/>
             </ui:NavigationView.ContentOverlay>
-            </ui:NavigationView>
+        </ui:NavigationView>
     </Grid>
 </Page>

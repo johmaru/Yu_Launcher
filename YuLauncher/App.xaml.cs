@@ -33,7 +33,7 @@ namespace YuLauncher
             try
             {
                 await FirstLunch();
-
+                ApplyDividerColor();
                 await LanguageCheck();
 
                 await Initialize();
@@ -140,6 +140,32 @@ namespace YuLauncher
                 }
                 LoggerController.LogInfo("First Lunch Check Complete");
                 return ValueTask.CompletedTask;
+        }
+
+        /// <summary>
+        /// settings.toml の DividerColor を読み込み、App.xaml の DividerBrush を更新する。
+        /// 既存ユーザーの settings.toml にキーがない場合はデフォルト（#8B5CF6）にフォールバック。
+        /// </summary>
+        private static void ApplyDividerColor()
+        {
+            string color;
+            if (!TomlControl.TryGetString("./settings.toml", "DividerColor", out var raw) || string.IsNullOrWhiteSpace(raw))
+                color = "#8B5CF6";
+            else
+                color = raw;
+
+            try
+            {
+                var brush = new System.Windows.Media.SolidColorBrush(
+                    (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+                Current.Resources["DividerBrush"] = brush;
+            }
+            catch
+            {
+                // 無効な色文字列の場合はデフォルト
+                Current.Resources["DividerBrush"] = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromRgb(0x8B, 0x5C, 0xF6));
+            }
         }
 
         private static async ValueTask InitializeDatabase()

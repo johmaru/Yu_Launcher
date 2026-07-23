@@ -406,4 +406,40 @@
   <data name="SimpleWindowSize" xml:space="preserve">
     <value>ウィンドウサイズ (空欄=デフォルト)</value>
   </data>
+  <data name="TabHeaderApplication" xml:space="preserve">
+    <value>アプリ</value>
+  </data>
+  <data name="TabHeaderWebSite" xml:space="preserve">
+    <value>Webサイト</value>
+  </data>
+  <data name="TabHeaderWebGame" xml:space="preserve">
+    <value>Webゲーム</value>
+  </data>
+  <data name="TabHeaderWebSaver" xml:space="preserve">
+    <value>サイト保存</value>
+  </data>
+  <data name="ApplicationTabDescription" xml:space="preserve">
+    <value>ローカルの実行ファイル(exe)や画像・テキストなどを登録します。</value>
+  </data>
+  <data name="WebSiteTabDescription" xml:space="preserve">
+    <value>URLを指定してWebサイトをブックマークとして登録します。</value>
+  </data>
+  <data name="WebGameTabDescription" xml:space="preserve">
+    <value>URLを指定してブラウザゲームを登録します。内蔵WebViewで開きます。</value>
+  </data>
+  <data name="WebSaverDownloadNote" xml:space="preserve">
+    <value>指定したURLのページをローカルに保存します。画像もダウンロードされます。</value>
+  </data>
+  <data name="CreateGameDialogErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="SettingsDividerColor" xml:space="preserve">
+    <value>区切り線の色</value>
+  </data>
+  <data name="SettingsDividerColorPlaceholder" xml:space="preserve">
+    <value>#8B5CF6</value>
+  </data>
+  <data name="SettingsDividerColorApply" xml:space="preserve">
+    <value>適用</value>
+  </data>
 </root>

@@ -22,17 +22,20 @@
         <RowDefinition Height="48"/>
         <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-    <ui:TitleBar Grid.Row="0"
-                 Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                 Height="48">
-        <ui:TitleBar.Header>
-            <Menu FontSize="12">
-                <MenuItem Header="アプリケーション">
-                    <MenuItem Header="設定"/>
-                </MenuItem>
-            </Menu>
-        </ui:TitleBar.Header>
-    </ui:TitleBar>
+    <Border Grid.Row="0"
+            BorderBrush="{DynamicResource DividerBrush}"
+            BorderThickness="0,0,0,1">
+        <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                     Height="48">
+            <ui:TitleBar.Header>
+                <Menu FontSize="12">
+                    <MenuItem Header="アプリケーション">
+                        <MenuItem Header="設定"/>
+                    </MenuItem>
+                </Menu>
+            </ui:TitleBar.Header>
+        </ui:TitleBar>
+    </Border>
     <wv2:WebView2 Grid.Row="1" Name="webView"/>
     </Grid>
 </ui:FluentWindow>

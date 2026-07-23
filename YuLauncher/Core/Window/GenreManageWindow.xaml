@@ -22,9 +22,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0"
-                     Title="{lex:Loc GenreManageWindowTitle}"
-                     Height="48"/>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{lex:Loc GenreManageWindowTitle}"
+                         Height="48"/>
+        </Border>
 
         <Grid Grid.Row="1" Margin="16,12">
             <Grid.RowDefinitions>
