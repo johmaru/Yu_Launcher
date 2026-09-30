@@ -14,7 +14,7 @@ A Windows launcher for managing PC games, web games, and websites in one place.
 ## Usage
 1. Select the “+” button in the list and choose what to add.
 2. Enter a name and a file or URL, then select “Create”.
-3. Select an item in the list and select “Play” to launch it.
+3. Select an item in the list and select “Launch”.
 
 ## Settings
 - **General**: Divider color, data transfer, and app information. Select “Apply” to change the color immediately.

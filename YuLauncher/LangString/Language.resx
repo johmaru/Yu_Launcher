@@ -355,7 +355,7 @@
     <value>Please select a game</value>
   </data>
   <data name="DetailPlay" xml:space="preserve">
-    <value>Play</value>
+    <value>Launch</value>
   </data>
   <data name="DetailProperty" xml:space="preserve">
     <value>Property</value>
