@@ -12,127 +12,347 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="{lex:Loc CreateGameDialogTitle}"
-        Width="600" Height="380"
-        MinWidth="500" MinHeight="320"
+        Width="640" Height="520"
+        MinWidth="560" MinHeight="460"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica">
-    <Grid>
+    <ui:FluentWindow.Resources>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TabPanel x:Name="HeaderPanel"
+                                      Grid.Row="0"
+                                      Margin="0"
+                                      Panel.ZIndex="1"
+                                      Background="Transparent"
+                                      IsItemsHost="True"
+                                      KeyboardNavigation.TabIndex="1"/>
+                            <Border Grid.Row="1"
+                                    Height="1"
+                                    Background="{DynamicResource DividerBrush}"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0"
+                                        Background="{DynamicResource DividerBrush}"/>
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                                  Grid.Column="1"
+                                                  Margin="0"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch"
+                                                  ContentSource="SelectedContent"
+                                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                <Border Grid.Column="2"
+                                        Background="{DynamicResource DividerBrush}"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ui:FluentWindow.Resources>
+    <Grid Margin="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0"
-                     Title="{lex:Loc CreateGameDialogTitle}"
-                     Height="48"/>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{lex:Loc CreateGameDialogTitle}"
+                         Height="48"/>
+        </Border>
 
-        <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="0,0,0,0">
-            <Grid Margin="16,12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <!-- タブ領域: 枠線なし（枠線はTabControlテンプレート内で管理） -->
+        <Border Grid.Row="2"
+                Background="Transparent">
+            <TabControl x:Name="EntryTypeTabControl"
+                        TabStripPlacement="Top"
+                        Margin="0"
+                        Padding="0">
+            <TabItem x:Name="ApplicationTab"
+                     Header="{lex:Loc TabHeaderApplication}">
+                <StackPanel Margin="0,16,0,0">
+                    <!-- 名前 -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleName}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="AppNameBox"
+                                        PlaceholderText="{lex:Loc NameInput}"/>
+                        </Grid>
+                    </Border>
 
-                <!-- 名前 -->
-                <Grid Grid.Row="0" Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <ui:TextBlock Grid.Column="0"
-                                  Text="{lex:Loc SimpleName}"
-                                  VerticalAlignment="Center"
-                                  Margin="0,0,12,0"
-                                  Appearance="Primary"/>
-                    <ui:TextBox Grid.Column="1"
-                                x:Name="NameBox"
-                                PlaceholderText="{lex:Loc NameInput}"/>
-                </Grid>
+                    <!-- ファイル選択 -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ui:Button Grid.Column="0"
+                                           x:Name="AppFileButton"
+                                           Content="{lex:Loc SelectFileLabel}"
+                                           Click="AppFileButton_OnClick"
+                                           Margin="0,0,12,0"/>
+                                <ui:TextBlock Grid.Column="1"
+                                              x:Name="AppPathLabel"
+                                              VerticalAlignment="Center"
+                                              TextWrapping="NoWrap"
+                                              TextTrimming="CharacterEllipsis"
+                                              Appearance="Secondary"/>
+                            </Grid>
+                            <ui:TextBlock Text="{lex:Loc GenreApplication}"
+                                          Appearance="Tertiary"
+                                          FontSize="11"/>
+                        </StackPanel>
+                    </Border>
 
-                <!-- ファイル選択 / URL -->
-                <Grid Grid.Row="1" Margin="0,0,0,12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="0,0,0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:Button Grid.Column="0"
-                                   x:Name="UrlButton"
-                                   Content="{lex:Loc SelectFileLabel}"
-                                   Click="UrlButton_OnClick"
-                                   Margin="0,0,8,0"/>
-                        <ui:TextBlock Grid.Column="1"
-                                      x:Name="PathLabel"
-                                      VerticalAlignment="Center"
-                                      TextWrapping="NoWrap"
-                                      TextTrimming="CharacterEllipsis"
-                                      Appearance="Secondary"/>
-                    </Grid>
-                    <ui:TextBox Grid.Row="1"
-                                x:Name="UrlBlock"
-                                PlaceholderText="{lex:Loc PleaseURL}"
-                                Visibility="Collapsed"/>
-                </Grid>
-
-                <!-- ジャンル選択 -->
-                <Grid Grid.Row="2" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <ui:TextBlock Grid.Column="0"
-                                  Text="{lex:Loc SimpleGenreManage}"
-                                  VerticalAlignment="Center"
-                                  Margin="0,0,12,0"
-                                  Appearance="Primary"/>
-                    <ComboBox Grid.Column="1"
-                              x:Name="GenreSelectComboBox"
-                              Loaded="GenreSelectComboBox_OnLoaded"
-                              SelectionChanged="GenreSelectComboBox_OnSelectionChanged">
-                        <ComboBoxItem x:Name="GenreApplicationComboBoxItem" Content="{lex:Loc GenreApplication}"/>
-                        <ComboBoxItem x:Name="GenreWebSiteComboBoxItem" Content="{lex:Loc GenreWebsite}"/>
-                        <ComboBoxItem x:Name="GenreWebGameComboBoxItem" Content="{lex:Loc GenreWebGame}"/>
-                        <ComboBoxItem x:Name="GenreWebSaverComboBoxItem" Content="{lex:Loc GenreWebSaver}"/>
-                    </ComboBox>
-                </Grid>
-
-                <!-- ジャンル案内 -->
-                <TextBlock Grid.Row="3"
-                           x:Name="GenreLabel"
-                           Text="{lex:Loc PleaseSelectGenre}"
-                           Visibility="Collapsed"
-                           Margin="0,0,0,8"
-                           FontWeight="Bold"
-                           Foreground="Yellow"/>
-
-                <!-- エラー表示 -->
-                <TextBlock Grid.Row="4"
-                           x:Name="ErrLabel"
-                           Text="{lex:Loc ErrPickPath}"
-                           Visibility="Collapsed"
-                           Margin="0,0,0,8"
-                           Foreground="Red"/>
-
-                <!-- 作成ボタン -->
-                <StackPanel Grid.Row="6"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <ui:Button x:Name="CreateButton"
-                               Content="{lex:Loc CreateButton}"
-                               Click="CreateButton_OnClick"/>
+                    <!-- 説明 -->
+                    <ui:TextBlock Text="{lex:Loc ApplicationTabDescription}"
+                                  Appearance="Secondary"
+                                  TextWrapping="Wrap"
+                                  Margin="20,0,20,0"/>
                 </StackPanel>
-            </Grid>
-        </ScrollViewer>
+            </TabItem>
+
+            <TabItem x:Name="WebSiteTab"
+                     Header="{lex:Loc TabHeaderWebSite}">
+                <StackPanel Margin="0,16,0,0">
+                    <!-- 名前 -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleName}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebSiteNameBox"
+                                        PlaceholderText="{lex:Loc NameInput}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- URL -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleAddress}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebSiteUrlBox"
+                                        PlaceholderText="{lex:Loc PleaseURL}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- 説明 -->
+                    <ui:TextBlock Text="{lex:Loc WebSiteTabDescription}"
+                                  Appearance="Secondary"
+                                  TextWrapping="Wrap"
+                                  Margin="20,0,20,0"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem x:Name="WebGameTab"
+                     Header="{lex:Loc TabHeaderWebGame}">
+                <StackPanel Margin="0,16,0,0">
+                    <!-- 名前 -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleName}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebGameNameBox"
+                                        PlaceholderText="{lex:Loc NameInput}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- URL -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleAddress}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebGameUrlBox"
+                                        PlaceholderText="{lex:Loc PleaseURL}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- 説明 -->
+                    <ui:TextBlock Text="{lex:Loc WebGameTabDescription}"
+                                  Appearance="Secondary"
+                                  TextWrapping="Wrap"
+                                  Margin="20,0,20,0"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem x:Name="WebSaverTab"
+                     Header="{lex:Loc TabHeaderWebSaver}">
+                <StackPanel Margin="0,16,0,0">
+                    <!-- 名前 -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleName}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebSaverNameBox"
+                                        PlaceholderText="{lex:Loc NameInput}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- URL -->
+                    <Border BorderBrush="{DynamicResource DividerBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,0,20,16"
+                            Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          Text="{lex:Loc SimpleAddress}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,16,0"
+                                          Appearance="Primary"/>
+                            <ui:TextBox Grid.Column="1"
+                                        x:Name="WebSaverUrlBox"
+                                        PlaceholderText="{lex:Loc PleaseURL}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- 注意書き -->
+                    <ui:InfoBar x:Name="WebSaverNoteBar"
+                                Title="{lex:Loc WebSaverDownloadNote}"
+                                IsOpen="True"
+                                Severity="Informational"
+                                IsClosable="False"
+                                Margin="20,0,20,0"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        </Border>
+
+
+        <!-- Createボタン上の横線 -->
+        <Border Grid.Row="3"
+                Height="1"
+                VerticalAlignment="Top"
+                Background="{DynamicResource DividerBrush}"/>
+
+        <!-- 左縦線: Row 3-4（Createボタン下まで） -->
+        <Border Grid.Row="3"
+                Grid.RowSpan="2"
+                Width="1"
+                HorizontalAlignment="Left"
+                Background="{DynamicResource DividerBrush}"/>
+        <!-- 右縦線: Row 3-4（Createボタン下まで） -->
+        <Border Grid.Row="3"
+                Grid.RowSpan="2"
+                Width="1"
+                HorizontalAlignment="Right"
+                Background="{DynamicResource DividerBrush}"/>
+
+        <!-- 共通エラー表示 -->
+        <ui:InfoBar Grid.Row="3"
+                    x:Name="ErrorInfoBar"
+                    IsOpen="False"
+                    Severity="Error"
+                    IsClosable="True"
+                    Margin="16,8,16,0"/>
+
+        <!-- 作成ボタン -->
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="16,8">
+            <ui:Button x:Name="CreateButton"
+                       Content="{lex:Loc CreateButton}"
+                       Appearance="Primary"
+                       Click="CreateButton_OnClick"/>
+        </StackPanel>
+
+        <!-- Createボタン下の横線 -->
+        <Border Grid.Row="4"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Background="{DynamicResource DividerBrush}"/>
     </Grid>
 </ui:FluentWindow>

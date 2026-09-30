@@ -34,14 +34,15 @@ public class TomlControl
             ["SettingResolution"] =
             {
                 ["Width"] = 800,
-                ["Height"] = 400
+                ["Height"] = 500
             },
             ["MemoResolution"] =
             {
                 ["Width"] = 600,
                 ["Height"] = 200
             },
-            ["MemoFontSize"] = 20
+            ["MemoFontSize"] = 20,
+            ["DividerColor"] = "#8B5CF6"
         };
         using (StreamWriter writer = File.CreateText(path))
         {
@@ -117,7 +118,7 @@ public class TomlControl
             using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
             {
                 TomlTable table = TOML.Parse(reader);
-                return table[key];
+                return table[key].ToString();
             }
         }
         catch (Exception e)
@@ -134,7 +135,7 @@ public class TomlControl
             using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
             {
                 TomlTable table = TOML.Parse(reader);
-                return table[key][list];
+                return table[key][list].ToString();
             }
         }
         catch (Exception e)
@@ -151,13 +152,36 @@ public class TomlControl
             using (StreamReader reader = new StreamReader(File.OpenRead($"{path}")))
             {
                 TomlTable table = TOML.Parse(reader);
-                return table[key];
+                return table[key].ToString();
             }
         }
         catch (Exception e)
         {
             LoggerController.LogError($"{e}");
             throw;
+        }
+    }
+
+    /// <summary>
+    /// 指定したキーが存在する場合は値を取得する。
+    /// キー不在時は例外を投げず false を返す（TomlLazy センチネル問題を回避）。
+    /// </summary>
+    public static bool TryGetString(string path, string key, out string value)
+    {
+        value = "";
+        try
+        {
+            using StreamReader reader = new StreamReader(File.OpenRead($"{path}"));
+            TomlTable table = TOML.Parse(reader);
+            if (!table.HasKey(key))
+                return false;
+            value = table[key].ToString();
+            return true;
+        }
+        catch (Exception e)
+        {
+            LoggerController.LogError($"{e}");
+            return false;
         }
     }
 

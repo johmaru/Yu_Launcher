@@ -11,7 +11,8 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              Loaded="Web_OnLoaded"
              mc:Ignorable="d">
-    <Grid Margin="16,12">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid Margin="0,12">
         <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -24,110 +25,149 @@
         </Grid.RowDefinitions>
 
         <!-- 名前 -->
-        <Grid Grid.Row="0" Margin="0,0,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ui:TextBlock Grid.Column="0" x:Name="NameTextBlock"
-                          Text="{lex:Loc SimpleName}"
-                          VerticalAlignment="Center"
-                          Margin="0,0,12,0"
-                          Appearance="Primary"/>
-            <ui:TextBox Grid.Column="1" x:Name="NameBox"
-                        PlaceholderText="{lex:Loc NameInput}"/>
-        </Grid>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Grid.Column="0" x:Name="NameTextBlock"
+                              Text="{lex:Loc SimpleName}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,12,0"
+                              Appearance="Primary"/>
+                <ui:TextBox Grid.Column="1" x:Name="NameBox"
+                            PlaceholderText="{lex:Loc NameInput}"/>
+            </Grid>
+        </Border>
 
         <!-- URL -->
-        <Grid Grid.Row="1" Margin="0,0,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ui:TextBlock Grid.Column="0" x:Name="UrlTextBlock"
-                          Text="{lex:Loc SimpleAddress}"
-                          VerticalAlignment="Center"
-                          Margin="0,0,12,0"
-                          Appearance="Primary"/>
-            <ui:TextBox Grid.Column="1" x:Name="UrlBox"/>
-        </Grid>
+        <Border Grid.Row="1"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Grid.Column="0" x:Name="UrlTextBlock"
+                              Text="{lex:Loc SimpleAddress}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,12,0"
+                              Appearance="Primary"/>
+                <ui:TextBox Grid.Column="1" x:Name="UrlBox"/>
+            </Grid>
+        </Border>
 
         <!-- WebView トグル -->
-        <Grid Grid.Row="2" Margin="0,0,0,12">
-            <ui:ToggleSwitch x:Name="WebviewSwitch"
-                            Content="{lex:Loc SimpleUseWebview}"/>
-        </Grid>
-        <!-- ウィンドウサイズ -->
-        <Grid Grid.Row="3" Margin="0,0,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleWindowWidth}"
-                          VerticalAlignment="Center"
-                          Margin="0,0,8,0"
-                          Appearance="Primary"/>
-            <ui:NumberBox Grid.Column="1" x:Name="WindowWidthBox"
-                          PlaceholderText="{lex:Loc SimpleWindowSize}"
-                          ClearButtonEnabled="True"
-                          Minimum="800"/>
-            <ui:TextBlock Grid.Column="2" Text="{lex:Loc SimpleWindowHeight}"
-                          VerticalAlignment="Center"
-                          Margin="16,0,8,0"
-                          Appearance="Primary"/>
-            <ui:NumberBox Grid.Column="3" x:Name="WindowHeightBox"
-                          PlaceholderText="{lex:Loc SimpleWindowSize}"
-                          ClearButtonEnabled="True"
-                          Minimum="400"/>
-        </Grid>
+        <Border Grid.Row="2"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <ui:ToggleSwitch x:Name="WebviewSwitch"
+                                Content="{lex:Loc SimpleUseWebview}"/>
+            </Grid>
+        </Border>
 
-        <Grid Grid.Row="4" Margin="0,0,0,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ui:TextBlock Grid.Row="0" x:Name="MultipleLaunchText"
-                          Text="{lex:Loc MultipleLaunchText}"
-                          Margin="0,0,0,4"
-                          Appearance="Primary"/>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                <ItemsControl ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Margin="0,2,0,2"
-                                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                      Content="{Binding Name}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
+        <!-- ウィンドウサイズ -->
+        <Border Grid.Row="3"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleWindowWidth}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,8,0"
+                              Appearance="Primary"/>
+                <ui:NumberBox Grid.Column="1" x:Name="WindowWidthBox"
+                              PlaceholderText="{lex:Loc SimpleWindowSize}"
+                              ClearButtonEnabled="True"
+                              Minimum="800"/>
+                <ui:TextBlock Grid.Column="2" Text="{lex:Loc SimpleWindowHeight}"
+                              VerticalAlignment="Center"
+                              Margin="16,0,8,0"
+                              Appearance="Primary"/>
+                <ui:NumberBox Grid.Column="3" x:Name="WindowHeightBox"
+                              PlaceholderText="{lex:Loc SimpleWindowSize}"
+                              ClearButtonEnabled="True"
+                              Minimum="400"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="4"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ui:TextBlock Grid.Row="0" x:Name="MultipleLaunchText"
+                              Text="{lex:Loc MultipleLaunchText}"
+                              Margin="0,0,0,4"
+                              Appearance="Primary"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                    <ItemsControl ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="0,2,0,2"
+                                          IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                          Content="{Binding Name}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
 
         <!-- ジャンル管理 -->
-        <Grid Grid.Row="5" Margin="0,0,0,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ui:TextBlock Grid.Row="0"
-                          Text="{lex:Loc SimpleGenreManage}"
-                          Margin="0,0,0,4"
-                          Appearance="Primary"/>
-            <ui:Button Grid.Row="1"
-                       x:Name="GenreManageButton"
-                       Content="{lex:Loc SimpleManage}"
-                       Click="GenreManageButton_OnClick"/>
-        </Grid>
+        <Border Grid.Row="5"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0,16,12"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ui:TextBlock Grid.Row="0"
+                              Text="{lex:Loc SimpleGenreManage}"
+                              Margin="0,0,0,4"
+                              Appearance="Primary"/>
+                <ui:Button Grid.Row="1"
+                           x:Name="GenreManageButton"
+                           Content="{lex:Loc SimpleManage}"
+                           Click="GenreManageButton_OnClick"/>
+            </Grid>
+        </Border>
 
         <!-- 保存ボタン -->
         <StackPanel Grid.Row="7"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    Margin="0,12,16,0">
             <ui:Button x:Name="SaveButton"
                        Content="{lex:Loc SimpleSave}"
                        Click="SaveButton_OnClick"/>
         </StackPanel>
     </Grid>
+    </ScrollViewer>
 </local:DialogInterface>

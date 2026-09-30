@@ -22,7 +22,6 @@ public partial class CreateGameDialog : FluentWindow
     public static IObservable<int> CloseObservable => _onClose.AsObservable();
 
     private string _selectedFilePath = "";
-    private int _openNum;
 
     public CreateGameDialog()
     {
@@ -33,11 +32,11 @@ public partial class CreateGameDialog : FluentWindow
     public CreateGameDialog(string path) : this()
     {
         _selectedFilePath = path;
-        PathLabel.Text = path;
-        NameBox.Text = Path.GetFileNameWithoutExtension(path);
+        AppPathLabel.Text = path;
+        AppNameBox.Text = Path.GetFileNameWithoutExtension(path);
     }
 
-    private void UrlButton_OnClick(object sender, RoutedEventArgs e)
+    private void AppFileButton_OnClick(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -50,17 +49,16 @@ public partial class CreateGameDialog : FluentWindow
             if (ofd.ShowDialog() == true)
             {
                 _selectedFilePath = ofd.FileName;
-                PathLabel.Text = _selectedFilePath;
-                if (string.IsNullOrWhiteSpace(NameBox.Text))
+                AppPathLabel.Text = _selectedFilePath;
+                if (string.IsNullOrWhiteSpace(AppNameBox.Text))
                 {
-                    NameBox.Text = Path.GetFileNameWithoutExtension(_selectedFilePath);
+                    AppNameBox.Text = Path.GetFileNameWithoutExtension(_selectedFilePath);
                 }
                 Activate();
             }
             else
             {
                 LoggerController.LogWarn("User Cancelled File Selection");
-                ShowErrorBriefly();
                 Activate();
             }
         }
@@ -72,32 +70,30 @@ public partial class CreateGameDialog : FluentWindow
 
     private async void CreateButton_OnClick(object sender, RoutedEventArgs e)
     {
-        var selectedItem = GenreSelectComboBox.SelectedItem;
-        var name = NameBox.Text;
-        var url = UrlBlock.Text;
-
         try
         {
-            switch (selectedItem)
+            var activeTab = EntryTypeTabControl.SelectedItem as TabItem;
+            if (activeTab == ApplicationTab)
             {
-                case ComboBoxItem item when item == GenreApplicationComboBoxItem:
-                    await CreateApplicationAsync(name);
-                    break;
-                case ComboBoxItem item when item == GenreWebSiteComboBoxItem:
-                    if (!TryValidateUrl(url)) return;
-                    await CreateWebEntryAsync(name, url, "web", ["WebSite"], withMedia: false);
-                    break;
-                case ComboBoxItem item when item == GenreWebGameComboBoxItem:
-                    if (!TryValidateUrl(url)) return;
-                    await CreateWebEntryAsync(name, url, "WebGame", ["WebGame"], withMedia: false);
-                    break;
-                case ComboBoxItem item when item == GenreWebSaverComboBoxItem:
-                    if (!TryValidateUrl(url)) return;
-                    await CreateWebEntryAsync(name, url, "WebSaver", ["WebSaver"], withMedia: true);
-                    break;
-                default:
-                    await ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("SelectGenreError"));
-                    break;
+                await CreateApplicationAsync(AppNameBox.Text);
+            }
+            else if (activeTab == WebSiteTab)
+            {
+                var url = WebSiteUrlBox.Text;
+                if (!TryValidateUrl(url)) return;
+                await CreateWebEntryAsync(WebSiteNameBox.Text, url, "web", ["WebSite"], withMedia: false);
+            }
+            else if (activeTab == WebGameTab)
+            {
+                var url = WebGameUrlBox.Text;
+                if (!TryValidateUrl(url)) return;
+                await CreateWebEntryAsync(WebGameNameBox.Text, url, "WebGame", ["WebGame"], withMedia: false);
+            }
+            else if (activeTab == WebSaverTab)
+            {
+                var url = WebSaverUrlBox.Text;
+                if (!TryValidateUrl(url)) return;
+                await CreateWebEntryAsync(WebSaverNameBox.Text, url, "WebSaver", ["WebSaver"], withMedia: true);
             }
         }
         catch (Exception exception)
@@ -108,22 +104,22 @@ public partial class CreateGameDialog : FluentWindow
 
     private async Task CreateApplicationAsync(string name)
     {
-        var fileExtension = Path.GetExtension(_selectedFilePath)?.TrimStart('.');
-        if (string.IsNullOrWhiteSpace(fileExtension))
+        if (string.IsNullOrWhiteSpace(_selectedFilePath))
         {
-            await ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"));
+            ShowError(LocalizeControl.GetLocalize<string>("NotSelectFileError"));
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(_selectedFilePath))
+        var fileExtension = Path.GetExtension(_selectedFilePath)?.TrimStart('.');
+        if (string.IsNullOrWhiteSpace(fileExtension))
         {
-            await ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("NotSelectFileError"));
+            ShowError(LocalizeControl.GetLocalize<string>("SelectFileErrorMessage"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            await ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("NameInput"));
+            ShowError(LocalizeControl.GetLocalize<string>("NameInput"));
             return;
         }
 
@@ -150,7 +146,7 @@ public partial class CreateGameDialog : FluentWindow
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            await ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("NameInput"));
+            ShowError(LocalizeControl.GetLocalize<string>("NameInput"));
             return;
         }
 
@@ -254,7 +250,7 @@ public partial class CreateGameDialog : FluentWindow
         catch (Exception exception)
         {
             LoggerController.LogError(exception.Message);
-            await ShowErrorDialogAsync(exception.Message);
+            ShowError(exception.Message);
             return null;
         }
     }
@@ -267,66 +263,27 @@ public partial class CreateGameDialog : FluentWindow
             return true;
         }
 
-        _ = ShowErrorDialogAsync(LocalizeControl.GetLocalize<string>("NotContainsHttpError"));
+        ShowError(LocalizeControl.GetLocalize<string>("NotContainsHttpError"));
         return false;
     }
 
-    private Task ShowErrorDialogAsync(string message)
+    /// <summary>
+    /// 統一エラー表示。InfoBar でインライン表示し、3秒後に自動消去。
+    /// MessageBox は使わない（テーマ・ローカライズの一貫性）。
+    /// </summary>
+    private void ShowError(string message)
     {
-        var title = LocalizeControl.GetLocalize<string>("PropertyCtxHeader");
-        System.Windows.MessageBox.Show(message, title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-        return Task.CompletedTask;
-    }
+        ErrorInfoBar.Title = LocalizeControl.GetLocalize<string>("CreateGameDialogErrorTitle");
+        ErrorInfoBar.Message = message;
+        ErrorInfoBar.Severity = InfoBarSeverity.Error;
+        ErrorInfoBar.IsOpen = true;
 
-    private void ShowErrorBriefly()
-    {
-        ErrLabel.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
-        ErrLabel.Visibility = Visibility.Visible;
         var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
         timer.Tick += (_, _) =>
         {
-            ErrLabel.Visibility = Visibility.Collapsed;
+            ErrorInfoBar.IsOpen = false;
             timer.Stop();
         };
         timer.Start();
-    }
-    private void GenreSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (_openNum == 0) return;
-
-        var selected = GenreSelectComboBox.SelectedItem as ComboBoxItem;
-        var isWeb = selected == GenreWebSiteComboBoxItem
-                 || selected == GenreWebGameComboBoxItem
-                 || selected == GenreWebSaverComboBoxItem;
-        var isApp = selected == GenreApplicationComboBoxItem;
-
-        UrlButton.Visibility = isApp ? Visibility.Visible : Visibility.Collapsed;
-        PathLabel.Visibility = isApp ? Visibility.Visible : Visibility.Collapsed;
-        UrlBlock.Visibility = isWeb ? Visibility.Visible : Visibility.Collapsed;
-
-        if (!isApp && !isWeb)
-        {
-            UrlButton.Visibility = Visibility.Collapsed;
-            PathLabel.Visibility = Visibility.Collapsed;
-            UrlBlock.Visibility = Visibility.Collapsed;
-        }
-    }
-
-    private void GenreSelectComboBox_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        GenreSelectComboBox.SelectedIndex = 0;
-        LoggerController.LogInfo("GenreSelectComboBox Loaded");
-
-        GenreLabel.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Yellow);
-        GenreLabel.Visibility = Visibility.Visible;
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
-        timer.Tick += (_, _) =>
-        {
-            GenreLabel.Visibility = Visibility.Collapsed;
-            timer.Stop();
-        };
-        timer.Start();
-
-        _openNum += 1;
     }
 }

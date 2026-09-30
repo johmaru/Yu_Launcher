@@ -16,16 +16,34 @@
         MinWidth="480" MinHeight="360"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica">
-    <Grid>
+    <Grid Margin="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0"
-                     Title="{lex:Loc PropertyCtxHeader}"
-                     Height="48"/>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{lex:Loc PropertyCtxHeader}"
+                         Height="48"/>
+        </Border>
         <Grid Grid.Row="1" x:Name="Grid">
             <Frame x:Name="Frame" Source="" NavigationUIVisibility="Hidden"/>
         </Grid>
+        <!-- 保存ボタン上の横線（左右縦線とL字接続） -->
+        <Border Grid.Row="1"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Background="{DynamicResource DividerBrush}"/>
+        <!-- 左縦線 -->
+        <Border Grid.Row="1"
+                Width="1"
+                HorizontalAlignment="Left"
+                Background="{DynamicResource DividerBrush}"/>
+        <!-- 右縦線 -->
+        <Border Grid.Row="1"
+                Width="1"
+                HorizontalAlignment="Right"
+                Background="{DynamicResource DividerBrush}"/>
     </Grid>
 </ui:FluentWindow>

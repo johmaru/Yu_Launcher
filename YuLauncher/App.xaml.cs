@@ -33,7 +33,7 @@ namespace YuLauncher
             try
             {
                 await FirstLunch();
-
+                ApplyDividerColor();
                 await LanguageCheck();
 
                 await Initialize();
@@ -92,27 +92,29 @@ namespace YuLauncher
 
         private static ValueTask temp_file()
         {
-            string temp = Path.Combine("..", "Temp");
-            string fullTemp = Path.GetFullPath(temp);
-            if (!Directory.Exists(fullTemp))
+            string fullTemp = Path.GetFullPath(Path.Combine("..", "Temp"));
+            if (Directory.Exists(fullTemp) || File.Exists(fullTemp))
             {
-                string relativePath = Path.Combine("..", "Temp", "YuLauncher.exe.WebView2");
-                string fullPath = Path.GetFullPath(relativePath);
-                FileControl.CopyDirectory("YuLauncher.exe.WebView2", fullPath);
-
-                string gamesPath = Path.Combine("..", "Temp", "Games");
-                string fullGamesPath = Path.GetFullPath(gamesPath);
-                FileControl.CopyDirectory("Games", fullGamesPath);
-
-                string htmlPath = Path.Combine("..", "Temp", "html");
-                string fullHtmlPath = Path.GetFullPath(htmlPath);
-                FileControl.CopyDirectory("html", fullHtmlPath);
-
-                string settingsPath = Path.Combine("..", "Temp", "settings.toml");
-                string fullSettingsPath = Path.GetFullPath(settingsPath);
-
-                File.Copy("settings.toml", fullSettingsPath, true);
+                throw new IOException($"Update backup already exists: {fullTemp}");
             }
+
+            string stagingPath = fullTemp + ".pending." + Guid.NewGuid().ToString("N");
+            // ponytail: retain failed staging backups; remove manually only after verifying data recovery.
+            Directory.CreateDirectory(stagingPath);
+
+            void CopyIfExists(string name)
+            {
+                if (Directory.Exists(name))
+                {
+                    FileControl.CopyDirectory(name, Path.Combine(stagingPath, name));
+                }
+            }
+
+            CopyIfExists("YuLauncher.exe.WebView2");
+            CopyIfExists("Games");
+            CopyIfExists("html");
+            File.Copy("settings.toml", Path.Combine(stagingPath, "settings.toml"), true);
+            Directory.Move(stagingPath, fullTemp);
             return ValueTask.CompletedTask;
         }
         
@@ -140,6 +142,32 @@ namespace YuLauncher
                 }
                 LoggerController.LogInfo("First Lunch Check Complete");
                 return ValueTask.CompletedTask;
+        }
+
+        /// <summary>
+        /// settings.toml の DividerColor を読み込み、App.xaml の DividerBrush を更新する。
+        /// 既存ユーザーの settings.toml にキーがない場合はデフォルト（#8B5CF6）にフォールバック。
+        /// </summary>
+        private static void ApplyDividerColor()
+        {
+            string color;
+            if (!TomlControl.TryGetString("./settings.toml", "DividerColor", out var raw) || string.IsNullOrWhiteSpace(raw))
+                color = "#8B5CF6";
+            else
+                color = raw;
+
+            try
+            {
+                var brush = new System.Windows.Media.SolidColorBrush(
+                    (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+                Current.Resources["DividerBrush"] = brush;
+            }
+            catch
+            {
+                // 無効な色文字列の場合はデフォルト
+                Current.Resources["DividerBrush"] = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromRgb(0x8B, 0x5C, 0xF6));
+            }
         }
 
         private static async ValueTask InitializeDatabase()

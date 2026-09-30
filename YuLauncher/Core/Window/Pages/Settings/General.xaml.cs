@@ -48,7 +48,59 @@ public partial class General : Page
 
     private void General_OnLoaded(object sender, RoutedEventArgs e)
     {
-       ThemePagePatcher.PatchTheme(this);
+       LoadDividerColor();
+    }
+
+    private void LoadDividerColor()
+    {
+        string color;
+        if (!TomlControl.TryGetString("./settings.toml", "DividerColor", out var raw) || string.IsNullOrWhiteSpace(raw))
+            color = "#8B5CF6";
+        else
+            color = raw;
+        DividerColorBox.Text = color;
+        UpdatePreview(color);
+    }
+
+    private void UpdatePreview(string color)
+    {
+        try
+        {
+            var brush = new System.Windows.Media.SolidColorBrush(
+                (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+            DividerColorPreview.Background = brush;
+        }
+        catch
+        {
+            // 無効な色文字列はプレビューを更新しない
+        }
+    }
+
+    private void DividerColorApplyBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        var color = DividerColorBox.Text.Trim();
+        if (string.IsNullOrWhiteSpace(color))
+            color = "#8B5CF6";
+
+        // 色の有効性を検証
+        try
+        {
+            _ = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color);
+        }
+        catch
+        {
+            return;
+        }
+
+        // settings.toml に保存
+        TomlControl.EditToml("./settings.toml", "DividerColor", color);
+
+        // アプリ全体の DividerBrush を更新
+        var brush = new System.Windows.Media.SolidColorBrush(
+            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+        System.Windows.Application.Current.Resources["DividerBrush"] = brush;
+
+        UpdatePreview(color);
     }
 
     private void ExportBtn_OnClick(object sender, RoutedEventArgs e)

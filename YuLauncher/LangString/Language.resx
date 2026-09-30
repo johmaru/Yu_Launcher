@@ -402,4 +402,40 @@
   <data name="SimpleWindowSize" xml:space="preserve">
     <value>Window Size (blank = default)</value>
   </data>
+  <data name="TabHeaderApplication" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="TabHeaderWebSite" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="TabHeaderWebGame" xml:space="preserve">
+    <value>Web Game</value>
+  </data>
+  <data name="TabHeaderWebSaver" xml:space="preserve">
+    <value>Site Saver</value>
+  </data>
+  <data name="ApplicationTabDescription" xml:space="preserve">
+    <value>Register local executables (exe), images, or text files.</value>
+  </data>
+  <data name="WebSiteTabDescription" xml:space="preserve">
+    <value>Register a URL as a bookmark.</value>
+  </data>
+  <data name="WebGameTabDescription" xml:space="preserve">
+    <value>Register a browser game URL. Opens in the built-in WebView.</value>
+  </data>
+  <data name="WebSaverDownloadNote" xml:space="preserve">
+    <value>Saves the specified URL page locally. Images are also downloaded.</value>
+  </data>
+  <data name="CreateGameDialogErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="SettingsDividerColor" xml:space="preserve">
+    <value>Divider Color</value>
+  </data>
+  <data name="SettingsDividerColorPlaceholder" xml:space="preserve">
+    <value>#8B5CF6</value>
+  </data>
+  <data name="SettingsDividerColorApply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
 </root>

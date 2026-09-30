@@ -12,7 +12,7 @@ public abstract class FileControl
         public const string DocumentsMain = "./YuLauncher";
     }
    
-    public static void CopyDirectory(string sourceDir, string destDir)
+    public static void CopyDirectory(string sourceDir, string destDir, bool overwrite = true)
     {
         if (!Directory.Exists(destDir))
         {
@@ -22,13 +22,16 @@ public abstract class FileControl
        Directory.GetFiles(sourceDir).ToList().ForEach(x =>
         {
             string destFileName = Path.Combine(destDir, Path.GetFileName(x));
-            File.Copy(x, destFileName, true);
+            if (overwrite || !File.Exists(destFileName))
+            {
+                File.Copy(x, destFileName, overwrite);
+            }
         });
        
         Directory.GetDirectories(sourceDir).ToList().ForEach(subDir =>
         {
             string destSubDir = Path.Combine(destDir, Path.GetFileName(subDir));
-            CopyDirectory(subDir, destSubDir);
+            CopyDirectory(subDir, destSubDir, overwrite);
         });
     }
 }

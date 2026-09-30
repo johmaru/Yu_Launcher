@@ -22,9 +22,12 @@
             <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0"
-                     Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                     Height="48"/>
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource DividerBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                         Height="48"/>
+        </Border>
         <Grid Grid.Row="1">
             <Frame Source="Pages/MainPage.xaml" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
