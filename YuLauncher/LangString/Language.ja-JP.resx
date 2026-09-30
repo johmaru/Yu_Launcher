@@ -359,7 +359,7 @@
     <value>ゲームを選択してください</value>
   </data>
   <data name="DetailPlay" xml:space="preserve">
-    <value>再生</value>
+    <value>起動</value>
   </data>
   <data name="DetailProperty" xml:space="preserve">
     <value>プロパティ</value>
