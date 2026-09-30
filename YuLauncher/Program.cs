@@ -87,60 +87,46 @@ namespace YuLauncher
 
         private static void Temp()
         {
-            string tempPath = Path.Combine("..", "Temp");
-            string fullPath = Path.GetFullPath(tempPath);
-
-            if (Directory.Exists(fullPath))
+            string fullPath = Path.GetFullPath(Path.Combine("..", "Temp"));
+            if (!Directory.Exists(fullPath))
             {
-                string webviewData = Path.Combine(fullPath, "YuLauncher.exe.WebView2");
-                string webviewDataFullPath = Path.GetFullPath(webviewData);
+                return;
+            }
 
-                if (Directory.Exists("YuLauncher.exe.WebView2"))
-                {
-                    Directory.Delete(webviewDataFullPath, true);
-                }
-                else
-                {
-                    Directory.Move(webviewDataFullPath, "YuLauncher.exe.WebView2");
-                }
+            string webviewData = Path.Combine(fullPath, "YuLauncher.exe.WebView2");
+            string games = Path.Combine(fullPath, "Games");
+            string html = Path.Combine(fullPath, "html");
+            string settings = Path.Combine(fullPath, "settings.toml");
 
-                string games = Path.Combine(fullPath, "Games");
-                string gamesFullPath = Path.GetFullPath(games);
+            if (Directory.Exists(webviewData))
+            {
+                FileControl.CopyDirectory(webviewData, "YuLauncher.exe.WebView2", overwrite: false);
+            }
+            if (Directory.Exists(games))
+            {
+                FileControl.CopyDirectory(games, "Games", overwrite: false);
+            }
+            if (Directory.Exists(html))
+            {
+                FileControl.CopyDirectory(html, "html", overwrite: false);
+            }
+            if (File.Exists(settings) && !File.Exists("settings.toml"))
+            {
+                File.Copy(settings, "settings.toml", false);
+            }
 
-                if (Directory.Exists("Games"))
-                {
-                    Directory.Delete(gamesFullPath, true);
-                }
-                else
-                {
-                    Directory.Move(gamesFullPath, "Games");
-                }
-
-                string html = Path.Combine(fullPath, "html");
-                string htmlFullPath = Path.GetFullPath(html);
-
-                if (Directory.Exists("html"))
-                {
-                    Directory.Delete(htmlFullPath, true);
-                }
-                else
-                {
-                    Directory.Move(htmlFullPath, "html");
-                }
-
-                string settings = Path.Combine(fullPath, "settings.toml");
-                string settingsFullPath = Path.GetFullPath(settings);
-
-                if (File.Exists("settings.toml"))
-                {
-                    File.Delete(settingsFullPath);
-                }
-                else
-                {
-                    File.Move(settingsFullPath, "settings.toml");
-                }
-
+            // Delete known backup entries only after every restore operation succeeds.
+            if (Directory.Exists(webviewData)) Directory.Delete(webviewData, true);
+            if (Directory.Exists(games)) Directory.Delete(games, true);
+            if (Directory.Exists(html)) Directory.Delete(html, true);
+            if (File.Exists(settings)) File.Delete(settings);
+            if (!Directory.EnumerateFileSystemEntries(fullPath).Any())
+            {
                 Directory.Delete(fullPath);
+            }
+            else
+            {
+                LoggerController.LogWarn($"Update backup contains unrecognized entries and was retained: {fullPath}");
             }
         }
     }

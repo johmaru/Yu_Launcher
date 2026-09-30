@@ -92,27 +92,29 @@ namespace YuLauncher
 
         private static ValueTask temp_file()
         {
-            string temp = Path.Combine("..", "Temp");
-            string fullTemp = Path.GetFullPath(temp);
-            if (!Directory.Exists(fullTemp))
+            string fullTemp = Path.GetFullPath(Path.Combine("..", "Temp"));
+            if (Directory.Exists(fullTemp) || File.Exists(fullTemp))
             {
-                string relativePath = Path.Combine("..", "Temp", "YuLauncher.exe.WebView2");
-                string fullPath = Path.GetFullPath(relativePath);
-                FileControl.CopyDirectory("YuLauncher.exe.WebView2", fullPath);
-
-                string gamesPath = Path.Combine("..", "Temp", "Games");
-                string fullGamesPath = Path.GetFullPath(gamesPath);
-                FileControl.CopyDirectory("Games", fullGamesPath);
-
-                string htmlPath = Path.Combine("..", "Temp", "html");
-                string fullHtmlPath = Path.GetFullPath(htmlPath);
-                FileControl.CopyDirectory("html", fullHtmlPath);
-
-                string settingsPath = Path.Combine("..", "Temp", "settings.toml");
-                string fullSettingsPath = Path.GetFullPath(settingsPath);
-
-                File.Copy("settings.toml", fullSettingsPath, true);
+                throw new IOException($"Update backup already exists: {fullTemp}");
             }
+
+            string stagingPath = fullTemp + ".pending." + Guid.NewGuid().ToString("N");
+            // ponytail: retain failed staging backups; remove manually only after verifying data recovery.
+            Directory.CreateDirectory(stagingPath);
+
+            void CopyIfExists(string name)
+            {
+                if (Directory.Exists(name))
+                {
+                    FileControl.CopyDirectory(name, Path.Combine(stagingPath, name));
+                }
+            }
+
+            CopyIfExists("YuLauncher.exe.WebView2");
+            CopyIfExists("Games");
+            CopyIfExists("html");
+            File.Copy("settings.toml", Path.Combine(stagingPath, "settings.toml"), true);
+            Directory.Move(stagingPath, fullTemp);
             return ValueTask.CompletedTask;
         }
         
