@@ -12,9 +12,13 @@ A Windows launcher for managing PC games, web games, and websites in one place.
 - **Display customization**: Switch between Japanese and English, and configure window sizes, fullscreen, note text size, and divider color.
 
 ## Usage
-1. Select the “+” button in the list and choose what to add.
-2. Enter a name and a file or URL, then select “Create”.
+1. Select “Add” in the list, then choose an entry type from the dialog tabs.
+2. Set the name and file or URL in the input card, then select “Create” at the bottom right.
 3. Select an item in the list and select “Launch”.
+
+Combine name search with a genre filter. Press `Ctrl+F` to focus search, or `Esc` in the search box to clear the query. Select an item in the list and press `Enter`, or double-click it to launch. Launch and Property stay visible while scrolling the details.
+
+Search, genre, and selection are preserved after editing. Selection is cleared if the edited item no longer matches the filters. Use “Clear filters” when no items match, or “Reload” if loading fails.
 
 ## Settings
 - **General**: Divider color, data transfer, and app information. Select “Apply” to change the color immediately.

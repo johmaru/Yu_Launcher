@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using YuLauncher.Core.Window;
 using YuLauncher.Core.Window.Pages;
@@ -316,7 +317,7 @@ public class GameButton : Button
         }
     }
 
-    internal static BitmapImage? GetImage(JsonControl.ApplicationJsonData appData)
+    internal static BitmapSource? GetImage(JsonControl.ApplicationJsonData appData)
     {
         // WebGame, WebSaver, web all use favicon from URL
         // sz=128 で高解像度版を要求（デフォルトは 16x16 でガビガビになる）
@@ -331,70 +332,78 @@ public class GameButton : Button
 
         if (!File.Exists(appData.FilePath)) return null;
 
-        // 高解像度アイコン(256x256)を優先取得。ExtractAssociatedIcon は 32x32 しか返さず、
-        // 128px の HeroImage に拡大表示するとガビガビになるため。
-        BitmapImage? hiRes = TryExtractHighResIcon(appData.FilePath, 256);
-        if (hiRes != null) return hiRes;
-
-        // フォールバック: ExtractAssociatedIcon (32x32)
-        using (MemoryStream memoryStream = new MemoryStream())
-        {
-            Icon? icon = System.Drawing.Icon.ExtractAssociatedIcon(appData.FilePath);
-            if (icon != null) icon.Save(memoryStream);
-            memoryStream.Position = 0;
-
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memoryStream;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-
-            return bitmapImage;
-        }
-    }
-
-    /// <summary>
-    /// PrivateExtractIcons (user32.dll) を使って指定サイズのアイコンを抽出する。
-    /// ExtractAssociatedIcon と違い 256x256 などの高解像度アイコンも取れる。
-    /// 対応サイズがない場合はシステムがスケールするが、32x32 から拡大するより高画質。
-    /// </summary>
-    private static BitmapImage? TryExtractHighResIcon(string filePath, int size)
-    {
-        IntPtr[] phicon = new IntPtr[1];
-        uint[] piconid = new uint[1];
-
-        // flags=0 は LR_DEFAULTCOLOR 相当
-        bool success = PrivateExtractIcons(filePath, 0, size, size, phicon, piconid, 1, 0);
-        if (!success || phicon[0] == IntPtr.Zero) return null;
-
+        IntPtr hIcon = IntPtr.Zero;
+        bool comInitialized = false;
         try
         {
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(phicon[0]);
-            using MemoryStream ms = new MemoryStream();
-            icon.Save(ms);
-            ms.Position = 0;
+            int result = CoInitializeEx(IntPtr.Zero, 0x2); // COINIT_APARTMENTTHREADED
+            if (result is not (0 or 1)) return null;
+            comInitialized = true;
 
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.StreamSource = ms;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
-            return bitmap;
+            SHFILEINFOW info = new();
+            IntPtr shellResult = SHGetFileInfoW(appData.FilePath, 0, ref info,
+                (uint)Marshal.SizeOf<SHFILEINFOW>(), 0x100); // SHGFI_ICON | SHGFI_LARGEICON
+            hIcon = info.hIcon;
+            if (shellResult == IntPtr.Zero || hIcon == IntPtr.Zero) return null;
+
+            // Fully decode before releasing HICON; a direct WPF source can stall the list after DestroyIcon.
+            BitmapSource source = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(source));
+            using var stream = new MemoryStream();
+            encoder.Save(stream);
+            stream.Position = 0;
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.StreamSource = stream;
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.EndInit();
+            image.Freeze();
+            return image;
+        }
+        catch (Exception ex)
+        {
+            LoggerController.LogError($"{ex}");
+            return null;
         }
         finally
         {
-            DestroyIcon(phicon[0]);
+            try
+            {
+                if (hIcon != IntPtr.Zero) DestroyIcon(hIcon);
+            }
+            finally
+            {
+                if (comInitialized) CoUninitialize();
+            }
         }
     }
 
-    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-    private static extern bool PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon, IntPtr[] phicon, uint[] piconid, uint nIcons, uint flags);
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct SHFILEINFOW
+    {
+        public IntPtr hIcon;
+        public int iIcon;
+        public uint dwAttributes;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string? szDisplayName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+        public string? szTypeName;
+    }
 
-    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode, EntryPoint = "SHGetFileInfoW")]
+    private static extern IntPtr SHGetFileInfoW(string pszPath, uint dwFileAttributes,
+        ref SHFILEINFOW psfi, uint cbFileInfo, uint uFlags);
+
+    [DllImport("ole32.dll")]
+    private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
+
+    [DllImport("ole32.dll")]
+    private static extern void CoUninitialize();
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool DestroyIcon(IntPtr hIcon);
 
     public Button GameButtonShow(string name, JsonControl.ApplicationJsonData data)

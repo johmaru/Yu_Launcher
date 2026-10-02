@@ -1,23 +1,16 @@
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Wpf.Ui;
 using YuLauncher.Core.lib;
 
 namespace YuLauncher.Core.Window.Pages.Settings;
 
 public partial class VideoGraphics : Page
 {
-    private ThemeService _theme = new();
-
     public VideoGraphics()
     {
         InitializeComponent();
         ControlInitialize();
-       _theme.GetTheme();
-       ThemePagePatcher.PatchTheme(this);
     }
     
      private void ControlInitialize()
@@ -132,8 +125,4 @@ public partial class VideoGraphics : Page
             };
         }
 
-        private void VideoGraphics_OnLoaded(object sender, RoutedEventArgs e)
-        {
-           ThemePagePatcher.PatchTheme(this);
-        }
 }

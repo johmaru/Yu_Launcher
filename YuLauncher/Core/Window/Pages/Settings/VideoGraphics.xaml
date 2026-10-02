@@ -8,117 +8,152 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="ja-JP"
-             Loaded="VideoGraphics_OnLoaded"
              lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher"
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ScrollViewer x:Name="MainViewer" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel x:Name="VideoTabPanel" Margin="0,12,0,12">
-                <ui:TextBlock x:Name="ResTextBlock" Text="{lex:Loc SimpleRes}" Margin="0,0,0,30" HorizontalAlignment="Center"
-                              FontSize="20" FontWeight="Bold" Appearance="Primary"/>
-
-                <!-- フルスクリーン -->
-                <Border BorderBrush="{DynamicResource DividerBrush}"
-                        BorderThickness="0,0,0,1"
-                        Padding="16,0,16,12"
-                        Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleFullScreen}" FontSize="15" VerticalAlignment="Center" Margin="0,0,12,0" Appearance="Primary"/>
-                        <Border x:Name="FullScreenDivider" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,0" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                            <CheckBox x:Name="FullSc" VerticalAlignment="Center"
-                                      Loaded="FullSc_OnLoaded" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <!-- 解像度設定 -->
-                <Border BorderBrush="{DynamicResource DividerBrush}"
-                        BorderThickness="0,0,0,1"
-                        Padding="16,0,16,12"
-                        Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <ui:TextBlock Grid.Row="0" Grid.Column="0" Text="{lex:Loc SettingResChange}" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,12" Appearance="Primary"/>
-                        <Border x:Name="ResDivider0" Grid.Row="0" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,12" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <ui:TextBox x:Name="TxtResWidth" Width="80" Margin="0,0,8,0" Text=""/>
-                            <ui:TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,8,0" Appearance="Secondary"/>
-                            <ui:TextBox x:Name="TxtResHeight" Width="80" Text=""/>
-                        </StackPanel>
-                        <ui:TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc MainWindowResChange}" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,12" Appearance="Primary"/>
-                        <Border x:Name="ResDivider1" Grid.Row="1" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,12" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <ui:TextBox x:Name="MenuTxtResWidth" Width="80" Margin="0,0,8,0" Text=""/>
-                            <ui:TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,8,0" Appearance="Secondary"/>
-                            <ui:TextBox x:Name="MenuTxtResHeight" Width="80" Text=""/>
-                        </StackPanel>
-                        <ui:TextBlock Grid.Row="2" Grid.Column="0" Text="{lex:Loc GameWindowResChange}" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,12" Appearance="Primary"/>
-                        <Border x:Name="ResDivider2" Grid.Row="2" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,12" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <ui:TextBox x:Name="GameTxtResWidth" Width="80" Margin="0,0,8,0" Text=""/>
-                            <ui:TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,8,0" Appearance="Secondary"/>
-                            <ui:TextBox x:Name="GameTxtResHeight" Width="80" Text=""/>
-                        </StackPanel>
-                        <ui:TextBlock Grid.Row="3" Grid.Column="0" Text="{lex:Loc MemoWindowResChange}" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,12" Appearance="Primary"/>
-                        <Border x:Name="ResDivider3" Grid.Row="3" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,12" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <ui:TextBox x:Name="MemoTxtResWidth" Width="80" Margin="0,0,8,0" Text=""/>
-                            <ui:TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,8,0" Appearance="Secondary"/>
-                            <ui:TextBox x:Name="MemoTxtResHeight" Width="80" Text=""/>
-                        </StackPanel>
-                        <ui:TextBlock Grid.Row="4" Grid.Column="0" Text="{lex:Loc SimpleFontSize}" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,0" Appearance="Primary"/>
-                        <Border x:Name="ResDivider4" Grid.Row="4" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,0" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                            <ui:TextBox x:Name="MemoTxtFontSize" Width="80" Text=""/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <!-- 言語設定 -->
-                <Border BorderBrush="{DynamicResource DividerBrush}"
-                        BorderThickness="0"
-                        Padding="16,0,16,12"
-                        Margin="0,0,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleLanguage}" x:Name="LanguageTextBlock" VerticalAlignment="Center" FontSize="15" Margin="0,0,12,0"
-                                      Loaded="FrameworkElement_OnLoaded" Appearance="Primary"/>
-                        <Border x:Name="DividerLine1" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,0" HorizontalAlignment="Stretch"/>
-                        <ComboBox Grid.Column="2" x:Name="LanguageCombo" SelectedItem="" HorizontalAlignment="Left" MinWidth="120">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer x:Name="MainViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <StackPanel x:Name="VideoTabPanel" Margin="24,16,24,16">
+                <ui:TextBlock x:Name="ResTextBlock" Text="{lex:Loc VideoGraphics}"
+                              FontSize="22" FontWeight="SemiBold" Appearance="Primary"/>
+                <ui:TextBlock Text="{lex:Loc SettingsDisplayDescription}" FontSize="13"
+                              Appearance="Secondary" TextWrapping="Wrap" Margin="0,4,0,16"/>
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock x:Name="LanguageTextBlock" Text="{lex:Loc SimpleLanguage}"
+                                      FontSize="16" FontWeight="SemiBold" Appearance="Primary"
+                                      Loaded="FrameworkElement_OnLoaded"/>
+                        <ui:TextBlock Text="{lex:Loc SettingsLanguageHelp}" FontSize="13"
+                                      Appearance="Secondary" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                        <ComboBox x:Name="LanguageCombo" MinWidth="160" HorizontalAlignment="Left"
+                                  AutomationProperties.LabeledBy="{Binding ElementName=LanguageTextBlock}">
                             <ComboBoxItem x:Name="EngItemCombo" Content="{lex:Loc SimpleEnglish}"/>
                             <ComboBoxItem x:Name="JpnItemCombo" Content="{lex:Loc SimpleJapanese}"/>
                         </ComboBox>
-                    </Grid>
-                </Border>
-
-                <!-- 保存ボタン -->
-                <Border x:Name="SaveButtonBar" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="16,12,16,8" VerticalAlignment="Bottom">
-                    <ui:Button x:Name="SaveBtn" Content="{lex:Loc SimpleSave}"
-                               HorizontalAlignment="Right" Click="SaveBtn_OnClick"/>
-                </Border>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc SettingsDisplayMode}" FontSize="16"
+                                      FontWeight="SemiBold" Appearance="Primary"/>
+                        <CheckBox x:Name="FullSc" Content="{lex:Loc SimpleFullScreen}" Margin="0,12,0,4"
+                                  Loaded="FullSc_OnLoaded" Checked="FullSc_OnChecked" Unchecked="FullSc_OnUnchecked"/>
+                        <ui:TextBlock Text="{lex:Loc SettingsImmediateSaveHint}" FontSize="13"
+                                      Appearance="Secondary" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc SettingsWindowSizes}" FontSize="16"
+                                      FontWeight="SemiBold" Appearance="Primary"/>
+                        <ui:TextBlock Text="{lex:Loc SettingsWindowSizesHint}" FontSize="13"
+                                      Appearance="Secondary" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                        <StackPanel Margin="0,0,0,16">
+                            <ui:TextBlock Text="{lex:Loc MainWindowResChange}" FontSize="13"
+                                          Appearance="Primary" Margin="0,0,0,8"/>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="96"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="96"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <ui:TextBlock Text="{lex:Loc SettingsWidth}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="MenuTxtResWidth" Width="96" AutomationProperties.Name="{lex:Loc SettingsMainWidth}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <ui:TextBlock Text="{lex:Loc SettingsHeight}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="MenuTxtResHeight" Width="96" AutomationProperties.Name="{lex:Loc SettingsMainHeight}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,16">
+                            <ui:TextBlock Text="{lex:Loc GameWindowResChange}" FontSize="13"
+                                          Appearance="Primary" Margin="0,0,0,8"/>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="96"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="96"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <ui:TextBlock Text="{lex:Loc SettingsWidth}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="GameTxtResWidth" Width="96" AutomationProperties.Name="{lex:Loc SettingsGameWidth}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <ui:TextBlock Text="{lex:Loc SettingsHeight}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="GameTxtResHeight" Width="96" AutomationProperties.Name="{lex:Loc SettingsGameHeight}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel>
+                            <ui:TextBlock Text="{lex:Loc SettingResChange}" FontSize="13"
+                                          Appearance="Primary" Margin="0,0,0,8"/>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="96"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="96"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <ui:TextBlock Text="{lex:Loc SettingsWidth}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="TxtResWidth" Width="96" AutomationProperties.Name="{lex:Loc SettingsSettingWidth}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <ui:TextBlock Text="{lex:Loc SettingsHeight}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                    <ui:TextBox x:Name="TxtResHeight" Width="96" AutomationProperties.Name="{lex:Loc SettingsSettingHeight}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc SettingsMemo}" FontSize="16"
+                                      FontWeight="SemiBold" Appearance="Primary"/>
+                        <ui:TextBlock Text="{lex:Loc MemoWindowResChange}" FontSize="13"
+                                      Appearance="Primary" Margin="0,12,0,8"/>
+                        <Grid HorizontalAlignment="Left" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="96"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="96"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <ui:TextBlock Text="{lex:Loc SettingsWidth}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                <ui:TextBox x:Name="MemoTxtResWidth" Width="96" AutomationProperties.Name="{lex:Loc SettingsMemoWidth}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <ui:TextBlock Text="{lex:Loc SettingsHeight}" FontSize="13" Appearance="Primary" Margin="0,0,0,4"/>
+                                <ui:TextBox x:Name="MemoTxtResHeight" Width="96" AutomationProperties.Name="{lex:Loc SettingsMemoHeight}"/>
+                            </StackPanel>
+                        </Grid>
+                        <ui:TextBlock Text="{lex:Loc SimpleFontSize}" FontSize="13"
+                                      Appearance="Primary" Margin="0,0,0,4"/>
+                        <ui:TextBox x:Name="MemoTxtFontSize" Width="96" HorizontalAlignment="Left"
+                                    AutomationProperties.Name="{lex:Loc SimpleFontSize}"/>
+                    </StackPanel>
+                </ui:Card>
             </StackPanel>
         </ScrollViewer>
+        <Border x:Name="SaveButtonBar" Grid.Row="1" BorderThickness="0,1,0,0"
+                BorderBrush="{DynamicResource DividerBrush}" Padding="24,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Text="{lex:Loc SettingsSaveHint}" FontSize="12" Appearance="Secondary"
+                              TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <ui:Button x:Name="SaveBtn" Grid.Column="1" Content="{lex:Loc SettingsSaveChanges}"
+                           Appearance="Primary" MinWidth="120" Margin="16,0,0,0" Click="SaveBtn_OnClick"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

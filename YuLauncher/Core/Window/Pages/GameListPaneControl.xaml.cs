@@ -18,7 +18,8 @@ public class GameListItem
 {
     public string Name { get; set; } = string.Empty;
     public string? FileExtension { get; set; }
-    public BitmapImage? IconSource { get; set; }
+    public BitmapSource? IconSource { get; set; }
+    public bool IsFileMissing { get; set; }
     public JsonControl.ApplicationJsonData Data { get; set; }
 }
 
@@ -26,6 +27,12 @@ public partial class GameListPaneControl : UserControl
 {
     private readonly ObservableCollection<GameListItem> _gameItems = new();
     private List<GameListItem> _allGames = new();
+    private int _reloadVersion;
+    private bool _isLoading = true;
+    private bool _hasLoaded;
+    private bool _loadFailed;
+    private bool _updatingGenres;
+    private bool _updatingItems;
 
     /// <summary>
     /// フィルタ対象のFileExtension。
@@ -56,7 +63,7 @@ public partial class GameListPaneControl : UserControl
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        _ = LoadGenre();
+        _ = ReloadGamesAsync();
     }
 
     private bool MatchesFilter(JsonControl.ApplicationJsonData data)
@@ -70,117 +77,145 @@ public partial class GameListPaneControl : UserControl
         };
     }
 
-    private async ValueTask LoadGenre()
+    private async Task ReloadGamesAsync()
     {
-        List<string> genreList = new();
-
-        var games = await Task.Run(() => GameRepository.GetAll());
-        foreach (var data in games)
+        var version = ++_reloadVersion;
+        LibraryTitleTextBlock.Text = LocalizeControl.GetLocalize<string>(FileExtensionFilter switch
         {
-            if (!MatchesFilter(data)) continue;
-            data.Genre?.ToList().ForEach(x =>
-            {
-                if (!genreList.Contains(x))
-                {
-                    genreList.Add(x);
-                }
-            });
-        }
-
-        GenreComboBox.Items.OfType<ComboBoxItem>()
-            .Where(x => x != GenreAllComboBoxItem)
-            .ToList()
-            .ForEach(x => GenreComboBox.Items.Remove(x));
-
-        genreList.ForEach(x =>
-        {
-            var genre = GenreComboBox.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content?.ToString() == x);
-            if (genre != null && (string)genre.Content == x) return;
-            ComboBoxItem comboBoxItem = new()
-            {
-                Content = x
-            };
-            comboBoxItem.Selected += async (sender, args) =>
-            {
-                GenreComboBox.SelectedItem = comboBoxItem;
-                await LoadGamesByGenre(x);
-            };
-            GenreComboBox.Items.Add(comboBoxItem);
+            "WebGame" => "GameListWeb",
+            "WebSaver" => "WebSaver",
+            _ => "GameList"
         });
-    }
-
-    private async Task LoadAllGames()
-    {
-        _allGames.Clear();
-        _gameItems.Clear();
-
-        var games = await Task.Run(() => GameRepository.GetAll());
-        foreach (var data in games)
+        _isLoading = true;
+        _loadFailed = false;
+        UpdatePresentation();
+        try
         {
-            try
+            var games = await Task.Run(() => GameRepository.GetAll());
+            if (version != _reloadVersion) return;
+            var items = new List<GameListItem>();
+            var conversionFailed = false;
+            foreach (var data in games)
             {
                 if (!MatchesFilter(data)) continue;
-                var item = CreateGameListItem(data);
-                _allGames.Add(item);
-                _gameItems.Add(item);
+                try { items.Add(CreateGameListItem(data)); }
+                catch (Exception ex)
+                {
+                    conversionFailed = true;
+                    LoggerController.LogError($"{ex}");
+                }
             }
-            catch (Exception ex)
+            if (version != _reloadVersion) return;
+            var selectedGenre = GenreComboBox.SelectedItem == GenreAllComboBoxItem
+                ? null : (GenreComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            _allGames = items;
+            _hasLoaded = true;
+            _loadFailed = conversionFailed;
+            _updatingGenres = true;
+            try
             {
-                LoggerController.LogError($"{ex}");
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
+                GenreComboBox.Items.Clear();
+                GenreComboBox.Items.Add(GenreAllComboBoxItem);
+                ComboBoxItem selected = GenreAllComboBoxItem;
+                var genres = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var genre in _allGames.SelectMany(item => item.Data.Genre ?? Array.Empty<string>()))
+                {
+                    if (!genres.Add(genre)) continue;
+                    var entry = new ComboBoxItem { Content = genre };
+                    GenreComboBox.Items.Add(entry);
+                    if (StringComparer.Ordinal.Equals(genre, selectedGenre)) selected = entry;
+                }
+                GenreComboBox.SelectedItem = selected;
+            }
+            finally { _updatingGenres = false; }
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            if (version != _reloadVersion) return;
+            _loadFailed = true;
+            LoggerController.LogError($"{ex}");
+        }
+        finally
+        {
+            if (version == _reloadVersion)
+            {
+                _isLoading = false;
+                UpdatePresentation();
             }
         }
     }
 
-    private async Task LoadGamesByGenre(string genre)
+    private void ApplyFilters()
     {
-        _allGames.Clear();
-        _gameItems.Clear();
-
-        var games = await Task.Run(() => GameRepository.GetByGenre(genre));
-        foreach (var data in games)
+        var selectedId = (GameListBox.SelectedItem as GameListItem)?.Data.Id;
+        var query = SearchBox.Text?.Trim() ?? string.Empty;
+        var genre = GenreComboBox.SelectedItem == GenreAllComboBoxItem
+            ? null : (GenreComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+        _updatingItems = true;
+        try
         {
-            try
+            _gameItems.Clear();
+            foreach (var item in _allGames)
             {
-                if (!MatchesFilter(data)) continue;
-                var item = CreateGameListItem(data);
-                _allGames.Add(item);
+                if (genre != null && !(item.Data.Genre?.Contains(genre, StringComparer.Ordinal) ?? false)) continue;
+                if (!item.Name.Contains(query, StringComparison.OrdinalIgnoreCase)) continue;
                 _gameItems.Add(item);
             }
-            catch (Exception ex)
-            {
-                LoggerController.LogError($"{ex}");
-                LoggerController.LogError("An I/O error occurred: " + ex.Message);
-            }
+            GameListBox.SelectedItem = selectedId.HasValue
+                ? _gameItems.FirstOrDefault(item => item.Data.Id == selectedId.Value) : null;
         }
+        finally { _updatingItems = false; }
+        UpdatePresentation();
+    }
+
+    private void UpdatePresentation()
+    {
+        LoadingStatusText.Visibility = _isLoading ? Visibility.Visible : Visibility.Collapsed;
+        LoadErrorStatusPanel.Visibility = _loadFailed ? Visibility.Visible : Visibility.Collapsed;
+        if (GameListBox.SelectedItem is GameListItem item)
+        {
+            ShowDetail(item.Data);
+            return;
+        }
+        ShowEmptyState();
+        var active = !_hasLoaded && _isLoading ? LibraryLoadingPanel
+            : _loadFailed ? LibraryLoadErrorPanel
+            : _hasLoaded && _allGames.Count == 0 ? LibraryEmptyPanel
+            : _gameItems.Count == 0 ? LibraryNoResultsPanel
+            : LibrarySelectPanel;
+        LibraryLoadingPanel.Visibility = active == LibraryLoadingPanel ? Visibility.Visible : Visibility.Collapsed;
+        LibraryLoadErrorPanel.Visibility = active == LibraryLoadErrorPanel ? Visibility.Visible : Visibility.Collapsed;
+        LibraryEmptyPanel.Visibility = active == LibraryEmptyPanel ? Visibility.Visible : Visibility.Collapsed;
+        LibraryNoResultsPanel.Visibility = active == LibraryNoResultsPanel ? Visibility.Visible : Visibility.Collapsed;
+        LibrarySelectPanel.Visibility = active == LibrarySelectPanel ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private static GameListItem CreateGameListItem(JsonControl.ApplicationJsonData data)
     {
+        BitmapSource? icon = GameButton.GetImage(data);
         return new GameListItem
         {
             Name = data.Name,
             FileExtension = data.FileExtension,
-            IconSource = GameButton.GetImage(data),
+            IconSource = icon,
+            IsFileMissing = IsFileMissing(data, icon),
             Data = data
         };
     }
 
+    private static bool IsFileMissing(JsonControl.ApplicationJsonData data, BitmapSource? icon) =>
+        data.FileExtension is not ("web" or "WebGame" or "WebSaver")
+        && icon is null && !File.Exists(data.FilePath);
+
     private async void PropertyDialogOnAllGamePanelUpdate(object? sender, EventArgs e, int n)
     {
-        switch (n)
-        {
-            case 0:
-            case 1:
-                await LoadGenre();
-                await LoadAllGames();
-                break;
-        }
+        if (n is >= 0 and <= 3) await ReloadGamesAsync();
     }
 
     private async void PropertyDialogPanelUpdate(object? sender, EventArgs e)
     {
-        await LoadAllGames();
+        await ReloadGamesAsync();
         Application.Current.MainWindow?.Activate();
     }
 
@@ -202,24 +237,9 @@ public partial class GameListPaneControl : UserControl
         }
     }
 
-    private async void GenreComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void GenreComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        try
-        {
-            if (Equals(GenreComboBox.SelectedItem, GenreAllComboBoxItem))
-            {
-                await LoadAllGames();
-            }
-        }
-        catch (Exception exception)
-        {
-            LoggerController.LogError($"{exception}");
-        }
-    }
-
-    private void GenreComboBox_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        GenreComboBox.SelectedItem = GenreAllComboBoxItem;
+        if (!_updatingGenres) ApplyFilters();
     }
 
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
@@ -228,44 +248,74 @@ public partial class GameListPaneControl : UserControl
         createGameDialog.Show();
     }
 
+    private async void OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            e.Handled = true;
+            SearchBox.Focus();
+            SearchBox.SelectAll();
+        }
+        else if (e.Key == Key.Escape && Keyboard.Modifiers == ModifierKeys.None && SearchBox.IsKeyboardFocusWithin)
+        {
+            e.Handled = true;
+            SearchBox.Clear();
+        }
+        else if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.None
+                 && GameListBox.IsKeyboardFocusWithin && GameListBox.SelectedItem is GameListItem item)
+        {
+            e.Handled = true;
+            if (!e.IsRepeat) await LaunchAsync(item.Data);
+        }
+    }
+
     private void SearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        var query = SearchBox.Text?.Trim() ?? string.Empty;
-        _gameItems.Clear();
-        if (string.IsNullOrEmpty(query))
-        {
-            foreach (var item in _allGames)
-                _gameItems.Add(item);
-        }
-        else
-        {
-            foreach (var item in _allGames.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)))
-                _gameItems.Add(item);
-        }
+        if (!_updatingGenres) ApplyFilters();
     }
 
     private void GameListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (GameListBox.SelectedItem is not GameListItem item)
-        {
-            ShowEmptyState();
-            return;
-        }
-        ShowDetail(item.Data);
+        if (!_updatingItems) UpdatePresentation();
     }
 
     private void ShowEmptyState()
     {
         EmptyState.Visibility = Visibility.Visible;
-        DetailScrollViewer.Visibility = Visibility.Collapsed;
+        DetailContent.Visibility = Visibility.Collapsed;
+        PlayButton.Tag = null;
+        PropertyButton.Tag = null;
+        MemoButton.Tag = null;
+        WikiManageButton.Tag = null;
+        GenreManageButton.Tag = null;
+    }
+
+    private void ResetFiltersButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        _updatingGenres = true;
+        try
+        {
+            GenreComboBox.SelectedItem = GenreAllComboBoxItem;
+            SearchBox.Clear();
+        }
+        finally { _updatingGenres = false; }
+        ApplyFilters();
+        SearchBox.Focus();
+    }
+
+    private async void RetryButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        await ReloadGamesAsync();
     }
 
     private void ShowDetail(JsonControl.ApplicationJsonData data)
     {
         EmptyState.Visibility = Visibility.Collapsed;
-        DetailScrollViewer.Visibility = Visibility.Visible;
+        DetailContent.Visibility = Visibility.Visible;
 
-        HeroImage.Source = GameButton.GetImage(data);
+        BitmapSource? icon = GameButton.GetImage(data);
+        HeroImage.Source = icon;
+        MissingFileDetailText.Visibility = IsFileMissing(data, icon) ? Visibility.Visible : Visibility.Collapsed;
         DetailTitleTextBlock.Text = data.Name;
         FileTypeBadgeText.Text = data.FileExtension ?? "unknown";
 
@@ -283,12 +333,12 @@ public partial class GameListPaneControl : UserControl
 
         if (data.WikiData != null && data.WikiData.Count > 0)
         {
-            WikiDataControl.Visibility = Visibility.Visible;
+            WikiSection.Visibility = Visibility.Visible;
             WikiDataControl.ItemsSource = data.WikiData.ToList();
         }
         else
         {
-            WikiDataControl.Visibility = Visibility.Collapsed;
+            WikiSection.Visibility = Visibility.Collapsed;
         }
 
         LaunchOptionsPanel.Children.Clear();
@@ -319,7 +369,6 @@ public partial class GameListPaneControl : UserControl
             Text = $"{label}: ",
             FontWeight = FontWeights.SemiBold,
             FontSize = 12,
-            Opacity = 0.7,
             Width = 100,
             Appearance = Wpf.Ui.Controls.TextColor.Secondary
         };
@@ -391,6 +440,7 @@ public partial class GameListPaneControl : UserControl
         try
         {
             MemoWindow memoWindow = new MemoWindow(data);
+            memoWindow.Closed += async (_, _) => await ReloadGamesAsync();
             memoWindow.Show();
         }
         catch (Exception ex)
@@ -406,6 +456,7 @@ public partial class GameListPaneControl : UserControl
         try
         {
             WikiDataManageWindow wikiWindow = new WikiDataManageWindow(data);
+            wikiWindow.Closed += async (_, _) => await ReloadGamesAsync();
             wikiWindow.Show();
         }
         catch (Exception ex)
@@ -421,6 +472,7 @@ public partial class GameListPaneControl : UserControl
         try
         {
             GenreManageWindow genreWindow = new GenreManageWindow(data);
+            genreWindow.Closed += async (_, _) => await ReloadGamesAsync();
             genreWindow.Show();
         }
         catch (Exception ex)

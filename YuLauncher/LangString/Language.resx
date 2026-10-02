@@ -154,13 +154,13 @@
     <value>Save</value>
   </data>
   <data name="SettingResChange" xml:space="preserve">
-    <value>SettingPage Resolution Change</value>
+    <value>Settings window</value>
   </data>
   <data name="MainWindowResChange" xml:space="preserve">
-    <value>Menu Resolution Change</value>
+    <value>Main window</value>
   </data>
   <data name="GameWindowResChange" xml:space="preserve">
-    <value>GameWindow Resolution Change</value>
+    <value>Game window</value>
   </data>
   <data name="NameInput" xml:space="preserve">
     <value>Please input name</value>
@@ -176,6 +176,9 @@
   </data>
   <data name="DeleteGame" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="AddEntryFileLabel" xml:space="preserve">
+    <value>File</value>
   </data>
   <data name="SelectFileLabel" xml:space="preserve">
     <value>Select File</value>
@@ -226,7 +229,7 @@
     <value>Go to edit mode</value>
   </data>
   <data name="MemoWindowResChange" xml:space="preserve">
-    <value>Memo Resolution Change</value>
+    <value>Memo window</value>
   </data>
   <data name="SimpleRes" xml:space="preserve">
     <value>Resolution</value>
@@ -292,7 +295,7 @@
     <value>Mute(Disable)</value>
   </data>
   <data name="VideoGraphics" xml:space="preserve">
-    <value>Video/Graphic/display</value>
+    <value>Display &amp; language</value>
   </data>
   <data name="SimpleGeneral" xml:space="preserve">
     <value>General</value>
@@ -378,8 +381,21 @@
   <data name="DetailNoGames" xml:space="preserve">
     <value>No games</value>
   </data>
+  <data name="LibraryGenreFilter" xml:space="preserve"><value>Filter by genre</value></data>
+  <data name="LibraryItemCountSuffix" xml:space="preserve"><value>items</value></data>
+  <data name="LibraryKeyboardHint" xml:space="preserve"><value>Ctrl+F to search · Enter in the list to launch</value></data>
+  <data name="LibraryEmptyTitle" xml:space="preserve"><value>No items yet</value></data>
+  <data name="LibraryEmptyDescription" xml:space="preserve"><value>Use Add to register an app or website.</value></data>
+  <data name="LibraryNoResultsTitle" xml:space="preserve"><value>No matching items</value></data>
+  <data name="LibraryNoResultsDescription" xml:space="preserve"><value>Change the search or genre, or clear the filters.</value></data>
+  <data name="LibraryResetFilters" xml:space="preserve"><value>Clear filters</value></data>
+  <data name="LibrarySelectTitle" xml:space="preserve"><value>Select an item</value></data>
+  <data name="LibrarySelectDescription" xml:space="preserve"><value>Select an item to view its details. Double-click to launch.</value></data>
+  <data name="LibraryLoading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="LibraryLoadFailed" xml:space="preserve"><value>There was a problem loading the list.</value></data>
+  <data name="LibraryRetry" xml:space="preserve"><value>Reload</value></data>
   <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Search...</value>
+    <value>Search by name…</value>
   </data>
   <data name="DetailLaunchOptions" xml:space="preserve">
     <value>Launch Options</value>
@@ -437,5 +453,83 @@
   </data>
   <data name="SettingsDividerColorApply" xml:space="preserve">
     <value>Apply</value>
+  </data>
+  <data name="FileMissingStatus" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="SettingsGeneralDescription" xml:space="preserve">
+    <value>Manage appearance and data.</value>
+  </data>
+  <data name="SettingsDisplayDescription" xml:space="preserve">
+    <value>Choose the language, window sizes, and memo text size.</value>
+  </data>
+  <data name="SettingsAppearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SettingsDividerColorHelp" xml:space="preserve">
+    <value>Example: #8B5CF6. Select Apply to change the divider color.</value>
+  </data>
+  <data name="SettingsDataTransfer" xml:space="preserve">
+    <value>Data transfer</value>
+  </data>
+  <data name="SettingsDataTransferHelp" xml:space="preserve">
+    <value>Choose a folder to export to or import from. Import overwrites the current data and settings.</value>
+  </data>
+  <data name="SettingsAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsLanguageHelp" xml:space="preserve">
+    <value>The display language changes when you save.</value>
+  </data>
+  <data name="SettingsDisplayMode" xml:space="preserve">
+    <value>Display mode</value>
+  </data>
+  <data name="SettingsImmediateSaveHint" xml:space="preserve">
+    <value>This setting is saved when you change it.</value>
+  </data>
+  <data name="SettingsWindowSizes" xml:space="preserve">
+    <value>Window sizes</value>
+  </data>
+  <data name="SettingsWindowSizesHint" xml:space="preserve">
+    <value>Set the width and height. Saved sizes are used the next time you open a window.</value>
+  </data>
+  <data name="SettingsMemo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="SettingsWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="SettingsHeight" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="SettingsSaveChanges" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="SettingsSaveHint" xml:space="preserve">
+    <value>Save to apply the language, sizes, and text size.</value>
+  </data>
+  <data name="SettingsMainWidth" xml:space="preserve">
+    <value>Main window width</value>
+  </data>
+  <data name="SettingsMainHeight" xml:space="preserve">
+    <value>Main window height</value>
+  </data>
+  <data name="SettingsGameWidth" xml:space="preserve">
+    <value>Game window width</value>
+  </data>
+  <data name="SettingsGameHeight" xml:space="preserve">
+    <value>Game window height</value>
+  </data>
+  <data name="SettingsSettingWidth" xml:space="preserve">
+    <value>Settings window width</value>
+  </data>
+  <data name="SettingsSettingHeight" xml:space="preserve">
+    <value>Settings window height</value>
+  </data>
+  <data name="SettingsMemoWidth" xml:space="preserve">
+    <value>Memo window width</value>
+  </data>
+  <data name="SettingsMemoHeight" xml:space="preserve">
+    <value>Memo window height</value>
   </data>
 </root>

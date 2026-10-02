@@ -10,7 +10,11 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              mc:Ignorable="d"
              Loaded="OnLoaded"
+             PreviewKeyDown="OnPreviewKeyDown"
              PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="MissingFileVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid x:Name="MainGrid" AllowDrop="True" DragEnter="OnDragEnter">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -18,39 +22,59 @@
         </Grid.ColumnDefinitions>
 
         <!-- ListPane (左) -->
+        <Border Grid.Column="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0"/>
         <Grid x:Name="ListPane" Grid.Column="0" Margin="0,0,1,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Vertical" Margin="8,8,8,4">
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                    <ui:Button x:Name="AddButton" Click="AddButton_OnClick" ToolTip="{lex:Loc AddGame}">
-                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe710;" FontSize="20"/>
-                    </ui:Button>
-                </StackPanel>
-                <ComboBox x:Name="GenreComboBox" HorizontalContentAlignment="Center" Width="260" Margin="0,0,0,8" Loaded="GenreComboBox_OnLoaded" SelectionChanged="GenreComboBox_OnSelectionChanged">
+                <ui:TextBlock x:Name="LibraryTitleTextBlock" Appearance="Primary" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                <ui:Button x:Name="AddButton" Click="AddButton_OnClick" ToolTip="{lex:Loc AddGame}" HorizontalAlignment="Left" Margin="0,0,0,8">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe710;" FontSize="16" Margin="0,0,8,0"/>
+                        <ui:TextBlock Text="{lex:Loc AddGame}" Appearance="Primary"/>
+                    </StackPanel>
+                </ui:Button>
+                <ui:TextBox x:Name="SearchBox" PlaceholderText="{lex:Loc SearchPlaceholder}" ClearButtonEnabled="True" AutomationProperties.Name="{lex:Loc SearchPlaceholder}" ToolTip="{lex:Loc LibraryKeyboardHint}" TextChanged="SearchBox_OnTextChanged" Margin="0,0,0,8"/>
+                <ComboBox x:Name="GenreComboBox" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" AutomationProperties.Name="{lex:Loc LibraryGenreFilter}" Margin="0,0,0,8" SelectionChanged="GenreComboBox_OnSelectionChanged">
                     <ComboBoxItem x:Name="GenreAllComboBoxItem" Content="{lex:Loc GenreAllComboBoxItem}"/>
                 </ComboBox>
-                <ui:TextBox x:Name="SearchBox" PlaceholderText="{lex:Loc SearchPlaceholder}" TextChanged="SearchBox_OnTextChanged" Margin="0,0,0,4"/>
+                <ui:TextBlock x:Name="ResultCountTextBlock" Appearance="Secondary" Margin="0,0,0,4">
+                    <Run Text="{Binding Items.Count, ElementName=GameListBox, Mode=OneWay}"/><Run Text=" "/><Run Text="{lex:Loc LibraryItemCountSuffix}"/>
+                </ui:TextBlock>
+                <ui:TextBlock x:Name="LoadingStatusText" Text="{lex:Loc LibraryLoading}" Appearance="Secondary"/>
+                <StackPanel x:Name="LoadErrorStatusPanel" Visibility="Collapsed">
+                    <ui:TextBlock Text="{lex:Loc LibraryLoadFailed}" TextWrapping="Wrap" Appearance="Secondary"/>
+                    <ui:Button x:Name="StatusRetryButton" Content="{lex:Loc LibraryRetry}" Click="RetryButton_OnClick" HorizontalAlignment="Left" Margin="0,4,0,4"/>
+                </StackPanel>
             </StackPanel>
             <ListBox x:Name="GameListBox" Grid.Row="1" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="GameListBox_OnSelectionChanged" MouseDoubleClick="GameListBox_OnMouseDoubleClick">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Tag" Value="{Binding Data}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,6"/>
+                        <Setter Property="MinHeight" Value="60"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="4,2" Height="56">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             <Border Width="32" Height="32" CornerRadius="4" ClipToBounds="True" VerticalAlignment="Center">
                                 <Image Source="{Binding IconSource}" Stretch="UniformToFill"/>
                             </Border>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="8,0,0,0">
-                                <ui:TextBlock Text="{Binding Name}" FontSize="14" TextTrimming="CharacterEllipsis" MaxWidth="200" Appearance="Primary"/>
-                                <ui:TextBlock Text="{Binding FileExtension}" FontSize="11" Opacity="0.6" Margin="0,2,0,0" Appearance="Secondary"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+                                <ui:TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontSize="14" TextTrimming="CharacterEllipsis" Appearance="Primary"/>
+                                <ui:TextBlock Text="{Binding FileExtension}" FontSize="11" Margin="0,2,0,0" Appearance="Secondary"/>
+                                <ui:TextBlock Text="{lex:Loc FileMissingStatus}" FontSize="11" Appearance="Secondary"
+                                              Visibility="{Binding IsFileMissing, Converter={StaticResource MissingFileVisibilityConverter}}"/>
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -59,21 +83,68 @@
         <!-- DetailPane (右) -->
         <Grid x:Name="DetailPane" Grid.Column="1" Margin="8,8,8,8">
             <!-- 空状態 -->
-            <StackPanel x:Name="EmptyState" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <ui:SymbolIcon Symbol="Home12" FontSize="48" Opacity="0.3"/>
-                <ui:TextBlock Text="{lex:Loc SelectGamePrompt}" HorizontalAlignment="Center" Margin="0,12,0,0" Opacity="0.6" FontSize="14" Appearance="Primary"/>
+            <StackPanel x:Name="EmptyState" VerticalAlignment="Center" Margin="24,0">
+                <StackPanel x:Name="LibraryLoadingPanel">
+                    <ui:TextBlock Text="{lex:Loc LibraryLoading}" Appearance="Primary" TextWrapping="Wrap"/>
+                </StackPanel>
+                <StackPanel x:Name="LibraryLoadErrorPanel" Visibility="Collapsed">
+                    <ui:TextBlock Text="{lex:Loc LibraryLoadFailed}" Appearance="Primary" TextWrapping="Wrap"/>
+                    <ui:Button x:Name="RetryButton" Content="{lex:Loc LibraryRetry}" Click="RetryButton_OnClick" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                </StackPanel>
+                <StackPanel x:Name="LibraryEmptyPanel" Visibility="Collapsed">
+                    <ui:TextBlock Text="{lex:Loc LibraryEmptyTitle}" Appearance="Primary" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    <ui:TextBlock Text="{lex:Loc LibraryEmptyDescription}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                    <ui:Button x:Name="EmptyAddButton" Content="{lex:Loc AddGame}" Click="AddButton_OnClick" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                </StackPanel>
+                <StackPanel x:Name="LibraryNoResultsPanel" Visibility="Collapsed">
+                    <ui:TextBlock Text="{lex:Loc LibraryNoResultsTitle}" Appearance="Primary" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    <ui:TextBlock Text="{lex:Loc LibraryNoResultsDescription}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                    <ui:Button x:Name="ResetFiltersButton" Content="{lex:Loc LibraryResetFilters}" Click="ResetFiltersButton_OnClick" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                </StackPanel>
+                <StackPanel x:Name="LibrarySelectPanel" Visibility="Collapsed">
+                    <ui:TextBlock Text="{lex:Loc LibrarySelectTitle}" Appearance="Primary" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    <ui:TextBlock Text="{lex:Loc LibrarySelectDescription}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                </StackPanel>
             </StackPanel>
 
             <!-- 選択時 -->
-            <ScrollViewer x:Name="DetailScrollViewer" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
-                <StackPanel Orientation="Vertical" Margin="8">
-                    <Border Width="128" Height="128" CornerRadius="8" ClipToBounds="True" HorizontalAlignment="Left" Margin="0,0,0,16">
+            <Grid x:Name="DetailContent" Visibility="Collapsed" Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Width="64" Height="64" CornerRadius="8" ClipToBounds="True" VerticalAlignment="Top">
                         <Image x:Name="HeroImage" Stretch="UniformToFill"/>
                     </Border>
-                    <ui:TextBlock x:Name="DetailTitleTextBlock" FontSize="24" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" Appearance="Primary"/>
-                    <Border x:Name="FileTypeBadge" Background="{DynamicResource ControlAccentColor}" CornerRadius="8" Padding="10,3" HorizontalAlignment="Left" Margin="0,0,0,12">
-                        <ui:TextBlock x:Name="FileTypeBadgeText" Foreground="White" FontSize="11"/>
-                    </Border>
+                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                        <ui:TextBlock x:Name="DetailTitleTextBlock" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" MaxHeight="56" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Margin="0,0,0,8" Appearance="Primary"/>
+                        <Border x:Name="FileTypeBadge" Background="{DynamicResource ControlAccentColor}" CornerRadius="8" Padding="10,3" HorizontalAlignment="Left" Margin="0,0,0,4">
+                            <TextBlock x:Name="FileTypeBadgeText" Foreground="White" FontSize="11"/>
+                        </Border>
+                        <ui:TextBlock x:Name="MissingFileDetailText" Text="{lex:Loc FileMissingStatus}" FontSize="13" Appearance="Secondary" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Grid>
+                <WrapPanel Grid.Row="1" Margin="0,0,0,4">
+                    <ui:Button x:Name="PlayButton" Click="PlayButton_OnClick" Appearance="Primary" Content="{lex:Loc DetailPlay}" MinHeight="36" Padding="20,8" Margin="0,0,8,8">
+                        <ui:Button.Icon>
+                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe768;" FontSize="14"/>
+                        </ui:Button.Icon>
+                    </ui:Button>
+                    <Button x:Name="PropertyButton" Click="PropertyButton_OnClick" MinHeight="36" Padding="14,8" Margin="0,0,8,8">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe713;" FontSize="14" Margin="0,0,6,0"/>
+                            <ui:TextBlock Text="{lex:Loc DetailProperty}" Appearance="Primary"/>
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
+                <ScrollViewer x:Name="DetailScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
                     <ItemsControl x:Name="GenreChipsControl" Margin="0,0,0,16">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -83,7 +154,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="{DynamicResource ControlAccentColor}" CornerRadius="10" Padding="8,3" Margin="0,0,6,6">
-                                    <ui:TextBlock Text="{Binding}" Foreground="White" FontSize="11"/>
+                                    <TextBlock Text="{Binding}" Foreground="White" FontSize="11"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -91,6 +162,7 @@
                     <Expander x:Name="MemoExpander" Header="{lex:Loc DetailMemo}" Margin="0,0,0,12">
                         <ui:TextBlock x:Name="MemoTextBlock" TextWrapping="Wrap" Margin="0,4,0,0" Appearance="Primary"/>
                     </Expander>
+                    <StackPanel x:Name="WikiSection">
                     <ui:TextBlock Text="{lex:Loc WikiData}" FontWeight="SemiBold" Margin="0,0,0,4" Appearance="Primary"/>
                     <ItemsControl x:Name="WikiDataControl" Margin="0,0,0,16">
                         <ItemsControl.ItemTemplate>
@@ -100,27 +172,16 @@
                                         <ColumnDefinition Width="160"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ui:TextBlock Grid.Column="0" Text="{Binding Key}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Appearance="Secondary"/>
+                                    <ui:TextBlock Grid.Column="0" Text="{Binding Key}" FontWeight="SemiBold" FontSize="12" Appearance="Secondary"/>
                                     <ui:TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="12" TextWrapping="Wrap" Appearance="Primary"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </StackPanel>
                     <ui:TextBlock x:Name="LaunchOptionsTextBlock" Text="{lex:Loc DetailLaunchOptions}" FontWeight="SemiBold" Margin="0,0,0,4" Appearance="Primary"/>
                     <StackPanel x:Name="LaunchOptionsPanel" Orientation="Vertical" Margin="0,0,0,16"/>
                     <WrapPanel Orientation="Horizontal">
-                        <Button x:Name="PlayButton" Click="PlayButton_OnClick" Padding="20,8" Margin="0,0,8,8" Background="{DynamicResource ControlAccentColor}" Foreground="White">
-                            <StackPanel Orientation="Horizontal">
-                                <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe768;" FontSize="14" Margin="0,0,6,0"/>
-                                <ui:TextBlock Text="{lex:Loc DetailPlay}"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="PropertyButton" Click="PropertyButton_OnClick" Padding="14,8" Margin="0,0,8,8">
-                            <StackPanel Orientation="Horizontal">
-                                <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe713;" FontSize="14" Margin="0,0,6,0"/>
-                                <ui:TextBlock Text="{lex:Loc DetailProperty}" Appearance="Primary"/>
-                            </StackPanel>
-                        </Button>
                         <Button x:Name="MemoButton" Click="MemoButton_OnClick" Padding="14,8" Margin="0,0,8,8">
                             <StackPanel Orientation="Horizontal">
                                 <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe70b;" FontSize="14" Margin="0,0,6,0"/>
@@ -142,6 +203,7 @@
                     </WrapPanel>
                 </StackPanel>
             </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
