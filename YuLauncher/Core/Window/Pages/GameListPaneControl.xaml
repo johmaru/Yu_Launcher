@@ -10,6 +10,7 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              mc:Ignorable="d"
              Loaded="OnLoaded"
+             Unloaded="OnUnloaded"
              PreviewKeyDown="OnPreviewKeyDown"
              PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown">
     <UserControl.Resources>
@@ -71,6 +72,8 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
                                 <ui:TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontSize="14" TextTrimming="CharacterEllipsis" Appearance="Primary"/>
                                 <ui:TextBlock Text="{Binding FileExtension}" FontSize="11" Margin="0,2,0,0" Appearance="Secondary"/>
+                                <ui:TextBlock x:Name="LoginTodayText" Text="{Binding LoginTodayText}" TextWrapping="Wrap" FontSize="11" Appearance="Secondary"
+                                              Visibility="{Binding IsWebGame, Converter={StaticResource MissingFileVisibilityConverter}}"/>
                                 <ui:TextBlock Text="{lex:Loc FileMissingStatus}" FontSize="11" Appearance="Secondary"
                                               Visibility="{Binding IsFileMissing, Converter={StaticResource MissingFileVisibilityConverter}}"/>
                             </StackPanel>
@@ -159,6 +162,29 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    <Expander x:Name="LoginHistorySection" Header="{lex:Loc LoginHistory}" Margin="0,0,0,12" Visibility="Collapsed">
+                        <StackPanel>
+                            <ui:TextBlock x:Name="LoginLastTimeText" Appearance="Secondary" TextWrapping="Wrap" Margin="0,6"/>
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <ui:TextBlock Text="{lex:Loc WebGameLoginTimeColumn}" Appearance="Secondary"/>
+                                <ui:TextBlock Grid.Column="1" Text="{lex:Loc WebGameLoginMethodColumn}" Appearance="Secondary"/>
+                            </Grid>
+                            <ItemsControl x:Name="LoginHistoryList">
+                                <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <ui:TextBlock Text="{Binding Time}" Appearance="Primary" TextWrapping="Wrap"/>
+                                    <ui:TextBlock Grid.Column="1" Text="{Binding Method}" Appearance="Primary" TextWrapping="Wrap"/>
+                                </Grid></DataTemplate></ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <ui:TextBlock x:Name="LoginHistoryEmptyText" Text="{lex:Loc WebGameLoginEmpty}" Appearance="Secondary" TextWrapping="Wrap" Visibility="Collapsed"/>
+                            <ui:InfoBar x:Name="LoginHistoryErrorBar" Severity="Error" IsOpen="False" Title="{lex:Loc CreateGameDialogErrorTitle}" Message="{lex:Loc WebGameLoginReadFailed}"/>
+                            <WrapPanel Margin="0,8,0,0">
+                                <ui:Button x:Name="LoginHistoryPreviousButton" Content="{lex:Loc WebGameLoginPrevious}" Click="LoginHistoryPrevious" IsEnabled="False" Margin="0,0,8,8"/>
+                                <ui:Button x:Name="LoginHistoryNextButton" Content="{lex:Loc WebGameLoginNext}" Click="LoginHistoryNext" IsEnabled="False" Margin="0,0,0,8"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Expander>
                     <Expander x:Name="MemoExpander" Header="{lex:Loc DetailMemo}" Margin="0,0,0,12">
                         <ui:TextBlock x:Name="MemoTextBlock" TextWrapping="Wrap" Margin="0,4,0,0" Appearance="Primary"/>
                     </Expander>

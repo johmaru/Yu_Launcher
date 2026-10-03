@@ -14,6 +14,8 @@
 
 
     <ItemGroup>
+      <EmbeddedResource Include="Game/WebGameLogin.js" LogicalName="YuLauncher.Game.WebGameLogin.js" />
+      <EmbeddedResource Include="Game/WebGameEventObserver.js" LogicalName="YuLauncher.Game.WebGameEventObserver.js" />
       <Page Update="Core\WebSaverWindow\WebSaverWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>

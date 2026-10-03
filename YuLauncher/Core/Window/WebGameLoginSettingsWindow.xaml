@@ -1,0 +1,79 @@
+<ui:FluentWindow x:Class="YuLauncher.Core.Window.WebGameLoginSettingsWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+ xmlns:lex="http://wpflocalizeextension.codeplex.com" lex:ResxLocalizationProvider.DefaultAssembly="YuLauncher" lex:ResxLocalizationProvider.DefaultDictionary="Language"
+ Title="{lex:Loc WebGameLoginSettings}" Width="1080" Height="760" MinWidth="900" MinHeight="640"
+ ExtendsContentIntoTitleBar="True" WindowBackdropType="Mica" WindowStartupLocation="CenterOwner" Loaded="OnLoaded" Closed="OnClosed">
+ <Grid>
+  <Grid.RowDefinitions><RowDefinition Height="48"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1"><ui:TitleBar Title="{lex:Loc WebGameLoginSettings}" Height="48"/></Border>
+  <Grid Grid.Row="1" Margin="16,12">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="340"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,12,0">
+    <StackPanel>
+     <ui:Card Padding="16" BorderThickness="0" Margin="0,0,0,12"><StackPanel>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginMode}" Appearance="Primary" Margin="0,0,0,6"/>
+      <ComboBox x:Name="LoginModeCombo" SelectionChanged="ModeChanged" SelectedIndex="0">
+       <ComboBoxItem Content="{lex:Loc WebGameLoginConnection}"/><ComboBoxItem Content="{lex:Loc WebGameLoginUrl}"/>
+       <ComboBoxItem Content="{lex:Loc WebGameLoginElement}"/><ComboBoxItem Content="{lex:Loc WebGameLoginJavaScript}"/>
+       <ComboBoxItem Content="{lex:Loc WebGameLoginNetwork}"/>
+      </ComboBox>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginTargetOrigin}" Appearance="Primary" Margin="0,12,0,6"/>
+      <ui:TextBox x:Name="LoginTargetOriginBox"/>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginOriginHelp}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,0,0"/>
+     </StackPanel></ui:Card>
+     <ui:Card x:Name="ConnectionPanel" Padding="16" BorderThickness="0" Margin="0,0,0,12">
+      <ui:TextBlock Text="{lex:Loc WebGameLoginConnectionHelp}" Appearance="Secondary" TextWrapping="Wrap"/>
+     </ui:Card>
+     <ui:Card x:Name="UrlPanel" Padding="16" BorderThickness="0" Margin="0,0,0,12" Visibility="Collapsed"><StackPanel>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginUrl}" Appearance="Primary"/>
+      <ui:TextBox x:Name="LoginSuccessUrlBox" Margin="0,6"/>
+      <ui:Button x:Name="UseCurrentUrlButton" Content="{lex:Loc WebGameLoginUseCurrentUrl}" Click="UseCurrentUrl" IsEnabled="False"/>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginUrlHelp}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,0,0"/>
+     </StackPanel></ui:Card>
+     <ui:Card x:Name="ElementPanel" Padding="16" BorderThickness="0" Margin="0,0,0,12" Visibility="Collapsed"><StackPanel>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginSelector}" Appearance="Primary"/>
+      <ui:TextBox x:Name="LoginSuccessSelectorBox" Margin="0,6"/>
+      <ui:Button x:Name="PickLoginElementButton" Content="{lex:Loc WebGameLoginPickElement}" Click="PickElement" IsEnabled="False" Margin="0,0,0,6"/>
+      <ui:Button x:Name="CancelLoginElementPickButton" Content="{lex:Loc WebGameLoginCancelPick}" Click="CancelPick"/>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginSelectorHelp}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,0,0"/>
+     </StackPanel></ui:Card>
+     <ui:Card x:Name="ScriptPanel" Padding="16" BorderThickness="0" Margin="0,0,0,12" Visibility="Collapsed"><Expander Header="{lex:Loc WebGameLoginAdvanced}" IsExpanded="True"><StackPanel>
+      <ui:TextBox x:Name="LoginScriptBox" AcceptsReturn="True" AcceptsTab="True" FontFamily="Consolas" MinHeight="180" MaxHeight="320" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap" Margin="0,6"/>
+      <ui:TextBlock Text="{lex:Loc WebGameLoginScriptHelp}" Appearance="Secondary" TextWrapping="Wrap"/>
+      <ComboBox x:Name="LoginSampleCombo" SelectedIndex="0" Margin="0,8,0,6"><ComboBoxItem Content="{lex:Loc WebGameLoginSampleEvent}"/><ComboBoxItem Content="{lex:Loc WebGameLoginSampleElement}"/><ComboBoxItem Content="{lex:Loc WebGameLoginSampleUrl}"/></ComboBox>
+      <ui:Button x:Name="InsertLoginSampleButton" Content="{lex:Loc WebGameLoginInsertSample}" Click="InsertSample"/>
+      <CheckBox x:Name="TrustLoginScriptCheckBox" Margin="0,10,0,0"><ui:TextBlock Text="{lex:Loc WebGameLoginScriptTrust}" Appearance="Primary" TextWrapping="Wrap"/></CheckBox>
+     </StackPanel></Expander></ui:Card>
+     <ui:Card x:Name="NetworkPanel" Padding="16" BorderThickness="0" Margin="0,0,0,12" Visibility="Collapsed"><StackPanel>
+      <ui:TextBlock Text="{lex:Loc WebGameEventUrl}" Appearance="Primary"/><ui:TextBox x:Name="LoginNetworkUrlBox"/>
+      <ui:TextBlock Text="{lex:Loc WebGameEventMethod}" Appearance="Primary"/><ui:TextBox x:Name="LoginNetworkMethodBox" Text="GET"/>
+      <ui:TextBlock Text="{lex:Loc WebGameEventStatus}" Appearance="Primary"/><ui:TextBox x:Name="LoginNetworkStatusBox" Text="200"/>
+      <CheckBox x:Name="LoginNetworkUseJsonCheckBox" Margin="0,6"><ui:TextBlock Text="{lex:Loc WebGameEventUseJson}" Appearance="Primary"/></CheckBox>
+      <ui:TextBlock Text="{lex:Loc WebGameEventJsonPointer}" Appearance="Primary"/><ui:TextBox x:Name="LoginNetworkJsonPointerBox"/>
+      <ui:TextBlock Text="{lex:Loc WebGameEventExpectedJson}" Appearance="Primary"/><ui:TextBox x:Name="LoginNetworkExpectedJsonBox"/>
+      <ui:TextBlock Text="{lex:Loc WebGameEventNetworkNotice}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,6"/>
+     </StackPanel></ui:Card>
+     <ui:TextBlock Text="{lex:Loc WebGameLoginNextLaunch}" Appearance="Secondary" TextWrapping="Wrap"/>
+    </StackPanel>
+   </ScrollViewer>
+   <Grid Grid.Column="1">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <DockPanel Margin="0,0,0,8"><ui:Button x:Name="OpenEventViewerButton" DockPanel.Dock="Right" Content="{lex:Loc WebGameEventOpen}" Click="OpenEventViewer"/>
+     <ui:TextBlock Text="{lex:Loc WebGameLoginPreview}" Appearance="Primary" TextWrapping="Wrap" VerticalAlignment="Center"/></DockPanel>
+    <Grid Grid.Row="1" Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+     <ui:TextBox x:Name="LoginPreviewUrlBox"/>
+     <ui:Button x:Name="NavigateLoginPreviewButton" Grid.Column="1" Content="{lex:Loc WebGameLoginNavigate}" Click="NavigatePreview" Margin="6,0" IsEnabled="False"/>
+     <ui:Button x:Name="TestLoginRuleButton" Grid.Column="2" Content="{lex:Loc WebGameLoginTest}" Click="TestRule" IsEnabled="False"/>
+    </Grid>
+    <wv2:WebView2 x:Name="LoginPreviewWebView" Grid.Row="2"/>
+    <ui:TextBlock x:Name="LoginPreviewStatusText" Grid.Row="3" Appearance="Secondary" TextWrapping="Wrap" Margin="0,8,0,0"/>
+   </Grid>
+  </Grid>
+  <ui:InfoBar x:Name="LoginSettingsErrorBar" AutomationProperties.AutomationId="LoginSettingsErrorBar" Grid.Row="2" Severity="Error" Title="{lex:Loc CreateGameDialogErrorTitle}" IsOpen="False" Margin="16,0"/>
+  <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="16,12">
+   <ui:Button x:Name="SaveLoginSettingsButton" AutomationProperties.AutomationId="SaveLoginSettingsButton" Content="{lex:Loc SimpleSave}" Click="SaveSettings" Appearance="Primary" IsEnabled="False"/>
+   <ui:Button x:Name="CancelLoginSettingsButton" AutomationProperties.AutomationId="CancelLoginSettingsButton" Content="{lex:Loc WebGameLoginCancel}" Click="CancelSettings" Margin="8,0,0,0"/>
+  </StackPanel>
+ </Grid>
+</ui:FluentWindow>
