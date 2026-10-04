@@ -157,13 +157,13 @@
     <value>セーブ</value>
   </data>
   <data name="SettingResChange" xml:space="preserve">
-    <value>設定画面の解像度変更</value>
+    <value>設定画面</value>
   </data>
   <data name="MainWindowResChange" xml:space="preserve">
-    <value>メニューの解像度変更</value>
+    <value>メイン画面</value>
   </data>
   <data name="GameWindowResChange" xml:space="preserve">
-    <value>ゲーム画面の解像度変更</value>
+    <value>ゲーム画面</value>
   </data>
   <data name="NameInput" xml:space="preserve">
     <value>名前を入力してください</value>
@@ -179,6 +179,9 @@
   </data>
   <data name="DeleteGame" xml:space="preserve">
     <value>削除</value>
+  </data>
+  <data name="AddEntryFileLabel" xml:space="preserve">
+    <value>ファイル</value>
   </data>
   <data name="SelectFileLabel" xml:space="preserve">
     <value>ファイルを選択</value>
@@ -229,7 +232,7 @@
     <value>エディットモードにする</value>
   </data>
   <data name="MemoWindowResChange" xml:space="preserve">
-    <value>メモの解像度変更</value>
+    <value>メモ画面</value>
   </data>
   <data name="SimpleRes" xml:space="preserve">
     <value>解像度</value>
@@ -296,7 +299,7 @@
     <value>Mute(無効)</value>
   </data>
   <data name="VideoGraphics" xml:space="preserve">
-    <value>ビデオ/グラフィック/ディスプレイ</value>
+    <value>表示と言語</value>
   </data>
   <data name="SimpleGeneral" xml:space="preserve">
     <value>一般</value>
@@ -382,8 +385,21 @@
   <data name="DetailNoGames" xml:space="preserve">
     <value>ゲームがありません</value>
   </data>
+  <data name="LibraryGenreFilter" xml:space="preserve"><value>ジャンルで絞り込み</value></data>
+  <data name="LibraryItemCountSuffix" xml:space="preserve"><value>件</value></data>
+  <data name="LibraryKeyboardHint" xml:space="preserve"><value>Ctrl+Fで検索・一覧でEnterを押すと起動</value></data>
+  <data name="LibraryEmptyTitle" xml:space="preserve"><value>まだ項目がありません</value></data>
+  <data name="LibraryEmptyDescription" xml:space="preserve"><value>「追加」からアプリやWebサイトを登録できます。</value></data>
+  <data name="LibraryNoResultsTitle" xml:space="preserve"><value>一致する項目がありません</value></data>
+  <data name="LibraryNoResultsDescription" xml:space="preserve"><value>検索語やジャンルを変更するか、絞り込みを解除してください。</value></data>
+  <data name="LibraryResetFilters" xml:space="preserve"><value>絞り込みを解除</value></data>
+  <data name="LibrarySelectTitle" xml:space="preserve"><value>項目を選択してください</value></data>
+  <data name="LibrarySelectDescription" xml:space="preserve"><value>一覧から選ぶと詳細を表示します。ダブルクリックでも起動できます。</value></data>
+  <data name="LibraryLoading" xml:space="preserve"><value>読み込み中…</value></data>
+  <data name="LibraryLoadFailed" xml:space="preserve"><value>一覧の読み込みに問題が発生しました。</value></data>
+  <data name="LibraryRetry" xml:space="preserve"><value>再読み込み</value></data>
   <data name="SearchPlaceholder" xml:space="preserve">
-    <value>検索...</value>
+    <value>名前で検索…</value>
   </data>
   <data name="DetailLaunchOptions" xml:space="preserve">
     <value>起動オプション</value>
@@ -442,4 +458,173 @@
   <data name="SettingsDividerColorApply" xml:space="preserve">
     <value>適用</value>
   </data>
+  <data name="FileMissingStatus" xml:space="preserve">
+    <value>ファイルが見つかりません</value>
+  </data>
+  <data name="SettingsGeneralDescription" xml:space="preserve">
+    <value>見た目とデータを管理します。</value>
+  </data>
+  <data name="SettingsDisplayDescription" xml:space="preserve">
+    <value>表示言語、画面の大きさ、メモの文字サイズを設定します。</value>
+  </data>
+  <data name="SettingsAppearance" xml:space="preserve">
+    <value>見た目</value>
+  </data>
+  <data name="SettingsDividerColorHelp" xml:space="preserve">
+    <value>例：#8B5CF6。「適用」で区切り線の色を変更します。</value>
+  </data>
+  <data name="SettingsDataTransfer" xml:space="preserve">
+    <value>データの移行</value>
+  </data>
+  <data name="SettingsDataTransferHelp" xml:space="preserve">
+    <value>エクスポート先・インポート元のフォルダーを選びます。インポートは現在のデータと設定を上書きします。</value>
+  </data>
+  <data name="SettingsAbout" xml:space="preserve">
+    <value>アプリ情報</value>
+  </data>
+  <data name="SettingsLanguageHelp" xml:space="preserve">
+    <value>保存すると表示言語が切り替わります。</value>
+  </data>
+  <data name="SettingsDisplayMode" xml:space="preserve">
+    <value>表示モード</value>
+  </data>
+  <data name="SettingsImmediateSaveHint" xml:space="preserve">
+    <value>この項目は切り替えると設定が保存されます。</value>
+  </data>
+  <data name="SettingsWindowSizes" xml:space="preserve">
+    <value>ウィンドウサイズ</value>
+  </data>
+  <data name="SettingsWindowSizesHint" xml:space="preserve">
+    <value>幅と高さを指定します。保存したサイズは次に画面を開いたときに使われます。</value>
+  </data>
+  <data name="SettingsMemo" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="SettingsWidth" xml:space="preserve">
+    <value>幅</value>
+  </data>
+  <data name="SettingsHeight" xml:space="preserve">
+    <value>高さ</value>
+  </data>
+  <data name="SettingsSaveChanges" xml:space="preserve">
+    <value>変更を保存</value>
+  </data>
+  <data name="SettingsSaveHint" xml:space="preserve">
+    <value>言語・サイズ・文字サイズは保存が必要です。</value>
+  </data>
+  <data name="SettingsMainWidth" xml:space="preserve">
+    <value>メイン画面の幅</value>
+  </data>
+  <data name="SettingsMainHeight" xml:space="preserve">
+    <value>メイン画面の高さ</value>
+  </data>
+  <data name="SettingsGameWidth" xml:space="preserve">
+    <value>ゲーム画面の幅</value>
+  </data>
+  <data name="SettingsGameHeight" xml:space="preserve">
+    <value>ゲーム画面の高さ</value>
+  </data>
+  <data name="SettingsSettingWidth" xml:space="preserve">
+    <value>設定画面の幅</value>
+  </data>
+  <data name="SettingsSettingHeight" xml:space="preserve">
+    <value>設定画面の高さ</value>
+  </data>
+  <data name="SettingsMemoWidth" xml:space="preserve">
+    <value>メモ画面の幅</value>
+  </data>
+  <data name="SettingsMemoHeight" xml:space="preserve">
+    <value>メモ画面の高さ</value>
+  </data>
+  <data name="WebGameLoginInitializationFailed" xml:space="preserve"><value>ログイン判定を開始できませんでした。ゲームの操作は継続できます。</value></data>
+  <data name="WebGameLoginTrackingFailed" xml:space="preserve"><value>ログイン記録を保存できませんでした。ゲームの操作は継続できます。</value></data>
+  <data name="WebGameLoginSettings" xml:space="preserve"><value>ログイン履歴の設定</value></data>
+  <data name="WebGameLoginConnection" xml:space="preserve"><value>接続判定（推定）</value></data>
+  <data name="WebGameLoginUrl" xml:space="preserve"><value>成功URL</value></data>
+  <data name="WebGameLoginElement" xml:space="preserve"><value>表示要素</value></data>
+  <data name="WebGameLoginJavaScript" xml:space="preserve"><value>JavaScriptイベント</value></data>
+  <data name="WebGameLoginMode" xml:space="preserve"><value>判定方法</value></data>
+  <data name="WebGameLoginTargetOrigin" xml:space="preserve"><value>対象ページのorigin</value></data>
+  <data name="WebGameLoginOriginHelp" xml:space="preserve"><value>scheme・host・portが完全一致するページだけを対象にします。</value></data>
+  <data name="WebGameLoginConnectionHelp" xml:space="preserve"><value>接続成功を記録します。実際のログイン成功を保証しません。</value></data>
+  <data name="WebGameLoginUrlHelp" xml:space="preserve"><value>origin完全一致・パス前方一致で判定します。クエリと#以降は無視します。</value></data>
+  <data name="WebGameLoginSelector" xml:space="preserve"><value>成功表示のCSSセレクター</value></data>
+  <data name="WebGameLoginSelectorHelp" xml:space="preserve"><value>ログイン後だけ表示される要素を選んでください。画面更新で条件が変わる場合があります。canvas内の部品は選択できません。</value></data>
+  <data name="WebGameLoginUseCurrentUrl" xml:space="preserve"><value>このURLを成功条件にする</value></data>
+  <data name="WebGameLoginPickElement" xml:space="preserve"><value>成功表示の要素を選ぶ</value></data>
+  <data name="WebGameLoginCancelPick" xml:space="preserve"><value>選択を中止</value></data>
+  <data name="WebGameLoginAdvanced" xml:space="preserve"><value>上級者設定</value></data>
+  <data name="WebGameLoginScriptHelp" xml:space="preserve"><value>yuLogin.complete(): 成功通知。onEvent(target,name,predicate?): イベント監視。whenVisible(selector): 表示待ち。whenUrl(url): URL待ち。クリックやsubmitだけでは認証成功を確認できません。</value></data>
+  <data name="WebGameLoginScriptTrust" xml:space="preserve"><value>自分が信頼するコードだけを実行します。コードは対象ページの情報にアクセスできます。</value></data>
+  <data name="WebGameLoginInsertSample" xml:space="preserve"><value>サンプルを挿入</value></data>
+  <data name="WebGameLoginSampleEvent" xml:space="preserve"><value>成功イベント</value></data>
+  <data name="WebGameLoginSampleElement" xml:space="preserve"><value>要素の表示</value></data>
+  <data name="WebGameLoginSampleUrl" xml:space="preserve"><value>URLの変更</value></data>
+  <data name="WebGameLoginPreview" xml:space="preserve"><value>設定プレビュー（履歴には記録しません）</value></data>
+  <data name="WebGameLoginNavigate" xml:space="preserve"><value>開く</value></data>
+  <data name="WebGameLoginTest" xml:space="preserve"><value>判定をテスト</value></data>
+  <data name="WebGameLoginWaiting" xml:space="preserve"><value>成功条件を待機中</value></data>
+  <data name="WebGameLoginTestSuccess" xml:space="preserve"><value>成功条件を検出しました（履歴には記録していません）</value></data>
+  <data name="WebGameLoginPicking" xml:space="preserve"><value>成功表示をクリックしてください。Escapeで中止できます。</value></data>
+  <data name="WebGameLoginPicked" xml:space="preserve"><value>成功表示の条件を取得しました</value></data>
+  <data name="WebGameLoginPickCancelled" xml:space="preserve"><value>要素選択を中止しました</value></data>
+  <data name="WebGameLoginNextLaunch" xml:space="preserve"><value>設定は次のゲーム起動から反映されます。</value></data>
+  <data name="WebGameLoginNoRecordToday" xml:space="preserve"><value>今日は記録なし</value></data>
+  <data name="WebGameLoginRecordedToday" xml:space="preserve"><value>今日記録済み：{0}</value></data>
+  <data name="WebGameLoginLastTime" xml:space="preserve"><value>最終記録：{0}</value></data>
+  <data name="WebGameLoginEmpty" xml:space="preserve"><value>ログイン記録はまだありません。</value></data>
+  <data name="WebGameLoginReadFailed" xml:space="preserve"><value>履歴を取得できません。再読み込みしてください。</value></data>
+  <data name="WebGameLoginInvalidSettings" xml:space="preserve"><value>入力条件を確認してください。URL・origin・セレクター・コードの構文と信頼確認が必要です。</value></data>
+  <data name="WebGameLoginTimeColumn" xml:space="preserve"><value>記録日時</value></data>
+  <data name="WebGameLoginMethodColumn" xml:space="preserve"><value>判定方法</value></data>
+  <data name="WebGameLoginPrevious" xml:space="preserve"><value>前の50件</value></data>
+  <data name="WebGameLoginNext" xml:space="preserve"><value>次の50件</value></data>
+  <data name="WebGameLoginCancel" xml:space="preserve"><value>キャンセル</value></data>
+  <data name="WebGameLoginNetwork" xml:space="preserve"><value>通信条件</value></data>
+  <data name="WebGameEventViewer" xml:space="preserve"><value>観測ビューアー</value></data>
+  <data name="WebGameEventOpen" xml:space="preserve"><value>通信・イベントを観測</value></data>
+  <data name="WebGameEventNetworkTab" xml:space="preserve"><value>通信</value></data>
+  <data name="WebGameEventDomTab" xml:space="preserve"><value>DOMイベント</value></data>
+  <data name="WebGameEventFilter" xml:space="preserve"><value>一覧を絞り込む</value></data>
+  <data name="WebGameEventPause" xml:space="preserve"><value>観測を一時停止</value></data>
+  <data name="WebGameEventResume" xml:space="preserve"><value>観測を再開</value></data>
+  <data name="WebGameEventClear" xml:space="preserve"><value>一覧をクリア</value></data>
+  <data name="WebGameEventCaptureDetail" xml:space="preserve"><value>これから発生するDOMイベントの詳細を取得する</value></data>
+  <data name="WebGameEventReadJson" xml:space="preserve"><value>次のJSON応答を取得</value></data>
+  <data name="WebGameEventApply" xml:space="preserve"><value>判定条件へ反映</value></data>
+  <data name="WebGameEventTime" xml:space="preserve"><value>時刻</value></data>
+  <data name="WebGameEventSource" xml:space="preserve"><value>ウィンドウ</value></data>
+  <data name="WebGameEventMainSource" xml:space="preserve"><value>メインプレビュー</value></data>
+  <data name="WebGameEventPopupSource" xml:space="preserve"><value>子ウィンドウ {0}</value></data>
+  <data name="WebGameEventUrl" xml:space="preserve"><value>通信URL</value></data>
+  <data name="WebGameEventMethod" xml:space="preserve"><value>HTTPメソッド</value></data>
+  <data name="WebGameEventStatus" xml:space="preserve"><value>HTTP状態コード</value></data>
+  <data name="WebGameEventContentType" xml:space="preserve"><value>応答形式</value></data>
+  <data name="WebGameEventName" xml:space="preserve"><value>イベント名</value></data>
+  <data name="WebGameEventTarget" xml:space="preserve"><value>対象</value></data>
+  <data name="WebGameEventJsonPointer" xml:space="preserve"><value>JSON Pointer</value></data>
+  <data name="WebGameEventExpectedJson" xml:space="preserve"><value>期待するJSON値</value></data>
+  <data name="WebGameEventUseJson" xml:space="preserve"><value>JSONの値も条件にする</value></data>
+  <data name="WebGameEventEmpty" xml:space="preserve"><value>まだ観測した項目はありません。プレビューで操作してください。</value></data>
+  <data name="WebGameEventCount" xml:space="preserve"><value>{0}件を保持。2000件を超えると古い項目を破棄します。</value></data>
+  <data name="WebGameEventNetworkNotice" xml:space="preserve"><value>WebView全体の通信です。HTTP成功だけではログイン成立を証明できません。バイナリ・暗号化された内容は解析しません。</value></data>
+  <data name="WebGameEventDomNotice" xml:space="preserve"><value>dispatchされたイベントと対応するDOMイベントを観測します。ゲーム独自の内部emitterや非公開関数は対象外です。</value></data>
+  <data name="WebGameEventPrivacyNotice" xml:space="preserve"><value>本文やdetailには個人情報が含まれる場合があります。既知のキーは伏せ字にしますが、完全な除去は保証できません。</value></data>
+  <data name="WebGameEventDetailMissing" xml:space="preserve"><value>この項目のdetailは未取得です。詳細取得を有効にして再度操作してください。</value></data>
+  <data name="WebGameEventDetailUnavailable" xml:space="preserve"><value>詳細を安全に取得できないか、取得上限を超えています。</value></data>
+  <data name="WebGameEventUnsupportedTarget" xml:space="preserve"><value>この対象には安全なhookを生成できません。</value></data>
+  <data name="WebGameEventExistingScriptNotice" xml:space="preserve"><value>既存のJavaScriptに条件を追加します。既存の条件が成立した場合も成功になります。</value></data>
+  <data name="WebGameEventExpired" xml:space="preserve"><value>応答が期限切れです。再度操作して通信を観測してください。</value></data>
+  <data name="WebGameEventNonJson" xml:space="preserve"><value>この応答は対応するJSON形式ではありません。</value></data>
+  <data name="WebGameEventNoBody" xml:space="preserve"><value>この応答の本文は取得できません。</value></data>
+  <data name="WebGameEventTooLarge" xml:space="preserve"><value>本文が1MiBの取得上限を超えています。</value></data>
+  <data name="WebGameEventInvalidJson" xml:space="preserve"><value>応答をJSONとして解析できません。</value></data>
+  <data name="WebGameEventReadFailed" xml:space="preserve"><value>応答の読み取りに失敗しました。再度操作してください。</value></data>
+  <data name="WebGameEventInvalidRule" xml:space="preserve"><value>URL、メソッド、状態コードとJSON条件を確認してください。</value></data>
+  <data name="WebGameEventRuntimeUnsupported" xml:space="preserve"><value>観測APIを利用できません。WebView2 Runtimeを更新してください。</value></data>
+  <data name="WebGameEventWaitResponse" xml:space="preserve"><value>このウィンドウの同じURL・メソッド・状態コードの次の応答を待っています。プレビューで操作を再実行してください。自動送信はしません。</value></data>
+  <data name="PropertyBasicInfo" xml:space="preserve"><value>基本情報</value></data>
+  <data name="PropertyLaunchSettings" xml:space="preserve"><value>起動設定</value></data>
+  <data name="PropertyRelatedSettings" xml:space="preserve"><value>関連設定</value></data>
+  <data name="PropertySaveChanges" xml:space="preserve"><value>変更を保存</value></data>
 </root>

@@ -11,151 +11,94 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Language"
              Loaded="WebGame_OnLoaded"
              mc:Ignorable="d">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <Grid Margin="0,12">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!-- 名前 -->
-        <Border Grid.Row="0"
-                BorderBrush="{DynamicResource DividerBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,0,16,12"
-                Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <ui:TextBlock Grid.Column="0" x:Name="NameTextBlock"
-                              Text="{lex:Loc SimpleName}"
-                              VerticalAlignment="Center"
-                              Margin="0,0,12,0"
-                              Appearance="Primary"/>
-                <ui:TextBox Grid.Column="1" x:Name="NameBox"
-                            PlaceholderText="{lex:Loc NameInput}"/>
-            </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel Margin="24,16,24,16">
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc PropertyBasicInfo}" FontSize="16" FontWeight="SemiBold"
+                                      Appearance="Primary" Margin="0,0,0,12"/>
+                        <ui:TextBlock x:Name="NameTextBlock" Text="{lex:Loc SimpleName}" FontSize="13"
+                                      Appearance="Primary" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        <ui:TextBox x:Name="NameBox" PlaceholderText="{lex:Loc NameInput}"
+                                    HorizontalAlignment="Stretch" MinHeight="36" Margin="0,0,0,12"
+                                    AutomationProperties.AutomationId="NameBox"
+                                    AutomationProperties.LabeledBy="{Binding ElementName=NameTextBlock}"/>
+                        <ui:TextBlock x:Name="UrlTextBlock" Text="{lex:Loc SimpleAddress}" FontSize="13"
+                                      Appearance="Primary" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        <ui:TextBox x:Name="UrlBox" HorizontalAlignment="Stretch" MinHeight="36"
+                                    AutomationProperties.AutomationId="UrlBox"
+                                    AutomationProperties.LabeledBy="{Binding ElementName=UrlTextBlock}"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc PropertyLaunchSettings}" FontSize="16" FontWeight="SemiBold"
+                                      Appearance="Primary" Margin="0,0,0,12"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <ui:TextBlock x:Name="WindowWidthTextBlock" Text="{lex:Loc SimpleWindowWidth}"
+                                              FontSize="13" Appearance="Primary" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                                <ui:NumberBox x:Name="WindowWidthBox" PlaceholderText="{lex:Loc SimpleWindowSize}"
+                                              ClearButtonEnabled="True" Minimum="800" HorizontalAlignment="Stretch"
+                                              AutomationProperties.LabeledBy="{Binding ElementName=WindowWidthTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <ui:TextBlock x:Name="WindowHeightTextBlock" Text="{lex:Loc SimpleWindowHeight}"
+                                              FontSize="13" Appearance="Primary" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                                <ui:NumberBox x:Name="WindowHeightBox" PlaceholderText="{lex:Loc SimpleWindowSize}"
+                                              ClearButtonEnabled="True" Minimum="400" HorizontalAlignment="Stretch"
+                                              AutomationProperties.LabeledBy="{Binding ElementName=WindowHeightTextBlock}"/>
+                            </StackPanel>
+                        </Grid>
+                        <Expander IsExpanded="False" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <ui:TextBlock x:Name="MultipleLaunchText" Text="{lex:Loc MultipleLaunchText}"
+                                              Appearance="Primary" TextWrapping="Wrap"/>
+                            </Expander.Header>
+                            <ScrollViewer MaxHeight="160" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Margin="0,2,0,2" HorizontalContentAlignment="Stretch"
+                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}" AutomationProperties.Name="{Binding Name}">
+                                                <CheckBox.Content>
+                                                    <ui:TextBlock Text="{Binding Name}" Appearance="Primary" TextWrapping="Wrap"/>
+                                                </CheckBox.Content>
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Padding="16" Margin="0" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <ui:TextBlock Text="{lex:Loc PropertyRelatedSettings}" FontSize="16" FontWeight="SemiBold"
+                                      Appearance="Primary" Margin="0,0,0,12"/>
+                        <ui:Button x:Name="GenreManageButton" Content="{lex:Loc SimpleGenreManage}"
+                                   AutomationProperties.AutomationId="GenreManageButton" Click="GenreManageButton_OnClick"/>
+                        <ui:Button x:Name="LoginSettingsButton" Content="{lex:Loc WebGameLoginSettings}" Margin="0,12,0,0"
+                                   AutomationProperties.AutomationId="LoginSettingsButton" Click="LoginSettings_OnClick"/>
+                    </StackPanel>
+                </ui:Card>
+            </StackPanel>
+        </ScrollViewer>
+        <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource DividerBrush}" Padding="24,12,24,12">
+            <ui:Button x:Name="SaveButton" Content="{lex:Loc PropertySaveChanges}" Appearance="Primary"
+                       HorizontalAlignment="Right" MinHeight="36" Padding="20,8"
+                       AutomationProperties.AutomationId="SaveButton" Click="SaveButton_OnClick"/>
         </Border>
-
-        <!-- URL -->
-        <Border Grid.Row="1"
-                BorderBrush="{DynamicResource DividerBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,0,16,12"
-                Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <ui:TextBlock Grid.Column="0" x:Name="UrlTextBlock"
-                              Text="{lex:Loc SimpleAddress}"
-                              VerticalAlignment="Center"
-                              Margin="0,0,12,0"
-                              Appearance="Primary"/>
-                <ui:TextBox Grid.Column="1" x:Name="UrlBox"/>
-            </Grid>
-        </Border>
-
-        <!-- 複数起動 -->
-        <Border Grid.Row="2"
-                BorderBrush="{DynamicResource DividerBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,0,16,12"
-                Margin="0,0,0,12">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <ui:TextBlock Grid.Row="0" x:Name="MultipleLaunchText"
-                              Text="{lex:Loc MultipleLaunchText}"
-                              Margin="0,0,0,4"
-                              Appearance="Primary"/>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                    <ItemsControl ItemsSource="{Binding Candidates, RelativeSource={RelativeSource AncestorType=local:DialogInterface}}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Margin="0,2,0,2"
-                                          IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                          Content="{Binding Name}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Grid>
-        </Border>
-
-        <!-- ジャンル管理 -->
-        <Border Grid.Row="3"
-                BorderBrush="{DynamicResource DividerBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,0,16,12"
-                Margin="0,0,0,12">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <ui:TextBlock Grid.Row="0"
-                              Text="{lex:Loc SimpleGenreManage}"
-                              Margin="0,0,0,4"
-                              Appearance="Primary"/>
-                <ui:Button Grid.Row="1"
-                           x:Name="GenreManageButton"
-                           Content="{lex:Loc SimpleManage}"
-                           Click="GenreManageButton_OnClick"/>
-            </Grid>
-        </Border>
-
-        <!-- ウィンドウサイズ -->
-        <Border Grid.Row="4"
-                BorderBrush="{DynamicResource DividerBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,0,16,12"
-                Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleWindowWidth}"
-                              VerticalAlignment="Center"
-                              Margin="0,0,8,0"
-                              Appearance="Primary"/>
-                <ui:NumberBox Grid.Column="1" x:Name="WindowWidthBox"
-                              PlaceholderText="{lex:Loc SimpleWindowSize}"
-                              ClearButtonEnabled="True"
-                              Minimum="800"/>
-                <ui:TextBlock Grid.Column="2" Text="{lex:Loc SimpleWindowHeight}"
-                              VerticalAlignment="Center"
-                              Margin="16,0,8,0"
-                              Appearance="Primary"/>
-                <ui:NumberBox Grid.Column="3" x:Name="WindowHeightBox"
-                              PlaceholderText="{lex:Loc SimpleWindowSize}"
-                              ClearButtonEnabled="True"
-                              Minimum="400"/>
-            </Grid>
-        </Border>
-
-        <!-- 保存ボタン -->
-        <StackPanel Grid.Row="6"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,12,16,0">
-            <ui:Button x:Name="SaveButton"
-                       Content="{lex:Loc SimpleSave}"
-                       Click="SaveButton_OnClick"/>
-        </StackPanel>
     </Grid>
-    </ScrollViewer>
 </local:DialogInterface>

@@ -58,6 +58,15 @@ public partial class WebGame : DialogInterface
         }
     }
 
+    private void LoginSettings_OnClick(object sender, RoutedEventArgs e)
+    {
+        try { new WebGameLoginSettingsWindow(Data.Id) { Owner = System.Windows.Window.GetWindow(this) }.Show(); }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(LocalizeControl.GetLocalize<string>("WebGameLoginInitializationFailed") + "\n" + ex.GetType().Name);
+        }
+    }
+
     private void GenreManageButton_OnClick(object sender, RoutedEventArgs e)
     {
         var genreManageWindow = new GenreManageWindow(Data);

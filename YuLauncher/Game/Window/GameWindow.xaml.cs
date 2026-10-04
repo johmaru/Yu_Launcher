@@ -17,12 +17,27 @@ public partial class GameWindow : FluentWindow
 {
     private JsonControl.ApplicationJsonData _data;
     private GameWindow ThisGameWindow { get; }
+    private readonly string _initialUrl;
+    private WebGameLoginSession? _loginSession;
+    private WebGameLoginTracker? _loginTracker;
+    private bool _initializing;
 
-    public GameWindow(string url, string jsonPath)
+    public GameWindow(string url, string jsonPath) : this(url, jsonPath, null)
+    {
+        try
+        {
+            _loginSession = new WebGameLoginSession(_data.Id, WebGameLoginRepository.GetSettings(_data.Id));
+        }
+        catch (Exception e) { ShowLoginError("WebGameLoginInitializationFailed", e.GetType().Name); }
+    }
+
+    internal GameWindow(string url, string jsonPath, WebGameLoginSession? session)
     {
         InitializeComponent();
 
         _data = JsonControl.LoadJson(jsonPath);
+        _initialUrl = url;
+        _loginSession = session;
 
         WebView.CoreWebView2InitializationCompleted += WebView_OnCoreWebView2InitializationCompleted;
 
@@ -40,7 +55,7 @@ public partial class GameWindow : FluentWindow
         }
 
         ThisGameWindow = this;
-        WebView.Source = new Uri(url);
+        // 初回遷移はdocument hookの登録完了後に行う。
 
         if (_data.WindowWidth.HasValue && _data.WindowHeight.HasValue)
         {
@@ -105,10 +120,44 @@ public partial class GameWindow : FluentWindow
 
     private async void GameWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (WebView.CoreWebView2 == null)
+        if (_initializing) return;
+        _initializing = true;
+        try
         {
             await WebView.EnsureCoreWebView2Async();
+            if (_loginSession is not null)
+            {
+                try
+                {
+                    _loginTracker = new WebGameLoginTracker(WebView.CoreWebView2, _loginSession.Settings,
+                        method => { if (!_loginSession.TryRecord(method)) ShowLoginError("WebGameLoginTrackingFailed"); },
+                        message => ShowLoginError("WebGameLoginInitializationFailed", message));
+                    await _loginTracker.InitializeAsync();
+                }
+                catch (Exception ex)
+                {
+                    _loginTracker?.Dispose();
+                    _loginTracker = null;
+                    ShowLoginError("WebGameLoginInitializationFailed", ex.GetType().Name);
+                }
+            }
+            WebView.CoreWebView2.Navigate(_initialUrl);
         }
+        catch (Exception ex) { ShowLoginError("WebGameLoginInitializationFailed", "WebView2: " + ex.GetType().Name); }
+    }
+
+    private void ShowLoginError(string key, string? explanation = null)
+    {
+        LoginTrackingErrorBar.Message = LocalizeControl.GetLocalize<string>(key) +
+            (explanation is null ? "" : "\n" + explanation[..Math.Min(explanation.Length, 1024)]);
+        LoginTrackingErrorBar.IsOpen = true;
+        LoggerController.LogError($"WebGame login detection error: gameId={_data.Id}, category={key}");
+    }
+
+    private void LoginSettings_OnClick(object sender, RoutedEventArgs e)
+    {
+        try { new WebGameLoginSettingsWindow(_data.Id) { Owner = this }.Show(); }
+        catch (Exception ex) { ShowLoginError("WebGameLoginInitializationFailed", ex.GetType().Name); }
     }
 
     private void Resize()
@@ -224,9 +273,10 @@ public partial class GameWindow : FluentWindow
 
     private void GameWindow_OnClosing(object? sender, CancelEventArgs e)
     {
-        WebView.Stop();
+        _loginTracker?.Dispose();
         if (WebView.CoreWebView2 != null)
         {
+            WebView.Stop();
             WebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
             WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
         }
@@ -272,14 +322,14 @@ public partial class GameWindow : FluentWindow
         else
         {
             LoggerController.LogError("WebView2 Initialization Failed");
-            throw new Exception("WebView2 Initialization Failed");
+            ShowLoginError("WebGameLoginInitializationFailed", "WebView2 Initialization Failed");
         }
     }
 
     private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
     {
         e.Handled = true;
-        var gameWindow = new GameWindow(e.Uri, _data.JsonPath);
+        var gameWindow = new GameWindow(e.Uri, _data.JsonPath, _loginSession);
         gameWindow.Loaded += (_, _) => Activate();
         gameWindow.Closing += (_, _) => ThisGameWindow.Activate();
         gameWindow.Show();

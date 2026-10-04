@@ -12,70 +12,59 @@
       Loaded="General_OnLoaded"
       mc:Ignorable="d"
       d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="0,12">
-                <ui:TextBlock x:Name="GeneralTextBlock" Text="{lex:Loc SimpleGeneral}"  Margin="0,0,0,30" HorizontalAlignment="Center"
-                              FontSize="20" FontWeight="Bold" Appearance="Primary"/>
-                <ui:TextBlock x:Name="VersionTextBlock" Text="{Binding NowVersion}" Margin="0,0,0,30" HorizontalAlignment="Center"
-                              FontSize="15" FontWeight="Bold" Appearance="Primary"/>
-
-                <!-- AppData セクション -->
-                <Border BorderBrush="{DynamicResource DividerBrush}"
-                        BorderThickness="0,0,0,1"
-                        Padding="16,0,16,12"
-                        Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:TextBlock Grid.Column="0" Text="{lex:Loc SimpleAppData}" FontSize="15" VerticalAlignment="Center" Margin="0,0,12,0" Appearance="Primary"/>
-                        <Border x:Name="AppDataDivider" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,0" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button x:Name="AppExportBtn" Margin="0,0,12,0" Content="{lex:Loc SimpleExport}" Click="ExportBtn_OnClick"/>
-                            <Button x:Name="AppImportBtn" Content="{lex:Loc SimpleImport}" Click="AppImportBtn_OnClick"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <!-- 区切り線色設定セクション -->
-                <Border BorderBrush="{DynamicResource DividerBrush}"
-                        BorderThickness="0,0,0,1"
-                        Padding="16,0,16,12"
-                        Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:TextBlock Grid.Column="0" Text="{lex:Loc SettingsDividerColor}"
-                                      VerticalAlignment="Center"
-                                      FontSize="15"
-                                      Margin="0,0,12,0"
-                                      Appearance="Primary"/>
-                        <Border x:Name="ColorSettingDivider" Grid.Column="1" Background="{DynamicResource DividerBrush}" Margin="0,0,12,0" HorizontalAlignment="Stretch"/>
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                            <ui:TextBox x:Name="DividerColorBox"
-                                        Width="120"
-                                        PlaceholderText="{lex:Loc SettingsDividerColorPlaceholder}"
-                                        Margin="0,0,12,0"/>
-                            <Border x:Name="DividerColorPreview"
-                                    Width="32" Height="32"
-                                    CornerRadius="4"
-                                    BorderThickness="1"
-                                    BorderBrush="{DynamicResource DividerBrush}"
-                                    Background="{DynamicResource DividerBrush}"
-                                    Margin="0,0,12,0"/>
-                            <ui:Button x:Name="DividerColorApplyBtn"
-                                       Content="{lex:Loc SettingsDividerColorApply}"
-                                       Click="DividerColorApplyBtn_OnClick"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+    <ScrollViewer x:Name="GeneralViewer" VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Margin="24,16,24,16">
+            <ui:TextBlock x:Name="GeneralTextBlock" Text="{lex:Loc SimpleGeneral}"
+                          FontSize="22" FontWeight="SemiBold" Appearance="Primary"/>
+            <ui:TextBlock Text="{lex:Loc SettingsGeneralDescription}" FontSize="13"
+                          Appearance="Secondary" TextWrapping="Wrap" Margin="0,4,0,16"/>
+            <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <ui:TextBlock Text="{lex:Loc SettingsAppearance}" FontSize="16"
+                                  FontWeight="SemiBold" Appearance="Primary"/>
+                    <ui:TextBlock Text="{lex:Loc SettingsDividerColor}" FontSize="13"
+                                  Appearance="Primary" Margin="0,12,0,4"/>
+                    <ui:TextBlock Text="{lex:Loc SettingsDividerColorHelp}" FontSize="13"
+                                  Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:TextBox x:Name="DividerColorBox" Width="128" Margin="0,0,12,0"
+                                    PlaceholderText="{lex:Loc SettingsDividerColorPlaceholder}"
+                                    AutomationProperties.Name="{lex:Loc SettingsDividerColor}"/>
+                        <Border x:Name="DividerColorPreview" Width="32" Height="32"
+                                CornerRadius="4" BorderThickness="1"
+                                BorderBrush="{DynamicResource DividerBrush}"
+                                Background="{DynamicResource DividerBrush}" Margin="0,0,12,0"/>
+                        <ui:Button x:Name="DividerColorApplyBtn"
+                                   Content="{lex:Loc SettingsDividerColorApply}"
+                                   Click="DividerColorApplyBtn_OnClick"/>
+                    </StackPanel>
+                </StackPanel>
+            </ui:Card>
+            <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <ui:TextBlock Text="{lex:Loc SettingsDataTransfer}" FontSize="16"
+                                  FontWeight="SemiBold" Appearance="Primary"/>
+                    <ui:TextBlock Text="{lex:Loc SettingsDataTransferHelp}" FontSize="13"
+                                  Appearance="Secondary" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="AppExportBtn" Margin="0,0,8,0"
+                                Content="{lex:Loc SimpleExport}" Click="ExportBtn_OnClick"/>
+                        <Button x:Name="AppImportBtn"
+                                Content="{lex:Loc SimpleImport}" Click="AppImportBtn_OnClick"/>
+                    </StackPanel>
+                </StackPanel>
+            </ui:Card>
+            <ui:Card Padding="16" Margin="0,0,0,12" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <ui:TextBlock Text="{lex:Loc SettingsAbout}" FontSize="16"
+                                  FontWeight="SemiBold" Appearance="Primary"/>
+                    <ui:TextBlock x:Name="VersionTextBlock" Text="{Binding NowVersion}"
+                                  FontSize="13" Appearance="Secondary"
+                                  TextWrapping="Wrap" Margin="0,12,0,0"/>
+                </StackPanel>
+            </ui:Card>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

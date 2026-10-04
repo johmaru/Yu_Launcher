@@ -165,6 +165,73 @@ public static class GameRepository
             verCmd2.CommandText = "INSERT INTO schema_versions (version) VALUES (2)";
             verCmd2.ExecuteNonQuery();
         }
+        if (currentVersion < 3)
+        {
+            using var c3 = conn.CreateCommand();
+            c3.Transaction = tx;
+            c3.CommandText = """
+                CREATE TABLE webgame_login_settings (
+                    game_id INTEGER PRIMARY KEY,
+                    mode TEXT NOT NULL DEFAULT 'Connection'
+                        CHECK (mode IN ('Connection','Url','Element','JavaScript')),
+                    target_origin TEXT NOT NULL DEFAULT '',
+                    success_url TEXT NOT NULL DEFAULT '',
+                    success_selector TEXT NOT NULL DEFAULT '',
+                    javascript TEXT NOT NULL DEFAULT '',
+                    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+                );
+                CREATE TABLE webgame_login_history (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    game_id INTEGER NOT NULL,
+                    session_id TEXT NOT NULL,
+                    detected_at_utc TEXT NOT NULL,
+                    method TEXT NOT NULL CHECK (method IN ('Connection','Url','Element','JavaScript')),
+                    UNIQUE (game_id, session_id),
+                    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+                );
+                CREATE INDEX idx_webgame_login_history_game_time
+                    ON webgame_login_history(game_id, detected_at_utc DESC, id DESC);
+                INSERT INTO schema_versions(version) VALUES (3);
+                """;
+            c3.ExecuteNonQuery();
+        }
+        if (currentVersion < 4)
+        {
+            using var c4 = conn.CreateCommand();
+            c4.Transaction = tx;
+            c4.CommandText = """
+                CREATE TABLE webgame_login_settings_v4 (
+                    game_id INTEGER PRIMARY KEY,
+                    mode TEXT NOT NULL DEFAULT 'Connection' CHECK(mode IN ('Connection','Url','Element','JavaScript','Network')),
+                    target_origin TEXT NOT NULL DEFAULT '',
+                    success_url TEXT NOT NULL DEFAULT '',
+                    success_selector TEXT NOT NULL DEFAULT '',
+                    javascript TEXT NOT NULL DEFAULT '',
+                    network_rule_json TEXT NOT NULL DEFAULT '',
+                    FOREIGN KEY(game_id) REFERENCES games(id) ON DELETE CASCADE);
+                CREATE TABLE webgame_login_history_v4 (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    game_id INTEGER NOT NULL,
+                    session_id TEXT NOT NULL,
+                    detected_at_utc TEXT NOT NULL,
+                    method TEXT NOT NULL CHECK(method IN ('Connection','Url','Element','JavaScript','Network')),
+                    UNIQUE(game_id,session_id),
+                    FOREIGN KEY(game_id) REFERENCES games(id) ON DELETE CASCADE);
+                INSERT INTO webgame_login_settings_v4(game_id,mode,target_origin,success_url,success_selector,javascript)
+                    SELECT game_id,mode,target_origin,success_url,success_selector,javascript FROM webgame_login_settings;
+                INSERT INTO webgame_login_history_v4 SELECT * FROM webgame_login_history;
+                UPDATE sqlite_sequence SET seq=MAX(seq,COALESCE((SELECT seq FROM sqlite_sequence WHERE name='webgame_login_history'),0))
+                    WHERE name='webgame_login_history_v4';
+                DROP TABLE webgame_login_history;
+                DROP TABLE webgame_login_settings;
+                ALTER TABLE webgame_login_settings_v4 RENAME TO webgame_login_settings;
+                ALTER TABLE webgame_login_history_v4 RENAME TO webgame_login_history;
+                CREATE INDEX idx_webgame_login_history_game_time
+                    ON webgame_login_history(game_id,detected_at_utc DESC,id DESC);
+                INSERT INTO schema_versions(version) VALUES(4);
+                """;
+            c4.ExecuteNonQuery();
+        }
 
         tx.Commit();
     }

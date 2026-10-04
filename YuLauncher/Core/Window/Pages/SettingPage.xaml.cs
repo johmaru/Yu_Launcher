@@ -25,17 +25,23 @@ namespace YuLauncher.Core.Window.Pages
 
         private void VideoVisualItem_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Source = new Uri("Settings/VideoGraphics.xaml", UriKind.Relative);
+            GeneralItem.IsChecked = false;
+            VideoVisualItem.IsChecked = true;
+            if (ContentFrame.Content is not VideoGraphics)
+                ContentFrame.Source = new Uri("Settings/VideoGraphics.xaml", UriKind.Relative);
         }
 
         private void GeneralItem_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Source = new Uri("Settings/General.xaml", UriKind.Relative);
+            GeneralItem.IsChecked = true;
+            VideoVisualItem.IsChecked = false;
+            if (ContentFrame.Content is not General)
+                ContentFrame.Source = new Uri("Settings/General.xaml", UriKind.Relative);
         }
 
         private void SettingPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-           ContentFrame.Source = new Uri("Settings/General.xaml", UriKind.Relative);
+            GeneralItem_OnClick(sender, e);
         }
     }
     }

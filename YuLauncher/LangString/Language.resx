@@ -127,7 +127,7 @@
     <value>Setting</value>
   </data>
   <data name="LoginHistory" xml:space="preserve">
-    <value>LoginHistory</value>
+    <value>Login history</value>
   </data>
   <data name="FavoriteGame" xml:space="preserve">
     <value>FavGames</value>
@@ -154,13 +154,13 @@
     <value>Save</value>
   </data>
   <data name="SettingResChange" xml:space="preserve">
-    <value>SettingPage Resolution Change</value>
+    <value>Settings window</value>
   </data>
   <data name="MainWindowResChange" xml:space="preserve">
-    <value>Menu Resolution Change</value>
+    <value>Main window</value>
   </data>
   <data name="GameWindowResChange" xml:space="preserve">
-    <value>GameWindow Resolution Change</value>
+    <value>Game window</value>
   </data>
   <data name="NameInput" xml:space="preserve">
     <value>Please input name</value>
@@ -176,6 +176,9 @@
   </data>
   <data name="DeleteGame" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="AddEntryFileLabel" xml:space="preserve">
+    <value>File</value>
   </data>
   <data name="SelectFileLabel" xml:space="preserve">
     <value>Select File</value>
@@ -226,7 +229,7 @@
     <value>Go to edit mode</value>
   </data>
   <data name="MemoWindowResChange" xml:space="preserve">
-    <value>Memo Resolution Change</value>
+    <value>Memo window</value>
   </data>
   <data name="SimpleRes" xml:space="preserve">
     <value>Resolution</value>
@@ -292,7 +295,7 @@
     <value>Mute(Disable)</value>
   </data>
   <data name="VideoGraphics" xml:space="preserve">
-    <value>Video/Graphic/display</value>
+    <value>Display &amp; language</value>
   </data>
   <data name="SimpleGeneral" xml:space="preserve">
     <value>General</value>
@@ -378,8 +381,21 @@
   <data name="DetailNoGames" xml:space="preserve">
     <value>No games</value>
   </data>
+  <data name="LibraryGenreFilter" xml:space="preserve"><value>Filter by genre</value></data>
+  <data name="LibraryItemCountSuffix" xml:space="preserve"><value>items</value></data>
+  <data name="LibraryKeyboardHint" xml:space="preserve"><value>Ctrl+F to search · Enter in the list to launch</value></data>
+  <data name="LibraryEmptyTitle" xml:space="preserve"><value>No items yet</value></data>
+  <data name="LibraryEmptyDescription" xml:space="preserve"><value>Use Add to register an app or website.</value></data>
+  <data name="LibraryNoResultsTitle" xml:space="preserve"><value>No matching items</value></data>
+  <data name="LibraryNoResultsDescription" xml:space="preserve"><value>Change the search or genre, or clear the filters.</value></data>
+  <data name="LibraryResetFilters" xml:space="preserve"><value>Clear filters</value></data>
+  <data name="LibrarySelectTitle" xml:space="preserve"><value>Select an item</value></data>
+  <data name="LibrarySelectDescription" xml:space="preserve"><value>Select an item to view its details. Double-click to launch.</value></data>
+  <data name="LibraryLoading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="LibraryLoadFailed" xml:space="preserve"><value>There was a problem loading the list.</value></data>
+  <data name="LibraryRetry" xml:space="preserve"><value>Reload</value></data>
   <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Search...</value>
+    <value>Search by name…</value>
   </data>
   <data name="DetailLaunchOptions" xml:space="preserve">
     <value>Launch Options</value>
@@ -438,4 +454,173 @@
   <data name="SettingsDividerColorApply" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="FileMissingStatus" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="SettingsGeneralDescription" xml:space="preserve">
+    <value>Manage appearance and data.</value>
+  </data>
+  <data name="SettingsDisplayDescription" xml:space="preserve">
+    <value>Choose the language, window sizes, and memo text size.</value>
+  </data>
+  <data name="SettingsAppearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SettingsDividerColorHelp" xml:space="preserve">
+    <value>Example: #8B5CF6. Select Apply to change the divider color.</value>
+  </data>
+  <data name="SettingsDataTransfer" xml:space="preserve">
+    <value>Data transfer</value>
+  </data>
+  <data name="SettingsDataTransferHelp" xml:space="preserve">
+    <value>Choose a folder to export to or import from. Import overwrites the current data and settings.</value>
+  </data>
+  <data name="SettingsAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsLanguageHelp" xml:space="preserve">
+    <value>The display language changes when you save.</value>
+  </data>
+  <data name="SettingsDisplayMode" xml:space="preserve">
+    <value>Display mode</value>
+  </data>
+  <data name="SettingsImmediateSaveHint" xml:space="preserve">
+    <value>This setting is saved when you change it.</value>
+  </data>
+  <data name="SettingsWindowSizes" xml:space="preserve">
+    <value>Window sizes</value>
+  </data>
+  <data name="SettingsWindowSizesHint" xml:space="preserve">
+    <value>Set the width and height. Saved sizes are used the next time you open a window.</value>
+  </data>
+  <data name="SettingsMemo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="SettingsWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="SettingsHeight" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="SettingsSaveChanges" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="SettingsSaveHint" xml:space="preserve">
+    <value>Save to apply the language, sizes, and text size.</value>
+  </data>
+  <data name="SettingsMainWidth" xml:space="preserve">
+    <value>Main window width</value>
+  </data>
+  <data name="SettingsMainHeight" xml:space="preserve">
+    <value>Main window height</value>
+  </data>
+  <data name="SettingsGameWidth" xml:space="preserve">
+    <value>Game window width</value>
+  </data>
+  <data name="SettingsGameHeight" xml:space="preserve">
+    <value>Game window height</value>
+  </data>
+  <data name="SettingsSettingWidth" xml:space="preserve">
+    <value>Settings window width</value>
+  </data>
+  <data name="SettingsSettingHeight" xml:space="preserve">
+    <value>Settings window height</value>
+  </data>
+  <data name="SettingsMemoWidth" xml:space="preserve">
+    <value>Memo window width</value>
+  </data>
+  <data name="SettingsMemoHeight" xml:space="preserve">
+    <value>Memo window height</value>
+  </data>
+  <data name="WebGameLoginInitializationFailed" xml:space="preserve"><value>Could not start login detection. You can continue playing.</value></data>
+  <data name="WebGameLoginTrackingFailed" xml:space="preserve"><value>Could not save the login record. You can continue playing.</value></data>
+  <data name="WebGameLoginSettings" xml:space="preserve"><value>Login history settings</value></data>
+  <data name="WebGameLoginConnection" xml:space="preserve"><value>Connection (estimated)</value></data>
+  <data name="WebGameLoginUrl" xml:space="preserve"><value>Success URL</value></data>
+  <data name="WebGameLoginElement" xml:space="preserve"><value>Visible element</value></data>
+  <data name="WebGameLoginJavaScript" xml:space="preserve"><value>JavaScript event</value></data>
+  <data name="WebGameLoginMode" xml:space="preserve"><value>Detection method</value></data>
+  <data name="WebGameLoginTargetOrigin" xml:space="preserve"><value>Target page origin</value></data>
+  <data name="WebGameLoginOriginHelp" xml:space="preserve"><value>Only pages with the same scheme, host and port are monitored.</value></data>
+  <data name="WebGameLoginConnectionHelp" xml:space="preserve"><value>Records a successful connection, not verified authentication.</value></data>
+  <data name="WebGameLoginUrlHelp" xml:space="preserve"><value>Matches the exact origin and path prefix; ignores query strings and fragments.</value></data>
+  <data name="WebGameLoginSelector" xml:space="preserve"><value>CSS selector for the success indicator</value></data>
+  <data name="WebGameLoginSelectorHelp" xml:space="preserve"><value>Select an element visible only after login. Site updates may change the selector. Individual canvas contents cannot be selected.</value></data>
+  <data name="WebGameLoginUseCurrentUrl" xml:space="preserve"><value>Use this URL as the success condition</value></data>
+  <data name="WebGameLoginPickElement" xml:space="preserve"><value>Pick the success indicator</value></data>
+  <data name="WebGameLoginCancelPick" xml:space="preserve"><value>Cancel picking</value></data>
+  <data name="WebGameLoginAdvanced" xml:space="preserve"><value>Advanced settings</value></data>
+  <data name="WebGameLoginScriptHelp" xml:space="preserve"><value>yuLogin.complete(): report success. onEvent(target,name,predicate?): watch an event. whenVisible(selector): wait for visibility. whenUrl(url): wait for a URL. Clicks and submits do not verify authentication.</value></data>
+  <data name="WebGameLoginScriptTrust" xml:space="preserve"><value>I trust this code. It can access information in the target page.</value></data>
+  <data name="WebGameLoginInsertSample" xml:space="preserve"><value>Insert sample</value></data>
+  <data name="WebGameLoginSampleEvent" xml:space="preserve"><value>Success event</value></data>
+  <data name="WebGameLoginSampleElement" xml:space="preserve"><value>Element visibility</value></data>
+  <data name="WebGameLoginSampleUrl" xml:space="preserve"><value>URL change</value></data>
+  <data name="WebGameLoginPreview" xml:space="preserve"><value>Settings preview (not recorded in history)</value></data>
+  <data name="WebGameLoginNavigate" xml:space="preserve"><value>Open</value></data>
+  <data name="WebGameLoginTest" xml:space="preserve"><value>Test detection</value></data>
+  <data name="WebGameLoginWaiting" xml:space="preserve"><value>Waiting for the success condition</value></data>
+  <data name="WebGameLoginTestSuccess" xml:space="preserve"><value>Success detected (not recorded in history)</value></data>
+  <data name="WebGameLoginPicking" xml:space="preserve"><value>Click the success indicator. Press Escape to cancel.</value></data>
+  <data name="WebGameLoginPicked" xml:space="preserve"><value>Success indicator selected</value></data>
+  <data name="WebGameLoginPickCancelled" xml:space="preserve"><value>Element picking cancelled</value></data>
+  <data name="WebGameLoginNextLaunch" xml:space="preserve"><value>Settings apply on the next game launch.</value></data>
+  <data name="WebGameLoginNoRecordToday" xml:space="preserve"><value>No record today</value></data>
+  <data name="WebGameLoginRecordedToday" xml:space="preserve"><value>Recorded today: {0}</value></data>
+  <data name="WebGameLoginLastTime" xml:space="preserve"><value>Last recorded: {0}</value></data>
+  <data name="WebGameLoginEmpty" xml:space="preserve"><value>No login records yet.</value></data>
+  <data name="WebGameLoginReadFailed" xml:space="preserve"><value>Cannot load history. Reload to try again.</value></data>
+  <data name="WebGameLoginInvalidSettings" xml:space="preserve"><value>Check the URL, origin, selector, script syntax and trust confirmation.</value></data>
+  <data name="WebGameLoginTimeColumn" xml:space="preserve"><value>Recorded at</value></data>
+  <data name="WebGameLoginMethodColumn" xml:space="preserve"><value>Detection method</value></data>
+  <data name="WebGameLoginPrevious" xml:space="preserve"><value>Previous 50</value></data>
+  <data name="WebGameLoginNext" xml:space="preserve"><value>Next 50</value></data>
+  <data name="WebGameLoginCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="WebGameLoginNetwork" xml:space="preserve"><value>Network condition</value></data>
+  <data name="WebGameEventViewer" xml:space="preserve"><value>Event viewer</value></data>
+  <data name="WebGameEventOpen" xml:space="preserve"><value>Observe requests and events</value></data>
+  <data name="WebGameEventNetworkTab" xml:space="preserve"><value>Network</value></data>
+  <data name="WebGameEventDomTab" xml:space="preserve"><value>DOM events</value></data>
+  <data name="WebGameEventFilter" xml:space="preserve"><value>Filter events</value></data>
+  <data name="WebGameEventPause" xml:space="preserve"><value>Pause observation</value></data>
+  <data name="WebGameEventResume" xml:space="preserve"><value>Resume observation</value></data>
+  <data name="WebGameEventClear" xml:space="preserve"><value>Clear events</value></data>
+  <data name="WebGameEventCaptureDetail" xml:space="preserve"><value>Capture details of future DOM events</value></data>
+  <data name="WebGameEventReadJson" xml:space="preserve"><value>Capture next JSON response</value></data>
+  <data name="WebGameEventApply" xml:space="preserve"><value>Apply to detection rule</value></data>
+  <data name="WebGameEventTime" xml:space="preserve"><value>Time</value></data>
+  <data name="WebGameEventSource" xml:space="preserve"><value>Window</value></data>
+  <data name="WebGameEventMainSource" xml:space="preserve"><value>Main preview</value></data>
+  <data name="WebGameEventPopupSource" xml:space="preserve"><value>Popup {0}</value></data>
+  <data name="WebGameEventUrl" xml:space="preserve"><value>Request URL</value></data>
+  <data name="WebGameEventMethod" xml:space="preserve"><value>HTTP method</value></data>
+  <data name="WebGameEventStatus" xml:space="preserve"><value>HTTP status</value></data>
+  <data name="WebGameEventContentType" xml:space="preserve"><value>Content type</value></data>
+  <data name="WebGameEventName" xml:space="preserve"><value>Event name</value></data>
+  <data name="WebGameEventTarget" xml:space="preserve"><value>Target</value></data>
+  <data name="WebGameEventJsonPointer" xml:space="preserve"><value>JSON Pointer</value></data>
+  <data name="WebGameEventExpectedJson" xml:space="preserve"><value>Expected JSON value</value></data>
+  <data name="WebGameEventUseJson" xml:space="preserve"><value>Match a JSON value too</value></data>
+  <data name="WebGameEventEmpty" xml:space="preserve"><value>No events observed yet. Interact with the preview.</value></data>
+  <data name="WebGameEventCount" xml:space="preserve"><value>Keeping {0} events. Older events are discarded above 2000.</value></data>
+  <data name="WebGameEventNetworkNotice" xml:space="preserve"><value>Requests cover the whole WebView. HTTP success alone does not prove authentication. Binary and encrypted content is not decoded.</value></data>
+  <data name="WebGameEventDomNotice" xml:space="preserve"><value>Observes dispatched events and supported DOM events, not private game emitters or functions.</value></data>
+  <data name="WebGameEventPrivacyNotice" xml:space="preserve"><value>Bodies and details may contain personal information. Known fields are redacted, but removal is not guaranteed.</value></data>
+  <data name="WebGameEventDetailMissing" xml:space="preserve"><value>Detail was not captured. Enable capture and repeat the action.</value></data>
+  <data name="WebGameEventDetailUnavailable" xml:space="preserve"><value>Detail is unavailable or exceeds capture limits.</value></data>
+  <data name="WebGameEventUnsupportedTarget" xml:space="preserve"><value>A safe hook cannot be generated for this target.</value></data>
+  <data name="WebGameEventExistingScriptNotice" xml:space="preserve"><value>Adds to existing JavaScript. Existing conditions can still detect success.</value></data>
+  <data name="WebGameEventExpired" xml:space="preserve"><value>This response has expired. Repeat the action to observe it again.</value></data>
+  <data name="WebGameEventNonJson" xml:space="preserve"><value>This response is not a supported JSON format.</value></data>
+  <data name="WebGameEventNoBody" xml:space="preserve"><value>This response body is unavailable.</value></data>
+  <data name="WebGameEventTooLarge" xml:space="preserve"><value>The body exceeds the 1 MiB read limit.</value></data>
+  <data name="WebGameEventInvalidJson" xml:space="preserve"><value>The response could not be parsed as JSON.</value></data>
+  <data name="WebGameEventReadFailed" xml:space="preserve"><value>Reading the response failed. Repeat the action.</value></data>
+  <data name="WebGameEventInvalidRule" xml:space="preserve"><value>Check the URL, method, status and JSON condition.</value></data>
+  <data name="WebGameEventRuntimeUnsupported" xml:space="preserve"><value>The observation API is unavailable. Update WebView2 Runtime.</value></data>
+  <data name="WebGameEventWaitResponse" xml:space="preserve"><value>Waiting for the next response with the same URL, method and status in this window. Repeat the action in the preview. No request is sent automatically.</value></data>
+  <data name="PropertyBasicInfo" xml:space="preserve"><value>Basic information</value></data>
+  <data name="PropertyLaunchSettings" xml:space="preserve"><value>Launch settings</value></data>
+  <data name="PropertyRelatedSettings" xml:space="preserve"><value>Related settings</value></data>
+  <data name="PropertySaveChanges" xml:space="preserve"><value>Save changes</value></data>
 </root>

@@ -25,6 +25,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -52,6 +53,7 @@
                             <MenuItem x:Name="SettingItem"
                                       Header="{lex:Loc SimpleSetting}"
                                       Click="SettingItem_OnClick"/>
+                            <MenuItem x:Name="LoginSettingsItem" Header="{lex:Loc WebGameLoginSettings}" Click="LoginSettings_OnClick"/>
                             <MenuItem x:Name="WikiDataItem"
                                       Header="{lex:Loc SimpleWikiDataManage}"
                                       Click="WikiDataItem_OnClick"/>
@@ -61,7 +63,10 @@
             </ui:TitleBar>
         </Border>
 
-        <wv2:WebView2 Grid.Row="1"
+        <ui:InfoBar x:Name="LoginTrackingErrorBar" Grid.Row="1"
+                    AutomationProperties.AutomationId="LoginTrackingErrorBar"
+                    Severity="Error" IsOpen="False" Title="{lex:Loc CreateGameDialogErrorTitle}"/>
+        <wv2:WebView2 Grid.Row="2"
                       Name="WebView"/>
     </Grid>
 </ui:FluentWindow>
